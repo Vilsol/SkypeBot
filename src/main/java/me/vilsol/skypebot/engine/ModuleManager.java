@@ -69,8 +69,8 @@ public class ModuleManager {
 
         for(Map.Entry<String, CommandData> s : allCommands.entrySet()){
             String match = s.getKey();
-            if(!s.getValue().getCommand().parameters().equals("")){
-                match += " " + s.getValue().getCommand().parameters();
+            if(!s.getValue().getParameterRegex().equals("")){
+                match += " " + s.getValue().getParameterRegex();
             }
 
             if(s.getValue().getCommand().command()){
@@ -139,19 +139,16 @@ public class ModuleManager {
         }
 
         if(allCommands.containsKey(command)){
-            Command c = allCommands.get(command).getCommand();
+            CommandData d = allCommands.get(command);
+            Command c = d.getCommand();
 
             String correct = command;
-            if(!c.parameters().equals("")){
-                correct += " " + c.parameters();
+            if(!d.getParamaterNames().equals("")){
+                correct += " " + d.getParamaterNames();
             }
 
             if(c.command()){
                 correct = R.command + correct;
-            }
-
-            if(c.exact()){
-                correct = "^" + correct + "$";
             }
 
             R.s("Incorrect syntax: " + correct);
