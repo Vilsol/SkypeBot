@@ -17,6 +17,7 @@ import java.util.regex.Pattern;
 public class ModuleManager {
 
     private static HashMap<String, CommandData> commandData = new HashMap<>();
+    private static HashMap<String, CommandData> allCommands = new HashMap<>();
 
     public static void loadModules(String modulePackage){
         Reflections r = new Reflections(modulePackage);
@@ -28,9 +29,10 @@ public class ModuleManager {
                 if(command != null){
                     CommandData data = new CommandData(command, m);
                     commandData.put(command.name(), data);
+                    allCommands.put(command.name(), data);
                     if(command.alias() != null && command.alias().length > 0){
                         for(String s : command.alias()){
-                            commandData.put(s, data);
+                            allCommands.put(s, data);
                         }
                     }
                 }
@@ -55,10 +57,6 @@ public class ModuleManager {
             return;
         }
 
-        if(!command.substring(0, 1).equals(R.command)){
-            return;
-        }
-
         command = command.substring(1);
         String[] commandSplit = command.split(" ");
 
@@ -66,10 +64,14 @@ public class ModuleManager {
             return;
         }
 
-        for(Map.Entry<String, CommandData> s : commandData.entrySet()){
-            String match = R.command + s.getKey();
+        for(Map.Entry<String, CommandData> s : allCommands.entrySet()){
+            String match = s.getKey();
             if(!s.getValue().getCommand().parameters().equals("")){
                 match += " " + s.getValue().getCommand().parameters();
+            }
+
+            if(s.getValue().getCommand().command()){
+                match = R.command + match;
             }
 
             if(s.getValue().getCommand().exact()){
@@ -89,6 +91,8 @@ public class ModuleManager {
                     }
                 }
 
+
+
                 try{
                     data.getMethod().invoke(null, message);
                 }catch(IllegalAccessException | InvocationTargetException ignore){
@@ -98,7 +102,9 @@ public class ModuleManager {
             }
         }
 
-        R.s("Command '" + message.getContent().split(" ")[0] + "' not found!");
+        if(originalCommand.substring(0, 1).equals(R.command)){
+            R.s("Command '" + command + "' not found!");
+        }
     }
 
 }
