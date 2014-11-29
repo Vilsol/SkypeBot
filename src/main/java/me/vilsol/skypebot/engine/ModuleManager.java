@@ -57,7 +57,10 @@ public class ModuleManager {
             return;
         }
 
-        command = command.substring(1);
+        if(command.substring(0, 1).equals("@")){
+            command = command.substring(1);
+        }
+
         String[] commandSplit = command.split(" ");
 
         if(commandSplit.length == 0){
@@ -91,8 +94,6 @@ public class ModuleManager {
                     }
                 }
 
-
-
                 try{
                     data.getMethod().invoke(null, message);
                 }catch(IllegalAccessException | InvocationTargetException ignore){
@@ -100,6 +101,27 @@ public class ModuleManager {
 
                 return;
             }
+        }
+
+        if(allCommands.containsKey(command)){
+            Command c = allCommands.get(command).getCommand();
+
+            String correct = command;
+            if(!c.parameters().equals("")){
+                correct += " " + c.parameters();
+            }
+
+            if(c.command()){
+                correct = R.command + correct;
+            }
+
+            if(c.exact()){
+                correct = "^" + correct + "$";
+            }
+
+            R.s("Incorrect syntax: " + correct);
+
+            return;
         }
 
         if(originalCommand.substring(0, 1).equals(R.command)){
