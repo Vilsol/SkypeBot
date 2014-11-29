@@ -129,8 +129,6 @@ public class ModuleManager {
                     e.printStackTrace();
                 }
 
-                System.out.println(a);
-
                 try{
                     methodAccessor.invoke(null, a.toArray());
                 }catch(InvocationTargetException ignore){

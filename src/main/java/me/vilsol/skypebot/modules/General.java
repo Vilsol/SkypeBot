@@ -1,6 +1,7 @@
 package me.vilsol.skypebot.modules;
 
 import com.skype.ChatMessage;
+import com.skype.SkypeException;
 import me.vilsol.skypebot.R;
 import me.vilsol.skypebot.engine.Command;
 import me.vilsol.skypebot.engine.Module;
@@ -56,6 +57,16 @@ public class General implements Module {
     @Command(name = "random", parameters = "(-?[0-9]+) (-?[0-9]+)")
     public static void cmdRandom(ChatMessage message, int low, int high){
         R.s(new Random().nextInt(high - low) + low);
+    }
+
+    @Command(name = "fish go moo", exact = false, command = false)
+    public static void cmdFishGoMoo(ChatMessage message) throws SkypeException{
+        R.s("/me notes that " + message.getSenderDisplayName() + " is truly enlightened.");
+    }
+
+    @Command(name = "bot", parameters = "(.*)")
+    public static void cmdBot(ChatMessage message, String bot){
+        R.s("/me " + bot);
     }
 
 }
