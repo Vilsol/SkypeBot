@@ -10,5 +10,6 @@ public @interface Command {
     public boolean exact() default true;
     public String parameters() default "";
     public String[] alias() default {};
+    public String[] allow() default {};
 
 }

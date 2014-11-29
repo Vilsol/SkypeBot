@@ -1,12 +1,18 @@
 package me.vilsol.skypebot.engine;
 
+import com.skype.ChatMessage;
+import com.skype.SkypeException;
 import me.vilsol.skypebot.R;
 import org.reflections.Reflections;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ModuleManager {
 
@@ -32,8 +38,14 @@ public class ModuleManager {
         }
     }
 
-    public static void parseText(String command){
-        String originalCommand = command;
+    public static void parseText(ChatMessage message) throws SkypeException{
+        String command = null;
+        String originalCommand = null;
+        try{
+            command = message.getContent();
+            originalCommand = message.getContent();
+        }catch(SkypeException e){
+        }
 
         if(command == null){
             return;
@@ -54,16 +66,39 @@ public class ModuleManager {
             return;
         }
 
-        if(!commandData.containsKey(commandSplit[0])){
-            return;
+        for(Map.Entry<String, CommandData> s : commandData.entrySet()){
+            String match = R.command + s.getKey();
+            if(!s.getValue().getCommand().parameters().equals("")){
+                match += " " + s.getValue().getCommand().parameters();
+            }
+
+            if(s.getValue().getCommand().exact()){
+                match = "^" + match + "$";
+            }
+
+            Pattern r = Pattern.compile(match);
+            Matcher m = r.matcher(originalCommand);
+
+            if(m.find()){
+                CommandData data = s.getValue();
+
+                if(data.getCommand().allow() != null && data.getCommand().allow().length > 0){
+                    if(!Arrays.asList(data.getCommand().allow()).contains(message.getSenderId())){
+                        R.s("Access Denied!");
+                        return;
+                    }
+                }
+
+                try{
+                    data.getMethod().invoke(null, message);
+                }catch(IllegalAccessException | InvocationTargetException ignore){
+                }
+
+                return;
+            }
         }
 
-        CommandData data = commandData.get(commandSplit[0]);
-
-        try{
-            data.getMethod().invoke(null, originalCommand);
-        }catch(IllegalAccessException | InvocationTargetException ignore){
-        }
+        R.s("Command '" + message.getContent().split(" ")[0] + "' not found!");
     }
 
 }

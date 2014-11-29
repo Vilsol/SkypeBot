@@ -37,11 +37,13 @@ public class SkypeBot implements ClipboardOwner {
         try{
             Skype.addChatMessageListener(new ChatMessageAdapter() {
                 public void chatMessageReceived(ChatMessage received) throws SkypeException{
-                    ModuleManager.parseText(received.getContent());
+                    ModuleManager.parseText(received);
                 }
             });
         }catch(SkypeException ignored){
         }
+
+        R.s("/me " + R.version + " initialized!");
     }
 
     public static SkypeBot getInstance(){
