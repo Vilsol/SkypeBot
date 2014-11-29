@@ -9,9 +9,12 @@ public class R {
         SkypeBot.getInstance().sendMessage(message);
     }
 
+    public static void s(int i){
+        SkypeBot.getInstance().sendMessage(String.valueOf(i));
+    }
+
     public static void s(String[] message){
         SkypeBot.getInstance().addToQueue(message);
         SkypeBot.getInstance().sendMessage(null);
     }
-
 }

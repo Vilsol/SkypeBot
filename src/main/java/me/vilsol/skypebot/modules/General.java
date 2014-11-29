@@ -47,11 +47,15 @@ public class General implements Module {
     }
 
     @Command(name = "8ball", parameters = "(.*)")
-    public static void cmd8Ball(ChatMessage message){
+    public static void cmd8Ball(ChatMessage message, String question){
         String[] options = new String[] {"It is certain", "It is decidedly so", "Without a doubt", "Yes definitely", "You may rely on it", "As I see it, yes", "Most likely", "Outlook good", "Yes", "Signs point to yes", "Reply hazy try again", "Ask again later", "Better not tell you now", "Cannot predict now", "Concentrate and ask again", "Don't count on it", "My reply is no", "My sources say no", "Outlook not so good", "Very doubtful"};
         int chosen = new Random().nextInt(options.length);
         R.s(options[chosen]);
     }
 
+    @Command(name = "random", parameters = "(-?[0-9]+) (-?[0-9]+)")
+    public static void cmdRandom(ChatMessage message, int low, int high){
+        R.s(new Random().nextInt(high - low) + low);
+    }
 
 }

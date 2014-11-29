@@ -3,14 +3,14 @@ package me.vilsol.skypebot.engine;
 import com.skype.ChatMessage;
 import com.skype.SkypeException;
 import me.vilsol.skypebot.R;
+import me.vilsol.skypebot.Utils;
 import org.reflections.Reflections;
+import sun.reflect.MethodAccessor;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -40,7 +40,7 @@ public class ModuleManager {
         }
     }
 
-    public static void parseText(ChatMessage message) throws SkypeException{
+    public static void parseText(ChatMessage message){
         String command = null;
         String originalCommand = null;
         try{
@@ -88,15 +88,52 @@ public class ModuleManager {
                 CommandData data = s.getValue();
 
                 if(data.getCommand().allow() != null && data.getCommand().allow().length > 0){
-                    if(!Arrays.asList(data.getCommand().allow()).contains(message.getSenderId())){
-                        R.s("Access Denied!");
+                    try{
+                        if(!Arrays.asList(data.getCommand().allow()).contains(message.getSenderId())){
+                            R.s("Access Denied!");
+                            return;
+                        }
+                    }catch(SkypeException ignored){
                         return;
                     }
                 }
 
+                List<Object> a = new ArrayList<>();
+                a.add(message);
+
+                if(m.groupCount() > 0){
+                    for(int i = 1; i <= m.groupCount(); i++){
+                        String g = m.group(i);
+                        if(g.contains(".") && Utils.isDouble(g)){
+                            a.add(Double.parseDouble(g));
+                        }else if(Utils.isInteger(g)){
+                            a.add(Integer.parseInt(g));
+                        }else{
+                            a.add(g);
+                        }
+                    }
+                }
+
+                MethodAccessor methodAccessor = null;
                 try{
-                    data.getMethod().invoke(null, message);
-                }catch(IllegalAccessException | InvocationTargetException ignore){
+                    Field methodAccessorField = Method.class.getDeclaredField("methodAccessor");
+                    methodAccessorField.setAccessible(true);
+                    methodAccessor = (MethodAccessor) methodAccessorField.get(data.getMethod());
+
+                    if(methodAccessor == null){
+                        Method acquireMethodAccessorMethod = Method.class.getDeclaredMethod("acquireMethodAccessor", null);
+                        acquireMethodAccessorMethod.setAccessible(true);
+                        methodAccessor = (MethodAccessor) acquireMethodAccessorMethod.invoke(data.getMethod(), null);
+                    }
+                }catch(NoSuchFieldException | InvocationTargetException | IllegalAccessException | NoSuchMethodException e){
+                    e.printStackTrace();
+                }
+
+                System.out.println(a);
+
+                try{
+                    methodAccessor.invoke(null, a.toArray());
+                }catch(InvocationTargetException ignore){
                 }
 
                 return;
