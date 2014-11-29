@@ -44,7 +44,7 @@ public class ModuleManager {
         try{
             command = message.getContent();
             originalCommand = message.getContent();
-        }catch(SkypeException e){
+        }catch(SkypeException ignored){
         }
 
         if(command == null){

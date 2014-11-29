@@ -98,7 +98,7 @@ public class SkypeBot implements ClipboardOwner {
     }
 
     public void addToQueue(String[] s){
-        Collection<String> c = new ArrayList<String>(Arrays.asList(s));
+        Collection<String> c = new ArrayList<>(Arrays.asList(s));
         queue.addAll(c);
     }
 
