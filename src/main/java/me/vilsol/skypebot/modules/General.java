@@ -104,4 +104,9 @@ public class General implements Module {
         R.s("Capture: " + Utils.upload(SkypeBot.getInstance().getLastStringMessages()));
     }
 
+    @Command(name = "git")
+    public static void cmdGit(ChatMessage chat){
+        R.s("Git Repository: https://github.com/Vilsol/SkypeBot");
+    }
+
 }
