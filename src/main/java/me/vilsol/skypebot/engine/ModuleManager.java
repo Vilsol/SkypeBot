@@ -40,6 +40,67 @@ public class ModuleManager {
         }
     }
 
+    private static void executeCommand(ChatMessage message, CommandData data, Matcher m){
+
+        if(data.getCommand().allow() != null && data.getCommand().allow().length > 0){
+            try{
+                if(!Arrays.asList(data.getCommand().allow()).contains(message.getSenderId())){
+                    R.s("Access Denied!");
+                    return;
+                }
+            }catch(SkypeException ignored){
+                return;
+            }
+        }
+
+        List<Object> a = new ArrayList<>();
+        a.add(message);
+
+        if(m.groupCount() > 0){
+            for(int i = 1; i <= m.groupCount(); i++){
+                String g = m.group(i);
+                if(g.contains(".") && Utils.isDouble(g)){
+                    a.add(Double.parseDouble(g));
+                }else if(Utils.isInteger(g)){
+                    a.add(Integer.parseInt(g));
+                }else{
+                    a.add(g);
+                }
+            }
+        }
+
+        if(a.size() < data.getMethod().getParameterCount()){
+            for(int i = a.size(); i < data.getMethod().getParameterCount(); i++){
+                if(data.getMethod().getParameters()[i].getType().equals(String.class)){
+                    a.add(null);
+                }else{
+                    a.add(0);
+                }
+            }
+        }
+
+        MethodAccessor methodAccessor = null;
+        try{
+            Field methodAccessorField = Method.class.getDeclaredField("methodAccessor");
+            methodAccessorField.setAccessible(true);
+            methodAccessor = (MethodAccessor) methodAccessorField.get(data.getMethod());
+
+            if(methodAccessor == null){
+                Method acquireMethodAccessorMethod = Method.class.getDeclaredMethod("acquireMethodAccessor", null);
+                acquireMethodAccessorMethod.setAccessible(true);
+                methodAccessor = (MethodAccessor) acquireMethodAccessorMethod.invoke(data.getMethod(), null);
+            }
+        }catch(NoSuchFieldException | InvocationTargetException | IllegalAccessException | NoSuchMethodException e){
+            e.printStackTrace();
+        }
+
+        try{
+            methodAccessor.invoke(null, a.toArray());
+        }catch(InvocationTargetException ignore){
+        }
+
+    }
+
     public static void parseText(ChatMessage message){
         String command = null;
         String originalCommand = null;
@@ -57,7 +118,7 @@ public class ModuleManager {
             return;
         }
 
-        if(command.substring(0, 1).equals("@")){
+        if(command.startsWith(R.command)){
             command = command.substring(1);
         }
 
@@ -69,8 +130,8 @@ public class ModuleManager {
 
         for(Map.Entry<String, CommandData> s : allCommands.entrySet()){
             String match = s.getKey();
-            if(!s.getValue().getParameterRegex().equals("")){
-                match += " " + s.getValue().getParameterRegex();
+            if(!s.getValue().getParameterRegex(false).equals("")){
+                match += " " + s.getValue().getParameterRegex(false);
             }
 
             if(s.getValue().getCommand().command()){
@@ -85,56 +146,28 @@ public class ModuleManager {
             Matcher m = r.matcher(originalCommand);
 
             if(m.find()){
-                CommandData data = s.getValue();
-
-                if(data.getCommand().allow() != null && data.getCommand().allow().length > 0){
-                    try{
-                        if(!Arrays.asList(data.getCommand().allow()).contains(message.getSenderId())){
-                            R.s("Access Denied!");
-                            return;
-                        }
-                    }catch(SkypeException ignored){
-                        return;
-                    }
-                }
-
-                List<Object> a = new ArrayList<>();
-                a.add(message);
-
-                if(m.groupCount() > 0){
-                    for(int i = 1; i <= m.groupCount(); i++){
-                        String g = m.group(i);
-                        if(g.contains(".") && Utils.isDouble(g)){
-                            a.add(Double.parseDouble(g));
-                        }else if(Utils.isInteger(g)){
-                            a.add(Integer.parseInt(g));
-                        }else{
-                            a.add(g);
-                        }
-                    }
-                }
-
-                MethodAccessor methodAccessor = null;
-                try{
-                    Field methodAccessorField = Method.class.getDeclaredField("methodAccessor");
-                    methodAccessorField.setAccessible(true);
-                    methodAccessor = (MethodAccessor) methodAccessorField.get(data.getMethod());
-
-                    if(methodAccessor == null){
-                        Method acquireMethodAccessorMethod = Method.class.getDeclaredMethod("acquireMethodAccessor", null);
-                        acquireMethodAccessorMethod.setAccessible(true);
-                        methodAccessor = (MethodAccessor) acquireMethodAccessorMethod.invoke(data.getMethod(), null);
-                    }
-                }catch(NoSuchFieldException | InvocationTargetException | IllegalAccessException | NoSuchMethodException e){
-                    e.printStackTrace();
-                }
-
-                try{
-                    methodAccessor.invoke(null, a.toArray());
-                }catch(InvocationTargetException ignore){
-                }
-
+                executeCommand(message, s.getValue(), m);
                 return;
+            }else if(!s.getValue().getParameterRegex(false).equals(s.getValue().getParameterRegex(true))){
+                match = s.getKey();
+                if(!s.getValue().getParameterRegex(true).equals("")){
+                    match += " " + s.getValue().getParameterRegex(true);
+                }
+
+                if(s.getValue().getCommand().command()){
+                    match = R.command + match;
+                }
+
+                if(s.getValue().getCommand().exact()){
+                    match = "^" + match + "$";
+                }
+
+                r = Pattern.compile(match);
+                m = r.matcher(originalCommand);
+                if(m.find()){
+                    executeCommand(message, s.getValue(), m);
+                    return;
+                }
             }
         }
 
@@ -156,7 +189,7 @@ public class ModuleManager {
             return;
         }
 
-        if(originalCommand.substring(0, 1).equals(R.command)){
+        if(originalCommand.startsWith(R.command)){
             R.s("Command '" + command + "' not found!");
         }
     }

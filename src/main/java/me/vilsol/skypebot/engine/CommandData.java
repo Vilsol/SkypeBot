@@ -6,12 +6,14 @@ import me.vilsol.skypebot.R;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
 
 public class CommandData {
 
     private Command command;
     private Method method;
-    private LinkedHashMap<String, String> parameters = new LinkedHashMap<>();
+    private LinkedHashMap<String, ParameterData> parameters = new LinkedHashMap<>();
 
     public CommandData(Command c, Method method){
         this.command = c;
@@ -25,17 +27,23 @@ public class CommandData {
                     continue;
                 }
 
+                String regex = "";
+
                 if(p.getType().equals(Integer.class) || p.getType().getName().equals("int")){
-                    parameters.put(p.getName(), R.REGEX_INT);
+                    regex = R.REGEX_INT;
                 }else if(p.getType().equals(Double.class) || p.getType().getName().equals("double")){
-                    parameters.put(p.getName(), R.REGEX_DOUBLE);
+                    regex = R.REGEX_DOUBLE;
                 }else if(p.getType().equals(String.class)){
                     if(param < method.getParameterCount()){
-                        parameters.put(p.getName(), R.REGEX_WORD);
+                        regex = R.REGEX_WORD;
                     }else{
-                        parameters.put(p.getName(), R.REGEX_ALL);
+                        regex = R.REGEX_ALL;
                     }
                 }
+
+                boolean optional = p.getAnnotation(Optional.class) != null;
+                ParameterData data = new ParameterData(p.getName(), regex, optional);
+                parameters.put(p.getName(), data);
 
                 param++;
             }
@@ -50,11 +58,35 @@ public class CommandData {
         return method;
     }
 
-    public String getParameterRegex(){
-        return Joiner.on(" ").join(parameters.values());
+    public String getParameterRegex(boolean includeOptional){
+        List<String> regex = new LinkedList<>();
+
+        parameters.values().stream().forEach(p -> {
+
+            if(p.isOptional()){
+                if(includeOptional){
+                    regex.add(p.getRegex());
+                }
+            }else{
+                regex.add(p.getRegex());
+            }
+
+        });
+
+        return Joiner.on(" ").join(regex);
     }
 
     public String getParamaterNames(){
-        return Joiner.on(" ").join(parameters.keySet());
+        List<String> names = new LinkedList<>();
+
+        parameters.values().stream().forEach(p -> {
+            if(p.isOptional()){
+                names.add("[" + p.getName() + "]");
+            }else{
+                names.add("<" + p.getName() + ">");
+            }
+        });
+
+        return Joiner.on(" ").join(names);
     }
 }
