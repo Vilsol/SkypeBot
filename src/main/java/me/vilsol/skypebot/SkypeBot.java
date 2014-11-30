@@ -24,6 +24,7 @@ public class SkypeBot implements ClipboardOwner {
     private boolean locked = false;
     private Queue<String> queue = new ConcurrentLinkedQueue<>();
     private Queue<ChatMessage> messages = new ConcurrentLinkedQueue<>();
+    private Queue<String> stringMessages = new ConcurrentLinkedQueue<>();
 
     public SkypeBot(){
         instance = this;
@@ -41,8 +42,10 @@ public class SkypeBot implements ClipboardOwner {
                 public void chatMessageReceived(ChatMessage received) throws SkypeException{
                     if(messages.size() > 100){
                         messages.remove();
+                        stringMessages.remove();
                     }
 
+                    stringMessages.add(received.getContent());
                     messages.add(received);
                     ModuleManager.parseText(received);
                 }
@@ -123,6 +126,20 @@ public class SkypeBot implements ClipboardOwner {
         });
 
         messages = newMessages;
+
+        return list;
+    }
+
+    public List<String> getLastStringMessages(){
+        List<String> list = new LinkedList<>();
+        Queue<String> newMessages = new ConcurrentLinkedQueue<>();
+
+        stringMessages.stream().forEach(m -> {
+            list.add(m);
+            newMessages.add(m);
+        });
+
+        stringMessages = newMessages;
 
         return list;
     }

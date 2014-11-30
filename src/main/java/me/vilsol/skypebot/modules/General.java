@@ -101,7 +101,7 @@ public class General implements Module {
 
     @Command(name = "capture")
     public static void cmdCapture(ChatMessage chat){
-        R.s("Capture: " + Utils.upload(SkypeBot.getInstance().getLastMessages()));
+        R.s("Capture: " + Utils.upload(SkypeBot.getInstance().getLastStringMessages()));
     }
 
 }
