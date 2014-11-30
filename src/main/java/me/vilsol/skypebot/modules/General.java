@@ -56,6 +56,11 @@ public class General implements Module {
 
     @Command(name = "random")
     public static void cmdRandom(ChatMessage chat, int low, int high){
+        if (low > high) {
+            low ^= high;
+            high ^= low;
+            low ^= high;
+        }
         R.s(new Random().nextInt(high - low) + low);
     }
 
