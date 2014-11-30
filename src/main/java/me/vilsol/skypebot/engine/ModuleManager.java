@@ -161,4 +161,8 @@ public class ModuleManager {
         }
     }
 
+    public static HashMap<String, CommandData> getCommands(){
+        return commandData;
+    }
+
 }

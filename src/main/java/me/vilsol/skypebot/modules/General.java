@@ -4,8 +4,11 @@ import com.skype.ChatMessage;
 import com.skype.SkypeException;
 import me.vilsol.skypebot.R;
 import me.vilsol.skypebot.engine.Command;
+import me.vilsol.skypebot.engine.CommandData;
 import me.vilsol.skypebot.engine.Module;
+import me.vilsol.skypebot.engine.ModuleManager;
 
+import java.util.Map;
 import java.util.Random;
 
 public class General implements Module {
@@ -67,6 +70,29 @@ public class General implements Module {
     @Command(name = "bot")
     public static void cmdBot(ChatMessage chat, String message){
         R.s("/me " + message);
+    }
+
+    @Command(name="help")
+    public static void cmdHelp(ChatMessage chat){
+        String commands = "Available Commands: ";
+
+        for(Map.Entry<String, CommandData> data : ModuleManager.getCommands().entrySet()){
+            if(!data.getValue().getCommand().exact()){
+                continue;
+            }
+
+            if(!commands.equals("Available Commands: ")){
+                commands += ", ";
+            }
+
+            commands += R.command + data.getKey();
+
+            if(data.getValue().getParamaterNames() != ""){
+                commands += " " + data.getValue().getParamaterNames();
+            }
+        }
+
+        R.s(commands);
     }
 
 }

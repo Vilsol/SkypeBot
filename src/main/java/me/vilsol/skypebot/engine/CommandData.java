@@ -5,20 +5,17 @@ import me.vilsol.skypebot.R;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
-import java.util.Arrays;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 public class CommandData {
 
     private Command command;
     private Method method;
-    private HashMap<String, String> parameters = new HashMap<>();
+    private LinkedHashMap<String, String> parameters = new LinkedHashMap<>();
 
     public CommandData(Command c, Method method){
         this.command = c;
         this.method = method;
-
-        System.out.println(Arrays.asList(method.getParameters()));
 
         if(method.getParameterCount() > 1){
             int param = 1;
@@ -28,11 +25,11 @@ public class CommandData {
                     continue;
                 }
 
-                if(p.getType().equals(Integer.class)){
+                if(p.getType().equals(Integer.class) || p.getType().getName().equals("int")){
                     parameters.put(p.getName(), R.REGEX_INT);
-                }else if(p.getType().equals(Double.class)){
+                }else if(p.getType().equals(Double.class) || p.getType().getName().equals("double")){
                     parameters.put(p.getName(), R.REGEX_DOUBLE);
-                }else{
+                }else if(p.getType().equals(String.class)){
                     if(param < method.getParameterCount()){
                         parameters.put(p.getName(), R.REGEX_WORD);
                     }else{
