@@ -45,7 +45,7 @@ public class SkypeBot implements ClipboardOwner {
                         stringMessages.remove();
                     }
 
-                    stringMessages.add(received.getContent());
+                    stringMessages.add(Utils.serializeMessage(received));
                     messages.add(received);
                     ModuleManager.parseText(received);
                 }
