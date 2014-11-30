@@ -5,9 +5,14 @@ import com.skype.ChatMessage;
 import com.skype.SkypeException;
 
 import java.io.DataOutputStream;
+import java.io.File;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.security.MessageDigest;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -79,6 +84,27 @@ public class Utils {
         }
 
         return null;
+    }
+
+    public static String getMD5Hash(String file){
+        try{
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            md.update(Files.readAllBytes(Paths.get(file)));
+            return Arrays.toString(md.digest());
+        } catch(Exception ignored){
+        }
+
+        return null;
+    }
+
+    public static String getJarName(){
+        return new File(Main.class.getProtectionDomain().getCodeSource().getLocation().getPath()).getName();
+    }
+
+    public static void restartBot(){
+        R.s("/me " + R.version + " Restarting...");
+        System.out.println("Restarting...");
+        System.exit(0);
     }
 
 }

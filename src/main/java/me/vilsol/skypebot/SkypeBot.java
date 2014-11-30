@@ -22,6 +22,7 @@ public class SkypeBot implements ClipboardOwner {
 
     private Robot robot;
     private boolean locked = false;
+    private UpdateChecker updateChecker;
     private Queue<String> queue = new ConcurrentLinkedQueue<>();
     private Queue<ChatMessage> messages = new ConcurrentLinkedQueue<>();
     private Queue<String> stringMessages = new ConcurrentLinkedQueue<>();
@@ -52,6 +53,9 @@ public class SkypeBot implements ClipboardOwner {
             });
         }catch(SkypeException ignored){
         }
+
+        updateChecker = new UpdateChecker();
+        updateChecker.start();
 
         R.s("/me " + R.version + " initialized!");
     }

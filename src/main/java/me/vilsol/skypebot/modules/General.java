@@ -19,9 +19,7 @@ public class General implements Module {
 
     @Command(name = "restart", allow = {"vilsol"})
     public static void cmdRestart(ChatMessage chat){
-        R.s("/me " + R.version + " Restarting...");
-        System.out.println("Restarting...");
-        System.exit(0);
+        Utils.restartBot();
     }
 
     @Command(name = "ping")
