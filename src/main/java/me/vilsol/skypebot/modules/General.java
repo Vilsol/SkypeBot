@@ -46,7 +46,7 @@ public class General implements Module {
 
     @Command(name = "9gag", exact = false, command = false)
     public static void cmd9Gag(ChatMessage chat){
-        R.s("Shut up 9Fag!");
+        R.s("9Gag is awesome!");
     }
 
     @Command(name = "8ball")
