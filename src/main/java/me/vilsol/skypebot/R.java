@@ -2,7 +2,7 @@ package me.vilsol.skypebot;
 
 public class R {
 
-    public static final String version = "1.0";
+    public static final String version = "1.1";
     public static final String command = "@";
 
     public static final String REGEX_ALL = "(.+)";

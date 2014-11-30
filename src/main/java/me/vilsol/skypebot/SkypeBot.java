@@ -13,6 +13,7 @@ import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
 import java.awt.event.KeyEvent;
 import java.util.*;
+import java.util.List;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class SkypeBot implements ClipboardOwner {
@@ -22,6 +23,7 @@ public class SkypeBot implements ClipboardOwner {
     private Robot robot;
     private boolean locked = false;
     private Queue<String> queue = new ConcurrentLinkedQueue<>();
+    private Queue<ChatMessage> messages = new ConcurrentLinkedQueue<>();
 
     public SkypeBot(){
         instance = this;
@@ -37,6 +39,11 @@ public class SkypeBot implements ClipboardOwner {
         try{
             Skype.addChatMessageListener(new ChatMessageAdapter() {
                 public void chatMessageReceived(ChatMessage received) throws SkypeException{
+                    if(messages.size() > 100){
+                        messages.remove();
+                    }
+
+                    messages.add(received);
                     ModuleManager.parseText(received);
                 }
             });
@@ -104,6 +111,20 @@ public class SkypeBot implements ClipboardOwner {
 
     @Override
     public void lostOwnership(Clipboard clipboard, Transferable contents){
+    }
+
+    public List<ChatMessage> getLastMessages(){
+        List<ChatMessage> list = new LinkedList<>();
+        Queue<ChatMessage> newMessages = new ConcurrentLinkedQueue<>();
+
+        messages.stream().forEach(m -> {
+            list.add(m);
+            newMessages.add(m);
+        });
+
+        messages = newMessages;
+
+        return list;
     }
 
 }

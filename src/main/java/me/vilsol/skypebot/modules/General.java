@@ -3,6 +3,8 @@ package me.vilsol.skypebot.modules;
 import com.skype.ChatMessage;
 import com.skype.SkypeException;
 import me.vilsol.skypebot.R;
+import me.vilsol.skypebot.SkypeBot;
+import me.vilsol.skypebot.Utils;
 import me.vilsol.skypebot.engine.Command;
 import me.vilsol.skypebot.engine.CommandData;
 import me.vilsol.skypebot.engine.Module;
@@ -98,6 +100,11 @@ public class General implements Module {
         }
 
         R.s(commands);
+    }
+
+    @Command(name = "capture")
+    public static void cmdCapture(ChatMessage chat){
+        R.s("Capture: " + Utils.upload(SkypeBot.getInstance().getLastMessages()));
     }
 
 }
