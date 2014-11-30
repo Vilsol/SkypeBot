@@ -171,11 +171,11 @@ public class ModuleManager {
             }
         }
 
-        if(allCommands.containsKey(command)){
-            CommandData d = allCommands.get(command);
+        if(allCommands.containsKey(commandSplit[0])){
+            CommandData d = allCommands.get(commandSplit[0]);
             Command c = d.getCommand();
 
-            String correct = command;
+            String correct = commandSplit[0];
             if(!d.getParamaterNames().equals("")){
                 correct += " " + d.getParamaterNames();
             }
@@ -190,7 +190,7 @@ public class ModuleManager {
         }
 
         if(originalCommand.startsWith(R.command)){
-            R.s("Command '" + command + "' not found!");
+            R.s("Command '" + commandSplit[0] + "' not found!");
         }
     }
 
