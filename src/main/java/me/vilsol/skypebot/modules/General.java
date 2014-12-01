@@ -89,7 +89,7 @@ public class General implements Module {
 
             commands += R.command + data.getKey();
 
-            if(data.getValue().getParamaterNames() != ""){
+            if(!data.getValue().getParamaterNames().equals("")){
                 commands += " " + data.getValue().getParamaterNames();
             }
         }
@@ -105,6 +105,11 @@ public class General implements Module {
     @Command(name = "git")
     public static void cmdGit(ChatMessage chat){
         R.s("Git Repository: https://github.com/Vilsol/SkypeBot");
+    }
+
+    @Command(name = "what should i do?", exact = false,command = false)
+    public static void cmdWhatShouldIDo(ChatMessage chat) throws SkypeException {
+        R.s(chat.getSenderDisplayName() + ": You should commit suicide. It's the most viable option as far as i can see.");
     }
 
 }
