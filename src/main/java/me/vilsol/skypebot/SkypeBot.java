@@ -1,5 +1,8 @@
 package me.vilsol.skypebot;
 
+import com.google.code.chatterbotapi.ChatterBotFactory;
+import com.google.code.chatterbotapi.ChatterBotSession;
+import com.google.code.chatterbotapi.ChatterBotType;
 import com.skype.ChatMessage;
 import com.skype.ChatMessageAdapter;
 import com.skype.Skype;
@@ -14,6 +17,7 @@ import java.awt.datatransfer.Transferable;
 import java.awt.event.KeyEvent;
 import java.util.*;
 import java.util.List;
+import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class SkypeBot implements ClipboardOwner {
@@ -26,6 +30,7 @@ public class SkypeBot implements ClipboardOwner {
     private Queue<String> queue = new ConcurrentLinkedQueue<>();
     private Queue<ChatMessage> messages = new ConcurrentLinkedQueue<>();
     private Queue<String> stringMessages = new ConcurrentLinkedQueue<>();
+    private ChatterBotSession bot;
 
     public SkypeBot(){
         instance = this;
@@ -33,6 +38,11 @@ public class SkypeBot implements ClipboardOwner {
         try{
             robot = new Robot();
         }catch(AWTException ignored){
+        }
+
+        try{
+            bot = new ChatterBotFactory().create(ChatterBotType.CLEVERBOT).createSession();
+        }catch(Exception ignored){
         }
 
         ModuleManager.loadModules("me.vilsol.skypebot.modules");
@@ -146,6 +156,19 @@ public class SkypeBot implements ClipboardOwner {
         stringMessages = newMessages;
 
         return list;
+    }
+
+    public String askQuestion(String question){
+        if(bot == null){
+            return "ChatterBot Died";
+        }
+
+        try{
+            return bot.think(question);
+        }catch(Exception e){
+        }
+
+        return "I am overthinking...";
     }
 
 }

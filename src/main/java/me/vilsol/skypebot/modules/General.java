@@ -1,5 +1,8 @@
 package me.vilsol.skypebot.modules;
 
+import com.google.code.chatterbotapi.ChatterBotFactory;
+import com.google.code.chatterbotapi.ChatterBotSession;
+import com.google.code.chatterbotapi.ChatterBotType;
 import com.skype.ChatMessage;
 import com.skype.SkypeException;
 import me.vilsol.skypebot.R;
@@ -11,6 +14,11 @@ import java.util.Map;
 import java.util.Random;
 
 public class General implements Module {
+
+    private static ChatterBotSession rantBotOne;
+    private static ChatterBotSession rantBotTwo;
+    private static boolean ranting = false;
+    private static Thread rantThread;
 
     @Command(name = "about", alias = {"aboot"})
     public static void cmdAbout(ChatMessage chat){
@@ -89,7 +97,7 @@ public class General implements Module {
 
             commands += R.command + data.getKey();
 
-            if(data.getValue().getParamaterNames() != ""){
+            if(!data.getValue().getParamaterNames().equals("")){
                 commands += " " + data.getValue().getParamaterNames();
             }
         }
@@ -105,6 +113,61 @@ public class General implements Module {
     @Command(name = "git")
     public static void cmdGit(ChatMessage chat){
         R.s("Git Repository: https://github.com/Vilsol/SkypeBot");
+    }
+
+    @Command(name = "resolve")
+    public static void cmdResolve(ChatMessage chat, String user){
+        R.s(user + ": " + Utils.resolveSkype(user));
+    }
+
+    @Command(name = "c")
+    public static void cmdC(ChatMessage chat, String question){
+        R.s(SkypeBot.getInstance().askQuestion(question));
+    }
+
+    @Command(name = "rant")
+    public static void cmdRant(ChatMessage chat){
+        if(ranting){
+            rantThread.stop();
+            ranting = false;
+            R.s("Ranting Stopped");
+            return;
+        }
+
+        try{
+            rantBotOne = new ChatterBotFactory().create(ChatterBotType.CLEVERBOT).createSession();
+            rantBotTwo = new ChatterBotFactory().create(ChatterBotType.JABBERWACKY).createSession();
+        }catch(Exception e){
+        }
+
+        if(rantBotOne == null || rantBotTwo == null){
+            R.s("One of the bots suicided!");
+            return;
+        }
+
+        R.s("Ranting Started");
+
+        ranting = true;
+
+        rantThread = new Thread(){
+
+            String s = "Hi";
+
+            @Override
+            public void run(){
+                while(true){
+                    try{
+                        R.s("CB: " + s);
+                        s = rantBotTwo.think(s);
+                        R.s("PB: " + s);
+                        s = rantBotOne.think(s);
+                    }catch(Exception e){
+                    }
+                }
+            }
+        };
+
+        rantThread.start();
     }
 
 }
