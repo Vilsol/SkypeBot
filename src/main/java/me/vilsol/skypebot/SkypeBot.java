@@ -31,9 +31,13 @@ public class SkypeBot implements ClipboardOwner {
     private Queue<ChatMessage> messages = new ConcurrentLinkedQueue<>();
     private Queue<String> stringMessages = new ConcurrentLinkedQueue<>();
     private ChatterBotSession bot;
+    private Clipboard c;
+    private String lastSentMessage;
 
     public SkypeBot(){
         instance = this;
+
+        c = Toolkit.getDefaultToolkit().getSystemClipboard();
 
         try{
             robot = new Robot();
@@ -94,31 +98,38 @@ public class SkypeBot implements ClipboardOwner {
 
         while(i.hasNext()){
             String s = i.next();
-            System.out.println(s);
             pureSend(s);
             i.remove();
 
             if(i.hasNext()){
-                robot.delay(130);
+                robot.delay(200);
             }
         }
 
         locked = false;
 
-        robot.delay(130);
+        robot.delay(200);
     }
 
     private void pureSend(String message){
-        Clipboard c = Toolkit.getDefaultToolkit().getSystemClipboard();
+        if(lastSentMessage != null && lastSentMessage.equals(message)){
+            return;
+        }
+
+        lastSentMessage = message;
+
+        robot.delay(10);
         StringSelection ss = new StringSelection(message);
         c.setContents(ss, this);
 
+        robot.delay(10);
         robot.keyPress(KeyEvent.VK_CONTROL);
         robot.keyPress(KeyEvent.VK_V);
         robot.keyRelease(KeyEvent.VK_V);
         robot.keyRelease(KeyEvent.VK_CONTROL);
         robot.keyPress(KeyEvent.VK_ENTER);
         robot.keyRelease(KeyEvent.VK_ENTER);
+        robot.delay(10);
     }
 
     public void addToQueue(String[] s){
@@ -165,7 +176,7 @@ public class SkypeBot implements ClipboardOwner {
 
         try{
             return bot.think(question);
-        }catch(Exception e){
+        }catch(Exception ignored){
         }
 
         return "I am overthinking...";

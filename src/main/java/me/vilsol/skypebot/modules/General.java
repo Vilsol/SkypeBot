@@ -135,7 +135,7 @@ public class General implements Module {
         }
 
         try{
-            rantBotOne = new ChatterBotFactory().create(ChatterBotType.CLEVERBOT).createSession();
+            rantBotOne = new ChatterBotFactory().create(ChatterBotType.JABBERWACKY).createSession();
             rantBotTwo = new ChatterBotFactory().create(ChatterBotType.JABBERWACKY).createSession();
         }catch(Exception e){
         }
@@ -150,18 +150,22 @@ public class General implements Module {
         ranting = true;
 
         rantThread = new Thread(){
-
-            String s = "Hi";
+            String botOne = "Hi";
 
             @Override
             public void run(){
                 while(true){
                     try{
-                        R.s("CB: " + s);
-                        s = rantBotTwo.think(s);
-                        R.s("PB: " + s);
-                        s = rantBotOne.think(s);
+                        Thread.sleep(500);
+                        R.s("B1: " + botOne);
+                        String twoThought = rantBotTwo.think(botOne);
+                        Thread.sleep(500);
+                        R.s("B2: " + twoThought);
+                        String oneThought = rantBotOne.think(twoThought);
+                        botOne = oneThought;
                     }catch(Exception e){
+                        R.s("A bot got banned :(");
+                        this.stop();
                     }
                 }
             }
