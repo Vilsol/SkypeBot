@@ -181,6 +181,10 @@ public class ModuleManager {
             }
 
             if(c.command()){
+                if(!originalCommand.startsWith("@")){
+                    return;
+                }
+
                 correct = R.command + correct;
             }
 

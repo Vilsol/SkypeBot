@@ -9,6 +9,7 @@ import me.vilsol.skypebot.R;
 import me.vilsol.skypebot.SkypeBot;
 import me.vilsol.skypebot.Utils;
 import me.vilsol.skypebot.engine.*;
+import org.apache.commons.lang.exception.ExceptionUtils;
 
 import java.util.Map;
 import java.util.Random;
@@ -126,7 +127,7 @@ public class General implements Module {
     }
 
     @Command(name = "rant")
-    public static void cmdRant(ChatMessage chat){
+    public static void cmdRant(ChatMessage chat, @Optional String question){
         if(ranting){
             rantThread.stop();
             ranting = false;
@@ -134,8 +135,13 @@ public class General implements Module {
             return;
         }
 
+        if(question == null || question.equals("")){
+            R.s("Enter initial question!");
+            return;
+        }
+
         try{
-            rantBotOne = new ChatterBotFactory().create(ChatterBotType.JABBERWACKY).createSession();
+            rantBotOne = new ChatterBotFactory().create(ChatterBotType.CLEVERBOT).createSession();
             rantBotTwo = new ChatterBotFactory().create(ChatterBotType.JABBERWACKY).createSession();
         }catch(Exception e){
         }
@@ -150,21 +156,24 @@ public class General implements Module {
         ranting = true;
 
         rantThread = new Thread(){
-            String botOne = "Hi";
+            String botOne = question;
 
             @Override
             public void run(){
                 while(true){
                     try{
                         Thread.sleep(500);
-                        R.s("B1: " + botOne);
+                        R.s("CB: " + botOne);
                         String twoThought = rantBotTwo.think(botOne);
+                        assert(twoThought != null && !twoThought.trim().equals(""));
                         Thread.sleep(500);
-                        R.s("B2: " + twoThought);
+                        R.s("JW: " + twoThought);
                         String oneThought = rantBotOne.think(twoThought);
+                        assert(oneThought != null && !oneThought.trim().equals(""));
                         botOne = oneThought;
                     }catch(Exception e){
-                        R.s("A bot got banned :(");
+                        R.s("A bot got banned :( (" + Utils.upload(ExceptionUtils.getStackTrace(e)) + ")");
+                        ranting = false;
                         this.stop();
                     }
                 }
