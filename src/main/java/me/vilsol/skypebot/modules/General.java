@@ -16,8 +16,8 @@ import java.util.Random;
 
 public class General implements Module {
 
-    private static ChatterBotSession rantBotOne;
-    private static ChatterBotSession rantBotTwo;
+    private static ChatterBotSession cleverBot;
+    private static ChatterBotSession jabberWacky;
     private static boolean ranting = false;
     private static Thread rantThread;
 
@@ -131,46 +131,44 @@ public class General implements Module {
         if(ranting){
             rantThread.stop();
             ranting = false;
-            R.s("Ranting Stopped");
+            R.s("Ranting stopped!");
             return;
         }
 
         if(question == null || question.equals("")){
-            R.s("Enter initial question!");
+            R.s("Enter a question!");
             return;
         }
 
         try{
-            rantBotOne = new ChatterBotFactory().create(ChatterBotType.CLEVERBOT).createSession();
-            rantBotTwo = new ChatterBotFactory().create(ChatterBotType.JABBERWACKY).createSession();
-        }catch(Exception e){
+            cleverBot = new ChatterBotFactory().create(ChatterBotType.CLEVERBOT).createSession();
+            jabberWacky = new ChatterBotFactory().create(ChatterBotType.JABBERWACKY).createSession();
+        }catch(Exception ignored){
         }
 
-        if(rantBotOne == null || rantBotTwo == null){
-            R.s("One of the bots suicided!");
+        if(cleverBot == null || jabberWacky == null){
+            R.s("One of the bots died!");
             return;
         }
 
-        R.s("Ranting Started");
+        R.s("Ranting started...");
 
         ranting = true;
 
         rantThread = new Thread(){
-            String botOne = question;
-
             @Override
             public void run(){
                 while(true){
                     try{
+                        String cleverBotResponse = cleverBot.think(question);
+                        String jabberWackyResponse = jabberWacky.think(cleverBotResponse);
+                        assert(cleverBotResponse != null && !cleverBotResponse.trim().equals(""));
+                        assert(jabberWackyResponse != null && !jabberWackyResponse.trim().equals(""));
+
                         Thread.sleep(500);
-                        R.s("CB: " + botOne);
-                        String twoThought = rantBotTwo.think(botOne);
-                        assert(twoThought != null && !twoThought.trim().equals(""));
+                        R.s("[CB] " + cleverBotResponse);
                         Thread.sleep(500);
-                        R.s("JW: " + twoThought);
-                        String oneThought = rantBotOne.think(twoThought);
-                        assert(oneThought != null && !oneThought.trim().equals(""));
-                        botOne = oneThought;
+                        R.s("[JW] " + jabberWackyResponse);
                     }catch(Exception e){
                         R.s("A bot got banned :( (" + Utils.upload(ExceptionUtils.getStackTrace(e)) + ")");
                         ranting = false;
