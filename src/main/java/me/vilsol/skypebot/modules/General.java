@@ -122,8 +122,8 @@ public class General implements Module {
     }
 
     @Command(name = "c")
-    public static void cmdC(ChatMessage chat, String question){
-        R.s(SkypeBot.getInstance().askQuestion(question));
+    public static void cmdC(ChatMessage chat, String question) throws SkypeException {
+        R.s("[" + chat.getSenderDisplayName() + "] " + SkypeBot.getInstance().askQuestion(question));
     }
 
     @Command(name = "rant")
