@@ -64,7 +64,7 @@ public class General implements Module {
     public static void cmd8Ball(ChatMessage chat, @Optional
     String question){
         String[] options = new String[] {"It is certain", "It is decidedly so", "Without a doubt", "Yes definitely", "You may rely on it", "As I see it, yes", "Most likely", "Outlook good", "Yes", "Signs point to yes", "Reply hazy try again", "Ask again later", "Better not tell you now", "Cannot predict now", "Concentrate and ask again", "Don't count on it", "My reply is no", "My sources say no", "Outlook not so good", "Very doubtful"};
-        int chosen = new Random().nextInt(options.length);
+        int chosen = R.RANDOM.nextInt(options.length);
         R.s(options[chosen]);
     }
 
@@ -81,7 +81,7 @@ public class General implements Module {
             return;
         }
 
-        R.s(new Random().nextInt(high - low) + low);
+        R.s(R.RANDOM.nextInt(high - low) + low);
     }
 
     @Command(name = "fish go moo", exact = false, command = false)
@@ -211,7 +211,7 @@ public class General implements Module {
     @Command(name = "dreamincode", alias = {"whatwouldmazensay"})
     public static void cmddreamincode(ChatMessage chat){
         String[] options = new String[] {"No, Im not interested in having a girlfriend I find it a tremendous waste of time.", "Hi, my name is Santiago Gonzalez and I'm 14 and I like to program.", "Im fluent in a dozen different programming languages.", "Thousands of people have downloaded my apps for the mac, iphone, and ipad.", "I will be 16 when I graduate college and 17 when I finish my masters.", "I really like learning, I find it as essential as eating.", "Dr. Bakos: I often have this disease which I call long line-itus.", "Dr. Bakos: Are you eager enough just to write down a slump of code, or is the code itself a artistic median?", "Beutaiful code is short and conzied.", "Sometimes when I goto sleep im stuck with that annoying bug I cannot fix, and in my dreams I see myself programming. When I wake up I have the solution!", "One of the main reasons I started developing apps was to help people what they want to do like decorate a christmas tree.", "I really like to crochet.", "I make good website http://slgonzalez.com/"};
-        int chosen = new Random().nextInt(options.length);
+        int chosen = R.RANDOM.nextInt(options.length);
         R.s(options[chosen]);
     }
 
