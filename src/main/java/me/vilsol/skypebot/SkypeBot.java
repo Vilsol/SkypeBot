@@ -7,11 +7,14 @@ import com.skype.ChatMessage;
 import com.skype.ChatMessageAdapter;
 import com.skype.Skype;
 import com.skype.SkypeException;
+import me.vilsol.skypebot.api.Test;
 import me.vilsol.skypebot.engine.ModuleManager;
 import me.vilsol.skypebot.utils.R;
 import me.vilsol.skypebot.utils.UpdateChecker;
 import me.vilsol.skypebot.utils.Utils;
 import org.apache.commons.lang.exception.ExceptionUtils;
+import org.restlet.Server;
+import org.restlet.data.Protocol;
 
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
@@ -37,6 +40,7 @@ public class SkypeBot implements ClipboardOwner {
     private ChatterBotSession bot;
     private Clipboard c;
     private String lastSentMessage;
+    private Server apiServer;
 
     public SkypeBot(){
         instance = this;
@@ -74,6 +78,12 @@ public class SkypeBot implements ClipboardOwner {
 
         updateChecker = new UpdateChecker();
         updateChecker.start();
+
+        try{
+            apiServer = new Server(Protocol.HTTP, 25565, Test.class);
+            apiServer.start();
+        }catch(Exception ignored){
+        }
 
         R.s("/me " + R.version + " initialized!");
     }
