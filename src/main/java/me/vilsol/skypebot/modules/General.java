@@ -214,5 +214,21 @@ public class General implements Module {
         int chosen = new Random().nextInt(options.length);
         R.s(options[chosen]);
     }
+    
+    @Command(name = "lmgtfy")
+    public static void cmdLmgtfy(ChatMessage chat, String question) throws SkypeException {
+        String[] args = question.split(" ");
+        String returnString = "http://lmgtfy.com/?q=";
+
+        for (String string : args) {
+            returnString += string + "+";
+        }
+
+        if (returnString.endsWith("+")) {
+            returnString = returnString.substring(0, returnString.length() - 1);
+        }
+
+        R.s("[" + chat.getSenderDisplayName() + "] " + returnString);
+    }
 
 }
