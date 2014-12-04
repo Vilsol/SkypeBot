@@ -1,11 +1,9 @@
 package me.vilsol.skypebot.engine.api;
 
 import org.json.JSONObject;
-import org.json.simple.parser.JSONParser;
 import org.restlet.data.Form;
 import org.restlet.data.MediaType;
 import org.restlet.data.Parameter;
-import org.restlet.ext.json.JsonRepresentation;
 import org.restlet.representation.Representation;
 import org.restlet.representation.StringRepresentation;
 import org.restlet.resource.Get;
@@ -26,12 +24,13 @@ public abstract class BaseResource extends ServerResource {
         jsonString = "";
         parseFactory = new ResponseParseFactory();
         try{
-            JsonRepresentation represent = new JsonRepresentation(entity);
-            JSONObject jsonobject = represent.getJsonObject();
-            JSONParser parser = new JSONParser();
+            String body = new Form(entity).toString();
+            body = body.substring(2, body.length() - 2);
+            JSONObject jsonobject = new JSONObject(body);
             String jsonText = jsonobject.toString();
-            jsonString = processRequest(jsonobject, "post");
+            jsonString = processRequest(body, jsonobject, "post");
         }catch(Exception e){
+            e.printStackTrace();
             jsonString = parseFactory.getFailureJsonString(e.getMessage());
         }
         return new StringRepresentation(jsonString, MediaType.APPLICATION_JSON);
@@ -44,7 +43,7 @@ public abstract class BaseResource extends ServerResource {
         try{
             Map json = getMapFromParam(getRequest().getResourceRef().getQueryAsForm());
             parseFactory = new ResponseParseFactory();
-            jsonString = processRequest(new JSONObject(json), "get");
+            jsonString = processRequest(null, new JSONObject(json), "get");
 
         }catch(Exception e){
             jsonString = parseFactory.getFailureJsonString(e.getMessage());
@@ -52,7 +51,7 @@ public abstract class BaseResource extends ServerResource {
         return new StringRepresentation(jsonString, MediaType.APPLICATION_JSON);
     }
 
-    public abstract String processRequest(JSONObject json, String method);
+    public abstract String processRequest(String raw, JSONObject json, String method);
 
     public static Map<String, String> getMapFromParam(Form form){
         Map<String, String> map = new HashMap<String, String>();

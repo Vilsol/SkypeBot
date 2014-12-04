@@ -5,17 +5,19 @@ import com.skype.ChatMessage;
 import com.skype.SkypeException;
 import me.vilsol.skypebot.Main;
 import org.apache.commons.codec.digest.DigestUtils;
+import sun.misc.BASE64Encoder;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.File;
-import java.io.IOException;
+import javax.crypto.Mac;
+import javax.crypto.spec.SecretKeySpec;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.security.InvalidKeyException;
 import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -97,7 +99,7 @@ public class Utils {
             MessageDigest md = MessageDigest.getInstance("MD5");
             md.update(Files.readAllBytes(Paths.get(file)));
             return Arrays.toString(md.digest());
-        } catch(Exception ignored){
+        }catch(Exception ignored){
         }
 
         return null;
@@ -158,8 +160,33 @@ public class Utils {
     }
 
     public static String getSha1(String data){
-        System.out.println(data);
         return DigestUtils.shaHex(data);
     }
+
+    public static String generateSignature(String key, String payload){
+        SecretKeySpec keySpec = new SecretKeySpec(key.getBytes(), "HmacSHA1");
+
+        Mac mac = null;
+        try{
+            mac = Mac.getInstance("HmacSHA1");
+            mac.init(keySpec);
+        }catch(NoSuchAlgorithmException | InvalidKeyException ignored){
+        }
+
+        byte[] result = mac.doFinal(payload.getBytes());
+        BASE64Encoder encoder = new BASE64Encoder();
+
+        return encoder.encode(result);
+    }
+
+    public static String getString(InputStream is) throws IOException{
+        int ch;
+        StringBuilder sb = new StringBuilder();
+        while((ch = is.read()) != -1){
+            sb.append((char) ch);
+        }
+        return sb.toString();
+    }
+
 
 }
