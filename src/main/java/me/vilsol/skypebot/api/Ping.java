@@ -3,11 +3,11 @@ package me.vilsol.skypebot.api;
 import org.restlet.resource.Get;
 import org.restlet.resource.ServerResource;
 
-public class Test extends ServerResource {
+public class Ping extends ServerResource {
 
-    @Get
-    public String toString()	{
-        return "hello,	world";
+    @Get("txt")
+    public String represent() {
+        return "HELLO";
     }
 
 }
