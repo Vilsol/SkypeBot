@@ -8,6 +8,7 @@ import com.skype.ChatMessageAdapter;
 import com.skype.Skype;
 import com.skype.SkypeException;
 import me.vilsol.skypebot.engine.ModuleManager;
+import org.apache.commons.lang.exception.ExceptionUtils;
 
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
@@ -177,9 +178,8 @@ public class SkypeBot implements ClipboardOwner {
         try{
             return bot.think(question);
         }catch(Exception ignored){
+            return "I am overthinking... (" + ExceptionUtils.getStackTrace(ignored) + ")";
         }
-
-        return "I am overthinking...";
     }
 
 }

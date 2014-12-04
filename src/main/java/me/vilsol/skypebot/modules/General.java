@@ -3,6 +3,10 @@ package me.vilsol.skypebot.modules;
 import com.google.code.chatterbotapi.ChatterBotFactory;
 import com.google.code.chatterbotapi.ChatterBotSession;
 import com.google.code.chatterbotapi.ChatterBotType;
+import com.mashape.unirest.http.HttpResponse;
+import com.mashape.unirest.http.JsonNode;
+import com.mashape.unirest.http.Unirest;
+import com.mashape.unirest.http.exceptions.UnirestException;
 import com.skype.ChatMessage;
 import com.skype.SkypeException;
 import me.vilsol.skypebot.R;
@@ -70,6 +74,12 @@ public class General implements Module {
             high ^= low;
             low ^= high;
         }
+
+        if((high - low) + low <= 0){
+            R.s("One number must be larger than the other");
+            return;
+        }
+
         R.s(new Random().nextInt(high - low) + low);
     }
 
@@ -179,6 +189,15 @@ public class General implements Module {
         };
 
         rantThread.start();
+    }
+
+    @Command(name = "quote")
+    public static void cmdQuote(ChatMessage message, String category){
+        try{
+            HttpResponse<JsonNode> response = Unirest.post("https://andruxnet-random-famous-quotes.p.mashape.com/cat=" + category).header("X-Mashape-Key", "rIizXnIZ7Umsh3o3sfCLfL86lZY2p1bda69jsnAqK1Sc6C5CV1").header("Content-Type", "application/x-www-form-urlencoded").asJson();
+            R.s("\"" + response.getBody().getObject().get("quote") + "\" - " + response.getBody().getObject().get("author"));
+        }catch(UnirestException e){
+        }
     }
 
 }

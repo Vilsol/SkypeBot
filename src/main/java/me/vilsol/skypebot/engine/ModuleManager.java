@@ -4,6 +4,7 @@ import com.skype.ChatMessage;
 import com.skype.SkypeException;
 import me.vilsol.skypebot.R;
 import me.vilsol.skypebot.Utils;
+import org.apache.commons.lang.exception.ExceptionUtils;
 import org.reflections.Reflections;
 import sun.reflect.MethodAccessor;
 
@@ -91,12 +92,13 @@ public class ModuleManager {
                 methodAccessor = (MethodAccessor) acquireMethodAccessorMethod.invoke(data.getMethod(), null);
             }
         }catch(NoSuchFieldException | InvocationTargetException | IllegalAccessException | NoSuchMethodException e){
-            e.printStackTrace();
+            R.s("Failed... (" + ExceptionUtils.getStackTrace(e) + ")");
         }
 
         try{
             methodAccessor.invoke(null, a.toArray());
-        }catch(InvocationTargetException ignore){
+        }catch(Exception e){
+            R.s("Failed... (" + Utils.upload(ExceptionUtils.getStackTrace(e)) + ")");
         }
 
     }
