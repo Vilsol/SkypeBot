@@ -2,8 +2,8 @@ package me.vilsol.skypebot.modules;
 
 import com.skype.ChatMessage;
 import me.vilsol.skypebot.utils.R;
-import me.vilsol.skypebot.engine.Command;
-import me.vilsol.skypebot.engine.Module;
+import me.vilsol.skypebot.engine.bot.Command;
+import me.vilsol.skypebot.engine.bot.Module;
 
 import java.util.Random;
 

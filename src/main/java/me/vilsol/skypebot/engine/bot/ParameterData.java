@@ -1,4 +1,4 @@
-package me.vilsol.skypebot.engine;
+package me.vilsol.skypebot.engine.bot;
 
 public class ParameterData {
 

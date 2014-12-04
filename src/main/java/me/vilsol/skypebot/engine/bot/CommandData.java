@@ -1,4 +1,4 @@
-package me.vilsol.skypebot.engine;
+package me.vilsol.skypebot.engine.bot;
 
 import com.google.common.base.Joiner;
 import me.vilsol.skypebot.utils.R;

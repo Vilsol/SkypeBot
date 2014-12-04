@@ -8,7 +8,7 @@ import com.skype.ChatMessageAdapter;
 import com.skype.Skype;
 import com.skype.SkypeException;
 import me.vilsol.skypebot.api.API;
-import me.vilsol.skypebot.engine.ModuleManager;
+import me.vilsol.skypebot.engine.bot.ModuleManager;
 import me.vilsol.skypebot.utils.R;
 import me.vilsol.skypebot.utils.UpdateChecker;
 import me.vilsol.skypebot.utils.Utils;

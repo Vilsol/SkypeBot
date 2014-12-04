@@ -1,4 +1,4 @@
-package me.vilsol.skypebot.engine;
+package me.vilsol.skypebot.engine.bot;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

@@ -1,13 +1,15 @@
 package me.vilsol.skypebot.api;
 
-import org.restlet.resource.Get;
-import org.restlet.resource.ServerResource;
+import me.vilsol.skypebot.engine.api.BaseResource;
+import me.vilsol.skypebot.engine.api.ResponseParseFactory;
 
-public class Ping extends ServerResource {
+import java.util.Map;
 
-    @Get("txt")
-    public String represent() {
-        return "HELLO";
+public class Ping extends BaseResource {
+
+    @Override
+    public String processRequest(Map json, String method){
+        return new ResponseParseFactory().getSuccessJsonString("Hello!");
     }
 
 }

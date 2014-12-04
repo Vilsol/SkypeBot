@@ -1,4 +1,4 @@
-package me.vilsol.skypebot.engine;
+package me.vilsol.skypebot.engine.bot;
 
 import com.skype.ChatMessage;
 import com.skype.SkypeException;
