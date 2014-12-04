@@ -2,8 +2,8 @@ package me.vilsol.skypebot.engine;
 
 import com.skype.ChatMessage;
 import com.skype.SkypeException;
-import me.vilsol.skypebot.R;
-import me.vilsol.skypebot.Utils;
+import me.vilsol.skypebot.utils.R;
+import me.vilsol.skypebot.utils.Utils;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.reflections.Reflections;
 import sun.reflect.MethodAccessor;

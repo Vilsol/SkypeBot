@@ -1,7 +1,7 @@
 package me.vilsol.skypebot.modules;
 
 import com.skype.ChatMessage;
-import me.vilsol.skypebot.R;
+import me.vilsol.skypebot.utils.R;
 import me.vilsol.skypebot.engine.Command;
 import me.vilsol.skypebot.engine.Module;
 

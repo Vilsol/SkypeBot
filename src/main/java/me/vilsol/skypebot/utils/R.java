@@ -1,4 +1,6 @@
-package me.vilsol.skypebot;
+package me.vilsol.skypebot.utils;
+
+import me.vilsol.skypebot.SkypeBot;
 
 public class R {
 

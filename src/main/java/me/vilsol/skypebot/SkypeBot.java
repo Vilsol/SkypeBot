@@ -8,6 +8,9 @@ import com.skype.ChatMessageAdapter;
 import com.skype.Skype;
 import com.skype.SkypeException;
 import me.vilsol.skypebot.engine.ModuleManager;
+import me.vilsol.skypebot.utils.R;
+import me.vilsol.skypebot.utils.UpdateChecker;
+import me.vilsol.skypebot.utils.Utils;
 import org.apache.commons.lang.exception.ExceptionUtils;
 
 import java.awt.*;

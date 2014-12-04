@@ -1,7 +1,7 @@
 package me.vilsol.skypebot.engine;
 
 import com.google.common.base.Joiner;
-import me.vilsol.skypebot.R;
+import me.vilsol.skypebot.utils.R;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;

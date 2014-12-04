@@ -9,9 +9,9 @@ import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import com.skype.ChatMessage;
 import com.skype.SkypeException;
-import me.vilsol.skypebot.R;
+import me.vilsol.skypebot.utils.R;
 import me.vilsol.skypebot.SkypeBot;
-import me.vilsol.skypebot.Utils;
+import me.vilsol.skypebot.utils.Utils;
 import me.vilsol.skypebot.engine.*;
 import org.apache.commons.lang.exception.ExceptionUtils;
 

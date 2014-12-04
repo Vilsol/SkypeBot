@@ -1,8 +1,9 @@
-package me.vilsol.skypebot;
+package me.vilsol.skypebot.utils;
 
 import com.google.common.base.Joiner;
 import com.skype.ChatMessage;
 import com.skype.SkypeException;
+import me.vilsol.skypebot.Main;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;

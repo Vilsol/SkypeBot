@@ -1,4 +1,4 @@
-package me.vilsol.skypebot;
+package me.vilsol.skypebot.utils;
 
 public class UpdateChecker extends Thread {
 
