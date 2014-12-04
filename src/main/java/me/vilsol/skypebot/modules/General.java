@@ -137,7 +137,7 @@ public class General implements Module {
     }
 
     @Command(name = "rant")
-    public static void cmdRant(ChatMessage chat, @Optional String question){
+    public static void cmdRant(ChatMessage chat, @Optional final String question){
         if(ranting){
             rantThread.stop();
             ranting = false;
@@ -170,8 +170,15 @@ public class General implements Module {
             public void run(){
                 while(true){
                     try{
+                        String cleverThink = null;
+
+                        if(cleverThink == null){
+                            cleverThink = question;
+                        }
+
                         String cleverBotResponse = cleverBot.think(question);
                         String jabberWackyResponse = jabberWacky.think(cleverBotResponse);
+                        cleverThink = jabberWackyResponse;
                         assert(cleverBotResponse != null && !cleverBotResponse.trim().equals(""));
                         assert(jabberWackyResponse != null && !jabberWackyResponse.trim().equals(""));
 
