@@ -11,6 +11,8 @@ public class R {
     public static final String REGEX_WORD = "(\\b+)";
     public static final String REGEX_DOUBLE = "(-?[0-9]+\\.[0-9]+)";
     public static final String REGEX_INT = "(-?[0-9]+)";
+    
+    public static final Random RANDOM = new Random();
 
     public static final String KEY_GITHUB = Utils.readFirstLine("key_github");
 
