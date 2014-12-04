@@ -18,8 +18,6 @@ public class Github extends BaseResource {
             return new ResponseParseFactory().getFailureJsonString("Invalid Secret!");
         }
 
-        System.out.println(json);
-
         return new ResponseParseFactory().getSuccessJsonString("Hello!");
     }
 
