@@ -167,26 +167,29 @@ public class General implements Module {
         ranting = true;
 
         rantThread = new Thread(){
+
+            String cleverThink = null;
+
             @Override
             public void run(){
                 while(true){
                     try{
-                        String cleverThink = null;
-
                         if(cleverThink == null){
                             cleverThink = question;
                         }
 
-                        String cleverBotResponse = cleverBot.think(question);
-                        String jabberWackyResponse = jabberWacky.think(cleverBotResponse);
-                        cleverThink = jabberWackyResponse;
-                        assert(cleverBotResponse != null && !cleverBotResponse.trim().equals(""));
-                        assert(jabberWackyResponse != null && !jabberWackyResponse.trim().equals(""));
+                        String cleverBotResponse = cleverBot.think(cleverThink);
 
-                        Thread.sleep(500);
+                        assert(cleverBotResponse != null && !cleverBotResponse.trim().equals(""));
                         R.s("[CB] " + cleverBotResponse);
                         Thread.sleep(500);
+
+                        String jabberWackyResponse = jabberWacky.think(cleverBotResponse);
+                        cleverThink = jabberWackyResponse;
+
+                        assert(jabberWackyResponse != null && !jabberWackyResponse.trim().equals(""));
                         R.s("[JW] " + jabberWackyResponse);
+                        Thread.sleep(500);
                     }catch(Exception e){
                         R.s("A bot got banned :( (" + Utils.upload(ExceptionUtils.getStackTrace(e)) + ")");
                         ranting = false;

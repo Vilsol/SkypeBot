@@ -9,6 +9,7 @@ import com.skype.Skype;
 import com.skype.SkypeException;
 import me.vilsol.skypebot.api.API;
 import me.vilsol.skypebot.engine.bot.ModuleManager;
+import me.vilsol.skypebot.engine.bot.Printer;
 import me.vilsol.skypebot.utils.R;
 import me.vilsol.skypebot.utils.UpdateChecker;
 import me.vilsol.skypebot.utils.Utils;
@@ -17,41 +18,28 @@ import org.restlet.Component;
 import org.restlet.Server;
 import org.restlet.data.Protocol;
 
-import java.awt.*;
-import java.awt.datatransfer.Clipboard;
-import java.awt.datatransfer.ClipboardOwner;
-import java.awt.datatransfer.StringSelection;
-import java.awt.datatransfer.Transferable;
-import java.awt.event.KeyEvent;
-import java.util.*;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-public class SkypeBot implements ClipboardOwner {
+public class SkypeBot {
 
     private static SkypeBot instance;
 
-    private Robot robot;
     private boolean locked = false;
     private UpdateChecker updateChecker;
-    private Queue<String> queue = new ConcurrentLinkedQueue<>();
     private Queue<ChatMessage> messages = new ConcurrentLinkedQueue<>();
     private Queue<String> stringMessages = new ConcurrentLinkedQueue<>();
     private ChatterBotSession bot;
-    private Clipboard c;
-    private String lastSentMessage;
     private Server apiServer;
+    private Printer printer;
 
     public SkypeBot(){
         instance = this;
 
-        c = Toolkit.getDefaultToolkit().getSystemClipboard();
-
-        try{
-            robot = new Robot();
-        }catch(AWTException ignored){
-        }
+        printer = new Printer();
+        printer.start();
 
         try{
             bot = new ChatterBotFactory().create(ChatterBotType.CLEVERBOT).createSession();
@@ -106,62 +94,11 @@ public class SkypeBot implements ClipboardOwner {
     }
 
     public void sendMessage(String message){
-        if(locked){
-            queue.add(message);
-            return;
-        }
-
-        locked = true;
-
-        if(message != null){
-            pureSend(message);
-        }
-
-        Iterator<String> i = queue.iterator();
-
-        while(i.hasNext()){
-            String s = i.next();
-            pureSend(s);
-            i.remove();
-
-            if(i.hasNext()){
-                robot.delay(200);
-            }
-        }
-
-        locked = false;
-
-        robot.delay(200);
+        printer.sendMessage(message);
     }
 
-    private void pureSend(String message){
-        if(lastSentMessage != null && lastSentMessage.equals(message)){
-            return;
-        }
-
-        lastSentMessage = message;
-
-        robot.delay(10);
-        StringSelection ss = new StringSelection(message);
-        c.setContents(ss, this);
-
-        robot.delay(10);
-        robot.keyPress(KeyEvent.VK_CONTROL);
-        robot.keyPress(KeyEvent.VK_V);
-        robot.keyRelease(KeyEvent.VK_V);
-        robot.keyRelease(KeyEvent.VK_CONTROL);
-        robot.keyPress(KeyEvent.VK_ENTER);
-        robot.keyRelease(KeyEvent.VK_ENTER);
-        robot.delay(10);
-    }
-
-    public void addToQueue(String[] s){
-        Collection<String> c = new ArrayList<>(Arrays.asList(s));
-        queue.addAll(c);
-    }
-
-    @Override
-    public void lostOwnership(Clipboard clipboard, Transferable contents){
+    public void addToQueue(String[] message){
+        printer.addToQueue(message);
     }
 
     public List<ChatMessage> getLastMessages(){
