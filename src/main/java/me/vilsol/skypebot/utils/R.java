@@ -12,6 +12,8 @@ public class R {
     public static final String REGEX_DOUBLE = "(-?[0-9]+\\.[0-9]+)";
     public static final String REGEX_INT = "(-?[0-9]+)";
 
+    public static final String KEY_GITHUB = Utils.readFirstLine("key_github");
+
     public static void s(String message){
         SkypeBot.getInstance().sendMessage(message);
     }

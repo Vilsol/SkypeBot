@@ -2,13 +2,13 @@ package me.vilsol.skypebot.api;
 
 import me.vilsol.skypebot.engine.api.BaseResource;
 import me.vilsol.skypebot.engine.api.Path;
+import org.json.JSONObject;
 import org.reflections.Reflections;
 import org.restlet.Application;
 import org.restlet.Restlet;
 import org.restlet.routing.Router;
 
 import java.lang.reflect.Method;
-import java.util.Map;
 
 public class API extends Application {
 
@@ -23,7 +23,7 @@ public class API extends Application {
         Reflections r = new Reflections("me.vilsol.skypebot.api");
         for(Class<? extends BaseResource> c : r.getSubTypesOf(BaseResource.class)){
             try{
-                Method m = c.getMethod("processRequest", Map.class, String.class);
+                Method m = c.getMethod("processRequest", JSONObject.class, String.class);
                 Path p = m.getAnnotation(Path.class);
                 if(p != null){
                     baseRouter.attach(p.value(), c);

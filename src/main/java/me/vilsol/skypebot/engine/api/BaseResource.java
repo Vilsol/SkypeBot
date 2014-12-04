@@ -30,8 +30,7 @@ public abstract class BaseResource extends ServerResource {
             JSONObject jsonobject = represent.getJsonObject();
             JSONParser parser = new JSONParser();
             String jsonText = jsonobject.toString();
-            Map json = (Map) parser.parse(jsonText);
-            jsonString = processRequest(json, "post");
+            jsonString = processRequest(jsonobject, "post");
         }catch(Exception e){
             jsonString = parseFactory.getFailureJsonString(e.getMessage());
         }
@@ -45,7 +44,7 @@ public abstract class BaseResource extends ServerResource {
         try{
             Map json = getMapFromParam(getRequest().getResourceRef().getQueryAsForm());
             parseFactory = new ResponseParseFactory();
-            jsonString = processRequest(json, "get");
+            jsonString = processRequest(new JSONObject(json), "get");
 
         }catch(Exception e){
             jsonString = parseFactory.getFailureJsonString(e.getMessage());
@@ -53,7 +52,7 @@ public abstract class BaseResource extends ServerResource {
         return new StringRepresentation(jsonString, MediaType.APPLICATION_JSON);
     }
 
-    public abstract String processRequest(Map json, String method);
+    public abstract String processRequest(JSONObject json, String method);
 
     public static Map<String, String> getMapFromParam(Form form){
         Map<String, String> map = new HashMap<String, String>();

@@ -8,6 +8,7 @@ import me.vilsol.skypebot.Main;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
+import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
@@ -143,6 +144,16 @@ public class Utils {
         }
 
         return "IP Not Found";
+    }
+
+    public static String readFirstLine(String file){
+        try{
+            return Files.readAllLines(Paths.get(file)).get(0);
+        }catch(IOException e){
+            e.printStackTrace();
+        }
+
+        return null;
     }
 
 }
