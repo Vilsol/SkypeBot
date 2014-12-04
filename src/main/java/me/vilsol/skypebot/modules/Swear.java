@@ -70,7 +70,7 @@ public class Swear implements Module {
         }
 
         public String getRandomWord(){
-            return data[new Random().nextInt(data.length)];
+            return data[R.RANDOM.nextInt(data.length)];
         }
 
     }
