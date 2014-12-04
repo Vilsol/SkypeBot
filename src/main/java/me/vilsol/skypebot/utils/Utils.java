@@ -4,6 +4,7 @@ import com.google.common.base.Joiner;
 import com.skype.ChatMessage;
 import com.skype.SkypeException;
 import me.vilsol.skypebot.Main;
+import org.apache.commons.codec.digest.DigestUtils;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -154,6 +155,11 @@ public class Utils {
         }
 
         return null;
+    }
+
+    public static String getSha1(String data){
+        System.out.println(data);
+        return DigestUtils.shaHex(data);
     }
 
 }
