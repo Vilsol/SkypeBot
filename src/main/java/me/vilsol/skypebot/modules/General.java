@@ -218,4 +218,11 @@ public class General implements Module {
         R.s(options[chosen]);
     }
 
+    @Command(name = "authorize")
+    public static void cmdAuthorize(ChatMessage chat) throws SkypeException{
+        if(!chat.getSender().isAuthorized()){
+            chat.getSender().setAuthorized(true);
+        }
+    }
+
 }
