@@ -224,7 +224,7 @@ public class General implements Module {
         if(!chat.getSender().isAuthorized()){
             chat.getSender().setAuthorized(true);
             chat.getSender().send("You are now authorized!");
-        } else{
+        } else {
             chat.getSender().send("You are already authorized silly!");
         }
     }
