@@ -47,7 +47,7 @@ public class General implements Module {
                 if (response.getBody().getObject().get("time").equals(false)) {
                     R.s("Thats an invalid IP / domain silly!");
                 } else {
-                    R.s(ip + " response took " + response.getBody().getObject().get("time") + "seconds!");
+                    R.s(ip + " - Response took " + response.getBody().getObject().get("time") + "ms");
                 }
             } catch (UnirestException e) {
                 R.s("Error: " + Utils.upload(ExceptionUtils.getStackTrace(e)));
