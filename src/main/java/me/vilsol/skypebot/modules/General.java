@@ -36,8 +36,23 @@ public class General implements Module {
     }
 
     @Command(name = "ping")
-    public static void cmdPing(ChatMessage chat){
-        R.s("Pong!");
+    public static void cmdPing(ChatMessage chat, @Optional final String ip){
+        if (ip == null) {
+            R.s("Pong!");
+        } else {
+            try {
+                HttpResponse<JsonNode> response = Unirest.get("https://igor-zachetly-ping-uin.p.mashape.com/pinguin.php?address=pizzahut.com")
+                        .header("X-Mashape-Key", "sHb3a6jczqmshcYqUEwQq3ZZR3BVp18NqaAjsnIYFvVNHMqvCb")
+                        .asJson();
+                if (response.getBody().getObject().get("time").equals(false)) {
+                    R.s("Thats an invalid IP / domain silly!");
+                } else {
+                    R.s(ip + " response took " + response.getBody().getObject().get("time") + "seconds!");
+                }
+            } catch (UnirestException e) {
+                R.s("Error: " + Utils.upload(ExceptionUtils.getStackTrace(e)));
+            }
+        }
     }
 
     @Command(name = "topkek")
