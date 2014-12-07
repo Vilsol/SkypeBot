@@ -41,7 +41,7 @@ public class General implements Module {
             R.s("Pong!");
         } else {
             try {
-                HttpResponse<JsonNode> response = Unirest.get("https://igor-zachetly-ping-uin.p.mashape.com/pinguin.php?address=pizzahut.com")
+                HttpResponse<JsonNode> response = Unirest.get("https://igor-zachetly-ping-uin.p.mashape.com/pinguin.php?address=" + ip)
                         .header("X-Mashape-Key", "sHb3a6jczqmshcYqUEwQq3ZZR3BVp18NqaAjsnIYFvVNHMqvCb")
                         .asJson();
                 if (response.getBody().getObject().get("time").equals(false)) {
