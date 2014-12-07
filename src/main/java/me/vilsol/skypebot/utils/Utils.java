@@ -26,55 +26,55 @@ import java.util.regex.Pattern;
 
 public class Utils {
 
-    public static boolean isInteger(Object s){
-        try{
+    public static boolean isInteger(Object s) {
+        try {
             Integer.parseInt(s.toString());
             return true;
-        }catch(Exception ignore){
+        } catch (Exception ignore) {
         }
 
         return false;
     }
 
-    public static boolean isDouble(Object s){
-        try{
+    public static boolean isDouble(Object s) {
+        try {
             Double.parseDouble(s.toString());
             return true;
-        }catch(Exception ignore){
+        } catch (Exception ignore) {
         }
 
         return false;
     }
 
-    public static String serializeMessage(ChatMessage message){
+    public static String serializeMessage(ChatMessage message) {
         String s = "";
 
-        try{
+        try {
             s += "[" + message.getTime().toString() + "] " + message.getSenderDisplayName() + ": " + message.getContent();
-        }catch(SkypeException ignored){
+        } catch (SkypeException ignored) {
         }
 
         return s;
     }
 
-    public static String upload(List<ChatMessage> s){
+    public static String upload(List<ChatMessage> s) {
         String data = "";
-        for(ChatMessage m : s){
+        for (ChatMessage m : s) {
             data += serializeMessage(m) + "\n";
         }
         return upload(data);
     }
 
-    public static String upload(Collection<String> s){
+    public static String upload(Collection<String> s) {
         return upload(Joiner.on("\n").join(s));
     }
 
-    public static String upload(ChatMessage s){
+    public static String upload(ChatMessage s) {
         return upload(serializeMessage(s));
     }
 
-    public static String upload(String s){
-        try{
+    public static String upload(String s) {
+        try {
             URL url = new URL("http://paste.ubuntu.com");
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
             con.setRequestMethod("POST");
@@ -88,35 +88,35 @@ public class Utils {
             output.close();
             con.getResponseCode();
             return con.getURL().toString();
-        }catch(java.io.IOException ignored){
+        } catch (java.io.IOException ignored) {
         }
 
         return null;
     }
 
-    public static String getMD5Hash(String file){
-        try{
+    public static String getMD5Hash(String file) {
+        try {
             MessageDigest md = MessageDigest.getInstance("MD5");
             md.update(Files.readAllBytes(Paths.get(file)));
             return Arrays.toString(md.digest());
-        }catch(Exception ignored){
+        } catch (Exception ignored) {
         }
 
         return null;
     }
 
-    public static String getJarName(){
+    public static String getJarName() {
         return new File(Main.class.getProtectionDomain().getCodeSource().getLocation().getPath()).getName();
     }
 
-    public static void restartBot(){
+    public static void restartBot() {
         R.s("/me " + R.version + " Restarting...");
         System.out.println("Restarting...");
         System.exit(0);
     }
 
-    public static String resolveSkype(String name){
-        try{
+    public static String resolveSkype(String name) {
+        try {
             URL url = new URL("http://resolvethem.com/index.php");
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
             con.setRequestMethod("POST");
@@ -131,46 +131,46 @@ public class Utils {
             DataInputStream input = new DataInputStream(con.getInputStream());
             int c;
             StringBuilder resultBuf = new StringBuilder();
-            while((c = input.read()) != -1){
+            while ((c = input.read()) != -1) {
                 resultBuf.append((char) c);
             }
             input.close();
             String result = resultBuf.toString();
             Pattern p = Pattern.compile("<input type=\"text\" name=\"id\" value=\"(.*)\" placeholder=\"Skype Username\"/><br>");
             Matcher m = p.matcher(result);
-            if(m.find()){
+            if (m.find()) {
                 return m.group(1);
-            }else{
+            } else {
                 return "IP Not Found";
             }
-        }catch(Exception ignore){
+        } catch (Exception ignore) {
         }
 
         return "IP Not Found";
     }
 
-    public static String readFirstLine(String file){
-        try{
+    public static String readFirstLine(String file) {
+        try {
             return Files.readAllLines(Paths.get(file)).get(0);
-        }catch(IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
 
         return null;
     }
 
-    public static String getSha1(String data){
+    public static String getSha1(String data) {
         return DigestUtils.shaHex(data);
     }
 
-    public static String generateSignature(String key, String payload){
+    public static String generateSignature(String key, String payload) {
         SecretKeySpec keySpec = new SecretKeySpec(key.getBytes(), "HmacSHA1");
 
         Mac mac = null;
-        try{
+        try {
             mac = Mac.getInstance("HmacSHA1");
             mac.init(keySpec);
-        }catch(NoSuchAlgorithmException | InvalidKeyException ignored){
+        } catch (NoSuchAlgorithmException | InvalidKeyException ignored) {
         }
 
         byte[] result = mac.doFinal(payload.getBytes());
@@ -179,10 +179,10 @@ public class Utils {
         return encoder.encode(result);
     }
 
-    public static String getString(InputStream is) throws IOException{
+    public static String getString(InputStream is) throws IOException {
         int ch;
         StringBuilder sb = new StringBuilder();
-        while((ch = is.read()) != -1){
+        while ((ch = is.read()) != -1) {
             sb.append((char) ch);
         }
         return sb.toString();

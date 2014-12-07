@@ -7,9 +7,13 @@ import java.lang.annotation.RetentionPolicy;
 public @interface Command {
 
     public String name();
+
     public boolean exact() default true;
+
     public String[] alias() default {};
+
     public String[] allow() default {};
+
     public boolean command() default true;
 
 }
