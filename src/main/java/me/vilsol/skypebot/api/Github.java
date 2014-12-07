@@ -8,7 +8,7 @@ import org.json.JSONObject;
 public class Github extends BaseResource {
 
     @Path("/github")
-    public String processRequest(String raw, JSONObject json, String method){
+    public String processRequest(String raw, JSONObject json, String method) {
 
         // Unless someone finds a way to validate a github payload, then it will be impossible to re-enable
 

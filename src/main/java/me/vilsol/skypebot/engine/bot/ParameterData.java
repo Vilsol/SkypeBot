@@ -6,21 +6,21 @@ public class ParameterData {
     private String regex;
     private boolean optional;
 
-    public ParameterData(String name, String regex, boolean optional){
+    public ParameterData(String name, String regex, boolean optional) {
         this.name = name;
         this.regex = regex;
         this.optional = optional;
     }
 
-    public String getName(){
+    public String getName() {
         return name;
     }
 
-    public String getRegex(){
+    public String getRegex() {
         return regex;
     }
 
-    public boolean isOptional(){
+    public boolean isOptional() {
         return optional;
     }
 }

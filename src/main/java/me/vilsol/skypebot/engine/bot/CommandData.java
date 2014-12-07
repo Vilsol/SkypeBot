@@ -15,28 +15,28 @@ public class CommandData {
     private Method method;
     private LinkedHashMap<String, ParameterData> parameters = new LinkedHashMap<>();
 
-    public CommandData(Command c, Method method){
+    public CommandData(Command c, Method method) {
         this.command = c;
         this.method = method;
 
-        if(method.getParameterCount() > 1){
+        if (method.getParameterCount() > 1) {
             int param = 1;
-            for(Parameter p : method.getParameters()){
-                if(param == 1){
+            for (Parameter p : method.getParameters()) {
+                if (param == 1) {
                     param++;
                     continue;
                 }
 
                 String regex = "";
 
-                if(p.getType().equals(Integer.class) || p.getType().getName().equals("int")){
+                if (p.getType().equals(Integer.class) || p.getType().getName().equals("int")) {
                     regex = R.REGEX_INT;
-                }else if(p.getType().equals(Double.class) || p.getType().getName().equals("double")){
+                } else if (p.getType().equals(Double.class) || p.getType().getName().equals("double")) {
                     regex = R.REGEX_DOUBLE;
-                }else if(p.getType().equals(String.class)){
-                    if(param < method.getParameterCount()){
+                } else if (p.getType().equals(String.class)) {
+                    if (param < method.getParameterCount()) {
                         regex = R.REGEX_WORD;
-                    }else{
+                    } else {
                         regex = R.REGEX_ALL;
                     }
                 }
@@ -50,24 +50,24 @@ public class CommandData {
         }
     }
 
-    public Command getCommand(){
+    public Command getCommand() {
         return command;
     }
 
-    public Method getMethod(){
+    public Method getMethod() {
         return method;
     }
 
-    public String getParameterRegex(boolean includeOptional){
+    public String getParameterRegex(boolean includeOptional) {
         List<String> regex = new LinkedList<>();
 
         parameters.values().stream().forEach(p -> {
 
-            if(p.isOptional()){
-                if(includeOptional){
+            if (p.isOptional()) {
+                if (includeOptional) {
                     regex.add(p.getRegex());
                 }
-            }else{
+            } else {
                 regex.add(p.getRegex());
             }
 
@@ -76,13 +76,13 @@ public class CommandData {
         return Joiner.on(" ").join(regex);
     }
 
-    public String getParamaterNames(){
+    public String getParamaterNames() {
         List<String> names = new LinkedList<>();
 
         parameters.values().stream().forEach(p -> {
-            if(p.isOptional()){
+            if (p.isOptional()) {
                 names.add("[" + p.getName() + "]");
-            }else{
+            } else {
                 names.add("<" + p.getName() + ">");
             }
         });

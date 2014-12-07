@@ -35,24 +35,24 @@ public class SkypeBot {
     private Server apiServer;
     private Printer printer;
 
-    public SkypeBot(){
+    public SkypeBot() {
         instance = this;
 
         printer = new Printer();
         printer.start();
 
-        try{
+        try {
             bot = new ChatterBotFactory().create(ChatterBotType.CLEVERBOT).createSession();
-        }catch(Exception ignored){
+        } catch (Exception ignored) {
         }
 
         ModuleManager.loadModules("me.vilsol.skypebot.modules");
 
         Skype.setDaemon(false);
-        try{
+        try {
             Skype.addChatMessageListener(new ChatMessageAdapter() {
-                public void chatMessageReceived(ChatMessage received) throws SkypeException{
-                    if(messages.size() > 100){
+                public void chatMessageReceived(ChatMessage received) throws SkypeException {
+                    if (messages.size() > 100) {
                         messages.remove();
                         stringMessages.remove();
                     }
@@ -62,7 +62,7 @@ public class SkypeBot {
                     ModuleManager.parseText(received);
                 }
             });
-        }catch(SkypeException ignored){
+        } catch (SkypeException ignored) {
         }
 
         updateChecker = new UpdateChecker();
@@ -77,31 +77,31 @@ public class SkypeBot {
 
         c.getLogService().setEnabled(false);
 
-        try{
+        try {
             c.start();
-        }catch(Exception ignored){
+        } catch (Exception ignored) {
         }
 
         R.s("/me " + R.version + " initialized!");
     }
 
-    public static SkypeBot getInstance(){
-        if(instance == null){
+    public static SkypeBot getInstance() {
+        if (instance == null) {
             new SkypeBot();
         }
 
         return instance;
     }
 
-    public void sendMessage(String message){
+    public void sendMessage(String message) {
         printer.sendMessage(message);
     }
 
-    public void addToQueue(String[] message){
+    public void addToQueue(String[] message) {
         printer.addToQueue(message);
     }
 
-    public List<ChatMessage> getLastMessages(){
+    public List<ChatMessage> getLastMessages() {
         List<ChatMessage> list = new LinkedList<>();
         Queue<ChatMessage> newMessages = new ConcurrentLinkedQueue<>();
 
@@ -115,7 +115,7 @@ public class SkypeBot {
         return list;
     }
 
-    public List<String> getLastStringMessages(){
+    public List<String> getLastStringMessages() {
         List<String> list = new LinkedList<>();
         Queue<String> newMessages = new ConcurrentLinkedQueue<>();
 
@@ -129,14 +129,14 @@ public class SkypeBot {
         return list;
     }
 
-    public String askQuestion(String question){
-        if(bot == null){
+    public String askQuestion(String question) {
+        if (bot == null) {
             return "ChatterBot Died";
         }
 
-        try{
+        try {
             return bot.think(question);
-        }catch(Exception ignored){
+        } catch (Exception ignored) {
             return "I am overthinking... (" + ExceptionUtils.getStackTrace(ignored) + ")";
         }
     }
