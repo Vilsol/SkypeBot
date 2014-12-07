@@ -24,6 +24,5 @@ public class R {
 
     public static void s(String[] message){
         SkypeBot.getInstance().addToQueue(message);
-        SkypeBot.getInstance().sendMessage(null);
     }
 }
