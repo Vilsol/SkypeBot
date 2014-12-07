@@ -272,4 +272,21 @@ public class General implements Module {
         }
     }
 
+    @Command(name = "elevantxkcd")
+    public static void cmdrelevantxkcd(ChatMessage chat){
+        try {
+            HttpResponse<JsonNode> response = Unirest.get("http://xkcd.com/info.0.json")
+                    .asJson();
+            int urlnumber = new Random().nextInt((Integer) response.getBody().getObject().get("num")) + 1;
+            HttpResponse<JsonNode> xkcd = Unirest.get("http://xkcd.com/" + urlnumber + "/info.0.json")
+                    .asJson();
+            String transcript = xkcd.getBody().getObject().get("transcript").toString();
+            String image = xkcd.getBody().getObject().get("img").toString();
+            R.s("Image - " + image);
+            R.s("Transcript - " + transcript);
+        } catch (UnirestException e) {
+            R.s("Error: " + Utils.upload(ExceptionUtils.getStackTrace(e)));
+        }
+    }
+
 }
