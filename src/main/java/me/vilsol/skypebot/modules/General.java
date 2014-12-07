@@ -247,6 +247,7 @@ public class General implements Module {
 
     @Command(name = "lmgtfy")
     public static void cmdLmgtfy(ChatMessage chat, String question) throws SkypeException{
+        //Thanks DevRoMc for the idea. - ibJarrett
         String returnString = "http://lmgtfy.com/?q=";
         R.s("[" + chat.getSenderDisplayName() + "] " + returnString + URLEncoder.encode(question));
     }
