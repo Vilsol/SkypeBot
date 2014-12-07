@@ -272,7 +272,7 @@ public class General implements Module {
         }
     }
 
-    @Command(name = "elevantxkcd")
+    @Command(name = "relevantxkcd")
     public static void cmdrelevantxkcd(ChatMessage chat){
         try {
             HttpResponse<JsonNode> response = Unirest.get("http://xkcd.com/info.0.json")
