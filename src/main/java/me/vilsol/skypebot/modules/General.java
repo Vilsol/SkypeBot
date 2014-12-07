@@ -17,6 +17,7 @@ import org.apache.commons.lang.exception.ExceptionUtils;
 
 import java.util.Map;
 import java.util.Random;
+import java.net.URLEncoder;
 
 public class General implements Module {
 
@@ -217,18 +218,8 @@ public class General implements Module {
     
     @Command(name = "lmgtfy")
     public static void cmdLmgtfy(ChatMessage chat, String question) throws SkypeException {
-        String[] args = question.split(" ");
         String returnString = "http://lmgtfy.com/?q=";
-
-        for (String string : args) {
-            returnString += string + "+";
-        }
-
-        if (returnString.endsWith("+")) {
-            returnString = returnString.substring(0, returnString.length() - 1);
-        }
-
-        R.s("[" + chat.getSenderDisplayName() + "] " + returnString);
+        R.s("[" + chat.getSenderDisplayName() + "] " + returnString + URLEncoder.encode(question));
     }
 
 }
