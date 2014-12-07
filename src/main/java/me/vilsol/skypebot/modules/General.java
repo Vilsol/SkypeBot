@@ -245,4 +245,31 @@ public class General implements Module {
         }
     }
 
+    @Command(name = "lmgtfy")
+    public static void cmdLmgtfy(ChatMessage chat, String question) throws SkypeException{
+        String returnString = "http://lmgtfy.com/?q=";
+        R.s("[" + chat.getSenderDisplayName() + "] " + returnString + URLEncoder.encode(question));
+    }
+
+    @Command(name = "define")
+    public static void cmddefine(ChatMessage chat, String word) {
+        if (word == null) {
+            R.s("Input a word / phrase silly!");
+        } else {
+            try {
+                HttpResponse<String> response = Unirest.get("https://mashape-community-urban-dictionary.p.mashape.com/define?term=" + URLEncoder.encode(word))
+                        .header("X-Mashape-Key", "sHb3a6jczqmshcYqUEwQq3ZZR3BVp18NqaAjsnIYFvVNHMqvCb")
+                        .asString();
+                if (response.getHeaders().getFirst("result_type").equals("no_results")) {
+                } else {
+                    R.s("Word / Phrase - " + response.getHeaders().getFirst("word"));
+                    R.s("Definition - " + response.getHeaders().getFirst("definition"));
+                    R.s("Example - " + response.getHeaders().getFirst("example"));
+                }
+            } catch (UnirestException e) {
+                R.s("Error: " + Utils.upload(ExceptionUtils.getStackTrace(e)));
+            }
+        }
+    }
+
 }
