@@ -1,5 +1,13 @@
 package me.vilsol.skypebot.modules;
 
+import com.google.api.client.http.HttpRequest;
+import com.google.api.client.http.HttpRequestInitializer;
+import com.google.api.client.http.javanet.NetHttpTransport;
+import com.google.api.client.json.JsonFactory;
+import com.google.api.client.json.jackson.JacksonFactory;
+import com.google.api.services.customsearch.Customsearch;
+import com.google.api.services.customsearch.model.Result;
+import com.google.api.services.customsearch.model.Search;
 import com.google.code.chatterbotapi.ChatterBotFactory;
 import com.google.code.chatterbotapi.ChatterBotSession;
 import com.google.code.chatterbotapi.ChatterBotType;
@@ -15,6 +23,8 @@ import me.vilsol.skypebot.utils.R;
 import me.vilsol.skypebot.utils.Utils;
 import org.apache.commons.lang.exception.ExceptionUtils;
 
+import java.io.IOException;
+import java.net.URLEncoder;
 import java.util.Map;
 import java.util.Random;
 
@@ -36,8 +46,23 @@ public class General implements Module {
     }
 
     @Command(name = "ping")
-    public static void cmdPing(ChatMessage chat){
-        R.s("Pong!");
+    public static void cmdPing(ChatMessage chat, @Optional final String ip){
+        if (ip == null) {
+            R.s("Pong!");
+        } else {
+            try {
+                HttpResponse<JsonNode> response = Unirest.get("https://igor-zachetly-ping-uin.p.mashape.com/pinguin.php?address=" + URLEncoder.encode(ip))
+                        .header("X-Mashape-Key", "sHb3a6jczqmshcYqUEwQq3ZZR3BVp18NqaAjsnIYFvVNHMqvCb")
+                        .asJson();
+                if (response.getBody().getObject().get("result").equals(false)) {
+                    R.s("Thats an invalid IP / domain silly!");
+                } else {
+                    R.s(ip + " - Response took " + response.getBody().getObject().get("time") + "ms");
+                }
+            } catch (UnirestException e) {
+                R.s("Error: " + Utils.upload(ExceptionUtils.getStackTrace(e)));
+            }
+        }
     }
 
     @Command(name = "topkek")
@@ -220,8 +245,91 @@ public class General implements Module {
 
     @Command(name = "authorize")
     public static void cmdAuthorize(ChatMessage chat) throws SkypeException{
+        R.s("In order for authorization to work, you must send me a contact request. I will now try to authorize you!");
         if(!chat.getSender().isAuthorized()){
             chat.getSender().setAuthorized(true);
+            chat.getSender().send("You are now authorized!");
+        } else {
+            chat.getSender().send("You are already authorized silly!");
+        }
+    }
+
+    @Command(name = "lmgtfy")
+    public static void cmdLmgtfy(ChatMessage chat, String question) throws SkypeException{
+        //Thanks DevRoMc for the idea. - ibJarrett
+        String returnString = "http://lmgtfy.com/?q=";
+        R.s("[" + chat.getSenderDisplayName() + "] " + returnString + URLEncoder.encode(question));
+    }
+
+    @Command(name = "define")
+    public static void cmddefine(ChatMessage chat, String word) {
+        if (word == null) {
+            R.s("Input a word / phrase silly!");
+        } else {
+            try {
+                HttpResponse<String> response = Unirest.get("https://mashape-community-urban-dictionary.p.mashape.com/define?term=" + URLEncoder.encode(word))
+                        .header("X-Mashape-Key", "sHb3a6jczqmshcYqUEwQq3ZZR3BVp18NqaAjsnIYFvVNHMqvCb")
+                        .asString();
+                if (response.getHeaders().getFirst("result_type").equals("no_results")) {
+                } else {
+                    R.s("Word / Phrase - " + response.getHeaders().getFirst("word"));
+                    R.s("Definition - " + response.getHeaders().getFirst("definition"));
+                    R.s("Example - " + response.getHeaders().getFirst("example"));
+                }
+            } catch (UnirestException e) {
+                R.s("Error: " + Utils.upload(ExceptionUtils.getStackTrace(e)));
+            }
+        }
+    }
+
+    @Command(name = "relevantxkcd")
+    public static void cmdrelevantxkcd(ChatMessage chat, @Optional String name){
+        if (name == null) {
+            try {
+                HttpResponse<JsonNode> response = Unirest.get("http://xkcd.com/info.0.json")
+                        .asJson();
+                int urlnumber = new Random().nextInt((Integer) response.getBody().getObject().get("num")) + 1;
+                HttpResponse<JsonNode> xkcd = Unirest.get("http://xkcd.com/" + urlnumber + "/info.0.json")
+                        .asJson();
+                String transcript = xkcd.getBody().getObject().get("transcript").toString();
+                String image = xkcd.getBody().getObject().get("img").toString();
+                R.s("Image - " + image);
+                R.s("Transcript - " + transcript);
+            } catch (UnirestException e) {
+                R.s("Error: " + Utils.upload(ExceptionUtils.getStackTrace(e)));
+            }
+        } else {
+            try {
+                String searchText = name;
+                String key = "AIzaSyDulfiY_C1PK19PinCLmagTeMMeVlmhimI";
+                String cx = "012652707207066138651:Azudjtuwe28q";
+
+                HttpRequestInitializer httpRequestInitializer = new HttpRequestInitializer() {
+
+                    @Override
+                    public void initialize(HttpRequest request) throws IOException {
+
+                    }
+                };
+                JsonFactory jsonFactory = new JacksonFactory();
+
+                Customsearch custom = new Customsearch(new NetHttpTransport(), jsonFactory, httpRequestInitializer);
+                Customsearch.Cse.List list = custom.cse().list(searchText);
+                list.setCx(cx);
+                list.setKey(key);
+
+                Search result = list.execute();
+
+                Customsearch.Cse.List listResult = (Customsearch.Cse.List) result.getItems();
+                if (listResult.isEmpty()) {
+                    R.s("No results found. :/ sorry");
+                } else {
+                    Result first = (Result) listResult.get(0);
+                    R.s(first.getFormattedUrl());
+                }
+            } catch (IOException e) {
+                R.s("Error: " + Utils.upload(ExceptionUtils.getStackTrace(e)));
+            }
         }
     }
 
