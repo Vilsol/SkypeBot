@@ -15,6 +15,7 @@ import me.vilsol.skypebot.utils.R;
 import me.vilsol.skypebot.utils.Utils;
 import org.apache.commons.lang.exception.ExceptionUtils;
 
+import java.net.URLEncoder;
 import java.util.Map;
 import java.util.Random;
 
@@ -41,10 +42,10 @@ public class General implements Module {
             R.s("Pong!");
         } else {
             try {
-                HttpResponse<JsonNode> response = Unirest.get("https://igor-zachetly-ping-uin.p.mashape.com/pinguin.php?address=" + ip)
+                HttpResponse<JsonNode> response = Unirest.get("https://igor-zachetly-ping-uin.p.mashape.com/pinguin.php?address=" + URLEncoder.encode(ip))
                         .header("X-Mashape-Key", "sHb3a6jczqmshcYqUEwQq3ZZR3BVp18NqaAjsnIYFvVNHMqvCb")
                         .asJson();
-                if (response.getBody().getObject().get("time").equals(false)) {
+                if (response.getBody().getObject().get("result").equals(false)) {
                     R.s("Thats an invalid IP / domain silly!");
                 } else {
                     R.s(ip + " - Response took " + response.getBody().getObject().get("time") + "ms");
