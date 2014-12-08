@@ -13,7 +13,6 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 public class Printer extends Thread implements ClipboardOwner {
 
     private Queue<String> messageQueue = new ConcurrentLinkedQueue<>();
-    private String lastSentMessage;
     private Clipboard c;
     private Robot robot;
 
@@ -58,12 +57,6 @@ public class Printer extends Thread implements ClipboardOwner {
     }
 
     private void pureSend(String message){
-        if(lastSentMessage != null && lastSentMessage.equals(message)){
-            return;
-        }
-
-        lastSentMessage = message;
-
         StringSelection ss = new StringSelection(message);
         c.setContents(ss, this);
 

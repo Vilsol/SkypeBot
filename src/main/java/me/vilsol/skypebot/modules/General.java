@@ -49,7 +49,7 @@ public class General implements Module {
     @Command(name = "ping")
     public static void cmdPing(ChatMessage chat, @Optional final String ip) throws JSONException{
         if (ip == null) {
-            R.s("Pong!");
+            R.s("Fuck yo ping!");
         } else {
             try {
                 HttpResponse<JsonNode> response = Unirest.get("https://igor-zachetly-ping-uin.p.mashape.com/pinguin.php?address=" + URLEncoder.encode(ip))
