@@ -58,8 +58,10 @@ public class Printer extends Thread implements ClipboardOwner {
     }
 
     private void pureSend(String message){
+        message = message.trim();
+
         for(String s : disallowed){
-            if(message.split(" ")[0]    .startsWith(s)){
+            if(message.split(" ")[0].startsWith(s)){
                 message = "." + message;
                 break;
             }
