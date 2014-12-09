@@ -155,7 +155,11 @@ public class General implements Module {
 
     @Command(name = "resolve")
     public static void cmdResolve(ChatMessage chat, String user){
-        R.s(user + ": " + Utils.resolveSkype(user));
+        if (user.startsWith("/") {
+            R.s("Tryna run commands, aye?");
+        } else {
+            R.s(user + ": " + Utils.resolveSkype(user));
+        }
     }
 
     @Command(name = "c")
