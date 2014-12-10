@@ -334,4 +334,9 @@ public class General implements Module {
         }
     }
 
+    @Command(name = "night", exact = false, command = false)
+    public static void cmdNight(ChatMessage chat){
+        R.s("Pussy");
+    }
+
 }
