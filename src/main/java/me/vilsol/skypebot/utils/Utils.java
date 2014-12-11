@@ -18,9 +18,10 @@ import java.nio.file.Paths;
 import java.security.InvalidKeyException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -188,5 +189,43 @@ public class Utils {
         return sb.toString();
     }
 
+    public static String parseResult(ResultSet rs) throws SQLException{
+        if(rs == null || rs.isClosed()){
+            return null;
+        }
+
+        ArrayList<HashMap<String, String>> data = new ArrayList<>();
+
+        HashMap<String, Integer> longestColumn = new HashMap<>();
+        HashMap<String, Integer> longetValue = new HashMap<>();
+
+        ResultSetMetaData meta = rs.getMetaData();
+
+        while(rs.next()){
+            HashMap<String, String> map = new HashMap<>();
+            for(int c = 1; c <= meta.getColumnCount(); c++){
+                String col = meta.getColumnName(c);
+                String val = rs.getString(c);
+
+                if(!longestColumn.containsKey(col) || longestColumn.get(col) < col.length()){
+                    longestColumn.put(col, col.length());
+                }
+
+                if(!longetValue.containsKey(val) || longetValue.get(val) < val.length()){
+                    longetValue.put(val, val.length());
+                }
+
+                map.put(col, val);
+            }
+
+            data.add(map);
+        }
+
+        String result = "";
+
+        result += data.toString();
+
+        return result;
+    }
 
 }

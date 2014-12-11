@@ -26,6 +26,9 @@ import org.json.JSONException;
 
 import java.io.IOException;
 import java.net.URLEncoder;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Map;
 import java.util.Random;
 
@@ -337,6 +340,35 @@ public class General implements Module {
     @Command(name = "night", exact = false, command = false)
     public static void cmdNight(ChatMessage chat){
         R.s("Pussy");
+    }
+
+    @Command(name = "sql")
+    public static void cmdSQL(ChatMessage chat, String query) throws SQLException{
+        if(SkypeBot.getInstance().getDatabase() == null){
+            R.s("Connection is down!");
+            return;
+        }
+
+        Statement stmt = null;
+
+        try {
+            stmt = SkypeBot.getInstance().getDatabase().createStatement();
+            if(query.toLowerCase().startsWith("select")){
+                ResultSet result = stmt.executeQuery(query);
+                R.s(Utils.parseResult(result));
+            }else{
+                stmt.execute(query);
+            }
+            R.s("SQL Query Successful!");
+        } catch (SQLException e ){
+            R.s("Error executing SQL: " + e.getMessage());
+        } catch (Exception e){
+            R.s("Error: " + Utils.upload(ExceptionUtils.getStackTrace(e)));
+        } finally {
+            if (stmt != null) {
+                stmt.close();
+            }
+        }
     }
 
 }

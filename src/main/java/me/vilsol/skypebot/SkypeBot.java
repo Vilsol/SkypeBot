@@ -18,8 +18,12 @@ import org.restlet.Component;
 import org.restlet.Server;
 import org.restlet.data.Protocol;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Properties;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -34,6 +38,7 @@ public class SkypeBot {
     private ChatterBotSession bot;
     private Server apiServer;
     private Printer printer;
+    Connection database;
 
     public SkypeBot(){
         instance = this;
@@ -80,6 +85,16 @@ public class SkypeBot {
         try{
             c.start();
         }catch(Exception ignored){
+        }
+
+        Properties connectionProps = new Properties();
+        connectionProps.put("user", "skype_bot");
+        connectionProps.put("password", "skype_bot");
+
+        try{
+            database = DriverManager.getConnection("jdbc:mysql://localhost:3306/skype_bot", connectionProps);
+        }catch(SQLException e){
+            R.s("Failed to connect to database: " + Utils.upload(ExceptionUtils.getStackTrace(e)));
         }
 
         R.s("/me " + R.version + " initialized!");
@@ -139,6 +154,10 @@ public class SkypeBot {
         }catch(Exception ignored){
             return "I am overthinking... (" + ExceptionUtils.getStackTrace(ignored) + ")";
         }
+    }
+
+    public Connection getDatabase(){
+        return database;
     }
 
 }
