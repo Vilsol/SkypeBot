@@ -74,7 +74,7 @@ public class Drama implements Module {
             "[things] fans claim that [things] should be more like [things]",
             "[things] fans claim that [things] should have better [function]",
             "[people] DMCAs [things]",
-            "[people] mocks [people]'s [code] on [site]",
+            "[people] mocks [people]'s [code] on [sites]",
             "[people] [says] that [things] should be more like [things]",
             "[people] [says] that [things] should be less like [things]",
             "[people] rebalances [things] for [packs]",
