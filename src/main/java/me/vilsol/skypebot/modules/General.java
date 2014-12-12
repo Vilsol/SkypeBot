@@ -353,7 +353,7 @@ public class General implements Module {
 
         try {
             stmt = SkypeBot.getInstance().getDatabase().createStatement();
-            if(query.toLowerCase().startsWith("select")){
+            if(query.toLowerCase().startsWith("select") || query.toLowerCase().startsWith("show")){
                 ResultSet result = stmt.executeQuery(query);
                 String parsed = Utils.parseResult(result);
                 parsed = query + "\n\n" + parsed;

@@ -205,6 +205,14 @@ public class Utils {
                 String col = meta.getColumnName(c);
                 String val = rs.getString(c);
 
+                if(col == null){
+                    col = "NULL";
+                }
+
+                if(val == null){
+                    val = "NULL";
+                }
+
                 if(!longest.containsKey(col) || longest.get(col) < col.length()){
                     longest.put(col, col.length());
                 }
