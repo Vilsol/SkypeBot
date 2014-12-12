@@ -1,5 +1,7 @@
 package me.vilsol.skypebot.engine.bot;
 
+import me.vilsol.skypebot.utils.Utils;
+
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.ClipboardOwner;
@@ -30,7 +32,11 @@ public class Printer extends Thread implements ClipboardOwner {
     }
 
     public void sendMessage(String message){
-        messageQueue.add(message);
+        if(message.length() < 200){
+            messageQueue.add(message);
+        }else{
+            messageQueue.add(message.substring(0, 200) + "... " + Utils.upload(message));
+        }
     }
 
     public void addToQueue(String[] message){

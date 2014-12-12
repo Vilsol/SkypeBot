@@ -123,7 +123,7 @@ public class General implements Module {
         R.s("/me " + message);
     }
 
-    @Command(name="help")
+    @Command(name="help", alias = {"commands"})
     public static void cmdHelp(ChatMessage chat){
         String commands = "Available Commands: ";
 
