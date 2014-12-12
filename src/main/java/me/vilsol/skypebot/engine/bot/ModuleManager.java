@@ -54,6 +54,17 @@ public class ModuleManager {
             }
         }
 
+        if(data.getCommand().disallow() != null && data.getCommand().disallow().length > 0){
+            try{
+                if(Arrays.asList(data.getCommand().disallow()).contains(message.getSenderId())){
+                    R.s("Access Denied!");
+                    return;
+                }
+            }catch(SkypeException ignored){
+                return;
+            }
+        }
+
         List<Object> a = new ArrayList<>();
         a.add(message);
 

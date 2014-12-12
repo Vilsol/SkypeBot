@@ -342,7 +342,7 @@ public class General implements Module {
         R.s("Pussy");
     }
 
-    @Command(name = "sql", allow = {"vilsol"})
+    @Command(name = "sql", disallow = {"stuntguy3000"})
     public static void cmdSQL(ChatMessage chat, String query) throws SQLException{
         if(SkypeBot.getInstance().getDatabase() == null){
             R.s("Connection is down!");

@@ -10,6 +10,7 @@ public @interface Command {
     public boolean exact() default true;
     public String[] alias() default {};
     public String[] allow() default {};
+    public String[] disallow() default {};
     public boolean command() default true;
 
 }
