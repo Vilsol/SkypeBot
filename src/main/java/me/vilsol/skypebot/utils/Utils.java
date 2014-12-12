@@ -194,25 +194,23 @@ public class Utils {
             return null;
         }
 
-        ArrayList<HashMap<String, String>> data = new ArrayList<>();
-
-        HashMap<String, Integer> longestColumn = new HashMap<>();
-        HashMap<String, Integer> longetValue = new HashMap<>();
+        ArrayList<LinkedHashMap<String, String>> data = new ArrayList<>();
+        LinkedHashMap<String, Integer> longest = new LinkedHashMap<>();
 
         ResultSetMetaData meta = rs.getMetaData();
 
         while(rs.next()){
-            HashMap<String, String> map = new HashMap<>();
+            LinkedHashMap<String, String> map = new LinkedHashMap<>();
             for(int c = 1; c <= meta.getColumnCount(); c++){
                 String col = meta.getColumnName(c);
                 String val = rs.getString(c);
 
-                if(!longestColumn.containsKey(col) || longestColumn.get(col) < col.length()){
-                    longestColumn.put(col, col.length());
+                if(!longest.containsKey(col) || longest.get(col) < col.length()){
+                    longest.put(col, col.length());
                 }
 
-                if(!longetValue.containsKey(val) || longetValue.get(val) < val.length()){
-                    longetValue.put(val, val.length());
+                if(!longest.containsKey(col) || longest.get(col) < val.length()){
+                    longest.put(col, val.length());
                 }
 
                 map.put(col, val);
@@ -223,7 +221,56 @@ public class Utils {
 
         String result = "";
 
-        result += data.toString();
+        String nameBorder = "";
+        String nameLine = "";
+        for(Map.Entry<String, Integer> s : longest.entrySet()){
+            nameBorder += "+";
+            for(int i = 0; i < s.getValue() + 2; i++){
+                nameBorder += "-";
+            }
+
+            if(nameLine.equals("")){
+                nameLine += "| " + s.getKey();
+            }else{
+                nameLine += " | " + s.getKey();
+            }
+
+            if(s.getKey().length() < s.getValue()){
+                for(int i = 0; i < s.getValue() - s.getKey().length(); i++){
+                    nameLine += " ";
+                }
+            }
+        }
+        nameBorder += "+";
+        nameLine += " |";
+
+        result += nameBorder + "\n" + nameLine + "\n" + nameBorder;
+
+        if(data.size() > 0){
+            result += "\n";
+        }
+
+        for(LinkedHashMap<String, String> d : data){
+            String dataLine = "";
+            for(Map.Entry<String, String> c : d.entrySet()){
+                if(dataLine.equals("")){
+                    dataLine += "| " + c.getValue();
+                }else{
+                    dataLine += " | " + c.getValue();
+                }
+
+                if(longest.get(c.getKey()) > c.getValue().length()){
+                    for(int i = 0; i < longest.get(c.getKey()) - c.getValue().length(); i++){
+                        dataLine += " ";
+                    }
+                }
+            }
+            dataLine += " |";
+            result += dataLine + "\n";
+        }
+
+        result += nameBorder + "\n";
+        result += data.size() + " rows in set.";
 
         return result;
     }

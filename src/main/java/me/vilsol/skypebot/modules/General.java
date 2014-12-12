@@ -355,11 +355,13 @@ public class General implements Module {
             stmt = SkypeBot.getInstance().getDatabase().createStatement();
             if(query.toLowerCase().startsWith("select")){
                 ResultSet result = stmt.executeQuery(query);
-                R.s(Utils.parseResult(result));
+                String parsed = Utils.parseResult(result);
+                parsed = query + "\n\n" + parsed;
+                R.s("SQL Query Successful: " + Utils.upload(parsed));
             }else{
                 stmt.execute(query);
+                R.s("SQL Query Successful!");
             }
-            R.s("SQL Query Successful!");
         } catch (SQLException e ){
             R.s("Error executing SQL: " + e.getMessage());
         } catch (Exception e){
