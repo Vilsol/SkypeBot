@@ -140,7 +140,7 @@ public class Drama implements Module {
         Random r = new Random();
         for(Map.Entry<String, String[]> s : data.entrySet()){
             while(sentence.contains("[" + s.getKey() + "]")){
-                sentence = sentence.replaceFirst("[" + s.getKey() + "]", s.getValue()[r.nextInt(Arrays.asList(s.getValue()).size())]);
+                sentence = sentence.replaceFirst("\\[" + s.getKey() + "\\]", s.getValue()[r.nextInt(Arrays.asList(s.getValue()).size())]);
             }
         }
 
