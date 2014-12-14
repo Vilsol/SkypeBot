@@ -13,10 +13,10 @@ import java.util.Random;
 public class Drama implements Module {
 
     private static HashMap<String, String[]> data = new HashMap<String, String[]>() {{
-        put("people", new String[] {"Player", "jadedcat", "Alblaka", "Greg", "Eloraam", "jeb", "Notch", "Mojang", "Curse", "Searge", "Jade", "mbaxter", "Garrison", "RawCode", "Vilsol", "md_5", "sq89q", "MazenMC", "hawkfalcon", "New Bukkit Staff", "Wolvereness", "CaptainBern", "Hoolean", "drtshock", "EvilSeph", "TnT", "lukegb", "ArkhamNetwork", "Mineplex", "Hypixel", "codename_B", "Cryptkeeper", "hintss"});
+        put("people", new String[] {"jeb", "Notch", "Mojang", "Curse", "Searge", "mbaxter", "Garrison", "RawCode", "Vilsol", "md_5", "sk89q", "MazenMC", "hawkfalcon", "New Bukkit Staff", "Wolvereness", "CaptainBern", "Hoolean", "drtshock", "EvilSeph", "TnT", "lukegb", "codename_B", "Cryptkeeper", "hintss"});
         put("sites", new String[] {"Reddit", "4chan", "GitHub", "BitBucket", "IRC", "Google+", "Twitch", "Bukkit Forums", "Trident Forums", "Spigot Forums", "Sponge Forums", "The YouTube comment section"});
         put("things", new String[] {"Bukkit", "Trident", "TridentSDK", "Spigot", "Sponge", "WorldEdit", "Essentials", "WorldModify", "Google", "Spout", "ForgeCraft"});
-        put("packs", new String[] {"Feed The Beast", "the ForgeCraft pack", "FTB Monster", "FTB Unstable", "Agrarian Skies", "Direwolf20 Pack", "Tekkit", "Hexxit", "ATLauncher", "Resonant Rise", "MCUpdater", "Attack of the B-Team", "Mindcrack", "Magic Maiden", "ForgeCraft", "Technic"});
+        put("networks", new String[] {"Hypixel", "ArkhamNetwork", "Mineplex", "Minecade", "GazamoGames", "ShotBow", "KitPVP"});
         put("function", new String[] {"MJ support", "RF support", "EU support", "FMP compatibility", "quarries", "automatic mining", "GregTech balance", "ComputerCraft APIs", "OpenComputers APIs", "Bukkit plugin compatibility", "MCPC+ support", "ID allocation", "ore processing", "smelting", "crafting", "balance", "bees", "ThaumCraft integration", "realism", "decorative blocks", "new mobs", "TCon tool parts", "new wood types", "bundled cable support", "new player capes", "more drama", "less drama", "microblocks", "drama generation commands", "Blutricity support", "overpowered items", "underpowered items", "new ores", "better SMP support", "achievements", "quests", "more annoying worldgen", "virus generation", "allow viruses to be sent to the Minecraft Client"});
         put("adj", new String[] {"bad", "wrong", "illegal", "horrible", "nasty", "not in ForgeCraft", "noncompliant with Mojang's EULA", "a serious problem", "incompatible", "a waste of time", "wonderful", "amazing", "toxic", "too vanilla", "shameful", "disappointing", "bloated", "outdated", "incorrect", "full of drama", "too realistic", "too cleanroom"});
         put("badsoft", new String[] {"malware", "spyware", "adware", "DRM", "viruses", "trojans", "keyloggers", "stolen code", "easter eggs", "potential login stealers", "adf.ly links", "bad code", "stolen assets", "malicious code", "secret backdoors"});
@@ -34,9 +34,9 @@ public class Drama implements Module {
     private static String[] sentences = new String[] {
             "[people] launched a DoS attack on the website of [things]",
             "[sites] urges everyone to stop using [things]",
-            "After a [enormous] amount of requests, [packs] removes [things]",
-            "After a [enormous] amount of requests, [packs] adds [things]",
-            "After a [enormous] amount of requests, [packs] adds [function] to [things]",
+            "After a [enormous] amount of requests, [networks] removes [things]",
+            "After a [enormous] amount of requests, [networks] adds [things]",
+            "After a [enormous] amount of requests, [networks] adds [function] to [things]",
             "[people] plays [things] on Twitch",
             "[people] fixes [function] in [things] to be unlike [things]",
             "[things] makes [things] [crash], [sites] users complain",
@@ -44,23 +44,23 @@ public class Drama implements Module {
             "[people] releases [code] of [things] for [price]",
             "[sites] considers [things] worse than [things]",
             "[people] made [things] depend on [things]",
-            "[people] bans [people] from using [things] in [packs]",
+            "[people] bans [people] from using [things] in [networks]",
             "[people] complains that [things] discussion doesn't belong on [sites]",
             "[people] has a Patreon goal to add [function] to [things] for [price] a month",
             "[people] has a Patreon goal to add [things] compatibility to [things] for [price] a month",
             "[people] complains that [people] replaced [things] by [things]",
-            "[people] complains that [people] replaced [things] by [things] in [packs]",
-            "[people] complains that [people] removed [function] in [packs]",
+            "[people] complains that [people] replaced [things] by [things] in [networks]",
+            "[people] complains that [people] removed [function] in [networks]",
             "[people] decided that [things] is too [adj] and replaced it with [things]",
             "[people] [says] [things] is [adj].",
             "[people] [says] [things] is literally [adj].",
             "[things] is not updated for the latest version of Minecraft.",
-            "[people] removes [things] from [packs].",
-            "[people] adds [things] to [packs].",
+            "[people] removes [things] from [networks].",
+            "[people] adds [things] to [networks].",
             "[people] quits modding. Fans of [things] rage.",
             "[people] is found to secretly like [things]",
             "[people] openly hates [function] in [things]",
-            "[people] threatens to [ac1] [people] until they remove [things] from [packs]",
+            "[people] threatens to [ac1] [people] until they remove [things] from [networks]",
             "[people] threatens to [ac1] [people] until they remove [function] from [things]",
             "[people] threatens to [ac1] [people] until they add [function] to [things]",
             "[people] came out in support of [things]",
@@ -77,7 +77,7 @@ public class Drama implements Module {
             "[people] mocks [people]'s [code] on [sites]",
             "[people] [says] that [things] should be more like [things]",
             "[people] [says] that [things] should be less like [things]",
-            "[people] rebalances [things] for [packs]",
+            "[people] rebalances [things] for [networks]",
             "[people] adds [function] to [things] by request of [people]",
             "[people] removes [function] from [things] by request of [people]",
             "[people] removes compatibility between [things] and [things] by request of [people]",
@@ -88,7 +88,7 @@ public class Drama implements Module {
             "[people] [says] [things] is a ripoff of [things]",
             "[people] [says] [people] stole [code] from [people]",
             "[people] [says] [people] did not steal [code] from [people]",
-            "[people] decides to [ban] [people] from [packs]",
+            "[people] decides to [ban] [people] from [networks]",
             "[things] doesn't work with [things] since the latest update",
             "[people] sues [things]",
             "[people] [says] [things] is [adj] on [sites]",
@@ -122,9 +122,9 @@ public class Drama implements Module {
             "[things] makes [things] [crash] when used with [things]",
             "[things] makes [things] [crash] when used by [people]",
             "[things] makes [things] crash [things] when used by [people]",
-            "[things] adds [badsoft] that only [activates] in [packs]",
+            "[things] adds [badsoft] that only [activates] in [networks]",
             "[things] adds [badsoft] that only [activates] alongside [things]",
-            "[things] makes [people] invincible from [things] in [packs]",
+            "[things] makes [people] invincible from [things] in [networks]",
             "[people] decides to base their entire modpack on [things]",
             "[people] tweaks balance in [things] too much, annoying [sites]",
             "[people] tweaks balance in [things] too much, annoying [people]",
