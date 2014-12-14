@@ -6,6 +6,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 import me.vilsol.skypebot.engine.bot.Command;
+import me.vilsol.skypebot.engine.bot.Module;
 import me.vilsol.skypebot.engine.bot.Optional;
 import me.vilsol.skypebot.utils.R;
 
@@ -23,7 +24,7 @@ import com.skype.ChatMessage;
  *
  */
 
-public class FuckingWeather {
+public class FuckingWeather implements Module {
 
 	private static String url = "http://api.openweathermap.org/data/2.5/weather?units=imperial&q=";
 
@@ -33,11 +34,15 @@ public class FuckingWeather {
 			R.s("GIVE ME A FUCKING LOCATION!");
 		}
 		else {
-
+			try {
+				getWeather(location);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
-	public String getWeather(String location) throws JSONException, Exception {
+	public static String getWeather(String location) throws JSONException, Exception {
 		String call = (url + location).replace(' ', '+');
 		JSONObject json = new JSONObject(sendGet(call));
 
@@ -61,7 +66,7 @@ public class FuckingWeather {
 
 	}
 
-	public String sendGet(String url) throws Exception {
+	public static String sendGet(String url) throws Exception {
 
 		URL obj = new URL(url);
 		HttpURLConnection con = (HttpURLConnection) obj.openConnection();
