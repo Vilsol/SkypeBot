@@ -13,6 +13,7 @@ public class R {
     public static final String REGEX_INT = "(-?[0-9]+)";
 
     public static final String KEY_GITHUB = Utils.readFirstLine("key_github");
+    public static final String KEY_TRIDENT = Utils.readFirstLine("key_trident");
 
     public static void s(String message){
         SkypeBot.getInstance().sendMessage(message);
