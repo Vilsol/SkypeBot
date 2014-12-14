@@ -1,6 +1,6 @@
 package me.vilsol.skypebot.modules.http.cookie;
 
-import me.pauzen.jlib.misc.Entry;
+import me.vilsol.skypebot.modules.http.Entry;
 
 import java.util.HashMap;
 import java.util.Map;
