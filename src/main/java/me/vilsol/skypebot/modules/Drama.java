@@ -13,23 +13,23 @@ import java.util.Random;
 public class Drama implements Module {
 
     private static HashMap<String, String[]> data = new HashMap<String, String[]>() {{
-        put("people", new String[] {"jeb", "Notch", "Mojang", "Curse", "Searge", "mbaxter", "Garrison", "RawCode", "Vilsol", "md_5", "sk89q", "MazenMC", "hawkfalcon", "New Bukkit Staff", "Wolvereness", "CaptainBern", "Hoolean", "drtshock", "EvilSeph", "TnT", "lukegb", "codename_B", "Cryptkeeper", "hintss"});
-        put("sites", new String[] {"Reddit", "4chan", "GitHub", "BitBucket", "IRC", "Google+", "Twitch", "Bukkit Forums", "Trident Forums", "Spigot Forums", "Sponge Forums", "The YouTube comment section"});
+        put("people", new String[] {"jeb", "Notch", "Mojang", "Curse", "Searge", "mbaxter", "Garrison", "RawCode", "Vilsol", "md_5", "sk89q", "MazenMC", "hawkfalcon", "New Bukkit Staff", "Wolvereness", "CaptainBern", "Hoolean", "drtshock", "EvilSeph", "TnT", "lukegb", "codename_B", "Cryptkeeper", "hintss", "Saad", "Obama", "TheMogMiner", "TridentSDK Staff", "Reddit's Hive Mind", "r/Minecraft"});
+        put("sites", new String[] {"Reddit", "4chan", "GitHub", "BitBucket", "IRC", "Google+", "Twitch", "Bukkit Forums", "Trident Forums", "Spigot Forums", "Sponge Forums", "The YouTube comment section", "Google"});
         put("things", new String[] {"Bukkit", "Trident", "TridentSDK", "Spigot", "Sponge", "WorldEdit", "Essentials", "WorldModify", "Google", "Spout", "ForgeCraft"});
-        put("networks", new String[] {"Hypixel", "ArkhamNetwork", "Mineplex", "Minecade", "GazamoGames", "ShotBow", "KitPVP"});
+        put("networks", new String[] {"EA", "Ubisoft", "Hypixel", "ArkhamNetwork", "Mineplex", "Minecade", "GazamoGames", "ShotBow", "KitPVP"});
         put("function", new String[] {"MJ support", "RF support", "EU support", "FMP compatibility", "quarries", "automatic mining", "GregTech balance", "ComputerCraft APIs", "OpenComputers APIs", "Bukkit plugin compatibility", "MCPC+ support", "ID allocation", "ore processing", "smelting", "crafting", "balance", "bees", "ThaumCraft integration", "realism", "decorative blocks", "new mobs", "TCon tool parts", "new wood types", "bundled cable support", "new player capes", "more drama", "less drama", "microblocks", "drama generation commands", "Blutricity support", "overpowered items", "underpowered items", "new ores", "better SMP support", "achievements", "quests", "more annoying worldgen", "virus generation", "allow viruses to be sent to the Minecraft Client"});
-        put("adj", new String[] {"bad", "wrong", "illegal", "horrible", "nasty", "not in ForgeCraft", "noncompliant with Mojang's EULA", "a serious problem", "incompatible", "a waste of time", "wonderful", "amazing", "toxic", "too vanilla", "shameful", "disappointing", "bloated", "outdated", "incorrect", "full of drama", "too realistic", "too cleanroom"});
-        put("badsoft", new String[] {"malware", "spyware", "adware", "DRM", "viruses", "trojans", "keyloggers", "stolen code", "easter eggs", "potential login stealers", "adf.ly links", "bad code", "stolen assets", "malicious code", "secret backdoors"});
+        put("adj", new String[] {"bad", "wrong", "illegal", "horrible", "nasty", "not in ForgeCraft", "noncompliant with Mojang's EULA", "a serious problem", "incompatible", "a waste of time", "wonderful", "amazing", "toxic", "too vanilla", "shameful", "disappointing", "bloated", "outdated", "incorrect", "full of drama", "too realistic", "too cleanroom", "epic", "amazing", "overrated", "disgusting", "genuine", "puzzling"});
+        put("badsoft", new String[] {"malware", "spyware", "adware", "DRM", "viruses", "trojans", "keyloggers", "stolen code", "easter eggs", "potential login stealers", "adf.ly links", "bad code", "stolen assets", "malicious code", "secret backdoors", "boilerplate code", "BuzzFeed", "9gag", "Justin Bieber"});
         put("drama", new String[] {"bugs", "crashes", "drama", "lots of drama", "imbalance", "pain and suffering", "piracy", "bees", "adf.ly"});
         put("crash", new String[] {"crash", "explode", "break", "lag", "blow up", "corrupt chunks", "corrupt worlds", "rain hellfish", "spawn bees"});
         put("ban", new String[] {"ban", "kick", "put a pumpkin of shame on", "add items mocking", "blacklist", "whitelist", "give admin rights to", "shame", "destroy"});
         put("code", new String[] {"code", "assets", "ideas", "concepts", "a single function", "5 lines of code", "a class", "a few files", "a ZIP file", "Gradle buildscripts", "a GitHub repository"});
-        put("worse", new String[] {"worse", "better", "faster", "slower", "more stable", "less buggy"});
+        put("worse", new String[] {"worse", "better", "faster", "slower", "more stable", "less buggy", "stronger", "stable", "bugger"});
         put("ac1", new String[] {"sue", "destroy the life of", "flame", "cause drama about", "complain about", "kick"});
-        put("price", new String[] {"200$", "250$", "300$", "350$", "400$", "450$", "500$", "600$"});
-        put("activates", new String[] {"activates", "works", "functions", "breaks"});
-        put("says", new String[] {"says", "tweets", "claims", "confirms", "denies"});
-        put("enormous", new String[] {"big", "large", "huge", "gigantic", "enormous"});
+        put("price", new String[] {"200$", "250$", "300$", "350$", "400$", "450$", "500$", "600$", "7000$", "10000000$", "1 Billion Dollars", "2 Billion Dollars", "0.1$", "0.000001$", "1$"});
+        put("activates", new String[] {"activates", "works", "functions", "breaks", "corrupts", "destroys"});
+        put("says", new String[] {"says", "tweets", "claims", "confirms", "denies", "accepts", "posts", "notes"});
+        put("enormous", new String[] {"big", "large", "huge", "gigantic", "enormous", "tiny", "singular", "microscopic"});
     }};
     private static String[] sentences = new String[] {
             "[people] launched a DoS attack on the website of [things]",
@@ -131,6 +131,13 @@ public class Drama implements Module {
             "[people] [says] [people] is worse than [people]",
             "[people] [says] [things] is [worse] than [things]",
             "[people] bans [people] from [sites]"
+            "[people] thinks [badsoft] [networks]"
+            "[things] [ac1]s [function]"
+            "[people] hates [people]"
+            "[things] hates [things]"
+            "[people] wants to [aci] [people]"
+            "[things] is planning to release [badsoft] onto the world"
+            "[people] "
     };
 
     @Command(name = "drama")
