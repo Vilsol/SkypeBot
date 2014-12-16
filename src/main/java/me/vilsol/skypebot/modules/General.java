@@ -125,14 +125,14 @@ public class General implements Module {
 
     @Command(name="help", alias = {"commands"})
     public static void cmdHelp(ChatMessage chat){
-        String commands = "Available Commands: ";
+        String commands = "";
 
         for(Map.Entry<String, CommandData> data : ModuleManager.getCommands().entrySet()){
             if(!data.getValue().getCommand().exact()){
                 continue;
             }
 
-            if(!commands.equals("Available Commands: ")){
+            if(!commands.equals("")){
                 commands += ", ";
             }
 
@@ -143,7 +143,7 @@ public class General implements Module {
             }
         }
 
-        R.s(commands);
+        R.s("Available Commands: " + Utils.upload(commands));
     }
 
     @Command(name = "capture")
