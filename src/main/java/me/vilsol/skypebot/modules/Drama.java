@@ -130,12 +130,12 @@ public class Drama implements Module {
             "[people] tweaks balance in [things] too much, annoying [people]",
             "[people] [says] [people] is worse than [people]",
             "[people] [says] [things] is [worse] than [things]",
-            "[people] bans [people] from [sites]"
-            "[people] thinks [badsoft] [networks]"
-            "[things] [ac1]s [function]"
-            "[people] hates [people]"
-            "[things] hates [things]"
-            "[people] wants to [aci] [people]"
+            "[people] bans [people] from [sites]",
+            "[people] thinks [badsoft] [networks]",
+            "[things] [ac1]s [function]",
+            "[people] hates [people]",
+            "[things] hates [things]",
+            "[people] wants to [aci] [people]",
             "[things] is planning to release [badsoft] onto the world"
     };
 
