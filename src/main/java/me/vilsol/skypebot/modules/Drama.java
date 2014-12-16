@@ -137,7 +137,6 @@ public class Drama implements Module {
             "[things] hates [things]"
             "[people] wants to [aci] [people]"
             "[things] is planning to release [badsoft] onto the world"
-            "[people] "
     };
 
     @Command(name = "drama")
