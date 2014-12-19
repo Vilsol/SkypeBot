@@ -1,6 +1,5 @@
 package me.vilsol.skypebot.modules;
 
-import com.google.api.client.http.HttpRequest;
 import com.google.api.client.http.HttpRequestInitializer;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.JsonFactory;
@@ -44,49 +43,54 @@ public class General implements Module {
         R.s(new String[] {"Skype bot made by Vilsol", "Version: " + R.version});
     }
 
-    @Command(name = "restart", allow = {"vilsol"})
+    @Command(name = "restart", admin = true)
     public static void cmdRestart(ChatMessage chat){
         Utils.restartBot();
     }
 
     @Command(name = "ping")
-    public static void cmdPing(ChatMessage chat, @Optional final String ip) throws JSONException{
+    public static void cmdPing(ChatMessage chat, @Optional final String ip) throws JSONException, SkypeException {
         if (ip == null) {
-            R.s("Fuck yo ping!");
+            R.s("[" + chat.getSenderDisplayName() + "] Fuck yo ping!");
         } else {
             try {
                 HttpResponse<JsonNode> response = Unirest.get("https://igor-zachetly-ping-uin.p.mashape.com/pinguin.php?address=" + URLEncoder.encode(ip))
                         .header("X-Mashape-Key", "sHb3a6jczqmshcYqUEwQq3ZZR3BVp18NqaAjsnIYFvVNHMqvCb")
                         .asJson();
                 if (response.getBody().getObject().get("result").equals(false)) {
-                    R.s("Thats an invalid IP / domain silly!");
+                    R.s("[" + chat.getSenderDisplayName() + "] That is an invalid IP / domain silly!");
                 } else {
-                    R.s(ip + " - Response took " + response.getBody().getObject().get("time") + "ms");
+                    Object timeObject = response.getBody().getObject().get("time");
+                    if (timeObject == null) {
+                        R.s("[" + chat.getSenderDisplayName() + "] Could not contact IP!");
+                    } else {
+                        R.s("[" + chat.getSenderDisplayName() + "] " + ip + " - Response took " + timeObject + "ms");
+                    }
                 }
             } catch (UnirestException e) {
-                R.s("Error: " + Utils.upload(ExceptionUtils.getStackTrace(e)));
+                R.s("[" + chat.getSenderDisplayName() + "] Error: " + Utils.upload(ExceptionUtils.getStackTrace(e)));
             }
         }
     }
 
     @Command(name = "topkek")
-    public static void cmdTopKek(ChatMessage chat){
-        R.s("https://topkek.mazenmc.io/ Gotta be safe while keking!");
+    public static void cmdTopKek(ChatMessage chat) throws SkypeException {
+        R.s("[" + chat.getSenderDisplayName() + "] https://topkek.mazenmc.io/ Gotta be safe while keking!");
     }
 
     @Command(name = "doc")
-    public static void cmdDoc(ChatMessage chat){
-        R.s("https://docs.google.com/document/d/1LoTYCauVyEiiLZ5Klw3UB8rbEtkzNn7VLmgm87Fzyy0/edit#");
+    public static void cmdDoc(ChatMessage chat) throws SkypeException {
+        R.s("[" + chat.getSenderDisplayName() + "] https://docs.google.com/document/d/1LoTYCauVyEiiLZ5Klw3UB8rbEtkzNn7VLmgm87Fzyy0/edit#");
     }
 
     @Command(name = "spoon")
-    public static void cmdSpoon(ChatMessage chat){
-        R.s("There is no spoon");
+    public static void cmdSpoon(ChatMessage chat) throws SkypeException {
+        R.s("[" + chat.getSenderDisplayName() + "] There is no spoon");
     }
 
     @Command(name = "9gag", exact = false, command = false)
-    public static void cmd9Gag(ChatMessage chat){
-        R.s("Shut up 9Fag!");
+    public static void cmd9Gag(ChatMessage chat) throws SkypeException {
+        R.s("[" + chat.getSenderDisplayName() + "] Shut up 9Fag!");
     }
 
     @Command(name = "8ball")
@@ -98,7 +102,7 @@ public class General implements Module {
     }
 
     @Command(name = "random")
-    public static void cmdRandom(ChatMessage chat, int low, int high){
+    public static void cmdRandom(ChatMessage chat, int low, int high) throws SkypeException {
         if (low > high) {
             low ^= high;
             high ^= low;
@@ -106,11 +110,11 @@ public class General implements Module {
         }
 
         if((high - low) + low <= 0){
-            R.s("One number must be larger than the other");
+            R.s("[" + chat.getSenderDisplayName() + "] One number must be larger than the other");
             return;
         }
 
-        R.s(new Random().nextInt(high - low) + low);
+        R.s("[" + chat.getSenderDisplayName() + "] The random number is " + new Random().nextInt(high - low) + low);
     }
 
     @Command(name = "fish go moo", exact = false, command = false)
@@ -124,7 +128,7 @@ public class General implements Module {
     }
 
     @Command(name="help", alias = {"commands"})
-    public static void cmdHelp(ChatMessage chat){
+    public static void cmdHelp(ChatMessage chat) throws SkypeException {
         String commands = "";
 
         for(Map.Entry<String, CommandData> data : ModuleManager.getCommands().entrySet()){
@@ -143,17 +147,17 @@ public class General implements Module {
             }
         }
 
-        R.s("Available Commands: " + Utils.upload(commands));
+        R.s("[" + chat.getSenderDisplayName() + "] Available Commands: " + Utils.upload(commands));
     }
 
-    @Command(name = "capture")
-    public static void cmdCapture(ChatMessage chat){
-        R.s("Capture: " + Utils.upload(SkypeBot.getInstance().getLastStringMessages()));
+    @Command(name = "capture", admin = true)
+    public static void cmdCapture(ChatMessage chat) throws SkypeException {
+        R.s("[" + chat.getSenderDisplayName() + "] Capture: " + Utils.upload(SkypeBot.getInstance().getLastStringMessages()));
     }
 
     @Command(name = "git")
-    public static void cmdGit(ChatMessage chat){
-        R.s("Git Repository: https://github.com/Vilsol/SkypeBot");
+    public static void cmdGit(ChatMessage chat) throws SkypeException {
+        R.s("[" + chat.getSenderDisplayName() + "] Git Repository: https://github.com/Vilsol/SkypeBot");
     }
 
     @Command(name = "resolve")
@@ -167,7 +171,7 @@ public class General implements Module {
     }
 
     @Command(name = "rant")
-    public static void cmdRant(ChatMessage chat, @Optional final String question){
+    public static void cmdRant(ChatMessage chat, @Optional final String question) throws SkypeException {
         if(ranting){
             rantThread.stop();
             ranting = false;
@@ -176,7 +180,7 @@ public class General implements Module {
         }
 
         if(question == null || question.equals("")){
-            R.s("Enter a question!");
+            R.s("[" + chat.getSenderDisplayName() + "] Enter a question!");
             return;
         }
 
@@ -266,9 +270,9 @@ public class General implements Module {
     }
 
     @Command(name = "define")
-    public static void cmddefine(ChatMessage chat, String word) {
+    public static void cmddefine(ChatMessage chat, String word) throws SkypeException {
         if (word == null) {
-            R.s("Input a word / phrase silly!");
+            R.s("[" + chat.getSenderDisplayName() + "] Input a word / phrase silly!");
         } else {
             try {
                 HttpResponse<String> response = Unirest.get("https://mashape-community-urban-dictionary.p.mashape.com/define?term=" + URLEncoder.encode(word))
@@ -281,7 +285,7 @@ public class General implements Module {
                     R.s("Example - " + response.getHeaders().getFirst("example"));
                 }
             } catch (UnirestException e) {
-                R.s("Error: " + Utils.upload(ExceptionUtils.getStackTrace(e)));
+                R.s("[" + chat.getSenderDisplayName() + "] Error: " + Utils.upload(ExceptionUtils.getStackTrace(e)));
             }
         }
     }
@@ -304,21 +308,15 @@ public class General implements Module {
             }
         } else {
             try {
-                String searchText = name;
                 String key = "AIzaSyDulfiY_C1PK19PinCLmagTeMMeVlmhimI";
                 String cx = "012652707207066138651:Azudjtuwe28q";
 
-                HttpRequestInitializer httpRequestInitializer = new HttpRequestInitializer() {
+                HttpRequestInitializer httpRequestInitializer = request -> {};
 
-                    @Override
-                    public void initialize(HttpRequest request) throws IOException {
-
-                    }
-                };
                 JsonFactory jsonFactory = new JacksonFactory();
 
                 Customsearch custom = new Customsearch(new NetHttpTransport(), jsonFactory, httpRequestInitializer);
-                Customsearch.Cse.List list = custom.cse().list(searchText);
+                Customsearch.Cse.List list = custom.cse().list(name);
                 list.setCx(cx);
                 list.setKey(key);
 
@@ -338,14 +336,24 @@ public class General implements Module {
     }
 
     @Command(name = "night", command = false)
-    public static void cmdNight(ChatMessage chat){
-        R.s("Sleep is for pussies!");
+    public static void cmdNight(ChatMessage chat) throws SkypeException {
+        R.s("[" + chat.getSenderDisplayName() + "] Sleep is for pussies!");
+    }
+
+    @Command(name = "hailmazen", alias = {"mazenisgod"})
+    public static void cmdHailMazen(ChatMessage chat) throws SkypeException {
+        R.s("[" + chat.getSenderDisplayName() + "] ALL HAIL OUR LEADER, https://i.imgur.com/AX4AGnW.jpg");
+    }
+
+    @Command(name = "rekt")
+    public static void cmdRekt(ChatMessage chat) throws SkypeException {
+        R.s("[" + chat.getSenderDisplayName() + "] ☑ #rekt");
     }
 
     @Command(name = "sql")
-    public static void cmdSQL(ChatMessage chat, String query) throws SQLException{
+    public static void cmdSQL(ChatMessage chat, String query) throws SQLException, SkypeException {
         if(SkypeBot.getInstance().getDatabase() == null){
-            R.s("Connection is down!");
+            R.s("[" + chat.getSenderDisplayName() + "] Connection is down!");
             return;
         }
 

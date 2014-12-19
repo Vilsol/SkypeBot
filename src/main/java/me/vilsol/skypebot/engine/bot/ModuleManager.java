@@ -42,10 +42,9 @@ public class ModuleManager {
     }
 
     private static void executeCommand(ChatMessage message, CommandData data, Matcher m){
-
-        if(data.getCommand().allow() != null && data.getCommand().allow().length > 0){
+        if(data.getCommand().disallow() != null && data.getCommand().disallow().length > 0){
             try{
-                if(!Arrays.asList(data.getCommand().allow()).contains(message.getSenderId())){
+                if(Arrays.asList(data.getCommand().disallow()).contains(message.getSenderId())){
                     R.s("Access Denied!");
                     return;
                 }
@@ -54,9 +53,9 @@ public class ModuleManager {
             }
         }
 
-        if(data.getCommand().disallow() != null && data.getCommand().disallow().length > 0){
+        if (data.getCommand().admin()) {
             try{
-                if(Arrays.asList(data.getCommand().disallow()).contains(message.getSenderId())){
+                if(Arrays.asList(R.GROUP_ADMINS).contains(message.getSenderId())){
                     R.s("Access Denied!");
                     return;
                 }
