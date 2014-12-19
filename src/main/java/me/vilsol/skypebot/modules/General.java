@@ -31,8 +31,17 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Map;
 import java.util.Random;
+import java.util.ArrayList;
+import java.util.List;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
 
 public class General implements Module {
+    
+    private static final String URBAN_DICTIONARY_URL = "http://www.urbandictionary.com/define.php?term=";
 
     private static ChatterBotSession cleverBot;
     private static ChatterBotSession jabberWacky;
@@ -87,6 +96,22 @@ public class General implements Module {
     @Command(name = "9gag", exact = false, command = false)
     public static void cmd9Gag(ChatMessage chat){
         R.s("Shut up 9Fag!");
+    }
+    
+    @Command(name = "define")
+    public void onDefine(ChatMessage chatMessage) throws SkypeException, IOException {
+        String word = chatMessage.getContent();
+
+        BufferedReader reader = new BufferedReader(new InputStreamReader(Unirest.get(URBAN_DICTIONARY_URL + word).getBody().getEntity().getContent()));
+
+        List<String> lines = new ArrayList<>(400);
+        for (int i = 0; i < 400; i++) lines.add(reader.readLine());
+
+        int definitionStart = lines.indexOf("<div class='meaning'>");
+        String definition = lines.get(definitionStart + 1);
+        definition = definition.replaceAll("<a href=\"\\/define\\.php\\?term=[a-z]*\">", "");
+        definition = definition.replace("</a>", "");
+        R.s("Definition of " + word + ": " + definition);
     }
 
     @Command(name = "8ball")
