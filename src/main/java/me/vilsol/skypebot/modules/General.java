@@ -150,11 +150,6 @@ public class General implements Module {
         R.s("[" + chat.getSenderDisplayName() + "] Available Commands: " + Utils.upload(commands));
     }
 
-    @Command(name = "capture", admin = true)
-    public static void cmdCapture(ChatMessage chat) throws SkypeException {
-        R.s("[" + chat.getSenderDisplayName() + "] Capture: " + Utils.upload(SkypeBot.getInstance().getLastStringMessages()));
-    }
-
     @Command(name = "git")
     public static void cmdGit(ChatMessage chat) throws SkypeException {
         R.s("[" + chat.getSenderDisplayName() + "] Git Repository: https://github.com/Vilsol/SkypeBot");
