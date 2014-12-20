@@ -280,8 +280,6 @@ public class General implements Module {
 
     @Command(name = "define")
     public static void cmddefine(ChatMessage chat, String word) throws Exception {
-            String word = chatMessage.getContent();
-
             BufferedReader reader = new BufferedReader(new InputStreamReader(Unirest.get(URBAN_DICTIONARY_URL + word).getBody().getEntity().getContent()));
 
             List<String> lines = new ArrayList<>(400);
