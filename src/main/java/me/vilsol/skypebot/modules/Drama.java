@@ -1,6 +1,7 @@
 package me.vilsol.skypebot.modules;
 
 import com.skype.ChatMessage;
+import com.skype.SkypeException;
 import me.vilsol.skypebot.engine.bot.Command;
 import me.vilsol.skypebot.engine.bot.Module;
 import me.vilsol.skypebot.utils.R;
@@ -144,7 +145,7 @@ public class Drama implements Module {
     };
 
     @Command(name = "drama")
-    public static void cmdDrama(ChatMessage chat){
+    public static void cmdDrama(ChatMessage chat) throws SkypeException {
         String sentence = sentences[new Random().nextInt(Arrays.asList(sentences).size())];
 
         Random r = new Random();
@@ -154,7 +155,7 @@ public class Drama implements Module {
             }
         }
 
-        R.s(sentence);
+        R.s("[" + chat.getSenderDisplayName() + "] " + sentence);
     }
 
 }

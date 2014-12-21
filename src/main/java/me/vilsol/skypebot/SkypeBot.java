@@ -3,10 +3,7 @@ package me.vilsol.skypebot;
 import com.google.code.chatterbotapi.ChatterBotFactory;
 import com.google.code.chatterbotapi.ChatterBotSession;
 import com.google.code.chatterbotapi.ChatterBotType;
-import com.skype.ChatMessage;
-import com.skype.ChatMessageAdapter;
 import com.skype.Skype;
-import com.skype.SkypeException;
 import me.vilsol.skypebot.api.API;
 import me.vilsol.skypebot.engine.bot.ModuleManager;
 import me.vilsol.skypebot.engine.bot.Printer;
@@ -21,11 +18,7 @@ import org.restlet.data.Protocol;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Properties;
-import java.util.Queue;
-import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class SkypeBot {
 
@@ -33,8 +26,6 @@ public class SkypeBot {
 
     private boolean locked = false;
     private UpdateChecker updateChecker;
-    private Queue<ChatMessage> messages = new ConcurrentLinkedQueue<>();
-    private Queue<String> stringMessages = new ConcurrentLinkedQueue<>();
     private ChatterBotSession bot;
     private Server apiServer;
     private Printer printer;
@@ -54,21 +45,6 @@ public class SkypeBot {
         ModuleManager.loadModules("me.vilsol.skypebot.modules");
 
         Skype.setDaemon(false);
-        try{
-            Skype.addChatMessageListener(new ChatMessageAdapter() {
-                public void chatMessageReceived(ChatMessage received) throws SkypeException{
-                    if(messages.size() > 100){
-                        messages.remove();
-                        stringMessages.remove();
-                    }
-
-                    stringMessages.add(Utils.serializeMessage(received));
-                    messages.add(received);
-                    ModuleManager.parseText(received);
-                }
-            });
-        }catch(SkypeException ignored){
-        }
 
         updateChecker = new UpdateChecker();
         updateChecker.start();
@@ -114,34 +90,6 @@ public class SkypeBot {
 
     public void addToQueue(String[] message){
         printer.addToQueue(message);
-    }
-
-    public List<ChatMessage> getLastMessages(){
-        List<ChatMessage> list = new LinkedList<>();
-        Queue<ChatMessage> newMessages = new ConcurrentLinkedQueue<>();
-
-        messages.stream().forEach(m -> {
-            list.add(m);
-            newMessages.add(m);
-        });
-
-        messages = newMessages;
-
-        return list;
-    }
-
-    public List<String> getLastStringMessages(){
-        List<String> list = new LinkedList<>();
-        Queue<String> newMessages = new ConcurrentLinkedQueue<>();
-
-        stringMessages.stream().forEach(m -> {
-            list.add(m);
-            newMessages.add(m);
-        });
-
-        stringMessages = newMessages;
-
-        return list;
     }
 
     public String askQuestion(String question){

@@ -1,6 +1,7 @@
 package me.vilsol.skypebot.modules;
 
 import com.skype.ChatMessage;
+import com.skype.SkypeException;
 import me.vilsol.skypebot.utils.R;
 import me.vilsol.skypebot.engine.bot.Command;
 import me.vilsol.skypebot.engine.bot.Module;
@@ -15,7 +16,7 @@ public class Swear implements Module {
             {SwearType.gilles, SwearType.handelend}};
 
     @Command(name = "swear")
-    public static void cmdSwear(ChatMessage message){
+    public static void cmdSwear(ChatMessage chat) throws SkypeException {
         SwearType[] combination = combinations[new Random().nextInt(combinations.length)];
         String output = "";
         for(SwearType s : combination){
@@ -26,7 +27,7 @@ public class Swear implements Module {
             output += s.getRandomWord();
         }
 
-        R.s(output.toUpperCase());
+        R.s("[" + chat.getSenderDisplayName() + "] " + output.toUpperCase());
     }
 
     public enum SwearType {
