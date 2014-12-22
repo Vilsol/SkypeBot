@@ -24,24 +24,20 @@ import me.vilsol.skypebot.utils.Utils;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.json.JSONException;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.URLEncoder;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Map;
-import java.util.Random;
 import java.util.ArrayList;
 import java.util.List;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.util.Map;
+import java.util.Random;
 
 
 public class General implements Module {
-    
-    private static final String URBAN_DICTIONARY_URL = "http://www.urbandictionary.com/define.php?term=";
 
     private static ChatterBotSession cleverBot;
     private static ChatterBotSession jabberWacky;
@@ -98,10 +94,6 @@ public class General implements Module {
         R.s("Shut up 9Fag!");
     }
     
-    @Command(name = "define")
-    public void onDefine(ChatMessage chatMessage) throws SkypeException, IOException {
-    }
-
     @Command(name = "8ball")
     public static void cmd8Ball(ChatMessage chat, @Optional
     String question){
@@ -280,7 +272,7 @@ public class General implements Module {
 
     @Command(name = "define")
     public static void cmddefine(ChatMessage chat, String word) throws Exception {
-            BufferedReader reader = new BufferedReader(new InputStreamReader(Unirest.get(URBAN_DICTIONARY_URL + word).getBody().getEntity().getContent()));
+            BufferedReader reader = new BufferedReader(new InputStreamReader(Unirest.get(R.URBAN_DICTIONARY_URL + word).getBody().getEntity().getContent()));
 
             List<String> lines = new ArrayList<>(400);
             for (int i = 0; i < 400; i++) lines.add(reader.readLine());
@@ -348,6 +340,11 @@ public class General implements Module {
         R.s("Sleep is for pussies!");
     }
 
+    @Command(name = "shut up pussy", command = false)
+    public static void cmdPussy(ChatMessage chat){
+        R.s("Oookay.... :(");
+    }
+
     @Command(name = "sql")
     public static void cmdSQL(ChatMessage chat, String query) throws SQLException{
         if(SkypeBot.getInstance().getDatabase() == null){
@@ -377,6 +374,21 @@ public class General implements Module {
                 stmt.close();
             }
         }
+    }
+
+    @Command(name = "md5")
+    public static void cmdMd5(ChatMessage chat){
+        String s = "md_1 = 1% of devs (people who know their shit)\n" +
+                "md_2 = uses one class for everything\n" +
+                "md_3 = true == true, yoo!\n" +
+                "md_4 = New instance to call static methods\n" +
+                "md_5 = reflects his own classes\n" +
+                "md_6 = return this; on everything\n" +
+                "md_7 = abstract? never heard of it\n" +
+                "md_8 = interface? never heard of it\n" +
+                "md_9 = enum? never heard of it\n" +
+                "md_10 = java? never heard of it";
+        R.s(s);
     }
 
 }

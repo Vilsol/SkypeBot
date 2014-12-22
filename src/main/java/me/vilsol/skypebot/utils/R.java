@@ -15,6 +15,8 @@ public class R {
     public static final String KEY_GITHUB = Utils.readFirstLine("key_github");
     public static final String KEY_TRIDENT = Utils.readFirstLine("key_trident");
 
+    public static final String URBAN_DICTIONARY_URL = "http://www.urbandictionary.com/define.php?term=";
+
     public static void s(String message){
         SkypeBot.getInstance().sendMessage(message);
     }
