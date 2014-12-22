@@ -31,8 +31,17 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Map;
 import java.util.Random;
+import java.util.ArrayList;
+import java.util.List;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
 
 public class General implements Module {
+    
+    private static final String URBAN_DICTIONARY_URL = "http://www.urbandictionary.com/define.php?term=";
 
     private static ChatterBotSession cleverBot;
     private static ChatterBotSession jabberWacky;
@@ -87,6 +96,10 @@ public class General implements Module {
     @Command(name = "9gag", exact = false, command = false)
     public static void cmd9Gag(ChatMessage chat){
         R.s("Shut up 9Fag!");
+    }
+    
+    @Command(name = "define")
+    public void onDefine(ChatMessage chatMessage) throws SkypeException, IOException {
     }
 
     @Command(name = "8ball")
@@ -266,24 +279,17 @@ public class General implements Module {
     }
 
     @Command(name = "define")
-    public static void cmddefine(ChatMessage chat, String word) {
-        if (word == null) {
-            R.s("Input a word / phrase silly!");
-        } else {
-            try {
-                HttpResponse<String> response = Unirest.get("https://mashape-community-urban-dictionary.p.mashape.com/define?term=" + URLEncoder.encode(word))
-                        .header("X-Mashape-Key", "sHb3a6jczqmshcYqUEwQq3ZZR3BVp18NqaAjsnIYFvVNHMqvCb")
-                        .asString();
-                if (response.getHeaders().getFirst("result_type").equals("no_results")) {
-                } else {
-                    R.s("Word / Phrase - " + response.getHeaders().getFirst("word"));
-                    R.s("Definition - " + response.getHeaders().getFirst("definition"));
-                    R.s("Example - " + response.getHeaders().getFirst("example"));
-                }
-            } catch (UnirestException e) {
-                R.s("Error: " + Utils.upload(ExceptionUtils.getStackTrace(e)));
-            }
-        }
+    public static void cmddefine(ChatMessage chat, String word) throws Exception {
+            BufferedReader reader = new BufferedReader(new InputStreamReader(Unirest.get(URBAN_DICTIONARY_URL + word).getBody().getEntity().getContent()));
+
+            List<String> lines = new ArrayList<>(400);
+            for (int i = 0; i < 400; i++) lines.add(reader.readLine());
+
+            int definitionStart = lines.indexOf("<div class='meaning'>");
+            String definition = lines.get(definitionStart + 1);
+            definition = definition.replaceAll("<a href=\"\\/define\\.php\\?term=[a-z]*\">", "");
+            definition = definition.replace("</a>", "");
+            R.s("Definition of " + word + ": " + definition);
     }
 
     @Command(name = "relevantxkcd")
