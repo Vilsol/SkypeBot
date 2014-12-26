@@ -23,10 +23,13 @@ import me.vilsol.skypebot.utils.R;
 import me.vilsol.skypebot.utils.Utils;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.json.JSONException;
+import org.jsoup.Jsoup;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.net.URLEncoder;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -272,16 +275,20 @@ public class General implements Module {
 
     @Command(name = "define")
     public static void cmddefine(ChatMessage chat, String word) throws Exception {
-            BufferedReader reader = new BufferedReader(new InputStreamReader(Unirest.get(R.URBAN_DICTIONARY_URL + word).getBody().getEntity().getContent()));
+        HttpURLConnection connection = (HttpURLConnection) new URL(R.URBAN_DICTIONARY_URL + URLEncoder.encode(word)).openConnection();
+        connection.connect();
 
-            List<String> lines = new ArrayList<>(400);
-            for (int i = 0; i < 400; i++) lines.add(reader.readLine());
+        BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
 
-            int definitionStart = lines.indexOf("<div class='meaning'>");
-            String definition = lines.get(definitionStart + 1);
-            definition = definition.replaceAll("<a href=\"\\/define\\.php\\?term=[a-z]*\">", "");
-            definition = definition.replace("</a>", "");
-            R.s("Definition of " + word + ": " + definition);
+        List<String> lines = new ArrayList<>(400);
+        for (int i = 0; i < 400; i++) lines.add(reader.readLine());
+
+        int definitionStart = lines.indexOf("<div class='meaning'>");
+        String definition = lines.get(definitionStart + 1);
+        definition = definition.replaceAll("<a href=\"\\/define\\.php\\?term=[a-z]*\">", "");
+        definition = definition.replace("</a>", "");
+
+        R.s("Definition of " + word + ": " + Jsoup.parse(definition).text());
     }
 
     @Command(name = "relevantxkcd")
@@ -389,6 +396,12 @@ public class General implements Module {
                 "md_9 = enum? never heard of it\n" +
                 "md_10 = java? never heard of it";
         R.s(s);
+    }
+
+    @Command(name = "joke")
+    public static void cmdJoke(ChatMessage chat) throws UnirestException, JSONException{
+        HttpResponse<JsonNode> b = Unirest.get(R.JOKE_URL).asJson();
+        R.s(b.getBody().getObject().getString("joke"));
     }
 
 }

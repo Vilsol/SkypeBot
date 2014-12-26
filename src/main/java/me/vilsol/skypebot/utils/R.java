@@ -16,6 +16,7 @@ public class R {
     public static final String KEY_TRIDENT = Utils.readFirstLine("key_trident");
 
     public static final String URBAN_DICTIONARY_URL = "http://www.urbandictionary.com/define.php?term=";
+    public static final String JOKE_URL = "http://www.sickjokegenerator.com/ajax/getJoke.php";
 
     public static void s(String message){
         SkypeBot.getInstance().sendMessage(message);
