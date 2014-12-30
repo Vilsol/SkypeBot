@@ -359,6 +359,16 @@ public class General implements Module {
             return;
         }
 
+        if(query.toUpperCase().contains("DROP DATABASE") || query.toUpperCase().contains("CREATE DATABASE") || query.toUpperCase().contains("USE")){
+            R.s("Do not touch the databases!");
+            return;
+        }
+
+        if(query.toUpperCase().contains("INFORMATION_SCHEMA")){
+            R.s("Not that fast!");
+            return;
+        }
+
         Statement stmt = null;
 
         try {
@@ -373,7 +383,9 @@ public class General implements Module {
                 R.s("SQL Query Successful!");
             }
         } catch (SQLException e ){
-            R.s("Error executing SQL: " + e.getMessage());
+            String message = e.getMessage();
+            message = message.replace("You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near", "");
+            R.s("Error executing SQL: " + message);
         } catch (Exception e){
             R.s("Error: " + Utils.upload(ExceptionUtils.getStackTrace(e)));
         } finally {

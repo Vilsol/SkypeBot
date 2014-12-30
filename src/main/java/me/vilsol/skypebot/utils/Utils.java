@@ -4,6 +4,7 @@ import com.google.common.base.Joiner;
 import com.skype.ChatMessage;
 import com.skype.SkypeException;
 import me.vilsol.skypebot.Main;
+import me.vilsol.skypebot.SkypeBot;
 import org.apache.commons.codec.digest.DigestUtils;
 import sun.misc.BASE64Encoder;
 
@@ -113,6 +114,12 @@ public class Utils {
     public static void restartBot(){
         R.s("/me " + R.version + " Restarting...");
         System.out.println("Restarting...");
+        while(!SkypeBot.getInstance().isQueueEmpty()){
+            try{
+                Thread.sleep(100);
+            }catch(InterruptedException ignored){
+            }
+        }
         System.exit(0);
     }
 

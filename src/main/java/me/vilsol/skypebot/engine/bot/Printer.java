@@ -84,6 +84,10 @@ public class Printer extends Thread implements ClipboardOwner {
         robot.keyRelease(KeyEvent.VK_ENTER);
     }
 
+    public boolean isQueueEmpty(){
+        return messageQueue.size() > 0;
+    }
+
     @Override
     public void lostOwnership(Clipboard clipboard, Transferable contents){
     }
