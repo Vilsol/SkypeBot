@@ -135,7 +135,7 @@ public class Drama implements Module {
             "[things] [ac1]s [function]",
             "[people] hates [people]",
             "[things] hates [things]",
-            "[people] wants to [aci] [people]",
+            "[people] wants to [ac1] [people]",
             "[things] is planning to release [badsoft] onto the world",
             "[people] is forking [things]",
             "[people] is forking [things] because of vigorous complaints from [sites]",
