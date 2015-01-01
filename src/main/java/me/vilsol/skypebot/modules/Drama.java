@@ -131,7 +131,6 @@ public class Drama implements Module {
             "[people] [says] [people] is worse than [people]",
             "[people] [says] [things] is [worse] than [things]",
             "[people] bans [people] from [sites]",
-            "[people] thinks [badsoft] [networks]",
             "[things] [ac1]s [function]",
             "[people] hates [people]",
             "[things] hates [things]",
