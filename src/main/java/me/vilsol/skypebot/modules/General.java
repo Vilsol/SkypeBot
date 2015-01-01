@@ -418,6 +418,12 @@ public class General implements Module {
         R.s(b.getBody().getObject().getString("joke"));
     }
 
+    @Command(name = "servername")
+    public static void cmdServername(ChatMessage chat) throws UnirestException{
+        String list = R.SERVINATOR_LISTS.get(new Random().nextInt(R.SERVINATOR_LISTS.size()));
+        R.s(Unirest.get(R.SERVINATOR_BASE_URL + list).asString().getBody());
+    }
+
     @Command(name = "cloudflare")
     public static void cmdCloudflare(ChatMessage chat, String url) throws UnirestException{
         if(url.startsWith("http://")){

@@ -1,6 +1,9 @@
 package me.vilsol.skypebot.utils;
 
+import com.google.common.collect.ImmutableList;
 import me.vilsol.skypebot.SkypeBot;
+
+import java.util.List;
 
 public class R {
 
@@ -17,6 +20,8 @@ public class R {
 
     public static final String URBAN_DICTIONARY_URL = "http://www.urbandictionary.com/define.php?term=";
     public static final String JOKE_URL = "http://www.sickjokegenerator.com/ajax/getJoke.php";
+    public static final String SERVINATOR_BASE_URL = "http://servinator.minimum.io/generate/";
+    public static final List<String> SERVINATOR_LISTS = ImmutableList.of("latin-derived", "generic-english");
 
     public static void s(String message){
         SkypeBot.getInstance().sendMessage(message);
