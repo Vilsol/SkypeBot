@@ -129,7 +129,7 @@ public class Utils {
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
             con.setRequestMethod("POST");
             con.setInstanceFollowRedirects(true);
-            String postData = "id=" + URLEncoder.encode(name, "UTF-8");
+            String postData = "submit=submit&skypeUsername=" + URLEncoder.encode(name, "UTF-8");
             con.setRequestProperty("Content-length", String.valueOf(postData.length()));
             con.setRequestProperty("User-Agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/40.0.2214.10 Safari/537.36");
             con.setDoOutput(true);
@@ -144,7 +144,7 @@ public class Utils {
             }
             input.close();
             String result = resultBuf.toString();
-            Pattern p = Pattern.compile("<input type=\"text\" name=\"id\" value=\"(.*)\" placeholder=\"Skype Username\"/><br>");
+            Pattern p = Pattern.compile("<div id='resolve' class='alert alert-success'>(.*)<center><b>");
             Matcher m = p.matcher(result);
             if(m.find()){
                 return m.group(1);
