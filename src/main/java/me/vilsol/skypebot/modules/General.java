@@ -473,7 +473,7 @@ public class General implements Module {
             if(resolved.size() > 0){
                 R.s(url + ": " + Joiner.on(", ").join(resolved));
             }else{
-                R.s("No IP's Found!");
+                R.s(url + ": No IP's Found!");
             }
         }else{
             R.s("Domain Unresolvable!");
