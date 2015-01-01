@@ -470,9 +470,13 @@ public class General implements Module {
                 }
             }
 
-            R.s(url + ": " + Joiner.on(", ").join(resolved));
+            if(resolved.size() > 0){
+                R.s(url + ": " + Joiner.on(", ").join(resolved));
+            }else{
+                R.s("No IP's Found!");
+            }
         }else{
-            R.s("Domain Unresolvable");
+            R.s("Domain Unresolvable!");
         }
     }
 
