@@ -61,7 +61,7 @@ public class General implements Module {
 
     @Command(name = "lenny")
     public static void cmdLenny(ChatMessage chat) {
-        R.s("( ͡° ͜ʖ ͡°)");
+        R.s("( \u0361\u00B0 \u035C\u0296 \u0361\u00B0))");
     }
 
     @Command(name = "ping")
