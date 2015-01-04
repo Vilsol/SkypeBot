@@ -59,6 +59,11 @@ public class General implements Module {
         Utils.restartBot();
     }
 
+    @Command(name = "lenny")
+    public static void cmdLenny(ChatMessage chat) {
+        R.s("( \u0361\u00B0 \u035C\u0296 \u0361\u00B0))");
+    }
+
     @Command(name = "ping")
     public static void cmdPing(ChatMessage chat, @Optional final String ip) throws JSONException{
         if (ip == null) {
