@@ -194,8 +194,8 @@ public class ModuleManager {
             Command c = d.getCommand();
 
             String correct = commandSplit[0];
-            if (!d.getParamaterNames().equals("")) {
-                correct += " " + d.getParamaterNames();
+            if (!d.getParameterNames().equals("")) {
+                correct += " " + d.getParameterNames();
             }
 
             if (c.command()) {

@@ -58,7 +58,7 @@ public class CommandData {
         return method;
     }
 
-    public String getParamaterNames() {
+    public String getParameterNames() {
         List<String> names = new LinkedList<>();
 
         parameters.values().stream().forEach(p -> {

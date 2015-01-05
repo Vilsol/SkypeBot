@@ -190,8 +190,8 @@ public class General implements Module {
 
             commands += Resource.COMMAND_PREFIX + data.getKey();
 
-            if (!data.getValue().getParamaterNames().equals("")) {
-                commands += " " + data.getValue().getParamaterNames();
+            if (!data.getValue().getParameterNames().equals("")) {
+                commands += " " + data.getValue().getParameterNames();
             }
         }
 
