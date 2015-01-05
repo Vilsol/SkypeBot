@@ -189,12 +189,6 @@ public class General implements Module {
         Resource.sendMessage("Available Commands: " + Utils.upload(commands));
     }
 
-    @Command(name = "joke")
-    public static void cmdJoke(ChatMessage chat) throws UnirestException, JSONException {
-        HttpResponse<JsonNode> b = Unirest.get(Resource.JOKE_URL).asJson();
-        Resource.sendMessage(b.getBody().getObject().getString("joke"));
-    }
-
     @Command(name = "lmgtfy")
     public static void cmdLmgtfy(ChatMessage chat, String question) throws SkypeException {
         //Thanks DevRoMc for the idea. - ibJarrett
