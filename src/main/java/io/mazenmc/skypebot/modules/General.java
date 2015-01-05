@@ -58,11 +58,6 @@ public class General implements Module {
         Resource.sendMessage(options[chosen]);
     }
 
-    @Command(name = "9gag", exact = false, command = false)
-    public static void cmd9Gag(ChatMessage chat) {
-        Resource.sendMessage("Shut up 9Fag!");
-    }
-
     @Command(name = "about")
     public static void cmdAbout(ChatMessage chat) {
         Resource.sendMessage(new String[]{"Skype bot made by Vilsol, MazenMC & stuntguy3000", "Version: " + Resource.VERSION});
@@ -87,68 +82,6 @@ public class General implements Module {
     @Command(name = "c")
     public static void cmdC(ChatMessage chat, String question) throws SkypeException {
         Resource.sendMessage("[" + chat.getSenderDisplayName() + "] " + SkypeBot.getInstance().askQuestion(question));
-    }
-
-    @Command(name = "cloudflare")
-    public static void cmdCloudflare(ChatMessage chat, String url) throws UnirestException {
-        if (url.startsWith("http://")) {
-            url = url.substring(7);
-        } else if (url.startsWith("https://")) {
-            url = url.substring(8);
-        }
-
-        if (url.startsWith("www")) {
-            url = url.substring(3);
-        }
-
-        if (url.contains("/")) {
-            url = url.split("/")[0];
-        }
-
-        HttpRequestWithBody request = Unirest.post("http://iphostinfo.com/cloudflare/" + url);
-        request.field("cfdns", url);
-
-        HttpResponse<String> response = request.asString();
-        String body = response.getBody();
-
-        Pattern p = Pattern.compile("<TR><TD>(.*)</TD></TR>");
-        Matcher m = p.matcher(body);
-
-        if (m.find()) {
-            String data = m.group();
-
-            Pattern x = Pattern.compile("<b>(.*)</b></a>");
-
-            List<String> resolved = new ArrayList<>();
-
-            data = data.replaceAll("</TR>\\s<TR>", "</TR><TR>");
-
-            for (String sub : data.split("</TR><TR>")) {
-                Matcher z = x.matcher(sub);
-                if (z.find()) {
-                    Pattern c = Pattern.compile("<TD>(.*)</TD> <TD>");
-                    Matcher v = c.matcher(sub);
-                    v.find();
-
-                    String ip = z.group();
-                    ip = ip.substring(3, ip.length() - 8);
-
-                    String name = v.group();
-                    name = name.substring(4, name.length() - 11);
-                    name = name.replace("." + url, "");
-
-                    resolved.add(name + ":" + ip);
-                }
-            }
-
-            if (resolved.size() > 0) {
-                Resource.sendMessage(url + ": " + Joiner.on(", ").join(resolved));
-            } else {
-                Resource.sendMessage(url + ": No IP's Found!");
-            }
-        } else {
-            Resource.sendMessage("Domain Unresolvable!");
-        }
     }
 
     @Command(name = "doc")
@@ -322,11 +255,6 @@ public class General implements Module {
         rantThread.start();
     }
 
-    @Command(name = "resolve")
-    public static void cmdResolve(ChatMessage chat, String user) {
-        Resource.sendMessage(user + ": " + Utils.resolveSkype(user));
-    }
-
     @Command(name = "restart", admin = true)
     public static void cmdRestart(ChatMessage chat) {
         Utils.restartBot();
@@ -373,11 +301,6 @@ public class General implements Module {
                 stmt.close();
             }
         }
-    }
-
-    @Command(name = "spoon")
-    public static void cmdSpoon(ChatMessage chat) {
-        Resource.sendMessage("There is no spoon");
     }
 
     @Command(name = "topkek")
