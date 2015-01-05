@@ -14,7 +14,7 @@ public class UpdateChecker extends Thread {
 
             String newHash = Utils.getMD5Hash(Utils.getJarName());
             if (!newHash.equals(lastHash)) {
-                Util.sendMessage("Updated Jar Detected!");
+                Resource.sendMessage("Updated Jar Detected!");
                 Utils.restartBot();
             }
         }

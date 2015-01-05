@@ -3,7 +3,7 @@ package io.mazenmc.skypebot.modules;
 import com.skype.ChatMessage;
 import io.mazenmc.skypebot.engine.bot.Command;
 import io.mazenmc.skypebot.engine.bot.Module;
-import io.mazenmc.skypebot.utils.Util;
+import io.mazenmc.skypebot.utils.Resource;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -153,7 +153,7 @@ public class Drama implements Module {
             }
         }
 
-        Util.sendMessage(sentence);
+        Resource.sendMessage(sentence);
     }
 
 }

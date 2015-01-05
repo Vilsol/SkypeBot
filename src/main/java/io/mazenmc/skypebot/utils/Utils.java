@@ -231,7 +231,7 @@ public class Utils {
     }
 
     public static void restartBot() {
-        Util.sendMessage("/me " + Util.VERSION + " Restarting...");
+        Resource.sendMessage("/me " + Resource.VERSION + " Restarting...");
         System.out.println("Restarting...");
         while (!SkypeBot.getInstance().isQueueEmpty()) {
             try {

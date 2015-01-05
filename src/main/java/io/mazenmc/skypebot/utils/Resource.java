@@ -2,7 +2,7 @@ package io.mazenmc.skypebot.utils;
 
 import io.mazenmc.skypebot.SkypeBot;
 
-public class Util {
+public class Resource {
 
     public static final String COMMAND_PREFIX = "@";
     public static final String[] GROUP_ADMINS = {"stuntguy3000", "gnosticjade", "heycallmethemezand"};

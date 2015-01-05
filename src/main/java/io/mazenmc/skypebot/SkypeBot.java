@@ -10,8 +10,8 @@ import com.skype.SkypeException;
 import io.mazenmc.skypebot.api.API;
 import io.mazenmc.skypebot.engine.bot.ModuleManager;
 import io.mazenmc.skypebot.engine.bot.Printer;
+import io.mazenmc.skypebot.utils.Resource;
 import io.mazenmc.skypebot.utils.UpdateChecker;
-import io.mazenmc.skypebot.utils.Util;
 import io.mazenmc.skypebot.utils.Utils;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.restlet.Component;
@@ -98,10 +98,10 @@ public class SkypeBot {
         try {
             database = DriverManager.getConnection("jdbc:mysql://localhost:3306/skype_bot", connectionProps);
         } catch (SQLException e) {
-            Util.sendMessage("Failed to connect to database: " + Utils.upload(ExceptionUtils.getStackTrace(e)));
+            Resource.sendMessage("Failed to connect to database: " + Utils.upload(ExceptionUtils.getStackTrace(e)));
         }
 
-        Util.sendMessage("/me " + Util.VERSION + " initialized!");
+        Resource.sendMessage("/me " + Resource.VERSION + " initialized!");
     }
 
     public void addToQueue(String[] message) {

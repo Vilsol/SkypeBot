@@ -2,7 +2,7 @@ package io.mazenmc.skypebot.engine.bot;
 
 import com.skype.ChatMessage;
 import com.skype.SkypeException;
-import io.mazenmc.skypebot.utils.Util;
+import io.mazenmc.skypebot.utils.Resource;
 import io.mazenmc.skypebot.utils.Utils;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.reflections.Reflections;
@@ -23,8 +23,8 @@ public class ModuleManager {
     private static void executeCommand(ChatMessage message, CommandData data, Matcher m) {
         if (data.getCommand().admin()) {
             try {
-                if (Arrays.asList(Util.GROUP_ADMINS).contains(message.getSenderId())){
-                    Util.sendMessage("Access Denied!");
+                if (Arrays.asList(Resource.GROUP_ADMINS).contains(message.getSenderId())) {
+                    Resource.sendMessage("Access Denied!");
                     return;
                 }
             } catch(SkypeException ignored) {
@@ -70,13 +70,13 @@ public class ModuleManager {
                 methodAccessor = (MethodAccessor) acquireMethodAccessorMethod.invoke(data.getMethod(), null);
             }
         } catch (NoSuchFieldException | InvocationTargetException | IllegalAccessException | NoSuchMethodException e) {
-            Util.sendMessage("Failed... (" + ExceptionUtils.getStackTrace(e) + ")");
+            Resource.sendMessage("Failed... (" + ExceptionUtils.getStackTrace(e) + ")");
         }
 
         try {
             methodAccessor.invoke(null, a.toArray());
         } catch (Exception e) {
-            Util.sendMessage("Failed... (" + Utils.upload(ExceptionUtils.getStackTrace(e)) + ")");
+            Resource.sendMessage("Failed... (" + Utils.upload(ExceptionUtils.getStackTrace(e)) + ")");
         }
 
     }
@@ -134,7 +134,7 @@ public class ModuleManager {
             return;
         }
 
-        if (command.startsWith(Util.COMMAND_PREFIX)) {
+        if (command.startsWith(Resource.COMMAND_PREFIX)) {
             command = command.substring(1);
         }
 
@@ -152,7 +152,7 @@ public class ModuleManager {
             }
 
             if (s.getValue().getCommand().command()) {
-                match = Util.COMMAND_PREFIX + match;
+                match = Resource.COMMAND_PREFIX + match;
             }
 
             if (s.getValue().getCommand().exact()) {
@@ -173,7 +173,7 @@ public class ModuleManager {
                 }
 
                 if (s.getValue().getCommand().command()) {
-                    match = Util.COMMAND_PREFIX + match;
+                    match = Resource.COMMAND_PREFIX + match;
                 }
 
                 if (s.getValue().getCommand().exact()) {
@@ -203,16 +203,16 @@ public class ModuleManager {
                     return;
                 }
 
-                correct = Util.COMMAND_PREFIX + correct;
+                correct = Resource.COMMAND_PREFIX + correct;
             }
 
-            Util.sendMessage("Incorrect syntax: " + correct);
+            Resource.sendMessage("Incorrect syntax: " + correct);
 
             return;
         }
 
-        if (originalCommand.startsWith(Util.COMMAND_PREFIX)) {
-            Util.sendMessage("Command '" + commandSplit[0] + "' not found!");
+        if (originalCommand.startsWith(Resource.COMMAND_PREFIX)) {
+            Resource.sendMessage("Command '" + commandSplit[0] + "' not found!");
         }
     }
 

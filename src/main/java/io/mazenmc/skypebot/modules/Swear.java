@@ -3,7 +3,7 @@ package io.mazenmc.skypebot.modules;
 import com.skype.ChatMessage;
 import io.mazenmc.skypebot.engine.bot.Command;
 import io.mazenmc.skypebot.engine.bot.Module;
-import io.mazenmc.skypebot.utils.Util;
+import io.mazenmc.skypebot.utils.Resource;
 
 import java.util.Random;
 
@@ -26,7 +26,7 @@ public class Swear implements Module {
             output += s.getRandomWord();
         }
 
-        Util.sendMessage(output.toUpperCase());
+        Resource.sendMessage(output.toUpperCase());
     }
 
     public enum SwearType {

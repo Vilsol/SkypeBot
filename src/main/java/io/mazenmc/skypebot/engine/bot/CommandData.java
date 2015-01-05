@@ -1,7 +1,7 @@
 package io.mazenmc.skypebot.engine.bot;
 
 import com.google.common.base.Joiner;
-import io.mazenmc.skypebot.utils.Util;
+import io.mazenmc.skypebot.utils.Resource;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
@@ -30,14 +30,14 @@ public class CommandData {
                 String regex = "";
 
                 if (p.getType().equals(Integer.class) || p.getType().getName().equals("int")) {
-                    regex = Util.REGEX_INT;
+                    regex = Resource.REGEX_INT;
                 } else if (p.getType().equals(Double.class) || p.getType().getName().equals("double")) {
-                    regex = Util.REGEX_DOUBLE;
+                    regex = Resource.REGEX_DOUBLE;
                 } else if (p.getType().equals(String.class)) {
                     if (param < method.getParameterCount()) {
-                        regex = Util.REGEX_WORD;
+                        regex = Resource.REGEX_WORD;
                     } else {
-                        regex = Util.REGEX_ALL;
+                        regex = Resource.REGEX_ALL;
                     }
                 }
 
