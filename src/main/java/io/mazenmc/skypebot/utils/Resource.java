@@ -6,7 +6,6 @@ public class Resource {
 
     public static final String COMMAND_PREFIX = "@";
     public static final String[] GROUP_ADMINS = {"stuntguy3000", "gnosticjade", "heycallmethemezand"};
-    public static final String JOKE_URL = "http://www.sickjokegenerator.com/ajax/getJoke.php";
     public static final String KEY_GITHUB = Utils.readFirstLine("key_github");
     public static final String KEY_TRIDENT = Utils.readFirstLine("key_trident");
     public static final String REGEX_ALL = "(.+)";

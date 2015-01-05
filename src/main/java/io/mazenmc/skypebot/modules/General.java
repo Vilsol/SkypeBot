@@ -189,12 +189,6 @@ public class General implements Module {
         Resource.sendMessage("Available Commands: " + Utils.upload(commands));
     }
 
-    @Command(name = "joke")
-    public static void cmdJoke(ChatMessage chat) throws UnirestException, JSONException {
-        HttpResponse<JsonNode> b = Unirest.get(Resource.JOKE_URL).asJson();
-        Resource.sendMessage(b.getBody().getObject().getString("joke"));
-    }
-
     @Command(name = "lmgtfy")
     public static void cmdLmgtfy(ChatMessage chat, String question) throws SkypeException {
         //Thanks DevRoMc for the idea. - ibJarrett
@@ -217,11 +211,6 @@ public class General implements Module {
         Resource.sendMessage(s);
     }
 
-    @Command(name = "night", command = false)
-    public static void cmdNight(ChatMessage chat) {
-        Resource.sendMessage("Sleep is for pussies!");
-    }
-
     @Command(name = "ping")
     public static void cmdPing(ChatMessage chat, @Optional
     final String ip) throws JSONException {
@@ -241,11 +230,6 @@ public class General implements Module {
                 Resource.sendMessage("Error: " + Utils.upload(ExceptionUtils.getStackTrace(e)));
             }
         }
-    }
-
-    @Command(name = "shut up pussy", command = false)
-    public static void cmdPussy(ChatMessage chat) {
-        Resource.sendMessage("Oookay.... :(");
     }
 
     @Command(name = "quote")
