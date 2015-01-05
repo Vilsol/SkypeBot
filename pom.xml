@@ -26,13 +26,11 @@
             <groupId>com.github.taksan</groupId>
             <artifactId>skype-java-api</artifactId>
             <version>1.5</version>
-            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.reflections</groupId>
             <artifactId>reflections</artifactId>
             <version>0.9.9</version>
-            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>ca.pjer</groupId>
@@ -116,8 +114,6 @@
                             <goal>shade</goal>
                         </goals>         
                         <configuration>
-                            <shadedArtifactAttached>true</shadedArtifactAttached>
-                            <shadedClassifierName>stand-alone</shadedClassifierName>
                             <filters>
                                 <filter>
                                     <artifact>*:*</artifact>
