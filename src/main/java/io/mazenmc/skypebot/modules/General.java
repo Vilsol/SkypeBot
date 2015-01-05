@@ -211,11 +211,6 @@ public class General implements Module {
         Resource.sendMessage(s);
     }
 
-    @Command(name = "night", command = false)
-    public static void cmdNight(ChatMessage chat) {
-        Resource.sendMessage("Sleep is for pussies!");
-    }
-
     @Command(name = "ping")
     public static void cmdPing(ChatMessage chat, @Optional
     final String ip) throws JSONException {
@@ -235,11 +230,6 @@ public class General implements Module {
                 Resource.sendMessage("Error: " + Utils.upload(ExceptionUtils.getStackTrace(e)));
             }
         }
-    }
-
-    @Command(name = "shut up pussy", command = false)
-    public static void cmdPussy(ChatMessage chat) {
-        Resource.sendMessage("Oookay.... :(");
     }
 
     @Command(name = "quote")
