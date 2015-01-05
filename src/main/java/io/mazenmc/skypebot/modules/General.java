@@ -444,7 +444,6 @@ public class General implements Module {
             }
         } else {
             try {
-                String searchText = name;
                 String key = "AIzaSyDulfiY_C1PK19PinCLmagTeMMeVlmhimI";
                 String cx = "012652707207066138651:Azudjtuwe28q";
 
@@ -458,7 +457,7 @@ public class General implements Module {
                 JsonFactory jsonFactory = new JacksonFactory();
 
                 Customsearch custom = new Customsearch(new NetHttpTransport(), jsonFactory, httpRequestInitializer);
-                Customsearch.Cse.List list = custom.cse().list(searchText);
+                Customsearch.Cse.List list = custom.cse().list(name);
                 list.setCx(cx);
                 list.setKey(key);
 
