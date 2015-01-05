@@ -1,9 +1,9 @@
 package me.vilsol.skypebot.modules;
 
 import com.skype.ChatMessage;
-import me.vilsol.skypebot.utils.R;
 import me.vilsol.skypebot.engine.bot.Command;
 import me.vilsol.skypebot.engine.bot.Module;
+import me.vilsol.skypebot.utils.R;
 
 import java.util.Random;
 
@@ -15,11 +15,11 @@ public class Swear implements Module {
             {SwearType.gilles, SwearType.handelend}};
 
     @Command(name = "swear")
-    public static void cmdSwear(ChatMessage message){
+    public static void cmdSwear(ChatMessage message) {
         SwearType[] combination = combinations[new Random().nextInt(combinations.length)];
         String output = "";
-        for(SwearType s : combination){
-            if(!output.equals("")){
+        for (SwearType s : combination) {
+            if (!output.equals("")) {
                 output += " ";
             }
 
@@ -30,7 +30,7 @@ public class Swear implements Module {
     }
 
     public enum SwearType {
-        bijv_nw(new String[] {"tossing", "bloody", "shitting", "wanking", "stinky", "raging", "dementing", "dumb", "dipping", "fucking",
+        bijv_nw(new String[]{"tossing", "bloody", "shitting", "wanking", "stinky", "raging", "dementing", "dumb", "dipping", "fucking",
                 "dipping", "holy", "maiming", "cocking", "ranting", "twunting", "hairy", "spunking", "flipping", "slapping",
                 "sodding", "blooming", "frigging", "sponglicking", "guzzling", "glistering", "cock wielding", "failed", "artist formally known as", "unborn",
                 "pulsating", "naked", "throbbing", "lonely", "failed", "stale", "spastic", "senile", "strangely shaped", "virgin",
@@ -43,7 +43,7 @@ public class Swear implements Module {
                 "constipated", "bastardized", "utter", "hitler's personal", "irredeemable", "complete", "enormous",
                 "go suck a", "fuckfaced", "broadfaced", "titless", "son of a", "demonizing", "pigfaced", "treacherous", "retarded"}),
 
-        gilles(new String[] {"cock", "tit", "cunt", "wank", "piss", "crap", "shit", "arse", "sperm", "nipple", "anus",
+        gilles(new String[]{"cock", "tit", "cunt", "wank", "piss", "crap", "shit", "arse", "sperm", "nipple", "anus",
                 "colon", "shaft", "dick", "poop", "semen", "slut", "suck", "earwax", "fart",
                 "scrotum", "cock-tip", "tea-bag", "jizz", "cockstorm", "bunghole", "food trough", "bum",
                 "butt", "shitface", "ass", "nut", "ginger", "llama", "tramp", "fudge", "vomit", "cum", "lard",
@@ -51,7 +51,7 @@ public class Swear implements Module {
                 "gaylord", "spazz", "nutsack", "fuck", "spunk", "shitshark", "shitehawk", "fuckwit",
                 "dipstick", "asswad", "chesticle", "clusterfuck", "douchewaffle", "retard"}),
 
-        object(new String[] {"force", "bottom", "hole", "goatse", "testicle", "balls", "bucket", "biscuit", "stain", "boy",
+        object(new String[]{"force", "bottom", "hole", "goatse", "testicle", "balls", "bucket", "biscuit", "stain", "boy",
                 "flaps", "erection", "mange", "twat", "twunt", "mong", "spack", "diarrhea", "sod",
                 "excrement", "faggot", "pirate", "asswipe", "sock", "sack", "barrel", "head", "zombie", "alien",
                 "minge", "candle", "torch", "pipe", "bint", "jockey", "udder", "pig", "dog", "cockroach",
@@ -59,17 +59,17 @@ public class Swear implements Module {
                 "lord", "bogle", "bollock", "tranny", "knob", "nugget", "king", "hole", "kid", "trailer", "lorry", "whale",
                 "rag", "foot"}),
 
-        handelend(new String[] {"licker", "raper", "lover", "shiner", "blender", "fucker", "assjacker", "butler", "packer", "rider",
+        handelend(new String[]{"licker", "raper", "lover", "shiner", "blender", "fucker", "assjacker", "butler", "packer", "rider",
                 "wanker", "sucker", "felcher", "wiper", "experiment", "wiper", "bender", "dictator", "basher", "piper",
                 "slapper", "fondler", "plonker", "bastard", "handler", "herder", "fan", "amputee", "extractor", "professor", "graduate", "voyeur"});
 
         private String[] data;
 
-        private SwearType(String[] data){
+        private SwearType(String[] data) {
             this.data = data;
         }
 
-        public String getRandomWord(){
+        public String getRandomWord() {
             return data[new Random().nextInt(data.length)];
         }
 

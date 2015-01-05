@@ -19,55 +19,55 @@ public class Printer extends Thread implements ClipboardOwner {
     private Clipboard c;
     private Robot robot;
 
-    public Printer(){
-        try{
+    public Printer() {
+        try {
             robot = new Robot();
             robot.setAutoDelay(20);
 
             c = Toolkit.getDefaultToolkit().getSystemClipboard();
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             System.exit(0);
         }
     }
 
-    public void sendMessage(String message){
-        if(message.length() < 200){
+    public void sendMessage(String message) {
+        if (message.length() < 200) {
             messageQueue.add(message);
-        }else{
+        } else {
             messageQueue.add(message.substring(0, 200) + "... " + Utils.upload(message));
         }
     }
 
-    public void addToQueue(String[] message){
+    public void addToQueue(String[] message) {
         messageQueue.addAll(Arrays.asList(message));
     }
 
     @Override
-    public void run(){
-        while(!isInterrupted()){
-            if(messageQueue.peek() != null){
+    public void run() {
+        while (!isInterrupted()) {
+            if (messageQueue.peek() != null) {
 
                 pureSend(messageQueue.remove());
 
-                try{
+                try {
                     Thread.sleep(150);
-                }catch(InterruptedException ignored){
+                } catch (InterruptedException ignored) {
                 }
-            }else{
-                try{
+            } else {
+                try {
                     Thread.sleep(10);
-                }catch(InterruptedException ignored){
+                } catch (InterruptedException ignored) {
                 }
             }
         }
     }
 
-    private void pureSend(String message){
+    private void pureSend(String message) {
         message = message.trim();
 
-        for(String s : disallowed){
-            if(message.split(" ")[0].startsWith(s)){
+        for (String s : disallowed) {
+            if (message.split(" ")[0].startsWith(s)) {
                 message = "." + message;
                 break;
             }
@@ -84,12 +84,12 @@ public class Printer extends Thread implements ClipboardOwner {
         robot.keyRelease(KeyEvent.VK_ENTER);
     }
 
-    public boolean isQueueEmpty(){
+    public boolean isQueueEmpty() {
         return messageQueue.size() > 0;
     }
 
     @Override
-    public void lostOwnership(Clipboard clipboard, Transferable contents){
+    public void lostOwnership(Clipboard clipboard, Transferable contents) {
     }
 
 }

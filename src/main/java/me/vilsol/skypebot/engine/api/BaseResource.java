@@ -19,17 +19,25 @@ public abstract class BaseResource extends ServerResource {
 
     String jsonString = "";
 
+    public static Map<String, String> getMapFromParam(Form form) {
+        Map<String, String> map = new HashMap<String, String>();
+        for (Parameter parameter : form) {
+            map.put(parameter.getName(), parameter.getValue());
+        }
+        return map;
+    }
+
     @Post("json")
-    public Representation doPost(Representation entity){
+    public Representation doPost(Representation entity) {
         jsonString = "";
         parseFactory = new ResponseParseFactory();
-        try{
+        try {
             String body = new Form(entity).toString();
             body = body.substring(2, body.length() - 2);
             JSONObject jsonobject = new JSONObject(body);
             String jsonText = jsonobject.toString();
             jsonString = processRequest(body, jsonobject, "post");
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             jsonString = parseFactory.getFailureJsonString(e.getMessage());
         }
@@ -37,28 +45,20 @@ public abstract class BaseResource extends ServerResource {
     }
 
     @Get
-    public Representation doGet(){
+    public Representation doGet() {
         parseFactory = new ResponseParseFactory();
         jsonString = "";
-        try{
+        try {
             Map json = getMapFromParam(getRequest().getResourceRef().getQueryAsForm());
             parseFactory = new ResponseParseFactory();
             jsonString = processRequest(null, new JSONObject(json), "get");
 
-        }catch(Exception e){
+        } catch (Exception e) {
             jsonString = parseFactory.getFailureJsonString(e.getMessage());
         }
         return new StringRepresentation(jsonString, MediaType.APPLICATION_JSON);
     }
 
     public abstract String processRequest(String raw, JSONObject json, String method);
-
-    public static Map<String, String> getMapFromParam(Form form){
-        Map<String, String> map = new HashMap<String, String>();
-        for(Parameter parameter : form){
-            map.put(parameter.getName(), parameter.getValue());
-        }
-        return map;
-    }
 
 }

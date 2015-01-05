@@ -12,7 +12,7 @@ import java.lang.reflect.Method;
 
 public class API extends Application {
 
-    public API(){
+    public API() {
         setName("SkypeBot API");
     }
 
@@ -21,14 +21,14 @@ public class API extends Application {
         Router baseRouter = new Router(getContext());
 
         Reflections r = new Reflections("me.vilsol.skypebot.api");
-        for(Class<? extends BaseResource> c : r.getSubTypesOf(BaseResource.class)){
-            try{
+        for (Class<? extends BaseResource> c : r.getSubTypesOf(BaseResource.class)) {
+            try {
                 Method m = c.getMethod("processRequest", String.class, JSONObject.class, String.class);
                 Path p = m.getAnnotation(Path.class);
-                if(p != null){
+                if (p != null) {
                     baseRouter.attach(p.value(), c);
                 }
-            }catch(NoSuchMethodException ignored){
+            } catch (NoSuchMethodException ignored) {
             }
         }
 

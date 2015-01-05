@@ -10,8 +10,8 @@ import org.restlet.data.Form;
 public class Trident extends BaseResource {
 
     @Path("/trident")
-    public String processRequest(String raw, JSONObject json, String method){
-        if(!getQuery().getValues("key").equals(R.KEY_TRIDENT)){
+    public String processRequest(String raw, JSONObject json, String method) {
+        if (!getQuery().getValues("key").equals(R.KEY_TRIDENT)) {
             return new ResponseParseFactory().getFailureJsonString("Invalid Key");
         }
 

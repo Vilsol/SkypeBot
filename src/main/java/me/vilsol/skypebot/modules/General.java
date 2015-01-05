@@ -21,7 +21,6 @@ import com.skype.ChatMessage;
 import com.skype.SkypeException;
 import me.vilsol.skypebot.SkypeBot;
 import me.vilsol.skypebot.engine.bot.*;
-import me.vilsol.skypebot.engine.bot.Optional;
 import me.vilsol.skypebot.utils.R;
 import me.vilsol.skypebot.utils.Utils;
 import org.apache.commons.lang.exception.ExceptionUtils;
@@ -37,7 +36,10 @@ import java.net.URLEncoder;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -50,17 +52,17 @@ public class General implements Module {
     private static Thread rantThread;
 
     @Command(name = "about", alias = {"aboot"})
-    public static void cmdAbout(ChatMessage chat){
-        R.s(new String[] {"Skype bot made by Vilsol", "Version: " + R.version});
+    public static void cmdAbout(ChatMessage chat) {
+        R.s(new String[]{"Skype bot made by Vilsol", "Version: " + R.VERSION});
     }
 
     @Command(name = "restart", allow = {"vilsol"})
-    public static void cmdRestart(ChatMessage chat){
+    public static void cmdRestart(ChatMessage chat) {
         Utils.restartBot();
     }
 
     @Command(name = "ping")
-    public static void cmdPing(ChatMessage chat, @Optional final String ip) throws JSONException{
+    public static void cmdPing(ChatMessage chat, @Optional final String ip) throws JSONException {
         if (ip == null) {
             R.s("Fuck yo ping!");
         } else {
@@ -80,42 +82,42 @@ public class General implements Module {
     }
 
     @Command(name = "topkek")
-    public static void cmdTopKek(ChatMessage chat){
+    public static void cmdTopKek(ChatMessage chat) {
         R.s("https://topkek.mazenmc.io/ Gotta be safe while keking!");
     }
 
     @Command(name = "doc")
-    public static void cmdDoc(ChatMessage chat){
+    public static void cmdDoc(ChatMessage chat) {
         R.s("https://docs.google.com/document/d/1LoTYCauVyEiiLZ5Klw3UB8rbEtkzNn7VLmgm87Fzyy0/edit#");
     }
 
     @Command(name = "spoon")
-    public static void cmdSpoon(ChatMessage chat){
+    public static void cmdSpoon(ChatMessage chat) {
         R.s("There is no spoon");
     }
 
     @Command(name = "9gag", exact = false, command = false)
-    public static void cmd9Gag(ChatMessage chat){
+    public static void cmd9Gag(ChatMessage chat) {
         R.s("Shut up 9Fag!");
     }
-    
+
     @Command(name = "8ball")
     public static void cmd8Ball(ChatMessage chat, @Optional
-    String question){
-        String[] options = new String[] {"It is certain", "It is decidedly so", "Without a doubt", "Yes definitely", "You may rely on it", "As I see it, yes", "Most likely", "Outlook good", "Yes", "Signs point to yes", "Reply hazy try again", "Ask again later", "Better not tell you now", "Cannot predict now", "Concentrate and ask again", "Don't count on it", "My reply is no", "My sources say no", "Outlook not so good", "Very doubtful"};
+    String question) {
+        String[] options = new String[]{"It is certain", "It is decidedly so", "Without a doubt", "Yes definitely", "You may rely on it", "As I see it, yes", "Most likely", "Outlook good", "Yes", "Signs point to yes", "Reply hazy try again", "Ask again later", "Better not tell you now", "Cannot predict now", "Concentrate and ask again", "Don't count on it", "My reply is no", "My sources say no", "Outlook not so good", "Very doubtful"};
         int chosen = new Random().nextInt(options.length);
         R.s(options[chosen]);
     }
 
     @Command(name = "random")
-    public static void cmdRandom(ChatMessage chat, int low, int high){
+    public static void cmdRandom(ChatMessage chat, int low, int high) {
         if (low > high) {
             low ^= high;
             high ^= low;
             low ^= high;
         }
 
-        if((high - low) + low <= 0){
+        if ((high - low) + low <= 0) {
             R.s("One number must be larger than the other");
             return;
         }
@@ -124,31 +126,31 @@ public class General implements Module {
     }
 
     @Command(name = "fish go moo", exact = false, command = false)
-    public static void cmdFishGoMoo(ChatMessage chat) throws SkypeException{
+    public static void cmdFishGoMoo(ChatMessage chat) throws SkypeException {
         R.s("/me notes that " + chat.getSenderDisplayName() + " is truly enlightened.");
     }
 
     @Command(name = "bot")
-    public static void cmdBot(ChatMessage chat, String message){
+    public static void cmdBot(ChatMessage chat, String message) {
         R.s("/me " + message);
     }
 
-    @Command(name="help", alias = {"commands"})
-    public static void cmdHelp(ChatMessage chat){
+    @Command(name = "help", alias = {"commands"})
+    public static void cmdHelp(ChatMessage chat) {
         String commands = "";
 
-        for(Map.Entry<String, CommandData> data : ModuleManager.getCommands().entrySet()){
-            if(!data.getValue().getCommand().exact()){
+        for (Map.Entry<String, CommandData> data : ModuleManager.getCommands().entrySet()) {
+            if (!data.getValue().getCommand().exact()) {
                 continue;
             }
 
-            if(!commands.equals("")){
+            if (!commands.equals("")) {
                 commands += ", ";
             }
 
-            commands += R.command + data.getKey();
+            commands += R.COMMAND_PREFIX + data.getKey();
 
-            if(!data.getValue().getParamaterNames().equals("")){
+            if (!data.getValue().getParamaterNames().equals("")) {
                 commands += " " + data.getValue().getParamaterNames();
             }
         }
@@ -157,17 +159,17 @@ public class General implements Module {
     }
 
     @Command(name = "capture")
-    public static void cmdCapture(ChatMessage chat){
+    public static void cmdCapture(ChatMessage chat) {
         R.s("Capture: " + Utils.upload(SkypeBot.getInstance().getLastStringMessages()));
     }
 
     @Command(name = "git")
-    public static void cmdGit(ChatMessage chat){
+    public static void cmdGit(ChatMessage chat) {
         R.s("Git Repository: https://github.com/Vilsol/SkypeBot");
     }
 
     @Command(name = "resolve")
-    public static void cmdResolve(ChatMessage chat, String user){
+    public static void cmdResolve(ChatMessage chat, String user) {
         R.s(user + ": " + Utils.resolveSkype(user));
     }
 
@@ -177,26 +179,26 @@ public class General implements Module {
     }
 
     @Command(name = "rant")
-    public static void cmdRant(ChatMessage chat, @Optional final String question){
-        if(ranting){
+    public static void cmdRant(ChatMessage chat, @Optional final String question) {
+        if (ranting) {
             rantThread.stop();
             ranting = false;
             R.s("Ranting stopped!");
             return;
         }
 
-        if(question == null || question.equals("")){
+        if (question == null || question.equals("")) {
             R.s("Enter a question!");
             return;
         }
 
-        try{
+        try {
             cleverBot = new ChatterBotFactory().create(ChatterBotType.CLEVERBOT).createSession();
             jabberWacky = new ChatterBotFactory().create(ChatterBotType.JABBERWACKY).createSession();
-        }catch(Exception ignored){
+        } catch (Exception ignored) {
         }
 
-        if(cleverBot == null || jabberWacky == null){
+        if (cleverBot == null || jabberWacky == null) {
             R.s("One of the bots died!");
             return;
         }
@@ -205,31 +207,31 @@ public class General implements Module {
 
         ranting = true;
 
-        rantThread = new Thread(){
+        rantThread = new Thread() {
 
             String cleverThink = null;
 
             @Override
-            public void run(){
-                while(true){
-                    try{
-                        if(cleverThink == null){
+            public void run() {
+                while (true) {
+                    try {
+                        if (cleverThink == null) {
                             cleverThink = question;
                         }
 
                         String cleverBotResponse = cleverBot.think(cleverThink);
 
-                        assert(cleverBotResponse != null && !cleverBotResponse.trim().equals(""));
+                        assert (cleverBotResponse != null && !cleverBotResponse.trim().equals(""));
                         R.s("[CB] " + cleverBotResponse);
                         Thread.sleep(500);
 
                         String jabberWackyResponse = jabberWacky.think(cleverBotResponse);
                         cleverThink = jabberWackyResponse;
 
-                        assert(jabberWackyResponse != null && !jabberWackyResponse.trim().equals(""));
+                        assert (jabberWackyResponse != null && !jabberWackyResponse.trim().equals(""));
                         R.s("[JW] " + jabberWackyResponse);
                         Thread.sleep(500);
-                    }catch(Exception e){
+                    } catch (Exception e) {
                         R.s("A bot got banned :( (" + Utils.upload(ExceptionUtils.getStackTrace(e)) + ")");
                         ranting = false;
                         this.stop();
@@ -242,25 +244,25 @@ public class General implements Module {
     }
 
     @Command(name = "quote")
-    public static void cmdQuote(ChatMessage message, String category){
-        try{
+    public static void cmdQuote(ChatMessage message, String category) {
+        try {
             HttpResponse<JsonNode> response = Unirest.post("https://andruxnet-random-famous-quotes.p.mashape.com/cat=" + category).header("X-Mashape-Key", "rIizXnIZ7Umsh3o3sfCLfL86lZY2p1bda69jsnAqK1Sc6C5CV1").header("Content-Type", "application/x-www-form-urlencoded").asJson();
             R.s("\"" + response.getBody().getObject().get("quote") + "\" - " + response.getBody().getObject().get("author"));
-        }catch(UnirestException | JSONException e){
+        } catch (UnirestException | JSONException e) {
         }
     }
 
     @Command(name = "dreamincode", alias = {"whatwouldmazensay"})
-    public static void cmddreamincode(ChatMessage chat){
-        String[] options = new String[] {"No, Im not interested in having a girlfriend I find it a tremendous waste of time.", "Hi, my name is Santiago Gonzalez and I'm 14 and I like to program.", "Im fluent in a dozen different programming languages.", "Thousands of people have downloaded my apps for the mac, iphone, and ipad.", "I will be 16 when I graduate college and 17 when I finish my masters.", "I really like learning, I find it as essential as eating.", "Dr. Bakos: I often have this disease which I call long line-itus.", "Dr. Bakos: Are you eager enough just to write down a slump of code, or is the code itself a artistic median?", "Beutaiful code is short and conzied.", "Sometimes when I goto sleep im stuck with that annoying bug I cannot fix, and in my dreams I see myself programming. When I wake up I have the solution!", "One of the main reasons I started developing apps was to help people what they want to do like decorate a christmas tree.", "I really like to crochet.", "I make good website http://slgonzalez.com/"};
+    public static void cmddreamincode(ChatMessage chat) {
+        String[] options = new String[]{"No, Im not interested in having a girlfriend I find it a tremendous waste of time.", "Hi, my name is Santiago Gonzalez and I'm 14 and I like to program.", "Im fluent in a dozen different programming languages.", "Thousands of people have downloaded my apps for the mac, iphone, and ipad.", "I will be 16 when I graduate college and 17 when I finish my masters.", "I really like learning, I find it as essential as eating.", "Dr. Bakos: I often have this disease which I call long line-itus.", "Dr. Bakos: Are you eager enough just to write down a slump of code, or is the code itself a artistic median?", "Beutaiful code is short and conzied.", "Sometimes when I goto sleep im stuck with that annoying bug I cannot fix, and in my dreams I see myself programming. When I wake up I have the solution!", "One of the main reasons I started developing apps was to help people what they want to do like decorate a christmas tree.", "I really like to crochet.", "I make good website http://slgonzalez.com/"};
         int chosen = new Random().nextInt(options.length);
         R.s(options[chosen]);
     }
 
     @Command(name = "authorize")
-    public static void cmdAuthorize(ChatMessage chat) throws SkypeException{
+    public static void cmdAuthorize(ChatMessage chat) throws SkypeException {
         R.s("In order for authorization to work, you must send me a contact request. I will now try to authorize you!");
-        if(!chat.getSender().isAuthorized()){
+        if (!chat.getSender().isAuthorized()) {
             chat.getSender().setAuthorized(true);
             chat.getSender().send("You are now authorized!");
         } else {
@@ -269,7 +271,7 @@ public class General implements Module {
     }
 
     @Command(name = "lmgtfy")
-    public static void cmdLmgtfy(ChatMessage chat, String question) throws SkypeException{
+    public static void cmdLmgtfy(ChatMessage chat, String question) throws SkypeException {
         //Thanks DevRoMc for the idea. - ibJarrett
         String returnString = "http://lmgtfy.com/?q=";
         R.s("[" + chat.getSenderDisplayName() + "] " + returnString + URLEncoder.encode(question));
@@ -294,7 +296,7 @@ public class General implements Module {
     }
 
     @Command(name = "relevantxkcd")
-    public static void cmdrelevantxkcd(ChatMessage chat, @Optional String name){
+    public static void cmdrelevantxkcd(ChatMessage chat, @Optional String name) {
         if (name == null) {
             try {
                 HttpResponse<JsonNode> response = Unirest.get("http://xkcd.com/info.0.json")
@@ -345,28 +347,28 @@ public class General implements Module {
     }
 
     @Command(name = "night", command = false)
-    public static void cmdNight(ChatMessage chat){
+    public static void cmdNight(ChatMessage chat) {
         R.s("Sleep is for pussies!");
     }
 
     @Command(name = "shut up pussy", command = false)
-    public static void cmdPussy(ChatMessage chat){
+    public static void cmdPussy(ChatMessage chat) {
         R.s("Oookay.... :(");
     }
 
     @Command(name = "sql")
-    public static void cmdSQL(ChatMessage chat, String query) throws SQLException{
-        if(SkypeBot.getInstance().getDatabase() == null){
+    public static void cmdSQL(ChatMessage chat, String query) throws SQLException {
+        if (SkypeBot.getInstance().getDatabase() == null) {
             R.s("Connection is down!");
             return;
         }
 
-        if(query.toUpperCase().contains("DROP DATABASE") || query.toUpperCase().contains("CREATE DATABASE") || query.toUpperCase().contains("USE")){
+        if (query.toUpperCase().contains("DROP DATABASE") || query.toUpperCase().contains("CREATE DATABASE") || query.toUpperCase().contains("USE")) {
             R.s("Do not touch the databases!");
             return;
         }
 
-        if(query.toUpperCase().contains("INFORMATION_SCHEMA")){
+        if (query.toUpperCase().contains("INFORMATION_SCHEMA")) {
             R.s("Not that fast!");
             return;
         }
@@ -375,20 +377,20 @@ public class General implements Module {
 
         try {
             stmt = SkypeBot.getInstance().getDatabase().createStatement();
-            if(query.toLowerCase().startsWith("select") || query.toLowerCase().startsWith("show")){
+            if (query.toLowerCase().startsWith("select") || query.toLowerCase().startsWith("show")) {
                 ResultSet result = stmt.executeQuery(query);
                 String parsed = Utils.parseResult(result);
                 parsed = query + "\n\n" + parsed;
                 R.s("SQL Query Successful: " + Utils.upload(parsed));
-            }else{
+            } else {
                 stmt.execute(query);
                 R.s("SQL Query Successful!");
             }
-        } catch (SQLException e ){
+        } catch (SQLException e) {
             String message = e.getMessage();
             message = message.replace("You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near", "");
             R.s("Error executing SQL: " + message);
-        } catch (Exception e){
+        } catch (Exception e) {
             R.s("Error: " + Utils.upload(ExceptionUtils.getStackTrace(e)));
         } finally {
             if (stmt != null) {
@@ -398,7 +400,7 @@ public class General implements Module {
     }
 
     @Command(name = "md5")
-    public static void cmdMd5(ChatMessage chat){
+    public static void cmdMd5(ChatMessage chat) {
         String s = "md_1 = 1% of devs (people who know their shit)\n" +
                 "md_2 = uses one class for everything\n" +
                 "md_3 = true == true, yoo!\n" +
@@ -413,24 +415,24 @@ public class General implements Module {
     }
 
     @Command(name = "joke")
-    public static void cmdJoke(ChatMessage chat) throws UnirestException, JSONException{
+    public static void cmdJoke(ChatMessage chat) throws UnirestException, JSONException {
         HttpResponse<JsonNode> b = Unirest.get(R.JOKE_URL).asJson();
         R.s(b.getBody().getObject().getString("joke"));
     }
 
     @Command(name = "cloudflare")
-    public static void cmdCloudflare(ChatMessage chat, String url) throws UnirestException{
-        if(url.startsWith("http://")){
+    public static void cmdCloudflare(ChatMessage chat, String url) throws UnirestException {
+        if (url.startsWith("http://")) {
             url = url.substring(7);
-        }else if(url.startsWith("https://")){
+        } else if (url.startsWith("https://")) {
             url = url.substring(8);
         }
 
-        if(url.startsWith("www")){
+        if (url.startsWith("www")) {
             url = url.substring(3);
         }
 
-        if(url.contains("/")){
+        if (url.contains("/")) {
             url = url.split("/")[0];
         }
 
@@ -443,7 +445,7 @@ public class General implements Module {
         Pattern p = Pattern.compile("<TR><TD>(.*)</TD></TR>");
         Matcher m = p.matcher(body);
 
-        if(m.find()){
+        if (m.find()) {
             String data = m.group();
 
             Pattern x = Pattern.compile("<b>(.*)</b></a>");
@@ -452,9 +454,9 @@ public class General implements Module {
 
             data = data.replaceAll("</TR>\\s<TR>", "</TR><TR>");
 
-            for(String sub : data.split("</TR><TR>")){
+            for (String sub : data.split("</TR><TR>")) {
                 Matcher z = x.matcher(sub);
-                if(z.find()){
+                if (z.find()) {
                     Pattern c = Pattern.compile("<TD>(.*)</TD> <TD>");
                     Matcher v = c.matcher(sub);
                     v.find();
@@ -470,12 +472,12 @@ public class General implements Module {
                 }
             }
 
-            if(resolved.size() > 0){
+            if (resolved.size() > 0) {
                 R.s(url + ": " + Joiner.on(", ").join(resolved));
-            }else{
+            } else {
                 R.s(url + ": No IP's Found!");
             }
-        }else{
+        } else {
             R.s("Domain Unresolvable!");
         }
     }

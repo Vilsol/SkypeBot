@@ -30,7 +30,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 public class SkypeBot {
 
     private static SkypeBot instance;
-
+    Connection database;
     private boolean locked = false;
     private UpdateChecker updateChecker;
     private Queue<ChatMessage> messages = new ConcurrentLinkedQueue<>();
@@ -38,36 +38,40 @@ public class SkypeBot {
     private ChatterBotSession bot;
     private Server apiServer;
     private Printer printer;
-    Connection database;
 
-    public SkypeBot(){
+    public SkypeBot() {
         instance = this;
+
+        System.setProperty("skype.api.impl", "x11");
 
         printer = new Printer();
         printer.start();
 
-        try{
+        try {
             bot = new ChatterBotFactory().create(ChatterBotType.CLEVERBOT).createSession();
-        }catch(Exception ignored){
+        } catch (Exception ignored) {
         }
 
         ModuleManager.loadModules("me.vilsol.skypebot.modules");
 
         Skype.setDaemon(false);
-        try{
+        try {
             Skype.addChatMessageListener(new ChatMessageAdapter() {
-                public void chatMessageReceived(ChatMessage received) throws SkypeException{
-                    if(messages.size() > 100){
+                public void chatMessageReceived(ChatMessage received) throws SkypeException {
+                    if (messages.size() > 100) {
                         messages.remove();
                         stringMessages.remove();
                     }
+
+                    System.out.println("got: " + received.getContent());
 
                     stringMessages.add(Utils.serializeMessage(received));
                     messages.add(received);
                     ModuleManager.parseText(received);
                 }
             });
-        }catch(SkypeException ignored){
+        } catch (SkypeException e) {
+            e.printStackTrace();
         }
 
         updateChecker = new UpdateChecker();
@@ -82,41 +86,41 @@ public class SkypeBot {
 
         c.getLogService().setEnabled(false);
 
-        try{
+        try {
             c.start();
-        }catch(Exception ignored){
+        } catch (Exception ignored) {
         }
 
         Properties connectionProps = new Properties();
         connectionProps.put("user", "skype_bot");
         connectionProps.put("password", "skype_bot");
 
-        try{
+        try {
             database = DriverManager.getConnection("jdbc:mysql://localhost:3306/skype_bot", connectionProps);
-        }catch(SQLException e){
+        } catch (SQLException e) {
             R.s("Failed to connect to database: " + Utils.upload(ExceptionUtils.getStackTrace(e)));
         }
 
-        R.s("/me " + R.version + " initialized!");
+        R.s("/me " + R.VERSION + " initialized!");
     }
 
-    public static SkypeBot getInstance(){
-        if(instance == null){
+    public static SkypeBot getInstance() {
+        if (instance == null) {
             new SkypeBot();
         }
 
         return instance;
     }
 
-    public void sendMessage(String message){
+    public void sendMessage(String message) {
         printer.sendMessage(message);
     }
 
-    public void addToQueue(String[] message){
+    public void addToQueue(String[] message) {
         printer.addToQueue(message);
     }
 
-    public List<ChatMessage> getLastMessages(){
+    public List<ChatMessage> getLastMessages() {
         List<ChatMessage> list = new LinkedList<>();
         Queue<ChatMessage> newMessages = new ConcurrentLinkedQueue<>();
 
@@ -130,7 +134,7 @@ public class SkypeBot {
         return list;
     }
 
-    public List<String> getLastStringMessages(){
+    public List<String> getLastStringMessages() {
         List<String> list = new LinkedList<>();
         Queue<String> newMessages = new ConcurrentLinkedQueue<>();
 
@@ -144,23 +148,23 @@ public class SkypeBot {
         return list;
     }
 
-    public String askQuestion(String question){
-        if(bot == null){
+    public String askQuestion(String question) {
+        if (bot == null) {
             return "ChatterBot Died";
         }
 
-        try{
+        try {
             return bot.think(question);
-        }catch(Exception ignored){
+        } catch (Exception ignored) {
             return "I am overthinking... (" + ExceptionUtils.getStackTrace(ignored) + ")";
         }
     }
 
-    public Connection getDatabase(){
+    public Connection getDatabase() {
         return database;
     }
 
-    public boolean isQueueEmpty(){
+    public boolean isQueueEmpty() {
         return printer.isQueueEmpty();
     }
 
