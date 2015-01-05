@@ -52,7 +52,7 @@ public class SkypeBot {
         } catch (Exception ignored) {
         }
 
-        ModuleManager.loadModules("me.vilsol.skypebot.modules");
+        ModuleManager.loadModules("io.mazenmc.skypebot.modules");
 
         Skype.setDaemon(false);
         try {
