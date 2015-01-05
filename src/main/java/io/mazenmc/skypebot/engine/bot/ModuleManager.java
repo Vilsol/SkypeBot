@@ -189,8 +189,8 @@ public class ModuleManager {
             }
         }
 
-        if (allCommands.containsKey(commandSplit[0])) {
-            CommandData d = allCommands.get(commandSplit[0]);
+        if (allCommands.containsKey(commandSplit[0].toLowerCase())) {
+            CommandData d = allCommands.get(commandSplit[0].toLowerCase());
             Command c = d.getCommand();
 
             String correct = commandSplit[0];
