@@ -1,7 +1,7 @@
-package me.vilsol.skypebot.api;
+package io.mazenmc.skypebot.api;
 
-import me.vilsol.skypebot.engine.api.BaseResource;
-import me.vilsol.skypebot.engine.api.Path;
+import io.mazenmc.skypebot.engine.api.BaseResource;
+import io.mazenmc.skypebot.engine.api.Path;
 import org.json.JSONObject;
 import org.reflections.Reflections;
 import org.restlet.Application;
@@ -20,7 +20,7 @@ public class API extends Application {
     public Restlet createInboundRoot() {
         Router baseRouter = new Router(getContext());
 
-        Reflections r = new Reflections("me.vilsol.skypebot.api");
+        Reflections r = new Reflections("io.mazenmc.skypebot.api");
         for (Class<? extends BaseResource> c : r.getSubTypesOf(BaseResource.class)) {
             try {
                 Method m = c.getMethod("processRequest", String.class, JSONObject.class, String.class);

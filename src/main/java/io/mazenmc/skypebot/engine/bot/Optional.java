@@ -1,11 +1,8 @@
-package me.vilsol.skypebot.engine.api;
+package io.mazenmc.skypebot.engine.bot;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Path {
-
-    public String value();
-
+public @interface Optional {
 }

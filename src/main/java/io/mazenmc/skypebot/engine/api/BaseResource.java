@@ -1,4 +1,4 @@
-package me.vilsol.skypebot.engine.api;
+package io.mazenmc.skypebot.engine.api;
 
 import org.json.JSONObject;
 import org.restlet.data.Form;
@@ -15,16 +15,22 @@ import java.util.Map;
 
 public abstract class BaseResource extends ServerResource {
 
+    String jsonString = "";
     protected ResponseParseFactory parseFactory = null;
 
-    String jsonString = "";
+    @Get
+    public Representation doGet() {
+        parseFactory = new ResponseParseFactory();
+        jsonString = "";
+        try {
+            Map json = getMapFromParam(getRequest().getResourceRef().getQueryAsForm());
+            parseFactory = new ResponseParseFactory();
+            jsonString = processRequest(null, new JSONObject(json), "get");
 
-    public static Map<String, String> getMapFromParam(Form form) {
-        Map<String, String> map = new HashMap<String, String>();
-        for (Parameter parameter : form) {
-            map.put(parameter.getName(), parameter.getValue());
+        } catch (Exception e) {
+            jsonString = parseFactory.getFailureJsonString(e.getMessage());
         }
-        return map;
+        return new StringRepresentation(jsonString, MediaType.APPLICATION_JSON);
     }
 
     @Post("json")
@@ -44,19 +50,12 @@ public abstract class BaseResource extends ServerResource {
         return new StringRepresentation(jsonString, MediaType.APPLICATION_JSON);
     }
 
-    @Get
-    public Representation doGet() {
-        parseFactory = new ResponseParseFactory();
-        jsonString = "";
-        try {
-            Map json = getMapFromParam(getRequest().getResourceRef().getQueryAsForm());
-            parseFactory = new ResponseParseFactory();
-            jsonString = processRequest(null, new JSONObject(json), "get");
-
-        } catch (Exception e) {
-            jsonString = parseFactory.getFailureJsonString(e.getMessage());
+    public static Map<String, String> getMapFromParam(Form form) {
+        Map<String, String> map = new HashMap<String, String>();
+        for (Parameter parameter : form) {
+            map.put(parameter.getName(), parameter.getValue());
         }
-        return new StringRepresentation(jsonString, MediaType.APPLICATION_JSON);
+        return map;
     }
 
     public abstract String processRequest(String raw, JSONObject json, String method);

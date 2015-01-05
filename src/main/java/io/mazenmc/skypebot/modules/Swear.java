@@ -1,9 +1,9 @@
-package me.vilsol.skypebot.modules;
+package io.mazenmc.skypebot.modules;
 
 import com.skype.ChatMessage;
-import me.vilsol.skypebot.engine.bot.Command;
-import me.vilsol.skypebot.engine.bot.Module;
-import me.vilsol.skypebot.utils.R;
+import io.mazenmc.skypebot.engine.bot.Command;
+import io.mazenmc.skypebot.engine.bot.Module;
+import io.mazenmc.skypebot.utils.Util;
 
 import java.util.Random;
 
@@ -26,7 +26,7 @@ public class Swear implements Module {
             output += s.getRandomWord();
         }
 
-        R.s(output.toUpperCase());
+        Util.sendMessage(output.toUpperCase());
     }
 
     public enum SwearType {

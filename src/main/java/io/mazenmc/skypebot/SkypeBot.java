@@ -1,4 +1,4 @@
-package me.vilsol.skypebot;
+package io.mazenmc.skypebot;
 
 import com.google.code.chatterbotapi.ChatterBotFactory;
 import com.google.code.chatterbotapi.ChatterBotSession;
@@ -7,12 +7,12 @@ import com.skype.ChatMessage;
 import com.skype.ChatMessageAdapter;
 import com.skype.Skype;
 import com.skype.SkypeException;
-import me.vilsol.skypebot.api.API;
-import me.vilsol.skypebot.engine.bot.ModuleManager;
-import me.vilsol.skypebot.engine.bot.Printer;
-import me.vilsol.skypebot.utils.R;
-import me.vilsol.skypebot.utils.UpdateChecker;
-import me.vilsol.skypebot.utils.Utils;
+import io.mazenmc.skypebot.api.API;
+import io.mazenmc.skypebot.engine.bot.ModuleManager;
+import io.mazenmc.skypebot.engine.bot.Printer;
+import io.mazenmc.skypebot.utils.UpdateChecker;
+import io.mazenmc.skypebot.utils.Util;
+import io.mazenmc.skypebot.utils.Utils;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.restlet.Component;
 import org.restlet.Server;
@@ -30,14 +30,14 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 public class SkypeBot {
 
     private static SkypeBot instance;
+    private Server apiServer;
+    private ChatterBotSession bot;
     Connection database;
     private boolean locked = false;
-    private UpdateChecker updateChecker;
     private Queue<ChatMessage> messages = new ConcurrentLinkedQueue<>();
-    private Queue<String> stringMessages = new ConcurrentLinkedQueue<>();
-    private ChatterBotSession bot;
-    private Server apiServer;
     private Printer printer;
+    private Queue<String> stringMessages = new ConcurrentLinkedQueue<>();
+    private UpdateChecker updateChecker;
 
     public SkypeBot() {
         instance = this;
@@ -98,10 +98,30 @@ public class SkypeBot {
         try {
             database = DriverManager.getConnection("jdbc:mysql://localhost:3306/skype_bot", connectionProps);
         } catch (SQLException e) {
-            R.s("Failed to connect to database: " + Utils.upload(ExceptionUtils.getStackTrace(e)));
+            Util.sendMessage("Failed to connect to database: " + Utils.upload(ExceptionUtils.getStackTrace(e)));
         }
 
-        R.s("/me " + R.VERSION + " initialized!");
+        Util.sendMessage("/me " + Util.VERSION + " initialized!");
+    }
+
+    public void addToQueue(String[] message) {
+        printer.addToQueue(message);
+    }
+
+    public String askQuestion(String question) {
+        if (bot == null) {
+            return "ChatterBot Died";
+        }
+
+        try {
+            return bot.think(question);
+        } catch (Exception ignored) {
+            return "I am overthinking... (" + ExceptionUtils.getStackTrace(ignored) + ")";
+        }
+    }
+
+    public Connection getDatabase() {
+        return database;
     }
 
     public static SkypeBot getInstance() {
@@ -110,14 +130,6 @@ public class SkypeBot {
         }
 
         return instance;
-    }
-
-    public void sendMessage(String message) {
-        printer.sendMessage(message);
-    }
-
-    public void addToQueue(String[] message) {
-        printer.addToQueue(message);
     }
 
     public List<ChatMessage> getLastMessages() {
@@ -148,24 +160,12 @@ public class SkypeBot {
         return list;
     }
 
-    public String askQuestion(String question) {
-        if (bot == null) {
-            return "ChatterBot Died";
-        }
-
-        try {
-            return bot.think(question);
-        } catch (Exception ignored) {
-            return "I am overthinking... (" + ExceptionUtils.getStackTrace(ignored) + ")";
-        }
-    }
-
-    public Connection getDatabase() {
-        return database;
-    }
-
     public boolean isQueueEmpty() {
         return printer.isQueueEmpty();
+    }
+
+    public void sendMessage(String message) {
+        printer.sendMessage(message);
     }
 
 }

@@ -1,10 +1,10 @@
-package me.vilsol.skypebot.engine.bot;
+package io.mazenmc.skypebot.engine.bot;
 
 public class ParameterData {
 
     private String name;
-    private String regex;
     private boolean optional;
+    private String regex;
 
     public ParameterData(String name, String regex, boolean optional) {
         this.name = name;

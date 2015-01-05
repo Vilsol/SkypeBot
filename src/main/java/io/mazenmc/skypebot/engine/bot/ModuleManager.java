@@ -1,9 +1,9 @@
-package me.vilsol.skypebot.engine.bot;
+package io.mazenmc.skypebot.engine.bot;
 
 import com.skype.ChatMessage;
 import com.skype.SkypeException;
-import me.vilsol.skypebot.utils.R;
-import me.vilsol.skypebot.utils.Utils;
+import io.mazenmc.skypebot.utils.Util;
+import io.mazenmc.skypebot.utils.Utils;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.reflections.Reflections;
 import sun.reflect.MethodAccessor;
@@ -17,55 +17,17 @@ import java.util.regex.Pattern;
 
 public class ModuleManager {
 
-    private static HashMap<String, CommandData> commandData = new HashMap<>();
     private static HashMap<String, CommandData> allCommands = new HashMap<>();
-
-    public static void loadModules(String modulePackage) {
-        Reflections r = new Reflections(modulePackage);
-        Set<Class<? extends Module>> classes = r.getSubTypesOf(Module.class);
-
-        for (Class<? extends Module> c : classes) {
-            for (Method m : c.getMethods()) {
-                Command command;
-                command = m.getAnnotation(Command.class);
-
-                if (command != null) {
-                    CommandData data = new CommandData(command, m);
-
-                    System.out.println("registered " + command.name());
-
-                    commandData.put(command.name(), data);
-                    allCommands.put(command.name(), data);
-                    if (command.alias() != null && command.alias().length > 0) {
-                        for (String s : command.alias()) {
-                            allCommands.put(s, data);
-                        }
-                    }
-                }
-            }
-        }
-    }
+    private static HashMap<String, CommandData> commandData = new HashMap<>();
 
     private static void executeCommand(ChatMessage message, CommandData data, Matcher m) {
-
-        if (data.getCommand().allow() != null && data.getCommand().allow().length > 0) {
+        if (data.getCommand().admin()) {
             try {
-                if (!Arrays.asList(data.getCommand().allow()).contains(message.getSenderId())) {
-                    R.s("Access Denied!");
+                if (Arrays.asList(Util.GROUP_ADMINS).contains(message.getSenderId())){
+                    Util.sendMessage("Access Denied!");
                     return;
                 }
-            } catch (SkypeException ignored) {
-                return;
-            }
-        }
-
-        if (data.getCommand().disallow() != null && data.getCommand().disallow().length > 0) {
-            try {
-                if (Arrays.asList(data.getCommand().disallow()).contains(message.getSenderId())) {
-                    R.s("Access Denied!");
-                    return;
-                }
-            } catch (SkypeException ignored) {
+            } catch(SkypeException ignored) {
                 return;
             }
         }
@@ -108,15 +70,45 @@ public class ModuleManager {
                 methodAccessor = (MethodAccessor) acquireMethodAccessorMethod.invoke(data.getMethod(), null);
             }
         } catch (NoSuchFieldException | InvocationTargetException | IllegalAccessException | NoSuchMethodException e) {
-            R.s("Failed... (" + ExceptionUtils.getStackTrace(e) + ")");
+            Util.sendMessage("Failed... (" + ExceptionUtils.getStackTrace(e) + ")");
         }
 
         try {
             methodAccessor.invoke(null, a.toArray());
         } catch (Exception e) {
-            R.s("Failed... (" + Utils.upload(ExceptionUtils.getStackTrace(e)) + ")");
+            Util.sendMessage("Failed... (" + Utils.upload(ExceptionUtils.getStackTrace(e)) + ")");
         }
 
+    }
+
+    public static HashMap<String, CommandData> getCommands() {
+        return commandData;
+    }
+
+    public static void loadModules(String modulePackage) {
+        Reflections r = new Reflections(modulePackage);
+        Set<Class<? extends Module>> classes = r.getSubTypesOf(Module.class);
+
+        for (Class<? extends Module> c : classes) {
+            for (Method m : c.getMethods()) {
+                Command command;
+                command = m.getAnnotation(Command.class);
+
+                if (command != null) {
+                    CommandData data = new CommandData(command, m);
+
+                    System.out.println("registered " + command.name());
+
+                    commandData.put(command.name(), data);
+                    allCommands.put(command.name(), data);
+                    if (command.alias() != null && command.alias().length > 0) {
+                        for (String s : command.alias()) {
+                            allCommands.put(s, data);
+                        }
+                    }
+                }
+            }
+        }
     }
 
     public static void parseText(ChatMessage message) {
@@ -142,7 +134,7 @@ public class ModuleManager {
             return;
         }
 
-        if (command.startsWith(R.COMMAND_PREFIX)) {
+        if (command.startsWith(Util.COMMAND_PREFIX)) {
             command = command.substring(1);
         }
 
@@ -160,7 +152,7 @@ public class ModuleManager {
             }
 
             if (s.getValue().getCommand().command()) {
-                match = R.COMMAND_PREFIX + match;
+                match = Util.COMMAND_PREFIX + match;
             }
 
             if (s.getValue().getCommand().exact()) {
@@ -181,7 +173,7 @@ public class ModuleManager {
                 }
 
                 if (s.getValue().getCommand().command()) {
-                    match = R.COMMAND_PREFIX + match;
+                    match = Util.COMMAND_PREFIX + match;
                 }
 
                 if (s.getValue().getCommand().exact()) {
@@ -211,21 +203,17 @@ public class ModuleManager {
                     return;
                 }
 
-                correct = R.COMMAND_PREFIX + correct;
+                correct = Util.COMMAND_PREFIX + correct;
             }
 
-            R.s("Incorrect syntax: " + correct);
+            Util.sendMessage("Incorrect syntax: " + correct);
 
             return;
         }
 
-        if (originalCommand.startsWith(R.COMMAND_PREFIX)) {
-            R.s("Command '" + commandSplit[0] + "' not found!");
+        if (originalCommand.startsWith(Util.COMMAND_PREFIX)) {
+            Util.sendMessage("Command '" + commandSplit[0] + "' not found!");
         }
-    }
-
-    public static HashMap<String, CommandData> getCommands() {
-        return commandData;
     }
 
 }

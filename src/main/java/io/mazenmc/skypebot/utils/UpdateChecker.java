@@ -1,4 +1,4 @@
-package me.vilsol.skypebot.utils;
+package io.mazenmc.skypebot.utils;
 
 public class UpdateChecker extends Thread {
 
@@ -14,7 +14,7 @@ public class UpdateChecker extends Thread {
 
             String newHash = Utils.getMD5Hash(Utils.getJarName());
             if (!newHash.equals(lastHash)) {
-                R.s("Updated Jar Detected!");
+                Util.sendMessage("Updated Jar Detected!");
                 Utils.restartBot();
             }
         }

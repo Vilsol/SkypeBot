@@ -1,9 +1,9 @@
-package me.vilsol.skypebot.api;
+package io.mazenmc.skypebot.api;
 
-import me.vilsol.skypebot.engine.api.BaseResource;
-import me.vilsol.skypebot.engine.api.Path;
-import me.vilsol.skypebot.engine.api.ResponseParseFactory;
-import me.vilsol.skypebot.utils.R;
+import io.mazenmc.skypebot.engine.api.BaseResource;
+import io.mazenmc.skypebot.engine.api.Path;
+import io.mazenmc.skypebot.engine.api.ResponseParseFactory;
+import io.mazenmc.skypebot.utils.Util;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -11,7 +11,7 @@ public class Github extends BaseResource {
 
     @Path("/github")
     public String processRequest(String raw, JSONObject json, String method) {
-        if (!getQuery().getValues("key").equals(R.KEY_GITHUB)) {
+        if (!getQuery().getValues("key").equals(Util.KEY_GITHUB)) {
             return new ResponseParseFactory().getFailureJsonString("Invalid Key");
         }
 
@@ -24,7 +24,7 @@ public class Github extends BaseResource {
         } catch (JSONException ignored) {
         }
 
-        R.s(out);
+        Util.sendMessage(out);
 
         return new ResponseParseFactory().getSuccessJsonString("Success");
     }

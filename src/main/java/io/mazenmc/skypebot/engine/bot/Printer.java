@@ -1,6 +1,6 @@
-package me.vilsol.skypebot.engine.bot;
+package io.mazenmc.skypebot.engine.bot;
 
-import me.vilsol.skypebot.utils.Utils;
+import io.mazenmc.skypebot.utils.Utils;
 
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
@@ -14,9 +14,9 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class Printer extends Thread implements ClipboardOwner {
 
-    private Queue<String> messageQueue = new ConcurrentLinkedQueue<>();
-    private String[] disallowed = new String[]{"/leave", "/topic", "/alertson", "/alertsoff", "/setrole", "/kick", "/get", "/set", "/golive", "/invite", "/showmembers", "/help"};
     private Clipboard c;
+    private String[] disallowed = new String[]{"/leave", "/topic", "/alertson", "/alertsoff", "/setrole", "/kick", "/get", "/set", "/golive", "/invite", "/showmembers", "/help"};
+    private Queue<String> messageQueue = new ConcurrentLinkedQueue<>();
     private Robot robot;
 
     public Printer() {
@@ -31,36 +31,16 @@ public class Printer extends Thread implements ClipboardOwner {
         }
     }
 
-    public void sendMessage(String message) {
-        if (message.length() < 200) {
-            messageQueue.add(message);
-        } else {
-            messageQueue.add(message.substring(0, 200) + "... " + Utils.upload(message));
-        }
-    }
-
     public void addToQueue(String[] message) {
         messageQueue.addAll(Arrays.asList(message));
     }
 
+    public boolean isQueueEmpty() {
+        return messageQueue.size() > 0;
+    }
+
     @Override
-    public void run() {
-        while (!isInterrupted()) {
-            if (messageQueue.peek() != null) {
-
-                pureSend(messageQueue.remove());
-
-                try {
-                    Thread.sleep(150);
-                } catch (InterruptedException ignored) {
-                }
-            } else {
-                try {
-                    Thread.sleep(10);
-                } catch (InterruptedException ignored) {
-                }
-            }
-        }
+    public void lostOwnership(Clipboard clipboard, Transferable contents) {
     }
 
     private void pureSend(String message) {
@@ -84,12 +64,32 @@ public class Printer extends Thread implements ClipboardOwner {
         robot.keyRelease(KeyEvent.VK_ENTER);
     }
 
-    public boolean isQueueEmpty() {
-        return messageQueue.size() > 0;
+    @Override
+    public void run() {
+        while (!isInterrupted()) {
+            if (messageQueue.peek() != null) {
+
+                pureSend(messageQueue.remove());
+
+                try {
+                    Thread.sleep(150);
+                } catch (InterruptedException ignored) {
+                }
+            } else {
+                try {
+                    Thread.sleep(10);
+                } catch (InterruptedException ignored) {
+                }
+            }
+        }
     }
 
-    @Override
-    public void lostOwnership(Clipboard clipboard, Transferable contents) {
+    public void sendMessage(String message) {
+        if (message.length() < 200) {
+            messageQueue.add(message);
+        } else {
+            messageQueue.add(message.substring(0, 200) + "... " + Utils.upload(message));
+        }
     }
 
 }

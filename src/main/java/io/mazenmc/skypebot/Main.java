@@ -1,4 +1,4 @@
-package me.vilsol.skypebot;
+package io.mazenmc.skypebot;
 
 public class Main {
 

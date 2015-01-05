@@ -1,7 +1,7 @@
-package me.vilsol.skypebot.engine.bot;
+package io.mazenmc.skypebot.engine.bot;
 
 import com.google.common.base.Joiner;
-import me.vilsol.skypebot.utils.R;
+import io.mazenmc.skypebot.utils.Util;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
@@ -30,14 +30,14 @@ public class CommandData {
                 String regex = "";
 
                 if (p.getType().equals(Integer.class) || p.getType().getName().equals("int")) {
-                    regex = R.REGEX_INT;
+                    regex = Util.REGEX_INT;
                 } else if (p.getType().equals(Double.class) || p.getType().getName().equals("double")) {
-                    regex = R.REGEX_DOUBLE;
+                    regex = Util.REGEX_DOUBLE;
                 } else if (p.getType().equals(String.class)) {
                     if (param < method.getParameterCount()) {
-                        regex = R.REGEX_WORD;
+                        regex = Util.REGEX_WORD;
                     } else {
-                        regex = R.REGEX_ALL;
+                        regex = Util.REGEX_ALL;
                     }
                 }
 
@@ -58,6 +58,20 @@ public class CommandData {
         return method;
     }
 
+    public String getParamaterNames() {
+        List<String> names = new LinkedList<>();
+
+        parameters.values().stream().forEach(p -> {
+            if (p.isOptional()) {
+                names.add("[" + p.getName() + "]");
+            } else {
+                names.add("<" + p.getName() + ">");
+            }
+        });
+
+        return Joiner.on(" ").join(names);
+    }
+
     public String getParameterRegex(boolean includeOptional) {
         List<String> regex = new LinkedList<>();
 
@@ -74,19 +88,5 @@ public class CommandData {
         });
 
         return Joiner.on(" ").join(regex);
-    }
-
-    public String getParamaterNames() {
-        List<String> names = new LinkedList<>();
-
-        parameters.values().stream().forEach(p -> {
-            if (p.isOptional()) {
-                names.add("[" + p.getName() + "]");
-            } else {
-                names.add("<" + p.getName() + ">");
-            }
-        });
-
-        return Joiner.on(" ").join(names);
     }
 }

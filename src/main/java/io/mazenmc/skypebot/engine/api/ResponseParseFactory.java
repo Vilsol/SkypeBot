@@ -1,4 +1,4 @@
-package me.vilsol.skypebot.engine.api;
+package io.mazenmc.skypebot.engine.api;
 
 import org.json.simple.JSONValue;
 
