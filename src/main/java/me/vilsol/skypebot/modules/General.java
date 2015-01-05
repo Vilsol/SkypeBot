@@ -11,26 +11,36 @@ import com.google.api.services.customsearch.model.Search;
 import com.google.code.chatterbotapi.ChatterBotFactory;
 import com.google.code.chatterbotapi.ChatterBotSession;
 import com.google.code.chatterbotapi.ChatterBotType;
+import com.google.common.base.Joiner;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
+import com.mashape.unirest.request.HttpRequestWithBody;
 import com.skype.ChatMessage;
 import com.skype.SkypeException;
 import me.vilsol.skypebot.SkypeBot;
 import me.vilsol.skypebot.engine.bot.*;
+import me.vilsol.skypebot.engine.bot.Optional;
 import me.vilsol.skypebot.utils.R;
 import me.vilsol.skypebot.utils.Utils;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.json.JSONException;
+import org.jsoup.Jsoup;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.net.URLEncoder;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 
 public class General implements Module {
 
@@ -88,7 +98,7 @@ public class General implements Module {
     public static void cmd9Gag(ChatMessage chat){
         R.s("Shut up 9Fag!");
     }
-
+    
     @Command(name = "8ball")
     public static void cmd8Ball(ChatMessage chat, @Optional
     String question){
@@ -125,14 +135,14 @@ public class General implements Module {
 
     @Command(name="help", alias = {"commands"})
     public static void cmdHelp(ChatMessage chat){
-        String commands = "Available Commands: ";
+        String commands = "";
 
         for(Map.Entry<String, CommandData> data : ModuleManager.getCommands().entrySet()){
             if(!data.getValue().getCommand().exact()){
                 continue;
             }
 
-            if(!commands.equals("Available Commands: ")){
+            if(!commands.equals("")){
                 commands += ", ";
             }
 
@@ -143,7 +153,7 @@ public class General implements Module {
             }
         }
 
-        R.s(commands);
+        R.s("Available Commands: " + Utils.upload(commands));
     }
 
     @Command(name = "capture")
@@ -266,24 +276,21 @@ public class General implements Module {
     }
 
     @Command(name = "define")
-    public static void cmddefine(ChatMessage chat, String word) {
-        if (word == null) {
-            R.s("Input a word / phrase silly!");
-        } else {
-            try {
-                HttpResponse<String> response = Unirest.get("https://mashape-community-urban-dictionary.p.mashape.com/define?term=" + URLEncoder.encode(word))
-                        .header("X-Mashape-Key", "sHb3a6jczqmshcYqUEwQq3ZZR3BVp18NqaAjsnIYFvVNHMqvCb")
-                        .asString();
-                if (response.getHeaders().getFirst("result_type").equals("no_results")) {
-                } else {
-                    R.s("Word / Phrase - " + response.getHeaders().getFirst("word"));
-                    R.s("Definition - " + response.getHeaders().getFirst("definition"));
-                    R.s("Example - " + response.getHeaders().getFirst("example"));
-                }
-            } catch (UnirestException e) {
-                R.s("Error: " + Utils.upload(ExceptionUtils.getStackTrace(e)));
-            }
-        }
+    public static void cmddefine(ChatMessage chat, String word) throws Exception {
+        HttpURLConnection connection = (HttpURLConnection) new URL(R.URBAN_DICTIONARY_URL + URLEncoder.encode(word)).openConnection();
+        connection.connect();
+
+        BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+
+        List<String> lines = new ArrayList<>(400);
+        for (int i = 0; i < 400; i++) lines.add(reader.readLine());
+
+        int definitionStart = lines.indexOf("<div class='meaning'>");
+        String definition = lines.get(definitionStart + 1);
+        definition = definition.replaceAll("<a href=\"\\/define\\.php\\?term=[a-z]*\">", "");
+        definition = definition.replace("</a>", "");
+
+        R.s("Definition of " + word + ": " + Jsoup.parse(definition).text());
     }
 
     @Command(name = "relevantxkcd")
@@ -337,9 +344,14 @@ public class General implements Module {
         }
     }
 
-    @Command(name = "night", exact = false, command = false)
+    @Command(name = "night", command = false)
     public static void cmdNight(ChatMessage chat){
-        R.s("Pussy");
+        R.s("Sleep is for pussies!");
+    }
+
+    @Command(name = "shut up pussy", command = false)
+    public static void cmdPussy(ChatMessage chat){
+        R.s("Oookay.... :(");
     }
 
     @Command(name = "sql")
@@ -349,11 +361,21 @@ public class General implements Module {
             return;
         }
 
+        if(query.toUpperCase().contains("DROP DATABASE") || query.toUpperCase().contains("CREATE DATABASE") || query.toUpperCase().contains("USE")){
+            R.s("Do not touch the databases!");
+            return;
+        }
+
+        if(query.toUpperCase().contains("INFORMATION_SCHEMA")){
+            R.s("Not that fast!");
+            return;
+        }
+
         Statement stmt = null;
 
         try {
             stmt = SkypeBot.getInstance().getDatabase().createStatement();
-            if(query.toLowerCase().startsWith("select")){
+            if(query.toLowerCase().startsWith("select") || query.toLowerCase().startsWith("show")){
                 ResultSet result = stmt.executeQuery(query);
                 String parsed = Utils.parseResult(result);
                 parsed = query + "\n\n" + parsed;
@@ -363,13 +385,98 @@ public class General implements Module {
                 R.s("SQL Query Successful!");
             }
         } catch (SQLException e ){
-            R.s("Error executing SQL: " + e.getMessage());
+            String message = e.getMessage();
+            message = message.replace("You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near", "");
+            R.s("Error executing SQL: " + message);
         } catch (Exception e){
             R.s("Error: " + Utils.upload(ExceptionUtils.getStackTrace(e)));
         } finally {
             if (stmt != null) {
                 stmt.close();
             }
+        }
+    }
+
+    @Command(name = "md5")
+    public static void cmdMd5(ChatMessage chat){
+        String s = "md_1 = 1% of devs (people who know their shit)\n" +
+                "md_2 = uses one class for everything\n" +
+                "md_3 = true == true, yoo!\n" +
+                "md_4 = New instance to call static methods\n" +
+                "md_5 = reflects his own classes\n" +
+                "md_6 = return this; on everything\n" +
+                "md_7 = abstract? never heard of it\n" +
+                "md_8 = interface? never heard of it\n" +
+                "md_9 = enum? never heard of it\n" +
+                "md_10 = java? never heard of it";
+        R.s(s);
+    }
+
+    @Command(name = "joke")
+    public static void cmdJoke(ChatMessage chat) throws UnirestException, JSONException{
+        HttpResponse<JsonNode> b = Unirest.get(R.JOKE_URL).asJson();
+        R.s(b.getBody().getObject().getString("joke"));
+    }
+
+    @Command(name = "cloudflare")
+    public static void cmdCloudflare(ChatMessage chat, String url) throws UnirestException{
+        if(url.startsWith("http://")){
+            url = url.substring(7);
+        }else if(url.startsWith("https://")){
+            url = url.substring(8);
+        }
+
+        if(url.startsWith("www")){
+            url = url.substring(3);
+        }
+
+        if(url.contains("/")){
+            url = url.split("/")[0];
+        }
+
+        HttpRequestWithBody request = Unirest.post("http://iphostinfo.com/cloudflare/" + url);
+        request.field("cfdns", url);
+
+        HttpResponse<String> response = request.asString();
+        String body = response.getBody();
+
+        Pattern p = Pattern.compile("<TR><TD>(.*)</TD></TR>");
+        Matcher m = p.matcher(body);
+
+        if(m.find()){
+            String data = m.group();
+
+            Pattern x = Pattern.compile("<b>(.*)</b></a>");
+
+            List<String> resolved = new ArrayList<>();
+
+            data = data.replaceAll("</TR>\\s<TR>", "</TR><TR>");
+
+            for(String sub : data.split("</TR><TR>")){
+                Matcher z = x.matcher(sub);
+                if(z.find()){
+                    Pattern c = Pattern.compile("<TD>(.*)</TD> <TD>");
+                    Matcher v = c.matcher(sub);
+                    v.find();
+
+                    String ip = z.group();
+                    ip = ip.substring(3, ip.length() - 8);
+
+                    String name = v.group();
+                    name = name.substring(4, name.length() - 11);
+                    name = name.replace("." + url, "");
+
+                    resolved.add(name + ":" + ip);
+                }
+            }
+
+            if(resolved.size() > 0){
+                R.s(url + ": " + Joiner.on(", ").join(resolved));
+            }else{
+                R.s(url + ": No IP's Found!");
+            }
+        }else{
+            R.s("Domain Unresolvable!");
         }
     }
 

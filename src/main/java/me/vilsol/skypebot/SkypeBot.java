@@ -160,4 +160,8 @@ public class SkypeBot {
         return database;
     }
 
+    public boolean isQueueEmpty(){
+        return printer.isQueueEmpty();
+    }
+
 }

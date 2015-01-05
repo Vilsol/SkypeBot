@@ -4,6 +4,7 @@ import com.google.common.base.Joiner;
 import com.skype.ChatMessage;
 import com.skype.SkypeException;
 import me.vilsol.skypebot.Main;
+import me.vilsol.skypebot.SkypeBot;
 import org.apache.commons.codec.digest.DigestUtils;
 import sun.misc.BASE64Encoder;
 
@@ -113,6 +114,12 @@ public class Utils {
     public static void restartBot(){
         R.s("/me " + R.version + " Restarting...");
         System.out.println("Restarting...");
+        while(!SkypeBot.getInstance().isQueueEmpty()){
+            try{
+                Thread.sleep(100);
+            }catch(InterruptedException ignored){
+            }
+        }
         System.exit(0);
     }
 
@@ -122,7 +129,7 @@ public class Utils {
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
             con.setRequestMethod("POST");
             con.setInstanceFollowRedirects(true);
-            String postData = "id=" + URLEncoder.encode(name, "UTF-8");
+            String postData = "submit=submit&skypeUsername=" + URLEncoder.encode(name, "UTF-8");
             con.setRequestProperty("Content-length", String.valueOf(postData.length()));
             con.setRequestProperty("User-Agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/40.0.2214.10 Safari/537.36");
             con.setDoOutput(true);
@@ -137,7 +144,7 @@ public class Utils {
             }
             input.close();
             String result = resultBuf.toString();
-            Pattern p = Pattern.compile("<input type=\"text\" name=\"id\" value=\"(.*)\" placeholder=\"Skype Username\"/><br>");
+            Pattern p = Pattern.compile("<div id='resolve' class='alert alert-success'>(.*)<center><b>");
             Matcher m = p.matcher(result);
             if(m.find()){
                 return m.group(1);
@@ -204,6 +211,14 @@ public class Utils {
             for(int c = 1; c <= meta.getColumnCount(); c++){
                 String col = meta.getColumnName(c);
                 String val = rs.getString(c);
+
+                if(col == null){
+                    col = "NULL";
+                }
+
+                if(val == null){
+                    val = "NULL";
+                }
 
                 if(!longest.containsKey(col) || longest.get(col) < col.length()){
                     longest.put(col, col.length());
