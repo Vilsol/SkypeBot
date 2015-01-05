@@ -63,17 +63,6 @@ public class General implements Module {
         Resource.sendMessage(new String[]{"Skype bot made by Vilsol, MazenMC & stuntguy3000", "Version: " + Resource.VERSION});
     }
 
-    @Command(name = "authorize")
-    public static void cmdAuthorize(ChatMessage chat) throws SkypeException {
-        Resource.sendMessage("In order for authorization to work, you must send me a contact request. I will now try to authorize you!");
-        if (!chat.getSender().isAuthorized()) {
-            chat.getSender().setAuthorized(true);
-            chat.getSender().send("You are now authorized!");
-        } else {
-            chat.getSender().send("You are already authorized silly!");
-        }
-    }
-
     @Command(name = "bot")
     public static void cmdBot(ChatMessage chat, String message) {
         Resource.sendMessage("/me " + message);
