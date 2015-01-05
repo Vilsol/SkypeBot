@@ -51,7 +51,7 @@ public class General implements Module {
 
     @Command(name = "about", alias = {"aboot"})
     public static void cmdAbout(ChatMessage chat){
-        R.s(new String[] {"Skype bot made by Vilsol", "Version: " + R.version});
+        R.s(new String[] {"Skype bot made by Vilsol, forked by vemacs", "Version: " + R.version});
     }
 
     @Command(name = "restart", allow = {"vilsol"})
