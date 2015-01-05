@@ -2,12 +2,11 @@ package io.mazenmc.skypebot.modules;
 
 import com.skype.ChatMessage;
 import io.mazenmc.skypebot.engine.bot.Command;
-import io.mazenmc.skypebot.engine.bot.Module;
 import io.mazenmc.skypebot.utils.Resource;
 
 import java.util.Random;
 
-public class Swear implements Module {
+public class Swear {
 
     private static SwearType[][] combinations = {{SwearType.bijv_nw, SwearType.gilles, SwearType.object},
             {SwearType.bijv_nw, SwearType.gilles, SwearType.handelend},

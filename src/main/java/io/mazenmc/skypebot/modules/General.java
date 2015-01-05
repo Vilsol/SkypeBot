@@ -20,10 +20,7 @@ import com.mashape.unirest.request.HttpRequestWithBody;
 import com.skype.ChatMessage;
 import com.skype.SkypeException;
 import io.mazenmc.skypebot.SkypeBot;
-import io.mazenmc.skypebot.engine.bot.Command;
-import io.mazenmc.skypebot.engine.bot.CommandData;
-import io.mazenmc.skypebot.engine.bot.ModuleManager;
-import io.mazenmc.skypebot.engine.bot.Optional;
+import io.mazenmc.skypebot.engine.bot.*;
 import io.mazenmc.skypebot.utils.Resource;
 import io.mazenmc.skypebot.utils.Utils;
 import org.apache.commons.lang.exception.ExceptionUtils;
@@ -45,7 +42,6 @@ import java.util.Map;
 import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 
 public class General implements Module {
 
@@ -91,11 +87,6 @@ public class General implements Module {
     @Command(name = "c")
     public static void cmdC(ChatMessage chat, String question) throws SkypeException {
         Resource.sendMessage("[" + chat.getSenderDisplayName() + "] " + SkypeBot.getInstance().askQuestion(question));
-    }
-
-    @Command(name = "capture")
-    public static void cmdCapture(ChatMessage chat) {
-        Resource.sendMessage("Capture: " + Utils.upload(SkypeBot.getInstance().getLastStringMessages()));
     }
 
     @Command(name = "cloudflare")
@@ -172,7 +163,7 @@ public class General implements Module {
 
     @Command(name = "git")
     public static void cmdGit(ChatMessage chat) {
-        Resource.sendMessage("Git Repository: https://github.com/Vilsol/SkypeBot");
+        Resource.sendMessage("Git Repository: https://github.com/MazenMC/SkypeBot");
     }
 
     @Command(name = "help", alias = {"commands"})
