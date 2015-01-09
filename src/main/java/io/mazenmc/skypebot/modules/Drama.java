@@ -1,6 +1,7 @@
 package io.mazenmc.skypebot.modules;
 
 import com.skype.ChatMessage;
+import com.skype.SkypeException;
 import io.mazenmc.skypebot.engine.bot.Command;
 import io.mazenmc.skypebot.engine.bot.Module;
 import io.mazenmc.skypebot.utils.Resource;
@@ -143,7 +144,7 @@ public class Drama implements Module {
     };
 
     @Command(name = "drama")
-    public static void cmdDrama(ChatMessage chat) {
+    public static void cmdDrama(ChatMessage chat) throws SkypeException {
         String sentence = sentences[new Random().nextInt(Arrays.asList(sentences).size())];
 
         Random r = new Random();
@@ -153,7 +154,7 @@ public class Drama implements Module {
             }
         }
 
-        Resource.sendMessage(sentence);
+        Resource.sendMessage("[" + chat.getSenderDisplayName() + "] " + sentence);
     }
 
 }

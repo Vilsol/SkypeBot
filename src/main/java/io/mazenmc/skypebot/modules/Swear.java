@@ -1,6 +1,7 @@
 package io.mazenmc.skypebot.modules;
 
 import com.skype.ChatMessage;
+import com.skype.SkypeException;
 import io.mazenmc.skypebot.engine.bot.Command;
 import io.mazenmc.skypebot.utils.Resource;
 
@@ -14,7 +15,7 @@ public class Swear {
             {SwearType.gilles, SwearType.handelend}};
 
     @Command(name = "swear")
-    public static void cmdSwear(ChatMessage message) {
+    public static void cmdSwear(ChatMessage chat) throws SkypeException {
         SwearType[] combination = combinations[new Random().nextInt(combinations.length)];
         String output = "";
         for (SwearType s : combination) {
@@ -25,7 +26,7 @@ public class Swear {
             output += s.getRandomWord();
         }
 
-        Resource.sendMessage(output.toUpperCase());
+        Resource.sendMessage("[" + chat.getSenderDisplayName() + "] " + output.toUpperCase());
     }
 
     public enum SwearType {
