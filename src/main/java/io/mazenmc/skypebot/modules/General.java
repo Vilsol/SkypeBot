@@ -367,6 +367,7 @@ public class General implements Module {
     public static void cmdRofl(ChatMessage chat) throws SkypeException {
         String link = "http://goo.gl/pCIqXv";
         String message = "[" + chat.getSenderDisplayName() + "] ROFL all day long.\n" + link;
+        Resource.sendMessage(message);
     }
 
 }
