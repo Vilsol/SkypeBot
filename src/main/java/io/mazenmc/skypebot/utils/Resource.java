@@ -13,7 +13,7 @@ public class Resource {
     public static final String REGEX_INT = "(-?[0-9]+)";
     public static final String REGEX_WORD = "(\\b+)";
     public static final String URBAN_DICTIONARY_URL = "http://www.urbandictionary.com/define.php?term=";
-    public static final String VERSION = "1.3";
+    public static final String VERSION = "1.3.1";
 
     public static void sendMessage(String message) {
         SkypeBot.getInstance().sendMessage(message);
