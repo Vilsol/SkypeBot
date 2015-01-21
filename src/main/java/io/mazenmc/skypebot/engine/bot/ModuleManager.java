@@ -23,8 +23,8 @@ public class ModuleManager {
     private static void executeCommand(ChatMessage message, CommandData data, Matcher m) {
         if (data.getCommand().admin()) {
             try {
-                if (Arrays.asList(Resource.GROUP_ADMINS).contains(message.getSenderId())) {
-                    Resource.sendMessage("Access Denied!");
+                if (!Arrays.asList(Resource.GROUP_ADMINS).contains(message.getSenderId())) {
+                    Resource.sendMessage("[" + message.getSenderId() + "] Access Denied!");
                     return;
                 }
             } catch(SkypeException ignored) {
