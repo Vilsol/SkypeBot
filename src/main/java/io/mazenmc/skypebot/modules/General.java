@@ -116,15 +116,15 @@ public class General implements Module {
     @Command(name = "md5")
     public static void cmdMd5(ChatMessage chat) {
         String s = "md_1 = 1% of devs (people who know their shit)\n" +
-                "md_2 = uses one class for everything\n" +
-                "md_3 = true == true, yoo!\n" +
-                "md_4 = New instance to call static methods\n" +
-                "md_5 = reflects his own classes\n" +
-                "md_6 = return this; on everything\n" +
-                "md_7 = abstract? never heard of it\n" +
-                "md_8 = interface? never heard of it\n" +
-                "md_9 = enum? never heard of it\n" +
-                "md_10 = java? never heard of it";
+            "md_2 = uses one class for everything\n" +
+            "md_3 = true == true, yoo!\n" +
+            "md_4 = New instance to call static methods\n" +
+            "md_5 = reflects his own classes\n" +
+            "md_6 = return this; on everything\n" +
+            "md_7 = abstract? never heard of it\n" +
+            "md_8 = interface? never heard of it\n" +
+            "md_9 = enum? never heard of it\n" +
+            "md_10 = java? never heard of it";
         Resource.sendMessage(s);
     }
 
@@ -136,8 +136,8 @@ public class General implements Module {
         } else {
             try {
                 HttpResponse<JsonNode> response = Unirest.get("https://igor-zachetly-ping-uin.p.mashape.com/pinguin.php?address=" + URLEncoder.encode(ip))
-                        .header("X-Mashape-Key", "sHb3a6jczqmshcYqUEwQq3ZZR3BVp18NqaAjsnIYFvVNHMqvCb")
-                        .asJson();
+                    .header("X-Mashape-Key", "sHb3a6jczqmshcYqUEwQq3ZZR3BVp18NqaAjsnIYFvVNHMqvCb")
+                    .asJson();
                 if (response.getBody().getObject().get("result").equals(false)) {
                     Resource.sendMessage("Thats an invalid IP / domain silly!");
                 } else {
@@ -324,10 +324,10 @@ public class General implements Module {
         if (name == null) {
             try {
                 HttpResponse<JsonNode> response = Unirest.get("http://xkcd.com/info.0.json")
-                        .asJson();
+                    .asJson();
                 int urlnumber = new Random().nextInt((Integer) response.getBody().getObject().get("num")) + 1;
                 HttpResponse<JsonNode> xkcd = Unirest.get("http://xkcd.com/" + urlnumber + "/info.0.json")
-                        .asJson();
+                    .asJson();
                 String transcript = xkcd.getBody().getObject().get("transcript").toString();
                 String image = xkcd.getBody().getObject().get("img").toString();
                 Resource.sendMessage("Image - " + image);
@@ -361,6 +361,12 @@ public class General implements Module {
                 Resource.sendMessage("Error: " + Utils.upload(ExceptionUtils.getStackTrace(e)));
             }
         }
+    }
+
+    @Command(name = "roflcopter")
+    public static void cmdRofl(ChatMessage chat) throws SkypeException {
+        String link = "http://goo.gl/pCIqXv";
+        String message = "[" + chat.getSenderDisplayName() + "] ROFL all day long.\n" + link;
     }
 
 }
