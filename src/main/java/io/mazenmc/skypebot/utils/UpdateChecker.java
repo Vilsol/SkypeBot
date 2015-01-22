@@ -3,7 +3,6 @@ package io.mazenmc.skypebot.utils;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
-import io.mazenmc.skypebot.SkypeBot;
 import net.lingala.zip4j.core.ZipFile;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.json.JSONException;
@@ -47,7 +46,7 @@ public class UpdateChecker extends Thread {
                     Resource.sendMessage("Found new commit: " +
                             commit.getJSONObject("author").getString("name") + " - " +
                             commit.getString("message") + " (" + sha + ")");
-                    Resource.sendMessage("Updating...");
+                    Resource.sendMessage(recentCommit.getString("url"));
 
                     try (InputStream stream = c.getInputStream()) {
                         File f = new File("master.zip");
@@ -68,7 +67,7 @@ public class UpdateChecker extends Thread {
 
                     zip.extractAll(System.getProperty("user.dir"));
 
-                    Resource.sendMessage("Copied repository and extracted! Compiling...");
+                    Resource.sendMessage("Set up local repository! Compiling...");
 
                     ProcessBuilder builder = new ProcessBuilder("/usr/bin/mvn", "clean", "compile", "assembly:single")
                             .redirectErrorStream(true).directory(output);
@@ -111,7 +110,11 @@ public class UpdateChecker extends Thread {
                     fos.close();
                     process.destroy();
 
-                    SkypeBot.getInstance().getPrinter().pureSend("Finished compiling! Restarting...");
+                    Resource.sendMessage("Finished compiling! Restarting...");
+
+                    try {
+                        Thread.sleep(200L);
+                    } catch (InterruptedException ignored) {}
 
                     try {
                         Unirest.shutdown();

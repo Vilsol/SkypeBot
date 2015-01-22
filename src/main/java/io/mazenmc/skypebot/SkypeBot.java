@@ -98,7 +98,6 @@ public class SkypeBot {
         try {
             database = DriverManager.getConnection("jdbc:mysql://localhost:3306/skype_bot", connectionProps);
         } catch (SQLException e) {
-            Resource.sendMessage("Failed to connect to database: " + Utils.upload(ExceptionUtils.getStackTrace(e)));
         }
 
         Resource.sendMessage("/me " + Resource.VERSION + " initialized!");
