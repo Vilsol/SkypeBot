@@ -130,18 +130,27 @@ public class General implements Module {
 
     @Command(name = "ping")
     public static void cmdPing(ChatMessage chat, @Optional
-    final String ip) throws JSONException {
+    final String ip) throws JSONException, SkypeException {
         if (ip == null) {
-            Resource.sendMessage("Fuck yo ping!");
+            Resource.sendMessage("Pong");
         } else {
             try {
                 HttpResponse<JsonNode> response = Unirest.get("https://igor-zachetly-ping-uin.p.mashape.com/pinguin.php?address=" + URLEncoder.encode(ip))
                     .header("X-Mashape-Key", "sHb3a6jczqmshcYqUEwQq3ZZR3BVp18NqaAjsnIYFvVNHMqvCb")
                     .asJson();
                 if (response.getBody().getObject().get("result").equals(false)) {
-                    Resource.sendMessage("Thats an invalid IP / domain silly!");
+                    Resource.sendMessage("[" + chat.getSenderDisplayName() + "] Invalid hostname!");
                 } else {
-                    Resource.sendMessage(ip + " - Response took " + response.getBody().getObject().get("time") + "ms");
+                    Object timeLeftObject = response.getBody().getObject().get("time");
+                    if (timeLeftObject != null) {
+                        String timeLeft = timeLeftObject.toString();
+                        if (!timeLeft.isEmpty()) {
+                            Resource.sendMessage("[" + chat.getSenderDisplayName() + "] " + ip + " - Response took " + timeLeft + "ms");
+                            return;
+                        }
+                    }
+
+                    Resource.sendMessage("[" + chat.getSenderDisplayName() + "] " + ip + " - No response received!");
                 }
             } catch (UnirestException e) {
                 Resource.sendMessage("Error: " + Utils.upload(ExceptionUtils.getStackTrace(e)));
