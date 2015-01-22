@@ -3,6 +3,7 @@ package io.mazenmc.skypebot.utils;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
+import net.lingala.zip4j.core.ZipFile;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.json.JSONObject;
 
@@ -19,7 +20,6 @@ import java.util.zip.ZipInputStream;
 public class UpdateChecker extends Thread {
 
     private String lastSha = "--";
-    private String lastResponse = "";
 
     @Override
     public void run() {
@@ -62,39 +62,9 @@ public class UpdateChecker extends Thread {
                     if(output.exists())
                         output.delete();
 
-                    ZipInputStream zis =
-                            new ZipInputStream(new FileInputStream(new File("master.zip")));
-                    ZipEntry next = zis.getNextEntry();
+                    ZipFile zip = new ZipFile(new File("master.zip"));
 
-                    while(next != null) {
-                        String name = next.getName();
-                        File nf = new File(name);
-
-                        // assure all parent directories are created to avoid FNFE
-                        if(nf.getParent() != null)
-                            new File(nf.getParent()).mkdirs();
-
-                        FileOutputStream fos;
-                        byte[] buffer = new byte[1024];
-                        int i;
-
-                        try {
-                            fos = new FileOutputStream(nf);
-                        } catch (FileNotFoundException ignored) {
-                            next = zis.getNextEntry();
-                            continue;
-                        }
-
-                        while((i = zis.read(buffer)) > 0) {
-                            fos.write(buffer, 0, i);
-                        }
-
-                        fos.close();
-                        next = zis.getNextEntry();
-                    }
-
-                    zis.closeEntry();
-                    zis.close();
+                    zip.extractAll(System.getProperty("user.dir"));
 
                     Resource.sendMessage("Copied repository and extracted! Compiling...");
 
@@ -144,7 +114,7 @@ public class UpdateChecker extends Thread {
                 }
             } catch (Exception e) {
                 Resource.sendMessage("Was unable to check for new commits (" +
-                        Utils.upload(ExceptionUtils.getStackTrace(e)) + " " + Utils.upload(lastResponse) + ")");
+                        Utils.upload(ExceptionUtils.getStackTrace(e)) + ")");
             }
         }
     }
