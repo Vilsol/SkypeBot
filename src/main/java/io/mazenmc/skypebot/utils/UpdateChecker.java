@@ -112,6 +112,8 @@ public class UpdateChecker extends Thread {
                         String tmp;
                         List<String> lines = new ArrayList<>();
 
+                        process.destroy();
+
                         while((tmp = in.readLine()) != null) {
                             lines.add(tmp);
                         }
@@ -135,6 +137,7 @@ public class UpdateChecker extends Thread {
 
                     fis.close();
                     fos.close();
+                    process.destroy();
 
                     Resource.sendMessage("Finished compiling! Restarting...");
                     Utils.restartBot();
