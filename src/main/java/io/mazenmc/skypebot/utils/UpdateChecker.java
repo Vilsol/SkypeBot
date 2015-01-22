@@ -19,6 +19,7 @@ import java.util.zip.ZipInputStream;
 public class UpdateChecker extends Thread {
 
     private String lastSha = "--";
+    private String lastResponse = "";
 
     @Override
     public void run() {
@@ -32,9 +33,11 @@ public class UpdateChecker extends Thread {
                 HttpResponse<JsonNode> response = Unirest.get("https://api.github.com/repos/MazenMC/SkypeBot/commits?page=1")
                         .asJson();
 
+                lastResponse = response.toString();
+
                 JsonNode node = response.getBody();
                 JSONObject recentCommit = node.getArray().getJSONObject(0);
-                String sha = (recentCommit.has("sha")) ? recentCommit.getString("sha") : "";
+                String sha = recentCommit.getString("sha");
 
                 if(!lastSha.equals(sha) && !lastSha.equals("--")) {
                     URL url = new URL("https://github.com/MazenMC/SkypeBot/archive/master.zip");
@@ -142,7 +145,7 @@ public class UpdateChecker extends Thread {
                 }
             } catch (Exception e) {
                 Resource.sendMessage("Was unable to check for new commits (" +
-                        Utils.upload(ExceptionUtils.getStackTrace(e)) + ")");
+                        Utils.upload(ExceptionUtils.getStackTrace(e)) + " " + Utils.upload(lastResponse) + ")");
             }
         }
     }
