@@ -34,7 +34,7 @@ public class UpdateChecker extends Thread {
 
                 JsonNode node = response.getBody();
                 JSONObject recentCommit = node.getArray().getJSONObject(0);
-                String sha = recentCommit.getString("sha");
+                String sha = (recentCommit.has("sha")) ? recentCommit.getString("sha") : "";
 
                 if(!lastSha.equals(sha) && !lastSha.equals("--")) {
                     URL url = new URL("https://github.com/MazenMC/SkypeBot/archive/master.zip");
@@ -56,14 +56,10 @@ public class UpdateChecker extends Thread {
                         stream.close();
                     }
 
-                    File output = new File("skypebot-repo");
+                    File output = new File("SkypeBot-master");
 
-                    if(output.exists()) {
+                    if(output.exists())
                         output.delete();
-                        output.mkdir();
-                    } else {
-                        output.mkdir();
-                    }
 
                     ZipInputStream zis =
                             new ZipInputStream(new FileInputStream(new File("master.zip")));
@@ -71,7 +67,7 @@ public class UpdateChecker extends Thread {
 
                     while(next != null) {
                         String name = next.getName();
-                        File nf = new File(output, name);
+                        File nf = new File(name);
 
                         // assure all parent directories are created to avoid FNFE
                         new File(nf.getParent()).mkdirs();
