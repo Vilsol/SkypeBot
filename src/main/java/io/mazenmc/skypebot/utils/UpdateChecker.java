@@ -52,7 +52,7 @@ public class UpdateChecker extends Thread {
                     Resource.sendMessage("Found new commit: " +
                             commit.getJSONObject("author").getString("name") + " - " +
                             commit.getString("message") + " (" + sha + ")");
-                    Resource.sendMessage(recentCommit.getString("url"));
+                    Resource.sendMessage(recentCommit.getString("html_url"));
 
                     try (InputStream stream = c.getInputStream()) {
                         File f = new File("master.zip");
