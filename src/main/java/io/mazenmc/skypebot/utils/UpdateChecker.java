@@ -5,6 +5,7 @@ import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
 import net.lingala.zip4j.core.ZipFile;
 import org.apache.commons.lang.exception.ExceptionUtils;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -14,8 +15,6 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
 
 public class UpdateChecker extends Thread {
 
@@ -25,14 +24,15 @@ public class UpdateChecker extends Thread {
     public void run() {
         while (true) {
             try {
-                Thread.sleep(10000);
+                Thread.sleep(60002);
             } catch (InterruptedException ignored) {
             }
 
             try {
                 HttpResponse<JsonNode> response = Unirest.get("https://api.github.com/repos/MazenMC/SkypeBot/commits?page=1")
+                        .header("User-Agent", "Mazen-SkypeBot")
+                        .header("Content-Type", "application/json")
                         .asJson();
-
                 JsonNode node = response.getBody();
                 JSONObject recentCommit = node.getArray().getJSONObject(0);
                 String sha = recentCommit.getString("sha");
@@ -115,8 +115,10 @@ public class UpdateChecker extends Thread {
                     lastSha = sha;
                 }
             } catch (Exception e) {
-                Resource.sendMessage("Was unable to check for new commits (" +
-                        Utils.upload(ExceptionUtils.getStackTrace(e)) + ")");
+                if(!(e instanceof JSONException)) {
+                    Resource.sendMessage("Was unable to check for new commits (" +
+                            Utils.upload(ExceptionUtils.getStackTrace(e)) + ")");
+                }
             }
         }
     }
