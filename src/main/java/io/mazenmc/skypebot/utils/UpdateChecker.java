@@ -33,6 +33,7 @@ public class UpdateChecker extends Thread {
                         .header("User-Agent", "Mazen-SkypeBot")
                         .header("Content-Type", "application/json")
                         .asJson();
+                
                 JsonNode node = response.getBody();
                 JSONObject recentCommit = node.getArray().getJSONObject(0);
                 String sha = recentCommit.getString("sha");
