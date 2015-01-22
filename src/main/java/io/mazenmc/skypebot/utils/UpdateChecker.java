@@ -48,6 +48,11 @@ public class UpdateChecker extends Thread {
                     Resource.sendMessage("Updating...");
 
                     try (InputStream stream = c.getInputStream()) {
+                        File f = new File("master.zip");
+
+                        if(f.exists())
+                            f.delete();
+
                         Files.copy(stream, Paths.get("master.zip"));
                         stream.close();
                     }
@@ -72,7 +77,7 @@ public class UpdateChecker extends Thread {
                         // assure all parent directories are created to avoid FNFE
                         new File(nf.getParent()).mkdirs();
 
-                        if(name.contains(".gitignore")) {
+                        if(name.startsWith(".")) {
                             next = zis.getNextEntry();
                             continue;
                         }
