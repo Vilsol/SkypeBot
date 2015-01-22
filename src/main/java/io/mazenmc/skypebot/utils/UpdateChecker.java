@@ -43,7 +43,7 @@ public class UpdateChecker extends Thread {
 
                     Resource.sendMessage("Found new commit: " +
                             commit.getJSONObject("author").getString("name") + " - " +
-                            commit.getString("message"));
+                            commit.getString("message") + " (" + sha + ")");
                     Resource.sendMessage("Updating...");
 
                     try (InputStream stream = c.getInputStream()) {
@@ -100,7 +100,7 @@ public class UpdateChecker extends Thread {
 
                     Resource.sendMessage("Copied repository and extracted! Compiling...");
 
-                    ProcessBuilder builder = new ProcessBuilder("/usr/bin/mvn clean compile assembly:single")
+                    ProcessBuilder builder = new ProcessBuilder("/usr/bin/mvn", "clean", "compile", "assembly:single")
                             .redirectErrorStream(true).directory(output);
                     Process process = builder.start();
 
