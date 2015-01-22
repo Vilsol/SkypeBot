@@ -26,7 +26,7 @@ public class Swear {
             output += s.getRandomWord();
         }
 
-        Resource.sendMessage("[" + chat.getSenderDisplayName() + "] " + output.toUpperCase());
+        Resource.sendMessage(chat, output.toUpperCase());
     }
 
     public enum SwearType {

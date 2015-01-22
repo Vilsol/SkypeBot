@@ -50,7 +50,7 @@ public class General implements Module {
     String question) {
         String[] options = new String[]{"It is certain", "It is decidedly so", "Without a doubt", "Yes definitely", "You may rely on it", "As I see it, yes", "Most likely", "Outlook good", "Yes", "Signs point to yes", "Reply hazy try again", "Ask again later", "Better not tell you now", "Cannot predict now", "Concentrate and ask again", "Don't count on it", "My reply is no", "My sources say no", "Outlook not so good", "Very doubtful"};
         int chosen = new Random().nextInt(options.length);
-        Resource.sendMessage(options[chosen]);
+        Resource.sendMessage(chat, options[chosen]);
     }
 
     @Command(name = "about")
@@ -65,12 +65,12 @@ public class General implements Module {
 
     @Command(name = "c")
     public static void cmdC(ChatMessage chat, String question) throws SkypeException {
-        Resource.sendMessage("[" + chat.getSenderDisplayName() + "] " + SkypeBot.getInstance().askQuestion(question));
+        Resource.sendMessage(chat, SkypeBot.getInstance().askQuestion(question));
     }
 
     @Command(name = "doc")
     public static void cmdDoc(ChatMessage chat) {
-        Resource.sendMessage("https://docs.google.com/document/d/1LoTYCauVyEiiLZ5Klw3UB8rbEtkzNn7VLmgm87Fzyy0/edit#");
+        Resource.sendMessage(chat, "https://docs.google.com/document/d/1LoTYCauVyEiiLZ5Klw3UB8rbEtkzNn7VLmgm87Fzyy0/edit#");
     }
 
     @Command(name = "fish go moo", exact = false, command = false)
@@ -80,7 +80,7 @@ public class General implements Module {
 
     @Command(name = "git")
     public static void cmdGit(ChatMessage chat) {
-        Resource.sendMessage("Git Repository: https://github.com/MazenMC/SkypeBot");
+        Resource.sendMessage(chat, "Git Repository: https://github.com/MazenMC/SkypeBot");
     }
 
     @Command(name = "help", alias = {"commands"})
@@ -103,14 +103,14 @@ public class General implements Module {
             }
         }
 
-        Resource.sendMessage("Available Commands: " + Utils.upload(commands));
+        Resource.sendMessage(chat, "Available Commands: " + Utils.upload(commands));
     }
 
     @Command(name = "lmgtfy")
     public static void cmdLmgtfy(ChatMessage chat, String question) throws SkypeException {
         //Thanks DevRoMc for the idea. - ibJarrett
         String returnString = "http://lmgtfy.com/?q=";
-        Resource.sendMessage("[" + chat.getSenderDisplayName() + "] " + returnString + URLEncoder.encode(question));
+        Resource.sendMessage(chat, returnString + URLEncoder.encode(question));
     }
 
     @Command(name = "md5")
@@ -132,28 +132,28 @@ public class General implements Module {
     public static void cmdPing(ChatMessage chat, @Optional
     final String ip) throws JSONException, SkypeException {
         if (ip == null) {
-            Resource.sendMessage("Pong");
+            Resource.sendMessage(chat, "Pong");
         } else {
             try {
                 HttpResponse<JsonNode> response = Unirest.get("https://igor-zachetly-ping-uin.p.mashape.com/pinguin.php?address=" + URLEncoder.encode(ip))
                     .header("X-Mashape-Key", "sHb3a6jczqmshcYqUEwQq3ZZR3BVp18NqaAjsnIYFvVNHMqvCb")
                     .asJson();
                 if (response.getBody().getObject().get("result").equals(false)) {
-                    Resource.sendMessage("[" + chat.getSenderDisplayName() + "] Invalid hostname!");
+                    Resource.sendMessage(chat, "Invalid hostname!");
                 } else {
                     Object timeLeftObject = response.getBody().getObject().get("time");
                     if (timeLeftObject != null) {
                         String timeLeft = timeLeftObject.toString();
                         if (!timeLeft.isEmpty()) {
-                            Resource.sendMessage("[" + chat.getSenderDisplayName() + "] " + ip + " - Response took " + timeLeft + "ms");
+                            Resource.sendMessage(chat, ip + " - Response took " + timeLeft + "ms");
                             return;
                         }
                     }
 
-                    Resource.sendMessage("[" + chat.getSenderDisplayName() + "] " + ip + " - No response received!");
+                    Resource.sendMessage(chat, ip + " - No response received!");
                 }
             } catch (UnirestException e) {
-                Resource.sendMessage("Error: " + Utils.upload(ExceptionUtils.getStackTrace(e)));
+                Resource.sendMessage(chat, "Error: " + Utils.upload(ExceptionUtils.getStackTrace(e)));
             }
         }
     }
@@ -162,25 +162,22 @@ public class General implements Module {
     public static void cmdQuote(ChatMessage chat, String category) throws SkypeException {
         try {
             HttpResponse<JsonNode> response = Unirest.post("https://andruxnet-random-famous-quotes.p.mashape.com/cat=" + category).header("X-Mashape-Key", "rIizXnIZ7Umsh3o3sfCLfL86lZY2p1bda69jsnAqK1Sc6C5CV1").header("Content-Type", "application/x-www-form-urlencoded").asJson();
-            Resource.sendMessage("[" + chat.getSenderDisplayName() + "] \"" + response.getBody().getObject().get("quote") + "\" - " + response.getBody().getObject().get("author"));
+            Resource.sendMessage(chat, "\"" + response.getBody().getObject().get("quote") + "\" - " + response.getBody().getObject().get("author"));
         } catch (UnirestException | JSONException ignored) {
         }
     }
 
     @Command(name = "random")
-    public static void cmdRandom(ChatMessage chat, int low, int high) throws SkypeException {
-        if (low > high) {
-            low ^= high;
-            high ^= low;
-            low ^= high;
-        }
-
-        if ((high - low) + low <= 0) {
-            Resource.sendMessage("[" + chat.getSenderDisplayName() + "] One number must be larger than the other");
+    public static void cmdRandom(ChatMessage chat, int number1, int number2) throws SkypeException {
+        int high = Math.max(number1, number2);
+        int low = Math.min(number1, number2);
+        
+        if (high == low) {
+            Resource.sendMessage(chat, "The numbers cannot be the same!");
             return;
         }
 
-        Resource.sendMessage("[" + chat.getSenderDisplayName() + "] " + new Random().nextInt(high - low) + low);
+        Resource.sendMessage(chat, String.valueOf(new Random().nextInt(high - low) + low));
     }
 
     @Command(name = "rant")
@@ -190,12 +187,12 @@ public class General implements Module {
         if (ranting) {
             rantThread.stop();
             ranting = false;
-            Resource.sendMessage("[" + chat.getSenderDisplayName() + "] " + "Ranting stopped!");
+            Resource.sendMessage(chat, "Ranting stopped!");
             return;
         }
 
         if (question == null || question.equals("")) {
-            Resource.sendMessage("[" + chat.getSenderDisplayName() + "] " + "Enter a question!");
+            Resource.sendMessage(chat, "Enter a question!");
             return;
         }
 
@@ -206,11 +203,11 @@ public class General implements Module {
         }
 
         if (cleverBot == null || jabberWacky == null) {
-            Resource.sendMessage("One of the bots died!");
+            Resource.sendMessage(chat, "One of the bots died!");
             return;
         }
 
-        Resource.sendMessage("[" + chat.getSenderDisplayName() + "] " + "Ranting started...");
+        Resource.sendMessage(chat, "Ranting started...");
 
         ranting = true;
 
@@ -239,7 +236,7 @@ public class General implements Module {
                         Resource.sendMessage("[JW] " + jabberWackyResponse);
                         Thread.sleep(500);
                     } catch (Exception e) {
-                        Resource.sendMessage("A bot got banned :( (" + Utils.upload(ExceptionUtils.getStackTrace(e)) + ")");
+                        Resource.sendMessage(chat, "A bot got banned :( (" + Utils.upload(ExceptionUtils.getStackTrace(e)) + ")");
                         ranting = false;
                         this.stop();
                     }
@@ -258,17 +255,17 @@ public class General implements Module {
     @Command(name = "sql")
     public static void cmdSQL(ChatMessage chat, String query) throws SQLException, SkypeException {
         if (SkypeBot.getInstance().getDatabase() == null) {
-            Resource.sendMessage("[" + chat.getSenderDisplayName() + "] Connection is down!");
+            Resource.sendMessage(chat, "Connection is down!");
             return;
         }
 
         if (query.toUpperCase().contains("DROP DATABASE") || query.toUpperCase().contains("CREATE DATABASE") || query.toUpperCase().contains("USE")) {
-            Resource.sendMessage("[" + chat.getSenderDisplayName() + "] Do not touch the databases!");
+            Resource.sendMessage(chat, "Do not touch the databases!");
             return;
         }
 
         if (query.toUpperCase().contains("INFORMATION_SCHEMA")) {
-            Resource.sendMessage("[" + chat.getSenderDisplayName() + "] Not that fast!");
+            Resource.sendMessage(chat, "Not that fast!");
             return;
         }
 
@@ -280,17 +277,17 @@ public class General implements Module {
                 ResultSet result = stmt.executeQuery(query);
                 String parsed = Utils.parseResult(result);
                 parsed = query + "\n\n" + parsed;
-                Resource.sendMessage("[" + chat.getSenderDisplayName() + "] SQL Query Successful: " + Utils.upload(parsed));
+                Resource.sendMessage(chat, "SQL Query Successful: " + Utils.upload(parsed));
             } else {
                 stmt.execute(query);
-                Resource.sendMessage("[" + chat.getSenderDisplayName() + "] SQL Query Successful!");
+                Resource.sendMessage(chat, "SQL Query Successful!");
             }
         } catch (SQLException e) {
             String message = e.getMessage();
             message = message.replace("You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near", "");
-            Resource.sendMessage("[" + chat.getSenderDisplayName() + "] Error executing SQL: " + message);
+            Resource.sendMessage(chat, "Error executing SQL: " + message);
         } catch (Exception e) {
-            Resource.sendMessage("[" + chat.getSenderDisplayName() + "] Error: " + Utils.upload(ExceptionUtils.getStackTrace(e)));
+            Resource.sendMessage(chat, "Error: " + Utils.upload(ExceptionUtils.getStackTrace(e)));
         } finally {
             if (stmt != null) {
                 stmt.close();
@@ -300,7 +297,7 @@ public class General implements Module {
 
     @Command(name = "topkek")
     public static void cmdTopKek(ChatMessage chat) throws SkypeException {
-        Resource.sendMessage("[" + chat.getSenderDisplayName() + "] https://topkek.mazenmc.io/ Gotta be safe while keking!");
+        Resource.sendMessage(chat, "https://topkek.mazenmc.io/ Gotta be safe while keking!");
     }
 
     @Command(name = "define")
@@ -318,14 +315,14 @@ public class General implements Module {
         definition = definition.replaceAll("<a href=\"\\/define\\.php\\?term=[a-z]*\">", "");
         definition = definition.replace("</a>", "");
 
-        Resource.sendMessage("[" + chat.getSenderDisplayName() + "] Definition of " + word + ": " + Jsoup.parse(definition).text());
+        Resource.sendMessage(chat, "Definition of " + word + ": " + Jsoup.parse(definition).text());
     }
 
     @Command(name = "dreamincode", alias = {"whatwouldmazensay"})
     public static void cmddreamincode(ChatMessage chat) throws SkypeException {
         String[] options = new String[]{"No, Im not interested in having a girlfriend I find it a tremendous waste of time.", "Hi, my name is Santiago Gonzalez and I'm 14 and I like to program.", "Im fluent in a dozen different programming languages.", "Thousands of people have downloaded my apps for the mac, iphone, and ipad.", "I will be 16 when I graduate college and 17 when I finish my masters.", "I really like learning, I find it as essential as eating.", "Dr. Bakos: I often have this disease which I call long line-itus.", "Dr. Bakos: Are you eager enough just to write down a slump of code, or is the code itself a artistic median?", "Beutaiful code is short and conzied.", "Sometimes when I goto sleep im stuck with that annoying bug I cannot fix, and in my dreams I see myself programming. When I wake up I have the solution!", "One of the main reasons I started developing apps was to help people what they want to do like decorate a christmas tree.", "I really like to crochet.", "I make good website http://slgonzalez.com/"};
         int chosen = new Random().nextInt(options.length);
-        Resource.sendMessage("[" + chat.getSenderDisplayName() + "] " + options[chosen]);
+        Resource.sendMessage(chat, options[chosen]);
     }
 
     @Command(name = "relevantxkcd")
@@ -339,10 +336,10 @@ public class General implements Module {
                     .asJson();
                 String transcript = xkcd.getBody().getObject().get("transcript").toString();
                 String image = xkcd.getBody().getObject().get("img").toString();
-                Resource.sendMessage("Image - " + image);
-                Resource.sendMessage("Transcript - " + transcript);
+                Resource.sendMessage(chat, "Image - " + image);
+                Resource.sendMessage(chat, "Transcript - " + transcript);
             } catch (Exception e) {
-                Resource.sendMessage("Error: " + Utils.upload(ExceptionUtils.getStackTrace(e)));
+                Resource.sendMessage(chat, "Error: " + Utils.upload(ExceptionUtils.getStackTrace(e)));
             }
         } else {
             try {
@@ -374,9 +371,7 @@ public class General implements Module {
 
     @Command(name = "roflcopter")
     public static void cmdRofl(ChatMessage chat) throws SkypeException {
-        String link = "http://goo.gl/pCIqXv";
-        String message = "[" + chat.getSenderDisplayName() + "] ROFL all day long.\n" + link;
-        Resource.sendMessage(message);
+        Resource.sendMessage(chat, "ROFL all day long! http://goo.gl/pCIqXv");
     }
 
 }

@@ -154,7 +154,7 @@ public class Drama implements Module {
             }
         }
 
-        Resource.sendMessage("[" + chat.getSenderDisplayName() + "] " + sentence);
+        Resource.sendMessage(chat, sentence);
     }
 
 }

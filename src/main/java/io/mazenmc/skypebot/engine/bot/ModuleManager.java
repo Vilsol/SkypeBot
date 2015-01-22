@@ -20,11 +20,11 @@ public class ModuleManager {
     private static HashMap<String, CommandData> allCommands = new HashMap<>();
     private static HashMap<String, CommandData> commandData = new HashMap<>();
 
-    private static void executeCommand(ChatMessage message, CommandData data, Matcher m) {
+    private static void executeCommand(ChatMessage chat, CommandData data, Matcher m) {
         if (data.getCommand().admin()) {
             try {
-                if (!Arrays.asList(Resource.GROUP_ADMINS).contains(message.getSenderId())) {
-                    Resource.sendMessage("[" + message.getSenderId() + "] Access Denied!");
+                if (!Arrays.asList(Resource.GROUP_ADMINS).contains(chat.getSenderId())) {
+                    Resource.sendMessage(chat, "Access Denied!");
                     return;
                 }
             } catch(SkypeException ignored) {
@@ -33,7 +33,7 @@ public class ModuleManager {
         }
 
         List<Object> a = new ArrayList<>();
-        a.add(message);
+        a.add(chat);
 
         if (m.groupCount() > 0) {
             for (int i = 1; i <= m.groupCount(); i++) {
@@ -70,13 +70,13 @@ public class ModuleManager {
                 methodAccessor = (MethodAccessor) acquireMethodAccessorMethod.invoke(data.getMethod(), null);
             }
         } catch (NoSuchFieldException | InvocationTargetException | IllegalAccessException | NoSuchMethodException e) {
-            Resource.sendMessage("Failed... (" + ExceptionUtils.getStackTrace(e) + ")");
+            Resource.sendMessage(chat, "Failed... (" + ExceptionUtils.getStackTrace(e) + ")");
         }
 
         try {
             methodAccessor.invoke(null, a.toArray());
         } catch (Exception e) {
-            Resource.sendMessage("Failed... (" + Utils.upload(ExceptionUtils.getStackTrace(e)) + ")");
+            Resource.sendMessage(chat, "Failed... (" + Utils.upload(ExceptionUtils.getStackTrace(e)) + ")");
         }
 
     }
@@ -111,12 +111,12 @@ public class ModuleManager {
         }
     }
 
-    public static void parseText(ChatMessage message) {
+    public static void parseText(ChatMessage chat) {
         String command = null;
         String originalCommand = null;
         try {
-            command = message.getContent();
-            originalCommand = message.getContent();
+            command = chat.getContent();
+            originalCommand = chat.getContent();
         } catch (SkypeException ignored) {
             System.out.println("skype exception");
             return;
@@ -127,7 +127,7 @@ public class ModuleManager {
             return;
         }
 
-        System.out.println("got message: " + command);
+        System.out.println("got chat: " + command);
 
         if (command.length() < 1) {
             System.out.println("low command length");
@@ -163,7 +163,7 @@ public class ModuleManager {
             Matcher m = r.matcher(originalCommand);
 
             if (m.find()) {
-                executeCommand(message, s.getValue(), m);
+                executeCommand(chat, s.getValue(), m);
                 System.out.println("executed command");
                 return;
             } else if (!s.getValue().getParameterRegex(false).equals(s.getValue().getParameterRegex(true))) {
@@ -183,7 +183,7 @@ public class ModuleManager {
                 r = Pattern.compile(match);
                 m = r.matcher(originalCommand);
                 if (m.find()) {
-                    executeCommand(message, s.getValue(), m);
+                    executeCommand(chat, s.getValue(), m);
                     return;
                 }
             }
@@ -206,13 +206,13 @@ public class ModuleManager {
                 correct = Resource.COMMAND_PREFIX + correct;
             }
 
-            Resource.sendMessage("Incorrect syntax: " + correct);
+            Resource.sendMessage(chat, "Incorrect syntax: " + correct);
 
             return;
         }
 
         if (originalCommand.startsWith(Resource.COMMAND_PREFIX)) {
-            Resource.sendMessage("Command '" + commandSplit[0] + "' not found!");
+            Resource.sendMessage(chat, "Command '" + commandSplit[0] + "' not found!");
         }
     }
 

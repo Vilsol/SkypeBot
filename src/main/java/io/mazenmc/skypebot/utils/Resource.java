@@ -1,5 +1,7 @@
 package io.mazenmc.skypebot.utils;
 
+import com.skype.ChatMessage;
+import com.skype.SkypeException;
 import io.mazenmc.skypebot.SkypeBot;
 
 public class Resource {
@@ -19,8 +21,12 @@ public class Resource {
         SkypeBot.getInstance().sendMessage(message);
     }
 
-    public static void sendMessage(int i) {
-        SkypeBot.getInstance().sendMessage(String.valueOf(i));
+    public static void sendMessage(ChatMessage chatMessage, String message) {
+        try {
+            SkypeBot.getInstance().sendMessage("(" + chatMessage.getSender().getDisplayName() + ") " + message);
+        } catch (SkypeException ex) {
+            sendMessage("Error occurred! " + ex.getMessage());
+        }
     }
 
     public static void sendMessage(String[] message) {
