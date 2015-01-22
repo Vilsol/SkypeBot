@@ -111,6 +111,9 @@ public class UpdateChecker extends Thread {
                     process.destroy();
 
                     Resource.sendMessage("Finished compiling! Restarting...");
+
+                    Thread.sleep(200L);
+
                     Utils.restartBot();
                 } else {
                     lastSha = sha;
