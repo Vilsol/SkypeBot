@@ -34,7 +34,6 @@ public class UpdateChecker extends Thread {
 
                 JsonNode node = response.getBody();
                 JSONObject recentCommit = node.getArray().getJSONObject(0);
-
                 String sha = recentCommit.getString("sha");
 
                 if(!lastSha.equals(sha) && !lastSha.equals("--")) {
