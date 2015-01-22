@@ -19,17 +19,23 @@ import java.util.List;
 public class UpdateChecker extends Thread {
 
     private String lastSha = "--";
+    private String accessToken;
+
+    public UpdateChecker() {
+        accessToken = Utils.readFirstLine("key_github");
+    }
 
     @Override
     public void run() {
         while (true) {
             try {
-                Thread.sleep(60002);
+                Thread.sleep(10000);
             } catch (InterruptedException ignored) {
             }
 
             try {
-                HttpResponse<JsonNode> response = Unirest.get("https://api.github.com/repos/MazenMC/SkypeBot/commits?page=1")
+                HttpResponse<JsonNode> response = Unirest.get("https://api.github.com/repos/MazenMC/SkypeBot/commits?page=1" +
+                        "&access_token=" + accessToken)
                         .header("User-Agent", "Mazen-SkypeBot")
                         .header("Content-Type", "application/json")
                         .asJson();
