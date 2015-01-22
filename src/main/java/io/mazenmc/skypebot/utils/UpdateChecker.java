@@ -77,19 +77,16 @@ public class UpdateChecker extends Thread {
                         // assure all parent directories are created to avoid FNFE
                         new File(nf.getParent()).mkdirs();
 
-                        if(name.startsWith(".")) {
-                            next = zis.getNextEntry();
-                            continue;
-                        }
-
-                        if(next.isDirectory()) {
-                            next = zis.getNextEntry();
-                            continue;
-                        }
-
-                        FileOutputStream fos = new FileOutputStream(nf);
+                        FileOutputStream fos;
                         byte[] buffer = new byte[1024];
                         int i;
+
+                        try {
+                            fos = new FileOutputStream(nf);
+                        } catch (FileNotFoundException ignored) {
+                            next = zis.getNextEntry();
+                            continue;
+                        }
 
                         while((i = zis.read(buffer)) > 0) {
                             fos.write(buffer, 0, i);
