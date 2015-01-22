@@ -72,6 +72,16 @@ public class UpdateChecker extends Thread {
                         // assure all parent directories are created to avoid FNFE
                         new File(nf.getParent()).mkdirs();
 
+                        if(name.contains(".gitignore")) {
+                            next = zis.getNextEntry();
+                            continue;
+                        }
+
+                        if(next.isDirectory()) {
+                            next = zis.getNextEntry();
+                            continue;
+                        }
+
                         FileOutputStream fos = new FileOutputStream(nf);
                         byte[] buffer = new byte[1024];
                         int i;
