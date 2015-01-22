@@ -72,6 +72,8 @@ public class UpdateChecker extends Thread {
                             .redirectErrorStream(true).directory(output);
                     Process process = builder.start();
 
+                    process.waitFor();
+
                     File compiled = new File(output, "target/skypebot-1.0-SNAPSHOT-jar-with-dependencies.jar");
                     File current = new File("skypebot-1.0-SNAPSHOT-jar-with-dependencies.jar");
 
