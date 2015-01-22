@@ -379,4 +379,17 @@ public class General implements Module {
         Resource.sendMessage(message);
     }
 
+    @Command(name = "julian")
+    public static void cmdJulian(ChatMessage chat, String option) throws SkypeException {
+        if (option.equalsIgnoreCase("kick")) {
+            Resource.sendMessage("/kick julian.ayy");
+            Resource.sendMessage("[" + chat.getSenderDisplayName() + "] It is done...");
+        } else if (option.equalsIgnoreCase("add")) {
+            Resource.sendMessage("/add julian.ayy");
+            Resource.sendMessage("Welcome back Julian!");
+        } else {
+            Resource.sendMessage("[" + chat.getSenderDisplayName() + "] Sorry! Options are kick or add!");
+        }
+    }
+
 }
