@@ -33,8 +33,6 @@ public class UpdateChecker extends Thread {
                 HttpResponse<JsonNode> response = Unirest.get("https://api.github.com/repos/MazenMC/SkypeBot/commits?page=1")
                         .asJson();
 
-                lastResponse = response.toString();
-
                 JsonNode node = response.getBody();
                 JSONObject recentCommit = node.getArray().getJSONObject(0);
                 String sha = recentCommit.getString("sha");
@@ -73,7 +71,8 @@ public class UpdateChecker extends Thread {
                         File nf = new File(name);
 
                         // assure all parent directories are created to avoid FNFE
-                        new File(nf.getParent()).mkdirs();
+                        if(nf.getParent() != null)
+                            new File(nf.getParent()).mkdirs();
 
                         FileOutputStream fos;
                         byte[] buffer = new byte[1024];
