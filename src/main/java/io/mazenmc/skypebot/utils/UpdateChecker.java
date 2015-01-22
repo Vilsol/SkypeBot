@@ -101,8 +101,8 @@ public class UpdateChecker extends Thread {
 
                     Resource.sendMessage("Copied repository and extracted! Compiling...");
 
-                    Process process = Runtime.getRuntime().exec(new String[] {"cd skypebot-repo/",
-                            "mvn clean compile assembly:single"});
+                    Process process = Runtime.getRuntime().exec("mvn clean compile assembly:single", null,
+                            output);
 
                     File compiled = new File(output, "target/skypebot-1.0-SNAPSHOT-jar-with-dependencies.jar");
                     File current = new File("skypebot-1.0-SNAPSHOT-jar-with-dependencies.jar");
