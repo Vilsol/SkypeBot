@@ -132,6 +132,10 @@ public class SkypeBot {
         return instance;
     }
 
+    public Printer getPrinter() {
+        return printer;
+    }
+
     public List<ChatMessage> getLastMessages() {
         List<ChatMessage> list = new LinkedList<>();
         Queue<ChatMessage> newMessages = new ConcurrentLinkedQueue<>();

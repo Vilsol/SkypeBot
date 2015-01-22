@@ -3,6 +3,7 @@ package io.mazenmc.skypebot.utils;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
+import io.mazenmc.skypebot.SkypeBot;
 import net.lingala.zip4j.core.ZipFile;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.json.JSONException;
@@ -110,11 +111,13 @@ public class UpdateChecker extends Thread {
                     fos.close();
                     process.destroy();
 
-                    Resource.sendMessage("Finished compiling! Restarting...");
+                    SkypeBot.getInstance().getPrinter().pureSend("Finished compiling! Restarting...");
 
-                    Thread.sleep(200L);
+                    try {
+                        Unirest.shutdown();
+                    } catch (IOException ignored) {}
 
-                    Utils.restartBot();
+                    System.exit(0);
                 } else {
                     lastSha = sha;
                 }

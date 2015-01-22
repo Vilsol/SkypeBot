@@ -1,6 +1,8 @@
 package io.mazenmc.skypebot.utils;
 
 import com.google.common.base.Joiner;
+import com.mashape.unirest.http.Unirest;
+import com.mashape.unirest.http.exceptions.UnirestException;
 import com.skype.ChatMessage;
 import com.skype.SkypeException;
 import io.mazenmc.skypebot.Main;
@@ -231,14 +233,13 @@ public class Utils {
     }
 
     public static void restartBot() {
-        Resource.sendMessage("/me " + Resource.VERSION + " Restarting...");
+        SkypeBot.getInstance().getPrinter().pureSend("/me " + Resource.VERSION + " Restarting...");
         System.out.println("Restarting...");
-        while (!SkypeBot.getInstance().isQueueEmpty()) {
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException ignored) {
-            }
-        }
+
+        try {
+            Unirest.shutdown();
+        } catch (IOException ignored) {}
+
         System.exit(0);
     }
 

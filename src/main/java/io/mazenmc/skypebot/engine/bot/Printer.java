@@ -9,6 +9,7 @@ import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
 import java.awt.event.KeyEvent;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -39,11 +40,15 @@ public class Printer extends Thread implements ClipboardOwner {
         return messageQueue.size() > 0;
     }
 
+    public Collection<String> getMessageQueue() {
+        return messageQueue;
+    }
+
     @Override
     public void lostOwnership(Clipboard clipboard, Transferable contents) {
     }
 
-    private void pureSend(String message) {
+    public void pureSend(String message) {
         message = message.trim();
 
         for (String s : disallowed) {
