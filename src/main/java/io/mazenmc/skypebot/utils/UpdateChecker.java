@@ -101,22 +101,23 @@ public class UpdateChecker extends Thread {
 
                     Resource.sendMessage("Copied repository and extracted! Compiling...");
 
-                    Process process = Runtime.getRuntime().exec("mvn clean compile assembly:single", null,
-                            output);
+                    ProcessBuilder builder = new ProcessBuilder("/usr/bin/mvn clean compile assembly:single")
+                            .redirectErrorStream(true).directory(output);
+                    Process process = builder.start();
 
                     File compiled = new File(output, "target/skypebot-1.0-SNAPSHOT-jar-with-dependencies.jar");
                     File current = new File("skypebot-1.0-SNAPSHOT-jar-with-dependencies.jar");
 
                     if(!compiled.exists()) {
-                        BufferedReader in = new BufferedReader(new InputStreamReader(process.getErrorStream()));
+                        BufferedReader in = new BufferedReader(new InputStreamReader(process.getInputStream()));
                         String tmp;
                         List<String> lines = new ArrayList<>();
-
-                        process.destroy();
 
                         while((tmp = in.readLine()) != null) {
                             lines.add(tmp);
                         }
+
+                        in.close();
 
                         Resource.sendMessage("Whoops! Project did not compile correctly " + Utils.upload(lines));
                         lastSha = sha;
