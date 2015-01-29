@@ -4,6 +4,8 @@ import com.skype.ChatMessage;
 import com.skype.SkypeException;
 import io.mazenmc.skypebot.SkypeBot;
 
+import java.util.regex.Pattern;
+
 public class Resource {
 
     public static final String COMMAND_PREFIX = "@";
@@ -16,6 +18,7 @@ public class Resource {
     public static final String REGEX_WORD = "(\\b+)";
     public static final String URBAN_DICTIONARY_URL = "http://www.urbandictionary.com/define.php?term=";
     public static final String VERSION = "1.4";
+    public static final Pattern SPOTIFY_REGEX = Pattern.compile("open\\.spotify\\.com/track/([A-z0-9])+");
 
     public static void sendMessage(String message) {
         SkypeBot.getInstance().sendMessage(message);

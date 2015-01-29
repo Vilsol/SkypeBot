@@ -2,7 +2,6 @@ package io.mazenmc.skypebot.utils;
 
 import com.google.common.base.Joiner;
 import com.mashape.unirest.http.Unirest;
-import com.mashape.unirest.http.exceptions.UnirestException;
 import com.skype.ChatMessage;
 import com.skype.SkypeException;
 import io.mazenmc.skypebot.Main;
@@ -15,6 +14,7 @@ import javax.crypto.spec.SecretKeySpec;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -291,4 +291,17 @@ public class Utils {
         return null;
     }
 
+    public static String getUrlSource(String url) throws IOException {
+        URL yahoo = new URL(url);
+        URLConnection yc = yahoo.openConnection();
+        BufferedReader in = new BufferedReader(new InputStreamReader(
+                yc.getInputStream(), "UTF-8"));
+        String inputLine;
+        StringBuilder a = new StringBuilder();
+        while ((inputLine = in.readLine()) != null)
+            a.append(inputLine);
+        in.close();
+
+        return a.toString();
+    }
 }
