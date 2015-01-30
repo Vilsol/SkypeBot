@@ -45,6 +45,7 @@ public class Spotify implements Module {
             }
 
             Resource.sendMessage(chat, songMetaData.toString());
+            Resource.sendMessage(chat, "(music) Listen here: https://i.rotn.me/spotify/" + spotifyID + " (music)");
         }
     }
 }
