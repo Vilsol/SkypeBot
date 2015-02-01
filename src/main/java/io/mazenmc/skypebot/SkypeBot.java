@@ -17,6 +17,9 @@ import org.apache.commons.lang.exception.ExceptionUtils;
 import org.restlet.Component;
 import org.restlet.Server;
 import org.restlet.data.Protocol;
+import twitter4j.Twitter;
+import twitter4j.TwitterFactory;
+import twitter4j.conf.ConfigurationBuilder;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -32,6 +35,7 @@ public class SkypeBot {
     private static SkypeBot instance;
     private Server apiServer;
     private ChatterBotSession bot;
+    private twitter4j.Twitter twitter;
     Connection database;
     private boolean locked = false;
     private Queue<ChatMessage> messages = new ConcurrentLinkedQueue<>();
@@ -99,6 +103,16 @@ public class SkypeBot {
             database = DriverManager.getConnection("jdbc:mysql://localhost:3306/skype_bot", connectionProps);
         } catch (SQLException e) {
         }
+
+        List<String> twitterInfo = Utils.readAllLines("twitter_auth");
+
+        ConfigurationBuilder cb = new ConfigurationBuilder();
+        cb.setDebugEnabled(true)
+                .setOAuthConsumerKey(twitterInfo.get(0))
+                .setOAuthConsumerSecret(twitterInfo.get(1))
+                .setOAuthAccessToken(twitterInfo.get(2))
+                .setOAuthAccessTokenSecret(twitterInfo.get(3));
+        twitter = new TwitterFactory(cb.build()).getInstance();
 
         Resource.sendMessage("/me " + Resource.VERSION + " initialized!");
     }
@@ -171,4 +185,7 @@ public class SkypeBot {
         printer.sendMessage(message);
     }
 
+    public Twitter getTwitter() {
+        return twitter;
+    }
 }

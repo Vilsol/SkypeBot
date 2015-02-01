@@ -78,7 +78,7 @@ public class General implements Module {
         Resource.sendMessage("/me notes that " + chat.getSenderDisplayName() + " is truly enlightened.");
     }
 
-    @Command(name = "git")
+    @Command(name = "git", alias = {"repo", "repository", "source"})
     public static void cmdGit(ChatMessage chat) {
         Resource.sendMessage(chat, "Git Repository: https://github.com/MazenMC/SkypeBot");
     }
@@ -108,7 +108,6 @@ public class General implements Module {
 
     @Command(name = "lmgtfy")
     public static void cmdLmgtfy(ChatMessage chat, String question) throws SkypeException {
-        //Thanks DevRoMc for the idea. - ibJarrett
         String returnString = "http://lmgtfy.com/?q=";
         Resource.sendMessage(chat, returnString + URLEncoder.encode(question));
     }
@@ -390,5 +389,10 @@ public class General implements Module {
     @Command(name = "restoretopic", admin = true)
     public static void cmdRestoreTopic(ChatMessage chatMessage) throws SkypeException {
         Resource.sendMessage("/topic Mazen's Skype Chat :: Student freebies: https://education.github.com | https://www.jetbrains.com/student/");
+    }
+
+    @Command(name = "has changed the conversation picture.", command = false)
+    public static void cmdConvoPictureChange(ChatMessage chatMessage) throws SkypeException {
+        Resource.sendMessage("/me would love to remove " + chatMessage.getSenderId() + "'s ass right now");
     }
 }

@@ -13,9 +13,9 @@ import java.util.regex.Pattern;
 
 public class Spotify implements Module {
     @Command(name = "open.spotify.com/track/", command = false, exact = false)
-    public static void cmdSpotify(ChatMessage chat) throws SkypeException, IOException {
+    public static void cmdSpotifyHTTP(ChatMessage chat) throws SkypeException, IOException {
         String wholeMessage = chat.getContent();
-        Matcher idMatcher = Resource.SPOTIFY_REGEX.matcher(wholeMessage);
+        Matcher idMatcher = Resource.SPOTIFY_HTTP_REGEX.matcher(wholeMessage);
 
         String spotifyURI = null;
 
@@ -26,26 +26,59 @@ public class Spotify implements Module {
         if (spotifyURI == null) {
             Resource.sendMessage(chat, "Invalid Spotify ID!");
         } else {
-            // TODO: Do this properly
-            StringBuilder songMetaData = new StringBuilder();
-            String spotifyID = spotifyURI.substring(spotifyURI.lastIndexOf('/') + 1, spotifyURI.length());
-            String response = Utils.getUrlSource("https://ws.spotify.com/lookup/1/?uri=http://open.spotify.com/track/" + spotifyID);
+            resolve(chat, spotifyURI);
+        }
+    }
 
-            // If it works but it is stupid, it is still stupid.
-            Matcher songMetadataMatcher = Pattern.compile("<name>(.*?)</name>").matcher(response);
+    private static void resolve(ChatMessage chat, String spotifyURI) {
+        // TODO: Do this properly
+        String spotifyID;
+        if (spotifyURI.contains("/")) {
+            spotifyID = spotifyURI.substring(spotifyURI.lastIndexOf('/') + 1, spotifyURI.length());
+        } else {
+            spotifyID = spotifyURI.substring(spotifyURI.lastIndexOf(':') + 1, spotifyURI.length());
+        }
 
-            while (songMetadataMatcher.find()) {
-                String metadataItem = songMetadataMatcher.group(1);
+        StringBuilder songMetaData = new StringBuilder();
+        String response = null;
+        try {
+            response = Utils.getUrlSource("https://ws.spotify.com/lookup/1/?uri=http://open.spotify.com/track/" + spotifyID);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-                if (!songMetaData.toString().isEmpty()) {
-                    songMetaData.append(" - ");
-                }
+        // If it works but it is stupid, it is still stupid.
+        Matcher songMetadataMatcher = Pattern.compile("<name>(.*?)</name>").matcher(response);
 
-                songMetaData.append(metadataItem);
+        while (songMetadataMatcher.find()) {
+            String metadataItem = songMetadataMatcher.group(1);
+
+            if (!songMetaData.toString().isEmpty()) {
+                songMetaData.append(" - ");
             }
 
-            Resource.sendMessage(chat, songMetaData.toString());
-            Resource.sendMessage(chat, "(music) Listen here: https://i.rotn.me/spotify/" + spotifyID + " (music)");
+            songMetaData.append(metadataItem);
+        }
+
+        Resource.sendMessage(chat, songMetaData.toString());
+        Resource.sendMessage(chat, "(music) Listen here: https://i.rotn.me/spotify/" + spotifyID + " (music)");
+    }
+
+    @Command(name = "spotify:track:", command = false, exact = false)
+    public static void cmdSpotifyURI(ChatMessage chat) throws SkypeException, IOException {
+        String wholeMessage = chat.getContent();
+        Matcher idMatcher = Resource.SPOTIFY_URI_REGEX.matcher(wholeMessage);
+
+        String spotifyURI = null;
+
+        while (idMatcher.find()) {
+            spotifyURI = idMatcher.group();
+        }
+
+        if (spotifyURI == null) {
+            Resource.sendMessage(chat, "Invalid Spotify ID!");
+        } else {
+            resolve(chat, spotifyURI);
         }
     }
 }

@@ -198,6 +198,16 @@ public class Utils {
         return null;
     }
 
+    public static List<String> readAllLines(String file) {
+        try {
+            return Files.readAllLines(Paths.get(file));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
     public static String resolveSkype(String name) {
         try {
             URL url = new URL("http://resolvethem.com/index.php");
