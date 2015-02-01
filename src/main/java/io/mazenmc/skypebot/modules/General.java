@@ -387,4 +387,8 @@ public class General implements Module {
         Resource.sendMessage(chat, "ROFL all day long! http://goo.gl/pCIqXv");
     }
 
+    @Command(name = "restoretopic", admin = true)
+    public static void cmdRestoreTopic(ChatMessage chatMessage) throws SkypeException {
+        Resource.sendMessage("/topic Mazen's Skype Chat :: Student freebies: https://education.github.com | https://www.jetbrains.com/student/");
+    }
 }
