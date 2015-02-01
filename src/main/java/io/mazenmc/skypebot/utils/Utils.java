@@ -25,8 +25,6 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class Utils {
 
@@ -208,47 +206,14 @@ public class Utils {
         return null;
     }
 
-    public static String resolveSkype(String name) {
-        try {
-            URL url = new URL("http://resolvethem.com/index.php");
-            HttpURLConnection con = (HttpURLConnection) url.openConnection();
-            con.setRequestMethod("POST");
-            con.setInstanceFollowRedirects(true);
-            String postData = "submit=submit&skypeUsername=" + URLEncoder.encode(name, "UTF-8");
-            con.setRequestProperty("Content-length", String.valueOf(postData.length()));
-            con.setRequestProperty("User-Agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/40.0.2214.10 Safari/537.36");
-            con.setDoOutput(true);
-            con.setDoInput(true);
-            DataOutputStream output = new DataOutputStream(con.getOutputStream());
-            output.writeBytes(postData);
-            DataInputStream input = new DataInputStream(con.getInputStream());
-            int c;
-            StringBuilder resultBuf = new StringBuilder();
-            while ((c = input.read()) != -1) {
-                resultBuf.append((char) c);
-            }
-            input.close();
-            String result = resultBuf.toString();
-            Pattern p = Pattern.compile("<div id='resolve' class='alert alert-success'>(.*)<center><b>");
-            Matcher m = p.matcher(result);
-            if (m.find()) {
-                return m.group(1);
-            } else {
-                return "IP Not Found";
-            }
-        } catch (Exception ignore) {
-        }
-
-        return "IP Not Found";
-    }
-
     public static void restartBot() {
         SkypeBot.getInstance().getPrinter().pureSend("/me " + Resource.VERSION + " Restarting...");
         System.out.println("Restarting...");
 
         try {
             Unirest.shutdown();
-        } catch (IOException ignored) {}
+        } catch (IOException ignored) {
+        }
 
         System.exit(0);
     }
@@ -264,20 +229,8 @@ public class Utils {
         return s;
     }
 
-    public static String upload(List<ChatMessage> s) {
-        String data = "";
-        for (ChatMessage m : s) {
-            data += serializeMessage(m) + "\n";
-        }
-        return upload(data);
-    }
-
     public static String upload(Collection<String> s) {
         return upload(Joiner.on("\n").join(s));
-    }
-
-    public static String upload(ChatMessage s) {
-        return upload(serializeMessage(s));
     }
 
     public static String upload(String s) {
@@ -301,11 +254,11 @@ public class Utils {
         return null;
     }
 
-    public static String getUrlSource(String url) throws IOException {
-        URL yahoo = new URL(url);
-        URLConnection yc = yahoo.openConnection();
+    public static String getUrlSource(String urlInput) throws IOException {
+        URL url = new URL(urlInput);
+        URLConnection urlConnection = url.openConnection();
         BufferedReader in = new BufferedReader(new InputStreamReader(
-                yc.getInputStream(), "UTF-8"));
+                urlConnection.getInputStream(), "UTF-8"));
         String inputLine;
         StringBuilder a = new StringBuilder();
         while ((inputLine = in.readLine()) != null)

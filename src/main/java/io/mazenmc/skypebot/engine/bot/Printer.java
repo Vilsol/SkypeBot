@@ -16,7 +16,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 public class Printer extends Thread implements ClipboardOwner {
 
     private Clipboard c;
-     private Queue<String> messageQueue = new ConcurrentLinkedQueue<>();
+    private Queue<String> messageQueue = new ConcurrentLinkedQueue<>();
     private Robot robot;
 
     public Printer() {

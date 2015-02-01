@@ -27,7 +27,7 @@ public class ModuleManager {
                     Resource.sendMessage(chat, "Access Denied!");
                     return;
                 }
-            } catch(SkypeException ignored) {
+            } catch (SkypeException ignored) {
                 return;
             }
         }

@@ -115,15 +115,15 @@ public class General implements Module {
     @Command(name = "md5")
     public static void cmdMd5(ChatMessage chat) {
         String s = "md_1 = 1% of devs (people who know their shit)\n" +
-            "md_2 = uses one class for everything\n" +
-            "md_3 = true == true, yoo!\n" +
-            "md_4 = New instance to call static methods\n" +
-            "md_5 = reflects his own classes\n" +
-            "md_6 = return this; on everything\n" +
-            "md_7 = abstract? never heard of it\n" +
-            "md_8 = interface? never heard of it\n" +
-            "md_9 = enum? never heard of it\n" +
-            "md_10 = java? never heard of it";
+                "md_2 = uses one class for everything\n" +
+                "md_3 = true == true, yoo!\n" +
+                "md_4 = New instance to call static methods\n" +
+                "md_5 = reflects his own classes\n" +
+                "md_6 = return this; on everything\n" +
+                "md_7 = abstract? never heard of it\n" +
+                "md_8 = interface? never heard of it\n" +
+                "md_9 = enum? never heard of it\n" +
+                "md_10 = java? never heard of it";
         Resource.sendMessage(s);
     }
 
@@ -135,8 +135,8 @@ public class General implements Module {
         } else {
             try {
                 HttpResponse<JsonNode> response = Unirest.get("https://igor-zachetly-ping-uin.p.mashape.com/pinguin.php?address=" + URLEncoder.encode(ip))
-                    .header("X-Mashape-Key", "sHb3a6jczqmshcYqUEwQq3ZZR3BVp18NqaAjsnIYFvVNHMqvCb")
-                    .asJson();
+                        .header("X-Mashape-Key", "sHb3a6jczqmshcYqUEwQq3ZZR3BVp18NqaAjsnIYFvVNHMqvCb")
+                        .asJson();
                 if (response.getBody().getObject().get("result").equals(false)) {
                     Resource.sendMessage(chat, "Invalid hostname!");
                 } else {
@@ -170,7 +170,7 @@ public class General implements Module {
     public static void cmdRandom(ChatMessage chat, int number1, int number2) throws SkypeException {
         int high = Math.max(number1, number2);
         int low = Math.min(number1, number2);
-        
+
         if (high == low) {
             Resource.sendMessage(chat, "The numbers cannot be the same!");
             return;
@@ -319,7 +319,7 @@ public class General implements Module {
 
     @Command(name = "dreamincode")
     public static void cmddreamincode(ChatMessage chat) throws SkypeException {
-        String[] options = new String[] { "No, I'm not interested in having a girlfriend I find it a tremendous waste of time.",
+        String[] options = new String[]{"No, I'm not interested in having a girlfriend I find it a tremendous waste of time.",
                 "Hi, my name is Santiago Gonzalez and I'm 14 and I like to program.",
                 "I'm fluent in a dozen different programming languages.",
                 "Thousands of people have downloaded my apps for the Mac, iPhone, and iPad.",
@@ -332,7 +332,7 @@ public class General implements Module {
                         "When I wake up I have the solution!",
                 "One of the main reasons I started developing apps was to help people what they want to do like decorate a christmas tree.",
                 "I really like to crochet.",
-                "I made a good website http://slgonzalez.com/" };
+                "I made a good website http://slgonzalez.com/"};
         int chosen = new Random().nextInt(options.length);
         Resource.sendMessage(chat, options[chosen]);
     }
@@ -342,10 +342,10 @@ public class General implements Module {
         if (name == null) {
             try {
                 HttpResponse<JsonNode> response = Unirest.get("http://xkcd.com/info.0.json")
-                    .asJson();
+                        .asJson();
                 int urlnumber = new Random().nextInt((Integer) response.getBody().getObject().get("num")) + 1;
                 HttpResponse<JsonNode> xkcd = Unirest.get("http://xkcd.com/" + urlnumber + "/info.0.json")
-                    .asJson();
+                        .asJson();
                 String transcript = xkcd.getBody().getObject().get("transcript").toString();
                 String image = xkcd.getBody().getObject().get("img").toString();
                 Resource.sendMessage(chat, "Image - " + image);

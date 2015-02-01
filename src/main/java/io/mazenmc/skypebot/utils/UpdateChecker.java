@@ -44,7 +44,7 @@ public class UpdateChecker extends Thread {
                 JSONObject recentCommit = node.getArray().getJSONObject(0);
                 String sha = recentCommit.getString("sha");
 
-                if(!lastSha.equals(sha) && !lastSha.equals("--")) {
+                if (!lastSha.equals(sha) && !lastSha.equals("--")) {
                     URL url = new URL("https://github.com/MazenMC/SkypeBot/archive/master.zip");
                     HttpsURLConnection c = (HttpsURLConnection) url.openConnection();
                     JSONObject commit = recentCommit.getJSONObject("commit");
@@ -57,7 +57,7 @@ public class UpdateChecker extends Thread {
                     try (InputStream stream = c.getInputStream()) {
                         File f = new File("master.zip");
 
-                        if(f.exists())
+                        if (f.exists())
                             f.delete();
 
                         Files.copy(stream, Paths.get("master.zip"));
@@ -66,7 +66,7 @@ public class UpdateChecker extends Thread {
 
                     File output = new File("SkypeBot-master");
 
-                    if(output.exists())
+                    if (output.exists())
                         output.delete();
 
                     ZipFile zip = new ZipFile(new File("master.zip"));
@@ -84,12 +84,12 @@ public class UpdateChecker extends Thread {
                     File compiled = new File(output, "target/skypebot-1.0-SNAPSHOT-jar-with-dependencies.jar");
                     File current = new File("skypebot-1.0-SNAPSHOT-jar-with-dependencies.jar");
 
-                    if(!compiled.exists()) {
+                    if (!compiled.exists()) {
                         BufferedReader in = new BufferedReader(new InputStreamReader(process.getInputStream()));
                         String tmp;
                         List<String> lines = new ArrayList<>();
 
-                        while((tmp = in.readLine()) != null) {
+                        while ((tmp = in.readLine()) != null) {
                             lines.add(tmp);
                         }
 
@@ -108,7 +108,7 @@ public class UpdateChecker extends Thread {
                     byte[] buffer = new byte[1024];
                     int i;
 
-                    while((i = fis.read(buffer)) > 0) {
+                    while ((i = fis.read(buffer)) > 0) {
                         fos.write(buffer, 0, i);
                     }
 
@@ -120,18 +120,20 @@ public class UpdateChecker extends Thread {
 
                     try {
                         Thread.sleep(200L);
-                    } catch (InterruptedException ignored) {}
+                    } catch (InterruptedException ignored) {
+                    }
 
                     try {
                         Unirest.shutdown();
-                    } catch (IOException ignored) {}
+                    } catch (IOException ignored) {
+                    }
 
                     System.exit(0);
                 } else {
                     lastSha = sha;
                 }
             } catch (Exception e) {
-                if(!(e instanceof JSONException)) {
+                if (!(e instanceof JSONException)) {
                     Resource.sendMessage("Was unable to check for new commits (" +
                             Utils.upload(ExceptionUtils.getStackTrace(e)) + ")");
                 }
