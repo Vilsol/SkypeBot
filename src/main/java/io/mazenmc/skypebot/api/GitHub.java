@@ -7,7 +7,7 @@ import io.mazenmc.skypebot.utils.Resource;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class Github extends BaseResource {
+public class GitHub extends BaseResource {
 
     @Path("/github")
     public String processRequest(String raw, JSONObject json, String method) {
