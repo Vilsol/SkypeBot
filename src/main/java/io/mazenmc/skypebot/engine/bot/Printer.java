@@ -16,8 +16,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 public class Printer extends Thread implements ClipboardOwner {
 
     private Clipboard c;
-    private String[] disallowed = new String[]{"/leave", "/topic", "/alertson", "/alertsoff", "/setrole", "/kick", "/get", "/set", "/golive", "/invite", "/showmembers", "/help"};
-    private Queue<String> messageQueue = new ConcurrentLinkedQueue<>();
+     private Queue<String> messageQueue = new ConcurrentLinkedQueue<>();
     private Robot robot;
 
     public Printer() {
@@ -50,13 +49,6 @@ public class Printer extends Thread implements ClipboardOwner {
 
     public void pureSend(String message) {
         message = message.trim();
-
-        for (String s : disallowed) {
-            if (message.split(" ")[0].startsWith(s)) {
-                message = "." + message;
-                break;
-            }
-        }
 
         StringSelection ss = new StringSelection(message);
         c.setContents(ss, this);
