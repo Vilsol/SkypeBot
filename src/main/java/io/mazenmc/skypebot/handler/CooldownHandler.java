@@ -20,6 +20,8 @@ public class CooldownHandler extends Thread {
                 int timeLeft = activeCooldowns.get(commandCooldown.getKey()) - 1;
                 if (timeLeft <= 1) {
                     activeCooldowns.remove(commandCooldown.getKey());
+                } else {
+                    activeCooldowns.put(commandCooldown.getKey(), timeLeft);
                 }
             }
         }
