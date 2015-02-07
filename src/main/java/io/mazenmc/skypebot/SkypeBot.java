@@ -3,10 +3,7 @@ package io.mazenmc.skypebot;
 import com.google.code.chatterbotapi.ChatterBotFactory;
 import com.google.code.chatterbotapi.ChatterBotSession;
 import com.google.code.chatterbotapi.ChatterBotType;
-import com.skype.ChatMessage;
-import com.skype.ChatMessageAdapter;
-import com.skype.Skype;
-import com.skype.SkypeException;
+import com.skype.*;
 import io.mazenmc.skypebot.api.API;
 import io.mazenmc.skypebot.engine.bot.ModuleManager;
 import io.mazenmc.skypebot.engine.bot.Printer;
@@ -60,7 +57,7 @@ public class SkypeBot {
 
         Skype.setDaemon(false);
         try {
-            Skype.addChatMessageListener(new ChatMessageAdapter() {
+            Skype.addChatMessageListener(new GlobalChatMessageListener() {
                 public void chatMessageReceived(ChatMessage received) throws SkypeException {
                     if (messages.size() > 100) {
                         messages.remove();
@@ -72,6 +69,15 @@ public class SkypeBot {
                     stringMessages.add(Utils.serializeMessage(received));
                     messages.add(received);
                     ModuleManager.parseText(received);
+                }
+
+                @Override
+                public void chatMessageSent(ChatMessage sentChatMessage) throws SkypeException {
+                    System.out.println("sent " + sentChatMessage.getContent());
+                }
+
+                @Override
+                public void newChatStarted(Chat chat, User[] users) {
                 }
             });
         } catch (SkypeException e) {
