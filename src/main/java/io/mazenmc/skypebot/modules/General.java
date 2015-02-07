@@ -179,7 +179,7 @@ public class General implements Module {
         Resource.sendMessage(chat, String.valueOf(new Random().nextInt(high - low) + low));
     }
 
-    @Command(name = "rant")
+    @Command(name = "rant", cooldown = 15)
     public static void cmdRant(ChatMessage chat,
                                @Optional
                                final String question) throws SkypeException {

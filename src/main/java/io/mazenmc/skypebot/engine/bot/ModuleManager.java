@@ -2,6 +2,7 @@ package io.mazenmc.skypebot.engine.bot;
 
 import com.skype.ChatMessage;
 import com.skype.SkypeException;
+import io.mazenmc.skypebot.SkypeBot;
 import io.mazenmc.skypebot.utils.Resource;
 import io.mazenmc.skypebot.utils.Utils;
 import org.apache.commons.lang.exception.ExceptionUtils;
@@ -30,6 +31,18 @@ public class ModuleManager {
             } catch (SkypeException ignored) {
                 return;
             }
+        }
+
+        try {
+            if (data.getCommand().cooldown() > 0 && !Arrays.asList(Resource.GROUP_ADMINS).contains(chat.getSenderId())) {
+                if (!SkypeBot.getInstance().getCooldownHandler().tryUseCommand(data.getCommand())) {
+                    int timeLeft = SkypeBot.getInstance().getCooldownHandler().getCooldownLeft(data.getCommand().name());
+                    Resource.sendMessage(chat, "Please wait " + timeLeft + " second" + (timeLeft == 1 ? "" : "s") + "...");
+                    return;
+                }
+            }
+        } catch (SkypeException e) {
+            e.printStackTrace();
         }
 
         List<Object> a = new ArrayList<>();

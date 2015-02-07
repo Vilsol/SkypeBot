@@ -10,6 +10,7 @@ import com.skype.SkypeException;
 import io.mazenmc.skypebot.api.API;
 import io.mazenmc.skypebot.engine.bot.ModuleManager;
 import io.mazenmc.skypebot.engine.bot.Printer;
+import io.mazenmc.skypebot.handler.CooldownHandler;
 import io.mazenmc.skypebot.utils.Resource;
 import io.mazenmc.skypebot.utils.UpdateChecker;
 import io.mazenmc.skypebot.utils.Utils;
@@ -42,6 +43,7 @@ public class SkypeBot {
     private Printer printer;
     private Queue<String> stringMessages = new ConcurrentLinkedQueue<>();
     private UpdateChecker updateChecker;
+    private CooldownHandler cooldownHandler;
 
     public SkypeBot() {
         instance = this;
@@ -113,6 +115,9 @@ public class SkypeBot {
                 .setOAuthAccessToken(twitterInfo.get(2))
                 .setOAuthAccessTokenSecret(twitterInfo.get(3));
         twitter = new TwitterFactory(cb.build()).getInstance();
+
+        cooldownHandler = new CooldownHandler();
+        cooldownHandler.start();
 
         Resource.sendMessage("/me " + Resource.VERSION + " initialized!");
     }
@@ -187,5 +192,9 @@ public class SkypeBot {
 
     public Twitter getTwitter() {
         return twitter;
+    }
+
+    public CooldownHandler getCooldownHandler() {
+        return cooldownHandler;
     }
 }
