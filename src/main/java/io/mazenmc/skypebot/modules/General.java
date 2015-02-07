@@ -226,6 +226,7 @@ public class General implements Module {
                         String cleverBotResponse = cleverBot.think(cleverThink);
 
                         assert (cleverBotResponse != null && !cleverBotResponse.trim().equals(""));
+                        
                         Resource.sendMessage("[CB] " + cleverBotResponse);
                         Thread.sleep(500);
 
