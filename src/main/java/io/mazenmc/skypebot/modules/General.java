@@ -55,7 +55,8 @@ public class General implements Module {
 
     @Command(name = "about")
     public static void cmdAbout(ChatMessage chat) {
-        Resource.sendMessage(new String[]{"Skype bot made by Vilsol, MazenMC & stuntguy3000", "Version: " + Resource.VERSION});
+        Resource.sendMessage(chat, "Originally created by Vilsol, reincarnated and improved by MazenMC and stuntguy3000");
+        Resource.sendMessage(chat, "Version: " + Resource.VERSION);
     }
 
     @Command(name = "bot")
