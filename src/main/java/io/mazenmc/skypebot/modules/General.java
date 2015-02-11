@@ -53,6 +53,11 @@ public class General implements Module {
         Resource.sendMessage(chat, options[chosen]);
     }
 
+    @Command(name = "flickr.com/photos/stuntguy3000", exact = false, command = false)
+    public static void cmdStuntguyFlickr(ChatMessage chat) {
+        Resource.sendMessage("Nobody likes your photos, Luke.");
+    }
+
     @Command(name = "about")
     public static void cmdAbout(ChatMessage chat) {
         Resource.sendMessage(chat, "Originally created by Vilsol, reincarnated and improved by MazenMC and stuntguy3000");
