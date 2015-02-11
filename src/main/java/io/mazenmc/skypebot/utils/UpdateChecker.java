@@ -132,11 +132,7 @@ public class UpdateChecker extends Thread {
                 } else {
                     lastSha = sha;
                 }
-            } catch (Exception e) {
-                if (!(e instanceof JSONException)) {
-                    Resource.sendMessage("Was unable to check for new commits (" +
-                            Utils.upload(ExceptionUtils.getStackTrace(e)) + ")");
-                }
+            } catch (Exception ignored) {
             }
         }
     }
