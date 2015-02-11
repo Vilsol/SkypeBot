@@ -54,8 +54,10 @@ public class General implements Module {
     }
 
     @Command(name = "flickr.com/photos/stuntguy3000", exact = false, command = false)
-    public static void cmdStuntguyFlickr(ChatMessage chat) {
-        Resource.sendMessage("Nobody likes your photos, Luke.");
+    public static void cmdStuntguyFlickr(ChatMessage chat) throws SkypeException {
+        if (chat.getSender().getId().equalsIgnoreCase("stuntguy3000")) {
+            Resource.sendMessage("Nobody likes your photos, Luke.");
+        }
     }
 
     @Command(name = "about")
