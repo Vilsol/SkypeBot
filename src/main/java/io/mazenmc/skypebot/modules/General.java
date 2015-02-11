@@ -185,7 +185,7 @@ public class General implements Module {
         Resource.sendMessage(chat, String.valueOf(new Random().nextInt(high - low) + low));
     }
 
-    @Command(name = "rant", cooldown = 15)
+    @Command(name = "rant")
     public static void cmdRant(ChatMessage chat,
                                @Optional
                                final String question) throws SkypeException {
@@ -231,6 +231,7 @@ public class General implements Module {
                         String cleverBotResponse = cleverBot.think(cleverThink);
 
                         assert (cleverBotResponse != null && !cleverBotResponse.trim().equals(""));
+
                         Resource.sendMessage("[CB] " + cleverBotResponse);
                         Thread.sleep(500);
 

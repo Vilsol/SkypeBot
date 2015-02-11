@@ -3,14 +3,10 @@ package io.mazenmc.skypebot;
 import com.google.code.chatterbotapi.ChatterBotFactory;
 import com.google.code.chatterbotapi.ChatterBotSession;
 import com.google.code.chatterbotapi.ChatterBotType;
-import com.skype.ChatMessage;
-import com.skype.ChatMessageAdapter;
-import com.skype.Skype;
-import com.skype.SkypeException;
+import com.skype.*;
 import io.mazenmc.skypebot.api.API;
 import io.mazenmc.skypebot.engine.bot.ModuleManager;
 import io.mazenmc.skypebot.engine.bot.Printer;
-import io.mazenmc.skypebot.handler.CooldownHandler;
 import io.mazenmc.skypebot.utils.Resource;
 import io.mazenmc.skypebot.utils.UpdateChecker;
 import io.mazenmc.skypebot.utils.Utils;
@@ -43,7 +39,6 @@ public class SkypeBot {
     private Printer printer;
     private Queue<String> stringMessages = new ConcurrentLinkedQueue<>();
     private UpdateChecker updateChecker;
-    private CooldownHandler cooldownHandler;
 
     public SkypeBot() {
         instance = this;
@@ -62,7 +57,7 @@ public class SkypeBot {
 
         Skype.setDaemon(false);
         try {
-            Skype.addChatMessageListener(new ChatMessageAdapter() {
+            Skype.addChatMessageListener(new GlobalChatMessageListener() {
                 public void chatMessageReceived(ChatMessage received) throws SkypeException {
                     if (messages.size() > 100) {
                         messages.remove();
@@ -74,6 +69,15 @@ public class SkypeBot {
                     stringMessages.add(Utils.serializeMessage(received));
                     messages.add(received);
                     ModuleManager.parseText(received);
+                }
+
+                @Override
+                public void chatMessageSent(ChatMessage sentChatMessage) throws SkypeException {
+                    System.out.println("sent " + sentChatMessage.getContent());
+                }
+
+                @Override
+                public void newChatStarted(Chat chat, User[] users) {
                 }
             });
         } catch (SkypeException e) {
@@ -115,9 +119,6 @@ public class SkypeBot {
                 .setOAuthAccessToken(twitterInfo.get(2))
                 .setOAuthAccessTokenSecret(twitterInfo.get(3));
         twitter = new TwitterFactory(cb.build()).getInstance();
-
-        cooldownHandler = new CooldownHandler();
-        cooldownHandler.start();
 
         Resource.sendMessage("/me " + Resource.VERSION + " initialized!");
     }
@@ -192,9 +193,5 @@ public class SkypeBot {
 
     public Twitter getTwitter() {
         return twitter;
-    }
-
-    public CooldownHandler getCooldownHandler() {
-        return cooldownHandler;
     }
 }
