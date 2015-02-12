@@ -33,7 +33,7 @@ public class ImageRenderer implements Module {
             g.drawImage(image, 0, 0, 58, 58, null);
             g.dispose();
 
-            Resource.sendMessage("Image: " + ASCII.convert(image));
+            Resource.sendMessage("Image: " + ASCII.convert(scaled));
         } catch (IOException e) {
             Resource.sendMessage("Failed " + Utils.upload(ExceptionUtils.getMessage(e)));
         }

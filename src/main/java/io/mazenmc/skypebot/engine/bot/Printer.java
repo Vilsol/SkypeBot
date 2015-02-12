@@ -82,11 +82,7 @@ public class Printer extends Thread implements ClipboardOwner {
     }
 
     public void sendMessage(String message) {
-        if (message.length() < 200) {
-            messageQueue.add(message);
-        } else {
-            messageQueue.add(message.substring(0, 200) + "... " + Utils.upload(message));
-        }
+        messageQueue.add(message);
     }
 
 }
