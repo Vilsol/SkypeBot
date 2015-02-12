@@ -1,7 +1,5 @@
 package io.mazenmc.skypebot.engine.bot;
 
-import io.mazenmc.skypebot.utils.Utils;
-
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.ClipboardOwner;

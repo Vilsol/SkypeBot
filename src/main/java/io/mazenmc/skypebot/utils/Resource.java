@@ -4,6 +4,9 @@ import com.skype.ChatMessage;
 import com.skype.SkypeException;
 import io.mazenmc.skypebot.SkypeBot;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.Callable;
 import java.util.regex.Pattern;
 
 public class Resource {
@@ -23,6 +26,8 @@ public class Resource {
     public static final Pattern TWITTER_REGEX = Pattern.compile("twitter\\.com\\/([A-z0-9]+)\\/status\\/([0-9]{18})");
     public static final Pattern IMAGE_REGEX = Pattern.compile("^https?://(?:[a-z\\-]+\\.)+[a-z]{2,6}(?:/[^/#?]+)+\\.(?:jpg|gif|png)$");
 
+    private static Map<String, Callback<String>> callbacks = new HashMap<>();
+
     public static void sendMessage(String message) {
         SkypeBot.getInstance().sendMessage(message);
     }
@@ -37,5 +42,13 @@ public class Resource {
 
     public static void sendMessage(String[] message) {
         SkypeBot.getInstance().addToQueue(message);
+    }
+
+    public static void assignCallback(String id, Callback<String> callback) {
+        callbacks.put(id, callback);
+    }
+
+    public static Callback<String> getCallback(String name) {
+        return callbacks.get(name);
     }
 }

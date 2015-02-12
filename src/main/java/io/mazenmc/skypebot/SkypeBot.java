@@ -7,6 +7,7 @@ import com.skype.*;
 import io.mazenmc.skypebot.api.API;
 import io.mazenmc.skypebot.engine.bot.ModuleManager;
 import io.mazenmc.skypebot.engine.bot.Printer;
+import io.mazenmc.skypebot.utils.Callback;
 import io.mazenmc.skypebot.utils.Resource;
 import io.mazenmc.skypebot.utils.UpdateChecker;
 import io.mazenmc.skypebot.utils.Utils;
@@ -25,6 +26,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
 import java.util.Queue;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class SkypeBot {
@@ -64,7 +66,12 @@ public class SkypeBot {
                         stringMessages.remove();
                     }
 
-                    System.out.println("got: " + received.getContent());
+                    Callback<String> callback = null;
+
+                    if((callback = Resource.getCallback(received.getSenderId())) != null) {
+                        callback.callback(received.getContent());
+                        return;
+                    }
 
                     stringMessages.add(Utils.serializeMessage(received));
                     messages.add(received);
@@ -73,7 +80,6 @@ public class SkypeBot {
 
                 @Override
                 public void chatMessageSent(ChatMessage sentChatMessage) throws SkypeException {
-                    System.out.println("sent " + sentChatMessage.getContent());
                 }
 
                 @Override
