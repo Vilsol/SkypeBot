@@ -30,10 +30,10 @@ public class ImageRenderer implements Module {
             BufferedImage scaled = new BufferedImage(300, 300, BufferedImage.TYPE_INT_RGB);
 
             Graphics g = scaled.createGraphics();
-            g.drawImage(image, 0, 0, 300, 300, null);
+            g.drawImage(image, 0, 0, 58, 58, null);
             g.dispose();
 
-            Resource.sendMessage("Image: " + Utils.upload(ASCII.convert(image)));
+            Resource.sendMessage("Image: " + ASCII.convert(image));
         } catch (IOException e) {
             Resource.sendMessage("Failed " + Utils.upload(ExceptionUtils.getMessage(e)));
         }
