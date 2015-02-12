@@ -6,7 +6,6 @@ import io.mazenmc.skypebot.SkypeBot;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.Callable;
 import java.util.regex.Pattern;
 
 public class Resource {

@@ -4,8 +4,6 @@ import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
 import net.lingala.zip4j.core.ZipFile;
-import org.apache.commons.lang.exception.ExceptionUtils;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import javax.net.ssl.HttpsURLConnection;

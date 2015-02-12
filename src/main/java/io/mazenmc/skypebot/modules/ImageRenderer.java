@@ -21,15 +21,15 @@ public class ImageRenderer implements Module {
     public static void imageRender(ChatMessage chat) throws SkypeException, UnirestException {
         String message = chat.getContent();
 
-        if(message.split(" ").length != 1) {
+        if (message.split(" ").length != 1) {
             return;
         }
 
         try {
             BufferedImage image = ImageIO.read(Unirest.get(chat.getContent()).asBinary().getBody());
-            Resource.sendMessage("Image: " + Utils.upload(ASCII.convert(image)));
+            Resource.sendMessage(chat, "Image: " + Utils.upload(ASCII.convert(image)));
         } catch (IOException e) {
-            Resource.sendMessage("Failed " + Utils.upload(ExceptionUtils.getMessage(e)));
+            Resource.sendMessage(chat, "Failed " + Utils.upload(ExceptionUtils.getMessage(e)));
         }
     }
 
