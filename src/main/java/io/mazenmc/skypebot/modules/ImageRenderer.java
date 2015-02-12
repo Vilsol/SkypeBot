@@ -27,6 +27,11 @@ public class ImageRenderer implements Module {
 
         try {
             BufferedImage image = ImageIO.read(Unirest.get(chat.getContent()).asBinary().getBody());
+            BufferedImage scaled = new BufferedImage(300, 300, BufferedImage.TYPE_INT_RGB);
+
+            Graphics g = scaled.createGraphics();
+            g.drawImage(image, 0, 0, 300, 300, null);
+            g.dispose();
 
             Resource.sendMessage("\n" + ASCII.convert(image));
         } catch (IOException e) {
