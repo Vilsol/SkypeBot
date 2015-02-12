@@ -260,14 +260,14 @@ public class General implements Module {
         Utils.restartBot();
     }
 
-    @Command(name = "sql")
+    @Command(name = "sql", cooldown = 30)
     public static void cmdSQL(ChatMessage chat, String query) throws SQLException, SkypeException {
         if (SkypeBot.getInstance().getDatabase() == null) {
             Resource.sendMessage(chat, "Connection is down!");
             return;
         }
 
-        if (query.toUpperCase().contains("DROP DATABASE") || query.toUpperCase().contains("CREATE DATABASE") || query.toUpperCase().contains("USE")) {
+        if (query.toUpperCase().contains("DROP DATABASE") || query.toUpperCase().contains("CREATE DATABASE") || query.toUpperCase().contains("USE") || query.toUpperCase().contains("CREATE PROCEDURE")) {
             Resource.sendMessage(chat, "Do not touch the databases!");
             return;
         }
