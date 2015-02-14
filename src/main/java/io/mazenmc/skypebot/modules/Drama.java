@@ -97,6 +97,7 @@ public class Drama implements Module {
             "[people] [says] [things] causes [drama]",
             "[people] [says] [things] causes [drama] when used with [things]",
             "[people] [says] using [things] and [things] together is [adj]",
+            "[people] asks [people] to be their valentine",
             "[people] rants about [things] on [sites]",
             "[people] rants about [function] in mods on [sites]",
             "[people] steals code from [things]",
