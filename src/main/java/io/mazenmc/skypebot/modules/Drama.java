@@ -97,7 +97,6 @@ public class Drama implements Module {
             "[people] [says] [things] causes [drama]",
             "[people] [says] [things] causes [drama] when used with [things]",
             "[people] [says] using [things] and [things] together is [adj]",
-            "[people] asks [people] to be their valentine",
             "[people] rants about [things] on [sites]",
             "[people] rants about [function] in mods on [sites]",
             "[people] steals code from [things]",
@@ -144,7 +143,7 @@ public class Drama implements Module {
             "[people] forked [things] to remove [function]"
     };
 
-    @Command(name = "drama")
+    @Command(name = "drama", cooldown = 15)
     public static void cmdDrama(ChatMessage chat) throws SkypeException {
         String sentence = sentences[new Random().nextInt(Arrays.asList(sentences).size())];
 
