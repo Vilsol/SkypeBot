@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
 public class Resource {
 
     public static final String COMMAND_PREFIX = "@";
-    public static final String[] GROUP_ADMINS = {"stuntguy3000", "gnosticjade", "heycallmethemezand", "itssircuddles"};
+    public static final String[] GROUP_ADMINS = {"stuntguy3000", "heycallmethemezand", "itssircuddles"};
     public static final String KEY_GITHUB = Utils.readFirstLine("key_github");
     public static final String KEY_TRIDENT = Utils.readFirstLine("key_trident");
     public static final String REGEX_ALL = "(.+)";
