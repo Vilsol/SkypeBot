@@ -26,7 +26,8 @@ public class ChipDev implements Module {
             "http://bukkit.org/threads/i-cant-export-my-plugin-java.334362/#post-2974539",
             "You cannot legally get Craftbukkit anymore (Except with Spigot, and all that stuff. Don't get me into that please!)",
             "I remember when we were all only good at programming. You excelled :P",
-            "Currently with 211 likes and 1306 MSG's, I get 1 like per 6.18957345972 messages!"
+            "Currently with 211 likes and 1306 MSG's, I get 1 like per 6.18957345972 messages!",
+            "https://gist.github.com/ChipDev/fa03cdc3811a81b86101"
             //End actual ChipDev quotes
     };
 
