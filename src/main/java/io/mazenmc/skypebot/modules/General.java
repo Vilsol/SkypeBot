@@ -358,7 +358,7 @@ public class General implements Module {
                 String transcript = xkcd.getBody().getObject().get("transcript").toString();
                 String image = xkcd.getBody().getObject().get("img").toString();
                 Resource.sendMessage(chat, "Image - " + image);
-                Resource.sendMessage(chat, "Transcript - " + transcript);
+                Resource.sendMessage(chat, "Transcript - " + Utils.upload(transcript));
             } catch (Exception e) {
                 Resource.sendMessage(chat, "Error: " + Utils.upload(ExceptionUtils.getStackTrace(e)));
             }
