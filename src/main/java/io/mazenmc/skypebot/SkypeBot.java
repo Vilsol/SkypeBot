@@ -109,6 +109,7 @@ public class SkypeBot {
         Properties connectionProps = new Properties();
         connectionProps.put("user", "skype_bot");
         connectionProps.put("password", "skype_bot");
+        connectionProps.put("autoReconnect", true);
 
         try {
             database = DriverManager.getConnection("jdbc:mysql://localhost:3306/skype_bot", connectionProps);
