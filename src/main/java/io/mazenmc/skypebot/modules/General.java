@@ -37,6 +37,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class General implements Module {
 
@@ -69,6 +70,18 @@ public class General implements Module {
     @Command(name = "bot")
     public static void cmdBot(ChatMessage chat, String message) {
         Resource.sendMessage("/me " + message);
+    }
+    
+    @Command(name = "choice")
+    public static void choice(ChatMessage chat, String message) {
+        String[] choices = message.split(",");
+        
+        if(choices.length == 1) {
+            Resource.sendMessage("Give me choices!");
+            return;
+        }
+        
+        Resource.sendMessage("I say " + choices[ThreadLocalRandom.current().nextInt(choices.length)]);
     }
 
     @Command(name = "c")
