@@ -28,7 +28,7 @@ public class Card {
         switch(color) {
             case WILD:
                 try {
-                    if (face == Face.WD4) {
+                    if (face == Face.WILD_DRAW_FOUR) {
                         Map.Entry<String, Deck> next = game.peek();
 
                         next.getValue().draw(4, game);
@@ -56,7 +56,7 @@ public class Card {
                 break;
 
             default:
-                if (face == Face.D2) {
+                if (face == Face.DRAW_TWO) {
                     game.next();
 
                     Map.Entry<String, Deck> current = game.current();
@@ -75,7 +75,7 @@ public class Card {
                     game.next();
                 }
 
-                if(face != Face.D2 && face != Face.REVERSE)
+                if (face != Face.DRAW_TWO && face != Face.REVERSE)
                     game.next();
 
                 game.addCard(this); // set current card to the top

@@ -2,6 +2,7 @@ package io.mazenmc.skypebot.engine.bot;
 
 import com.skype.ChatMessage;
 import com.skype.SkypeException;
+import io.mazenmc.skypebot.SkypeBot;
 import io.mazenmc.skypebot.utils.Resource;
 import io.mazenmc.skypebot.utils.Utils;
 import org.apache.commons.lang.exception.ExceptionUtils;
@@ -28,6 +29,13 @@ public class ModuleManager {
                     return;
                 }
             } catch (SkypeException ignored) {
+                return;
+            }
+        }
+
+        if (data.getCommand().cooldown() > 0) {
+            if (!SkypeBot.getInstance().getCooldownHandler().tryUseCommand(data.getCommand())) {
+                Resource.sendMessage(chat, "Command is cooling down! Time Left: " + SkypeBot.getInstance().getCooldownHandler().getCooldownLeft(data.getCommand().name()));
                 return;
             }
         }
@@ -112,22 +120,22 @@ public class ModuleManager {
     }
 
     public static void parseText(ChatMessage chat) {
-        String command = null;
-        String originalCommand = null;
+        String command;
+        String originalCommand;
         try {
             command = chat.getContent();
             originalCommand = chat.getContent();
         } catch (SkypeException ignored) {
-            System.out.println("skype exception");
+            System.out.println("Skype exception occurred");
             return;
         }
 
         if (command == null) {
-            System.out.println("command is null");
+            System.out.println("Command is null");
             return;
         }
 
-        System.out.println("got chat: " + command);
+        System.out.println("Received chat message: " + command);
 
         if (command.length() < 1) {
             System.out.println("low command length");

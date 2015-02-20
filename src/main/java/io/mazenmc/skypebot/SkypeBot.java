@@ -7,6 +7,7 @@ import com.skype.*;
 import io.mazenmc.skypebot.api.API;
 import io.mazenmc.skypebot.engine.bot.ModuleManager;
 import io.mazenmc.skypebot.engine.bot.Printer;
+import io.mazenmc.skypebot.handler.CooldownHandler;
 import io.mazenmc.skypebot.utils.Callback;
 import io.mazenmc.skypebot.utils.Resource;
 import io.mazenmc.skypebot.utils.UpdateChecker;
@@ -31,15 +32,16 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 public class SkypeBot {
 
     private static SkypeBot instance;
+    Connection database;
     private Server apiServer;
     private ChatterBotSession bot;
     private twitter4j.Twitter twitter;
-    Connection database;
     private boolean locked = false;
     private Queue<ChatMessage> messages = new ConcurrentLinkedQueue<>();
     private Printer printer;
     private Queue<String> stringMessages = new ConcurrentLinkedQueue<>();
     private UpdateChecker updateChecker;
+    private CooldownHandler cooldownHandler;
 
     public SkypeBot() {
         instance = this;
@@ -126,7 +128,17 @@ public class SkypeBot {
                 .setOAuthAccessTokenSecret(twitterInfo.get(3));
         twitter = new TwitterFactory(cb.build()).getInstance();
 
+        cooldownHandler = new CooldownHandler();
+
         Resource.sendMessage("/me " + Resource.VERSION + " initialized!");
+    }
+
+    public static SkypeBot getInstance() {
+        if (instance == null) {
+            new SkypeBot();
+        }
+
+        return instance;
     }
 
     public void addToQueue(String[] message) {
@@ -147,14 +159,6 @@ public class SkypeBot {
 
     public Connection getDatabase() {
         return database;
-    }
-
-    public static SkypeBot getInstance() {
-        if (instance == null) {
-            new SkypeBot();
-        }
-
-        return instance;
     }
 
     public Printer getPrinter() {
@@ -199,5 +203,9 @@ public class SkypeBot {
 
     public Twitter getTwitter() {
         return twitter;
+    }
+
+    public CooldownHandler getCooldownHandler() {
+        return cooldownHandler;
     }
 }

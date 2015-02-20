@@ -14,9 +14,9 @@ public enum Face {
     EIGHT,
     NINE,
     REVERSE,
-    D2,
+    DRAW_TWO,
     WILD,
-    WD4;
+    WILD_DRAW_FOUR;
 
     public static Face randomFace(Color color) {
         switch (color) {

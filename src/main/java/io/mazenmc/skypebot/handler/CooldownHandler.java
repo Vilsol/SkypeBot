@@ -3,40 +3,30 @@ package io.mazenmc.skypebot.handler;
 import io.mazenmc.skypebot.engine.bot.Command;
 
 import java.util.HashMap;
-import java.util.Map;
 
-public class CooldownHandler extends Thread {
-    private HashMap<String, Integer> activeCooldowns = new HashMap<>();
+public class CooldownHandler {
+    private HashMap<String, Long> activeCooldowns = new HashMap<>();
 
-    public void run() {
-        while (true) {
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException ignored) {
-                return;
-            }
-
-            for (Map.Entry<String, Integer> commandCooldown : new HashMap<>(activeCooldowns).entrySet()) {
-                int timeLeft = activeCooldowns.get(commandCooldown.getKey()) - 1;
-                if (timeLeft <= 1) {
-                    activeCooldowns.remove(commandCooldown.getKey());
-                } else {
-                    activeCooldowns.put(commandCooldown.getKey(), timeLeft);
-                }
-            }
+    public String getCooldownLeft(String command) {
+        long difference = System.currentTimeMillis() - activeCooldowns.get(command.toLowerCase());
+        if (difference <= 0) {
+            return null;
+        } else {
+            return String.valueOf((difference / 1000) % 60);
         }
     }
 
-    public int getCooldownLeft(String command) {
-        return activeCooldowns.get(command.toLowerCase());
-    }
-
     public void addCooldown(String command, int time) {
-        activeCooldowns.put(command.toLowerCase(), time);
+        activeCooldowns.put(command.toLowerCase(), System.currentTimeMillis() + (time * 1000));
     }
 
     public boolean tryUseCommand(Command command) {
-        if (activeCooldowns.containsKey(command.name())) {
+        if (activeCooldowns.containsKey(command.name().toLowerCase())) {
+            long difference = System.currentTimeMillis() - activeCooldowns.get(command.name().toLowerCase());
+            if (difference <= 0) {
+                activeCooldowns.remove(command.name());
+                return true;
+            }
             return false;
         } else {
             addCooldown(command.name(), command.cooldown());
