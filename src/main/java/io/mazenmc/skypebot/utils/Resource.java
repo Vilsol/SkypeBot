@@ -33,7 +33,7 @@ public class Resource {
 
     public static void sendMessage(ChatMessage chatMessage, String message) {
         try {
-            SkypeBot.getInstance().sendMessage("(" + chatMessage.getSenderDisplayName().replaceAll("[^A-Za-z0-9 ]", "") + message);
+            SkypeBot.getInstance().sendMessage("(" + chatMessage.getSenderDisplayName().replaceAll("[^A-Za-z0-9 ><.]", "") + ") " + message);
         } catch (SkypeException ex) {
             sendMessage("Error occurred! " + ex.getMessage());
         }
