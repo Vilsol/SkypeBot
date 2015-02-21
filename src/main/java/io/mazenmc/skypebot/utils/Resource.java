@@ -33,7 +33,7 @@ public class Resource {
 
     public static void sendMessage(ChatMessage chatMessage, String message) {
         try {
-            SkypeBot.getInstance().sendMessage("(" + chatMessage.getSenderDisplayName() + ") " + message);
+            SkypeBot.getInstance().sendMessage("(" + chatMessage.getSenderId() + ") " + message);
         } catch (SkypeException ex) {
             sendMessage("Error occurred! " + ex.getMessage());
         }
