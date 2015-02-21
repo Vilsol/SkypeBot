@@ -140,7 +140,8 @@ public class Drama implements Module {
             "[people] is forking [things]",
             "[people] is forking [things] because of vigorous complaints from [sites]",
             "[people] forked [things] to add [function]",
-            "[people] forked [things] to remove [function]"
+            "[people] forked [things] to remove [function]",
+            "[people] star-bombed [things] on GitHub"
     };
 
     @Command(name = "drama", cooldown = 15)
