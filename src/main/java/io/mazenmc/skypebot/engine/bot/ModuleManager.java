@@ -33,11 +33,15 @@ public class ModuleManager {
             }
         }
 
-        if (data.getCommand().cooldown() > 0) {
-            if (!SkypeBot.getInstance().getCooldownHandler().tryUseCommand(data.getCommand())) {
-                Resource.sendMessage(chat, "Command is cooling down! Time Left: " + SkypeBot.getInstance().getCooldownHandler().getCooldownLeft(data.getCommand().name()));
-                return;
+        try {
+            if (data.getCommand().cooldown() > 0 && !Arrays.asList(Resource.GROUP_ADMINS).contains(chat.getSenderId())) {
+                if (!SkypeBot.getInstance().getCooldownHandler().tryUseCommand(data.getCommand())) {
+                    Resource.sendMessage(chat, "Command is cooling down! Time Left: " + SkypeBot.getInstance().getCooldownHandler().getCooldownLeft(data.getCommand().name()));
+                    return;
+                }
             }
+        } catch (SkypeException e) {
+            e.printStackTrace();
         }
 
         List<Object> a = new ArrayList<>();
