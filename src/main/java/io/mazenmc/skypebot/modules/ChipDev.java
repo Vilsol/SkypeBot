@@ -33,7 +33,8 @@ public class ChipDev implements Module {
             "Also, don't make a plugin inside of the JavaPlugin, use the main instance for non NPE'S",
             "https://gist.github.com/ChipDev/fa03cdc3811a81b86101",
             "The github cat looks like a octopus. o.o",
-            "When I started Bukkit, I thought Java was coffee. Still the same thought."
+            "When I started Bukkit, I thought Java was coffee. Still the same thought.",
+            "Scoreboards haunt me."
             //End actual ChipDev quotes
     };
 
