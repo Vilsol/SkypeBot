@@ -30,6 +30,7 @@ public class ChipDev implements Module {
             "Currently with 211 likes and 1306 MSG's, I get 1 like per 6.18957345972 messages!",
             "I wish I would've bought github plus for privacy :/",
             "You CANNOT share this link with others, hint hint mazen.",
+            "Also, don't make a plugin inside of the JavaPlugin, use the main instance for non NPE'S",
             "https://gist.github.com/ChipDev/fa03cdc3811a81b86101",
             //End actual ChipDev quotes
     };
