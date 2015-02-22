@@ -18,7 +18,7 @@ public class ChipDev implements Module {
             "Spigot? What the hell is a Spigot?",
             "Trident? Why is greek mythology relevant?",
             "Thread? I'm trying to make a Bukkit plugin, not a scarf.",
-            "Generics? My code is too generic for that."
+            "Generics? My code is too generic for that.",
             //Actual ChipDev quotes
             "If you aren't using Java's file creator, maybe ask in the library's thread.",
             "Could be helpful to give your plugin DA POWA and have all other plugins cancelled. Think about it.",
