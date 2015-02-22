@@ -14,7 +14,7 @@ import java.util.Random;
 public class Drama implements Module {
 
     private static HashMap<String, String[]> data = new HashMap<String, String[]>() {{
-        put("people", new String[]{"jeb", "Notch", "Mojang", "Curse", "Searge", "mbaxter", "Garrison", "Komp", "Gaben", "RawCode", "Vilsol", "md_5", "sk89q", "MazenMC", "hawkfalcon", "New Bukkit Staff", "Wolvereness", "CaptainBern", "Hoolean", "drtshock", "EvilSeph", "TnT", "lukegb", "codename_B", "Cryptkeeper", "hintss", "Saad", "Obama", "TheMogMiner", "TridentSDK Staff", "Reddit's Hive Mind", "/r/Minecraft", "macguy8 (Colin)"});
+        put("people", new String[]{"jeb", "Notch", "Mojang", "Curse", "Searge", "mbaxter", "Garrison", "Komp", "Gaben", "RawCode", "Vilsol", "md_5", "sk89q", "MazenMC", "hawkfalcon", "New Bukkit Staff", "Wolvereness", "CaptainBern", "Hoolean", "drtshock", "EvilSeph", "TnT", "lukegb", "codename_B", "Cryptkeeper", "hintss", "Saad", "Obama", "TheMogMiner", "TridentSDK Staff", "Reddit's Hive Mind", "/r/Minecraft", "macguy8 (Colin)", "ChipDev"});
         put("sites", new String[]{"Reddit", "4chan", "GitHub", "Slack", "Skype", "BitBucket", "IRC", "Google+", "Twitch", "Bukkit Forums", "Trident Forums", "Spigot Forums", "Sponge Forums", "The YouTube comment section", "Google"});
         put("things", new String[]{"Bukkit", "Trident", "TridentSDK", "Spigot", "Sponge", "WorldEdit", "Essentials", "WorldModify", "Google", "Spout", "ForgeCraft", "BungeeCord", "Mazen's Skype Bot"});
         put("networks", new String[]{"EA", "Ubisoft", "Hypixel", "ArkhamNetwork", "Mineplex", "Minecade", "GazamoGames", "ShotBow", "KitPVP"});

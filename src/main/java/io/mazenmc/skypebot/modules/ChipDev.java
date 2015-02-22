@@ -18,6 +18,7 @@ public class ChipDev implements Module {
             "Spigot? What the hell is a Spigot?",
             "Trident? Why is greek mythology relevant?",
             "Thread? I'm trying to make a Bukkit plugin, not a scarf.",
+            "Generics? My code is too generic for that.",
             //Actual ChipDev quotes
             "If you aren't using Java's file creator, maybe ask in the library's thread.",
             "Could be helpful to give your plugin DA POWA and have all other plugins cancelled. Think about it.",
@@ -27,7 +28,9 @@ public class ChipDev implements Module {
             "You cannot legally get Craftbukkit anymore (Except with Spigot, and all that stuff. Don't get me into that please!)",
             "I remember when we were all only good at programming. You excelled :P",
             "Currently with 211 likes and 1306 MSG's, I get 1 like per 6.18957345972 messages!",
-            "https://gist.github.com/ChipDev/fa03cdc3811a81b86101"
+            "I wish I would've bought github plus for privacy :/",
+            "You CANNOT share this link with others, hint hint mazen.",
+            "https://gist.github.com/ChipDev/fa03cdc3811a81b86101",
             //End actual ChipDev quotes
     };
 
