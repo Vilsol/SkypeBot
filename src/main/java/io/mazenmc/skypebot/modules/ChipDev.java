@@ -34,7 +34,14 @@ public class ChipDev implements Module {
             "https://gist.github.com/ChipDev/fa03cdc3811a81b86101",
             "The github cat looks like a octopus. o.o",
             "When I started Bukkit, I thought Java was coffee. Still the same thought.",
-            "Scoreboards haunt me."
+            "Scoreboards haunt me.",
+            "I liek trains",
+            "Im a straight A student. Not counting anything but math.",
+            "Why watch TV, when you can PLAY TV?",
+            "^ sucks..    lollypops",
+            "I suck, (Lollypops!)",
+            "Shut up is a good thing! Its the opposite of Shut down, which is turn off != turn on..... You are telling someone to turn on (keep talking!)"
+            
             //End actual ChipDev quotes
     };
 
