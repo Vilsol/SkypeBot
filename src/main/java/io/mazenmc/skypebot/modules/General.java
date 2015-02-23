@@ -339,7 +339,7 @@ public class General implements Module {
         Resource.sendMessage(chat, "Definition of " + word + ": " + Jsoup.parse(definition).text());
     }
 
-    @Command(name = "dreamincode")
+    @Command(name = "dreamincode", alias = {"whatwouldmazensay"})
     public static void cmddreamincode(ChatMessage chat) throws SkypeException {
         String[] options = new String[]{"No, I'm not interested in having a girlfriend I find it a tremendous waste of time.",
                 "Hi, my name is Santiago Gonzalez and I'm 14 and I like to program.",
