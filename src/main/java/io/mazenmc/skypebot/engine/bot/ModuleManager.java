@@ -46,8 +46,8 @@ public class ModuleManager {
             
             long difference = System.currentTimeMillis() - lastCommand;
             
-            if (difference <= 3000L) {
-                if (difference <= 1000L) {
+            if (difference <= 5000L) {
+                if (difference <= 4000L) {
                     Resource.sendMessage(chat, "Woah, slow down there bud. Try again in " + TimeUnit.MILLISECONDS.toSeconds(2000L - difference) + " second(s)");
                 }
                 return;
