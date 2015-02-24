@@ -41,6 +41,7 @@ public class ChipDev implements Module {
             "Why watch TV, when you can PLAY TV?",
             "^ sucks..    lollypops",
             "I suck, (Lollypops!)",
+            "i Don wanna endanger my 5k comp.",
             "Shut up is a good thing! Its the opposite of Shut down, which is turn off != turn on..... You are telling someone to turn on (keep talking!)"
             
             //End actual ChipDev quotes
