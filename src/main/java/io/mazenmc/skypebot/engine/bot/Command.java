@@ -16,5 +16,5 @@ public @interface Command {
 
     public String name();
 
-    public int cooldown() default 0;
+    public int cooldown() default 2;
 }
