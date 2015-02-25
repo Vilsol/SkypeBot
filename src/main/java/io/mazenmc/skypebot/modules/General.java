@@ -22,6 +22,7 @@ import io.mazenmc.skypebot.utils.Resource;
 import io.mazenmc.skypebot.utils.Utils;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.json.JSONException;
+import org.json.JSONObject;
 import org.jsoup.Jsoup;
 
 import java.io.BufferedReader;
@@ -323,20 +324,17 @@ public class General implements Module {
 
     @Command(name = "define")
     public static void cmddefine(ChatMessage chat, String word) throws Exception {
-        HttpURLConnection connection = (HttpURLConnection) new URL(Resource.URBAN_DICTIONARY_URL + URLEncoder.encode(word)).openConnection();
-        connection.connect();
+        HttpResponse<String> response = Unirest.get("https://mashape-community-urban-dictionary.p.mashape.com/define?term=" + word)
+                .header("X-Mashape-Key", Resource.KEY_URBAND)
+                .header("Accept", "text/plain")
+                .asString();
+        JSONObject object = new JSONObject(response.getBody());
+        JSONObject definition = object.getJSONArray("list").getJSONObject(0);
 
-        BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-
-        List<String> lines = new ArrayList<>(400);
-        for (int i = 0; i < 400; i++) lines.add(reader.readLine());
-
-        int definitionStart = lines.indexOf("<div class='meaning'>");
-        String definition = lines.get(definitionStart + 1);
-        definition = definition.replaceAll("<a href=\"\\/define\\.php\\?term=[a-z]*\">", "");
-        definition = definition.replace("</a>", "");
-
-        Resource.sendMessage(chat, "Definition of " + word + ": " + Jsoup.parse(definition).text());
+        Resource.sendMessage(chat, "Definition of " + word + ": " + definition.getString("definition"));
+        Resource.sendMessage(chat, definition.getString("example"));
+        Resource.sendMessage(chat, definition.getInt("thumbs_up") + " thumbs ups, " + definition.getInt("thumbs_down") + " thumbs down");
+        Resource.sendMessage(chat, "Definition by " + definition.getString("author"));
     }
 
     @Command(name = "dreamincode", alias = {"whatwouldmazensay"})
