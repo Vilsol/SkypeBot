@@ -332,6 +332,7 @@ public class General implements Module {
 
         if(object.getJSONArray("list").length() == 0) {
             Resource.sendMessage(chat, "No definition found for " + word + "!");
+            return;
         }
 
         JSONObject definition = object.getJSONArray("list").getJSONObject(0);
