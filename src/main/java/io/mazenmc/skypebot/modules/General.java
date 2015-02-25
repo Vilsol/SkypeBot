@@ -324,11 +324,16 @@ public class General implements Module {
 
     @Command(name = "define")
     public static void cmddefine(ChatMessage chat, String word) throws Exception {
-        HttpResponse<String> response = Unirest.get("https://mashape-community-urban-dictionary.p.mashape.com/define?term=" + word)
+        HttpResponse<String> response = Unirest.get("https://mashape-community-urban-dictionary.p.mashape.com/define?term=" + word.replace(" ", "+"))
                 .header("X-Mashape-Key", Resource.KEY_URBAND)
                 .header("Accept", "text/plain")
                 .asString();
         JSONObject object = new JSONObject(response.getBody());
+
+        if(object.getJSONArray("list").length() == 0) {
+            Resource.sendMessage(chat, "No definition found for " + word + "!");
+        }
+
         JSONObject definition = object.getJSONArray("list").getJSONObject(0);
 
         Resource.sendMessage(chat, "Definition of " + word + ": " + definition.getString("definition"));
