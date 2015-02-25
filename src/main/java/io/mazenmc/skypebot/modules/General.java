@@ -343,6 +343,33 @@ public class General implements Module {
         Resource.sendMessage(chat, "Definition by " + definition.getString("author"));
     }
 
+    @Command(name = "^https?://(?:[a-z\\-]+\\.)+[a-z]{2,6}(?:/[^/#?]+)+\\.(?:jpg|gif|png)$", command = false, exact = false)
+    public static void pornDetect(ChatMessage chat) throws Exception {
+        String message = chat.getContent();
+        String link = null;
+
+        for (String part : message.split(" ")) {
+            if(part.startsWith("http") || part.startsWith("https")) {
+                link = part;
+                break;
+            }
+        }
+
+        if(link == null)
+            return;
+
+        try {
+            HttpResponse<JsonNode> response = Unirest.get("https://sphirelabs-advanced-porn-nudity-and-adult-content-detection.p.mashape.com/v1/get/index.php?url=" + link)
+                    .header("X-Mashape-Key", Resource.KEY_URBAND)
+                    .header("Accept", "application/json")
+                    .asJson();
+
+            if("True".equals(response.getBody().getObject().getString("Is Porn"))) {
+                Resource.sendMessage(chat.getSenderDisplayName() + "'s image is probably porn");
+            }
+        } catch (Exception ignored) {}
+    }
+
     @Command(name = "dreamincode", alias = {"whatwouldmazensay"})
     public static void cmddreamincode(ChatMessage chat) throws SkypeException {
         String[] options = new String[]{"No, I'm not interested in having a girlfriend I find it a tremendous waste of time.",
