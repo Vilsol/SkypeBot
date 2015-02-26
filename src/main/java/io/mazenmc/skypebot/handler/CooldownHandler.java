@@ -3,6 +3,7 @@ package io.mazenmc.skypebot.handler;
 import io.mazenmc.skypebot.engine.bot.Command;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class CooldownHandler {
     private Map<String, Long> activeCooldowns = new HashMap<>();
