@@ -8,7 +8,7 @@ public class CooldownHandler {
     private HashMap<String, Long> activeCooldowns = new HashMap<>();
 
     public String getCooldownLeft(String command) {
-        long difference = System.currentTimeMillis() - activeCooldowns.get(command.toLowerCase());
+        long difference = activeCooldowns.get(command.toLowerCase()) - System.currentTimeMillis();
         if (difference <= 0) {
             return null;
         } else {
@@ -16,20 +16,17 @@ public class CooldownHandler {
         }
     }
 
-    public void addCooldown(String command, int time) {
-        activeCooldowns.put(command.toLowerCase(), System.currentTimeMillis() + (time * 1000));
+    public void addCooldown(String command, long time) {
+        activeCooldowns.put(command.toLowerCase(), time);
     }
 
     public boolean tryUseCommand(Command command) {
-        if (activeCooldowns.containsKey(command.name().toLowerCase())) {
-            long difference = System.currentTimeMillis() - activeCooldowns.get(command.name().toLowerCase());
-            if (difference <= 0) {
-                activeCooldowns.remove(command.name());
-                return true;
-            }
+        Long timestamp = activeCooldowns.get(command.name().toLowerCase());
+        long current = System.currentTimeMillis();
+        if (timestamp != null && current < timestamp) {
             return false;
         } else {
-            addCooldown(command.name(), command.cooldown());
+            addCooldown(command.name(), current + (1000 * command.cooldown()));
             return true;
         }
     }
