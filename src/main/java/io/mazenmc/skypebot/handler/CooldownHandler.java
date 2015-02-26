@@ -32,11 +32,11 @@ public class CooldownHandler {
     public boolean canUse(Command command) {
         Long timestamp = activeCooldowns.get(command.name().toLowerCase());
         long current = System.currentTimeMillis();
-        boolean hasCooldown = timestamp == null || current > timestamp;
-        if(!hasCooldown) {
+        boolean canUse = timestamp == null || current > timestamp;
+        if(canUse) {
             addCooldown(command.name(), command.cooldown());
         }
-        return hasCooldown;
+        return canUse;
     }
 }
     
