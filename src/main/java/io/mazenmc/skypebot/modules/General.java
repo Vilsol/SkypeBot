@@ -82,7 +82,7 @@ public class General implements Module {
             return;
         }
         
-        Resource.sendMessage("I say " + choices[ThreadLocalRandom.current().nextInt(choices.length)]);
+        Resource.sendMessage("I say " + choices[ThreadLocalRandom.current().nextInt(choices.length)].trim());
     }
 
     @Command(name = "c")
