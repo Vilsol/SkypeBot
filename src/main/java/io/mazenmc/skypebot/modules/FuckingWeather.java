@@ -37,8 +37,8 @@ public class FuckingWeather implements Module {
 			return "I CAN'T GET THE FUCKING WEATHER!";
 		}
 
-                double temp = json.getJSONObject("main").getDouble("temp");
-                double metric = temp - 32 / 1.8000;
+                double temp = Math.round(json.getJSONObject("main").getDouble("temp"));
+                double metric = Math.round(temp - 32 / 1.8000);
 
                 if (temp <= 32) {
                         Resource.sendMessage("ITS FUCKING FREEZING!");
