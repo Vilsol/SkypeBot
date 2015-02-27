@@ -46,9 +46,10 @@ public class FuckingWeather implements Module {
                         Resource.sendMessage("ITS FUCKING COLD!");
                 } else if (temp >= 61 && temp <= 75) {
                         Resource.sendMessage("ITS FUCKING NICE!");
+                } else {
+                        Resource.sendMessage("ITS FUCKING HOT");
                 }
 
-                Resource.sendMessage("ITS FUCKING HOT");
 		return "THE FUCKING WEATHER IN " + location.toUpperCase() + " IS " + temp + "F | " + metric + "C";
 	}
 
