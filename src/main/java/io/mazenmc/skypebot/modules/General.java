@@ -75,7 +75,7 @@ public class General implements Module {
     
     @Command(name = "choice")
     public static void choice(ChatMessage chat, String message) {
-        String[] choices = message.split(",");
+        String[] choices = message.trim().split(",");
         
         if(choices.length == 1) {
             Resource.sendMessage("Give me choices!");
