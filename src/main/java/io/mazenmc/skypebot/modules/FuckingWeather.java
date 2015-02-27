@@ -40,7 +40,7 @@ public class FuckingWeather implements Module {
 		double temp = json.getJSONObject("main").getDouble("temp");
 		String city = json.getString("name");
 		double metric = temp - 32 / 1.8000;
-		return "THE FUCKING WEATHER IN " + city + "iS " + temp + "F | " + metric + "C";
+		return "THE FUCKING WEATHER IN " + city + "IS " + temp + "F | " + metric + "C";
 	}
 
 	public static String sendGet(String url) throws Exception {
