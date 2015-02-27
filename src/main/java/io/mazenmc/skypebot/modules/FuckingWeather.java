@@ -37,18 +37,18 @@ public class FuckingWeather implements Module {
 			return "I CAN'T GET THE FUCKING WEATHER!";
 		}
 
-                double temp = Math.round(json.getJSONObject("main").getDouble("temp"));
-                double metric = Math.round(temp - 32 / 1.8000);
+		double temp = Math.round(json.getJSONObject("main").getDouble("temp"));
+		double metric = Math.round((temp - 32) / 1.8000);
 
-                if (temp <= 32) {
-                        Resource.sendMessage("ITS FUCKING FREEZING!");
-                } else if (temp >= 33 && temp <= 60) {
-                        Resource.sendMessage("ITS FUCKING COLD!");
-                } else if (temp >= 61 && temp <= 75) {
-                        Resource.sendMessage("ITS FUCKING NICE!");
-                } else {
-                        Resource.sendMessage("ITS FUCKING HOT");
-                }
+		if (temp <= 32) {
+			Resource.sendMessage("ITS FUCKING FREEZING!");
+		} else if (temp >= 33 && temp <= 60) {
+			Resource.sendMessage("ITS FUCKING COLD!");
+		} else if (temp >= 61 && temp <= 75) {
+			Resource.sendMessage("ITS FUCKING NICE!");
+		} else {
+			Resource.sendMessage("ITS FUCKING HOT");
+		}
 
 		return "THE FUCKING WEATHER IN " + location.toUpperCase() + " IS " + temp + "F | " + metric + "C";
 	}
