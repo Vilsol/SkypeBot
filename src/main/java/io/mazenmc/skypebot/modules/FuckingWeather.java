@@ -38,18 +38,9 @@ public class FuckingWeather implements Module {
 		}
 
 		double temp = json.getJSONObject("main").getDouble("temp");
-
-		if (temp <= 32) {
-			return "ITS FUCKING FREEZING!";
-		}
-		else if (temp >= 33 && temp <= 60) {
-			return "ITS FUCKING COLD!";
-		}
-		else if (temp >= 61 && temp <= 75) {
-			return "ITS FUCKING NICE!";
-		}
-
-		return "ITS FUCKING HOT!";
+		String city = json.getString("name");
+		double metric = temp - 32 / 1.8000;
+		return "THE FUCKING WEATHER IN " + city + " IS " + temp + "F | " + metric + "C";
 	}
 
 	public static String sendGet(String url) throws Exception {
