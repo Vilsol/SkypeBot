@@ -9,10 +9,6 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class WhatWouldHappen implements Module {
 
-    /**
-     * I put this in a separate class because the options will probably grow a bunch.
-     */
-
     private static final String[] OPTIONS = new String[] {
             "World Domination would occur",
             "An amazing and beautiful thing would happen",
@@ -31,7 +27,6 @@ public class WhatWouldHappen implements Module {
             "Yahoo would release something nice",
             "Apple's HQ would explode",
             "Minecraft would go open-source"
-
     };
 
     @Command(name = "whatwouldhappen")
