@@ -60,7 +60,8 @@ public class WhatWouldHappen implements Module {
             "[members] would make a joke about [current events]",
             "[members] would stop using reddit",
             "[members] and [members] would have sexy time",
-            "[members] would commit suicide"
+            "[members] would commit suicide",
+            "wo-oh wait"
     };
 
     private static final HashMap<String, String[]> DATA = new HashMap<String, String[]>() {{
@@ -82,9 +83,7 @@ public class WhatWouldHappen implements Module {
             }
         }
 
-        Resource.sendMessage(chat, message
-                .replace("me", chat.getSenderDisplayName())
-                .replace("my", chat.getSenderDisplayName() + "'s") + ", " + option);
+        Resource.sendMessage(chat, message + ", " + option);
     }
 
 }
