@@ -10,21 +10,33 @@ import java.util.*;
 
 public class BuzzFeed implements Module {
     private static HashMap<String, List<String>> data = new HashMap<String, List<String>>() {{
+        put("emotion1", Arrays.asList("amazed", "shocked", "excited", "saddened", "happy", "bored"));
+        put("emotion2", Arrays.asList("hate", "love", "like", "admire", "want to kill"));
+        put("action", Arrays.asList("blow your mind", "kill your sister", "end your life", "punch a wall", "laugh at Mazen", "think about Jesus", "masturbate vigorously"));
+        put("things", Arrays.asList("Ponies", "Kittens", "Java Projects", "DMCA's", "Minecraft Renders", "ChipDev Quotes", "Balloons", "People", "Houses", "Beach Balls", "Emojis", "Japanese People", "iPhone Cases", "Costumes the size of your mother"));
 
+        List<String> numbers = new ArrayList<>();
+        for (int i = 5; i < 59; i++) {
+            numbers.add(String.valueOf(i));
+        }
+        put("number", numbers);
     }};
 
     private static List<String> sentences = new ArrayList<String>() {{
-        add("BuzzFeed coming soon!");
+        add("The top [number] [things] that will [action]!");
+        add("[number] of the sexiest [things] that will leave you [emotion1]");
+        add("Which of the [number] [things] do you [emotion2] the most?");
+        add("This command needs [number] more sentences. Contribute by typing @git");
     }};
 
     @Command(name = "buzzfeed", cooldown = 15)
     public static void cmdBuzzFeed(ChatMessage chat) throws SkypeException {
-        String sentence = sentences.get(new Random().nextInt(Arrays.asList(sentences).size()));
+        String sentence = sentences.get(new Random().nextInt(sentences.size()));
 
         Random r = new Random();
         for (Map.Entry<String, List<String>> s : data.entrySet()) {
             while (sentence.contains("[" + s.getKey() + "]")) {
-                sentence = sentence.replaceFirst("\\[" + s.getKey() + "\\]", s.getValue().get(r.nextInt(Arrays.asList(s.getValue()).size())));
+                sentence = sentence.replaceFirst("\\[" + s.getKey() + "\\]", s.getValue().get(r.nextInt(s.getValue().size())));
             }
         }
 
