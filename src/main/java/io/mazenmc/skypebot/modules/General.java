@@ -50,7 +50,7 @@ public class General implements Module {
     public static void cmd8Ball(ChatMessage chat, @Optional
             String question) {
         String[] options = new String[]{"It is certain", "It is decidedly so", "Without a doubt", "Yes definitely", "You may rely on it", "As I see it, yes", "Most likely", "Outlook good", "Yes", "Signs point to yes", "Reply hazy try again", "Ask again later", "Better not tell you now", "Cannot predict now", "Concentrate and ask again", "Don't count on it", "My reply is no", "My sources say no", "Outlook not so good", "Very doubtful"};
-        int chosen = new Random().nextInt(options.length);
+        int chosen = ThreadLocalRandom.current().nextInt(options.length);
         Resource.sendMessage(chat, options[chosen]);
     }
 
@@ -197,7 +197,7 @@ public class General implements Module {
             return;
         }
 
-        Resource.sendMessage(chat, String.valueOf(new Random().nextInt(high - low) + low));
+        Resource.sendMessage(chat, String.valueOf(ThreadLocalRandom.current().nextInt(high - low) + low));
     }
 
     @Command(name = "rant")
@@ -386,7 +386,7 @@ public class General implements Module {
                         "One of the main reasons I started developing apps was to help people what they want to do like decorate a christmas tree.",
                         "I really like to crochet.",
         "I made a good website http://slgonzalez.com/"};
-        int chosen = new Random().nextInt(options.length);
+        int chosen = ThreadLocalRandom.current().nextInt(options.length);
         Resource.sendMessage(chat, options[chosen]);
     }
 
@@ -396,7 +396,7 @@ public class General implements Module {
             try {
                 HttpResponse<JsonNode> response = Unirest.get("http://xkcd.com/info.0.json")
                         .asJson();
-                int urlnumber = new Random().nextInt((Integer) response.getBody().getObject().get("num")) + 1;
+                int urlnumber = ThreadLocalRandom.current().nextInt((Integer) response.getBody().getObject().get("num")) + 1;
                 HttpResponse<JsonNode> xkcd = Unirest.get("http://xkcd.com/" + urlnumber + "/info.0.json")
                         .asJson();
                 String transcript = xkcd.getBody().getObject().get("transcript").toString();
