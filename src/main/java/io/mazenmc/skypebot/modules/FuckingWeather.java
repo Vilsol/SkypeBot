@@ -1,16 +1,19 @@
 package io.mazenmc.skypebot.modules;
 
-import com.skype.ChatMessage;
 import io.mazenmc.skypebot.engine.bot.Command;
 import io.mazenmc.skypebot.engine.bot.Module;
 import io.mazenmc.skypebot.utils.Resource;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import com.skype.ChatMessage;
 
 public class FuckingWeather implements Module {
 
@@ -27,7 +30,7 @@ public class FuckingWeather implements Module {
         }
     }
 
-    public static String getWeather(String location) throws JSONException, Exception {
+    public static String getWeather(String location) throws JSONException, IOException {
         String call = (url + location).replace(' ', '+');
         JSONObject json = new JSONObject(sendGet(call));
 
@@ -51,7 +54,7 @@ public class FuckingWeather implements Module {
         return "THE FUCKING WEATHER IN " + location.toUpperCase() + " IS " + temp + "F | " + metric + "C";
     }
 
-    public static String sendGet(String url) throws Exception {
+    public static String sendGet(String url) throws IOException{
         URL obj = new URL(url);
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 
