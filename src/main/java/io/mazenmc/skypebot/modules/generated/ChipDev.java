@@ -49,7 +49,7 @@ public class ChipDev implements Module {
 
     @Command(name = "chipdev")
     public static void cmdChipDev(ChatMessage chat) throws SkypeException {
-        String sentence = SENTANCES[ThreadLocalRandom.current().nextInt(Arrays.asList(sentences).size())];
+        String sentence = SENTANCES[ThreadLocalRandom.current().nextInt(SENTANCES.length)];
 
         Resource.sendMessage(chat, sentence);
     }
