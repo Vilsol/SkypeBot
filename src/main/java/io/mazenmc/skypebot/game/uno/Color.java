@@ -20,7 +20,7 @@ public enum Color {
         Color color = Color.RED;
 
         for (Color c : values()) {
-            if(rand <= c.chance) {
+            if (rand <= c.chance) {
                 color = c;
                 rand = c.chance;
             }
@@ -38,7 +38,7 @@ public enum Color {
         int total = 0;
 
         for (Color c : values()) {
-            if(c != this)
+            if (c != this)
                 total += c.chance;
         }
 
@@ -46,7 +46,7 @@ public enum Color {
         int toApply = diff / 4;
 
         for (Color c : values()) {
-            if(c != this)
+            if (c != this)
                 c.chance += toApply;
         }
     }

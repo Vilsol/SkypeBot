@@ -13,15 +13,15 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.concurrent.TimeUnit;
 
 public class ModuleManager {
 
     private static HashMap<String, CommandData> allCommands = new HashMap<>();
     private static HashMap<String, CommandData> commandData = new HashMap<>();
-    
+
     private static long lastCommand = 0L;
 
     private static void executeCommand(ChatMessage chat, CommandData data, Matcher m) {
@@ -38,14 +38,14 @@ public class ModuleManager {
 
         try {
             if (data.getCommand().cooldown() > 0 && !Arrays.asList(Resource.GROUP_ADMINS).contains(chat.getSenderId())) {
-                if (!SkypeBot.getInstance().getCooldownHandler().tryUseCommand(data.getCommand())) {
+                if (!SkypeBot.getInstance().getCooldownHandler().canUse(data.getCommand())) {
                     Resource.sendMessage(chat, "Command is cooling down! Time Left: " + SkypeBot.getInstance().getCooldownHandler().getCooldownLeft(data.getCommand().name()));
                     return;
                 }
             }
-            
+
             long difference = System.currentTimeMillis() - lastCommand;
-            
+
             if (difference <= 5000L) {
                 if (difference <= 4000L) {
                     Resource.sendMessage(chat, "Woah, slow down there bud. Try again in " + TimeUnit.MILLISECONDS.toSeconds(2000L - difference) + " second(s)");
@@ -92,7 +92,7 @@ public class ModuleManager {
                 Method acquireMethodAccessorMethod = Method.class.getDeclaredMethod("acquireMethodAccessor", null);
                 acquireMethodAccessorMethod.setAccessible(true);
                 methodAccessor = (MethodAccessor) acquireMethodAccessorMethod.invoke(data.getMethod(), null);
-                
+
                 lastCommand = System.currentTimeMillis();
             }
         } catch (NoSuchFieldException | InvocationTargetException | IllegalAccessException | NoSuchMethodException e) {

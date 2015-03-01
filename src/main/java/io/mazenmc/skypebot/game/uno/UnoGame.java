@@ -6,7 +6,10 @@ import com.skype.User;
 import io.mazenmc.skypebot.game.Game;
 import io.mazenmc.skypebot.utils.Resource;
 
-import java.util.*;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 public class UnoGame implements Game {
 
@@ -28,7 +31,7 @@ public class UnoGame implements Game {
     }
 
     public void next() {
-        if(playerPosition >= (decks.size() - 1)) {
+        if (playerPosition >= (decks.size() - 1)) {
             playerPosition = 0;
             return;
         }
@@ -41,7 +44,8 @@ public class UnoGame implements Game {
 
                 user.send("Your deck:");
                 user.send(entry.getValue().toString());
-            } catch (SkypeException ignored) {}
+            } catch (SkypeException ignored) {
+            }
         }
 
         // TODO more messages
@@ -52,7 +56,7 @@ public class UnoGame implements Game {
     }
 
     public Map.Entry<String, Deck> peek() {
-        return new LinkedList<>(decks.entrySet()).get((playerPosition >= (decks.size() -1)) ? 0 : playerPosition + 1);
+        return new LinkedList<>(decks.entrySet()).get((playerPosition >= (decks.size() - 1)) ? 0 : playerPosition + 1);
     }
 
     public void reverse() {
@@ -60,7 +64,7 @@ public class UnoGame implements Game {
 
         decks = new LinkedHashMap<>();
 
-        for(int i = old.size() - 1; i >= 0; i--) {
+        for (int i = old.size() - 1; i >= 0; i--) {
             Map.Entry<String, Deck> entry = old.get(i);
 
             decks.put(entry.getKey(), entry.getValue());

@@ -23,19 +23,12 @@ import io.mazenmc.skypebot.utils.Utils;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.jsoup.Jsoup;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.net.URLEncoder;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
@@ -72,16 +65,16 @@ public class General implements Module {
     public static void cmdBot(ChatMessage chat, String message) {
         Resource.sendMessage("/me " + message);
     }
-    
+
     @Command(name = "choice")
     public static void choice(ChatMessage chat, String message) {
         String[] choices = message.trim().split(",");
-        
-        if(choices.length == 1) {
+
+        if (choices.length == 1) {
             Resource.sendMessage("Give me choices!");
             return;
         }
-        
+
         Resource.sendMessage("I say " + choices[ThreadLocalRandom.current().nextInt(choices.length)].trim());
     }
 
@@ -330,7 +323,7 @@ public class General implements Module {
                 .asString();
         JSONObject object = new JSONObject(response.getBody());
 
-        if(object.getJSONArray("list").length() == 0) {
+        if (object.getJSONArray("list").length() == 0) {
             Resource.sendMessage(chat, "No definition found for " + word + "!");
             return;
         }
@@ -349,13 +342,13 @@ public class General implements Module {
         String link = null;
 
         for (String part : message.split(" ")) {
-            if(part.startsWith("http") || part.startsWith("https")) {
+            if (part.startsWith("http") || part.startsWith("https")) {
                 link = part;
                 break;
             }
         }
 
-        if(link == null)
+        if (link == null)
             return;
 
         try {
@@ -364,10 +357,11 @@ public class General implements Module {
                     .header("Accept", "application/json")
                     .asJson();
 
-            if("True".equals(response.getBody().getObject().getString("Is Porn"))) {
+            if ("True".equals(response.getBody().getObject().getString("Is Porn"))) {
                 Resource.sendMessage(chat.getSenderDisplayName() + "'s image is probably porn");
             }
-        } catch (Exception ignored) {}
+        } catch (Exception ignored) {
+        }
     }
 
     @Command(name = "dreamincode", alias = {"whatwouldmazensay"})

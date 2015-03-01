@@ -21,19 +21,11 @@ public class CooldownHandler {
         activeCooldowns.put(command.toLowerCase(), System.currentTimeMillis() + (seconds * 1000));
     }
 
-    /**
-     * @deprecated the name would suggest it executes the command
-     */
-    @Deprecated
-    public boolean tryUseCommand(Command command) {
-        return canUse(command);
-    }
-    
     public boolean canUse(Command command) {
         Long timestamp = activeCooldowns.get(command.name().toLowerCase());
         long current = System.currentTimeMillis();
         boolean canUse = timestamp == null || current > timestamp;
-        if(canUse) {
+        if (canUse) {
             addCooldown(command.name(), command.cooldown());
         }
         return canUse;

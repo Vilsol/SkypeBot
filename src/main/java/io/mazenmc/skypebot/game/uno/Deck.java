@@ -7,7 +7,8 @@ public class Deck {
 
     private List<Card> cards = new ArrayList<>();
 
-    public Deck() {}
+    public Deck() {
+    }
 
     public Card card(int index) {
         return cards.get(index);

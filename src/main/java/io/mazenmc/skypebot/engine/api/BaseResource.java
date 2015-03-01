@@ -15,8 +15,16 @@ import java.util.Map;
 
 public abstract class BaseResource extends ServerResource {
 
-    String jsonString = "";
     protected ResponseParseFactory parseFactory = null;
+    String jsonString = "";
+
+    public static Map<String, String> getMapFromParam(Form form) {
+        Map<String, String> map = new HashMap<String, String>();
+        for (Parameter parameter : form) {
+            map.put(parameter.getName(), parameter.getValue());
+        }
+        return map;
+    }
 
     @Get
     public Representation doGet() {
@@ -48,14 +56,6 @@ public abstract class BaseResource extends ServerResource {
             jsonString = parseFactory.getFailureJsonString(e.getMessage());
         }
         return new StringRepresentation(jsonString, MediaType.APPLICATION_JSON);
-    }
-
-    public static Map<String, String> getMapFromParam(Form form) {
-        Map<String, String> map = new HashMap<String, String>();
-        for (Parameter parameter : form) {
-            map.put(parameter.getName(), parameter.getValue());
-        }
-        return map;
     }
 
     public abstract String processRequest(String raw, JSONObject json, String method);

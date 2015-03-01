@@ -1,4 +1,4 @@
-package io.mazenmc.skypebot.modules;
+package io.mazenmc.skypebot.modules.generated;
 
 import com.skype.ChatMessage;
 import com.skype.SkypeException;
@@ -43,7 +43,7 @@ public class ChipDev implements Module {
             "I suck, (Lollypops!)",
             "i Don wanna endanger my 5k comp.",
             "Shut up is a good thing! Its the opposite of Shut down, which is turn off != turn on..... You are telling someone to turn on (keep talking!)"
-            
+
             //End actual ChipDev quotes
     };
 

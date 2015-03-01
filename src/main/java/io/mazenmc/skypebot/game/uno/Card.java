@@ -25,7 +25,7 @@ public class Card {
     }
 
     public void play(UnoGame game, User owner) {
-        switch(color) {
+        switch (color) {
             case WILD:
                 try {
                     if (face == Face.WILD_DRAW_FOUR) {
@@ -40,7 +40,7 @@ public class Card {
                     Resource.assignCallback(owner.getId(), (message) -> {
                         Color c = Color.valueOf(message.toUpperCase());
 
-                        if(c == Color.WILD) {
+                        if (c == Color.WILD) {
                             Resource.sendMessage("That's an invalid card!");
                             play(game, owner);
                             return;
@@ -51,7 +51,8 @@ public class Card {
                         game.next();
                         game.addCard(new Card(c, f));
                     });
-                } catch (SkypeException ignored) {}
+                } catch (SkypeException ignored) {
+                }
 
                 break;
 
@@ -67,7 +68,8 @@ public class Card {
 
                         Resource.sendMessage(user.getDisplayName() + " drew 2 cards!");
                         current.getValue().draw(2, game);
-                    } catch (SkypeException ignored) {}
+                    } catch (SkypeException ignored) {
+                    }
                 }
 
                 if (face == Face.REVERSE) {

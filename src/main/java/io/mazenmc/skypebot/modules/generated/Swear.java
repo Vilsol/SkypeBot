@@ -1,4 +1,4 @@
-package io.mazenmc.skypebot.modules;
+package io.mazenmc.skypebot.modules.generated;
 
 import com.skype.ChatMessage;
 import com.skype.SkypeException;
