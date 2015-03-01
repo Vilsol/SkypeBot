@@ -26,7 +26,17 @@ public class WhatWouldHappen implements Module {
             "Google would buy Apple",
             "Yahoo would release something nice",
             "Apple's HQ would explode",
-            "Minecraft would go open-source"
+            "Minecraft would go open-source",
+            "Mazen would become internet famous",
+            "TridentSDK would go ~~enterprise~~",
+            "Mazen's Skype Chat would become the illuminati",
+            "Mazen's Skype Chat would become a daily podcast",
+            "ChipDev would be more popular than PewDiePie",
+            "Ubuntu would become the most used operating system",
+            "Gentoo takes over the world",
+            "Stephen Hawking would be exposed for never having ALS",
+            "Garrison would kill himself",
+            "Garrison would make a joke about people dying in Iraq"
     };
 
     @Command(name = "whatwouldhappen")
