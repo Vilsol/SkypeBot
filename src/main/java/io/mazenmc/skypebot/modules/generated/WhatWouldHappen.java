@@ -64,7 +64,7 @@ public class WhatWouldHappen implements Module {
         put("countries", new String[]{"Argentina", "Brazil", "Russia", "USA", "Canada", "China", "North Korea", "France", "Australia"});
         put("members", new String[]{"Mazen", "Luke", "rowtn", "Troll", "Garrison", "Erik", "Filip", "Jade", "mattrick", "Vilsol", "Mark"});
         put("objects", new String[]{"a dildo", "a knife", "a Mac", "an iPhone", "an anvil", "spiders", "a kangaroo", "a panda", "a member of ISIS", "a velociraptor", "a nerf gun"});
-        put("current events", new String[] {"people dying in iraq", "the dress", "Gazamo Games releasing in March (sponsor)", "the king of Saudi Arabia dying", "the war against ISIS", "Putin getting bad coffee for breakfast"})
+        put("current events", new String[] {"people dying in iraq", "the dress", "Gazamo Games releasing in March (sponsor)", "the king of Saudi Arabia dying", "the war against ISIS", "Putin getting bad coffee for breakfast"});
     }};
 
     @Command(name = "whatwouldhappen")
