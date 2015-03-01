@@ -6,7 +6,7 @@ import io.mazenmc.skypebot.utils.Resource;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ThreadLocalRandom;
+import java.util.Random;
 
 import com.skype.ChatMessage;
 
@@ -39,7 +39,7 @@ public class WhatWouldHappen implements Module {
         "Gentoo takes over the world",
         "Stephen Hawking would be exposed for never having ALS",
         "Garrison would kill himself",
-        "Garrison would make a joke about people dying in Iraq",
+        "Garrison would make a joke about [current events]",
         "Bill Gates would come out gay",
         "Steve Wozniak would release to the world that Steve Jobs is still alive",
         "the Nokia 3310 would break",
@@ -56,18 +56,20 @@ public class WhatWouldHappen implements Module {
         "ADDITIONAL PYLONS WOULD BE CONSTRUCTED",
         "mazen.bot would die",
         "[members] would kill [members] with [objects]",
-        "[members] would ejactulate [objects]"
+        "[members] would ejactulate [objects]",
+        "[members] would make a joke about [current events]"
     };
 
     private static final HashMap<String, String[]> DATA = new HashMap<String, String[]>() {{
         put("countries", new String[]{"Argentina", "Brazil", "Russia", "USA", "Canada", "China", "North Korea", "France", "Australia"});
         put("members", new String[]{"Mazen", "Luke", "rowtn", "Troll", "Garrison", "Erik", "Filip", "Jade", "mattrick", "Vilsol", "Mark"});
         put("objects", new String[]{"a dildo", "a knife", "a Mac", "an iPhone", "an anvil", "spiders", "a kangaroo", "a panda", "a member of ISIS", "a velociraptor", "a nerf gun"});
+        put("current events", new String[] {"people dying in iraq", "the dress", "Gazamo Games releasing in March (sponsor)", "the king of Saudi Arabia dying", "the war against ISIS", "Putin getting bad coffee for breakfast"})
     }};
 
     @Command(name = "whatwouldhappen")
     public static void whatWouldHappen(ChatMessage chat, String message) {
-        String option = OPTIONS[ThreadLocalRandom.current().nextInt(OPTIONS.length)];
+        String option = OPTIONS[new Random().nextInt(OPTIONS.length)];
 
         for (Map.Entry<String, String[]> s : DATA.entrySet()) {
             while (option.contains("[" + s.getKey() + "]")) {
