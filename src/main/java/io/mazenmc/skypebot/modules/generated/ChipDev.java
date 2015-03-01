@@ -48,7 +48,7 @@ public class ChipDev implements Module {
 
     @Command(name = "chipdev")
     public static void cmdChipDev(ChatMessage chat) throws SkypeException {
-        String sentence = sentences[ThreadLocalRandom.current().nextInt(Arrays.asList(sentences).size())];
+        String sentence = SENTANCES[ThreadLocalRandom.current().nextInt(Arrays.asList(sentences).size())];
 
         Resource.sendMessage(chat, sentence);
     }
