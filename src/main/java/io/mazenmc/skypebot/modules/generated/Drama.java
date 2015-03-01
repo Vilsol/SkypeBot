@@ -10,6 +10,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class Drama implements Module {
 
@@ -146,12 +147,11 @@ public class Drama implements Module {
 
     @Command(name = "drama", cooldown = 15)
     public static void cmdDrama(ChatMessage chat) throws SkypeException {
-        String sentence = sentences[new Random().nextInt(Arrays.asList(sentences).size())];
+        String sentence = sentences[ThreadLocalRandom.current().nextInt(Arrays.asList(sentences).size())];
 
-        Random r = new Random();
         for (Map.Entry<String, String[]> s : data.entrySet()) {
             while (sentence.contains("[" + s.getKey() + "]")) {
-                sentence = sentence.replaceFirst("\\[" + s.getKey() + "\\]", s.getValue()[r.nextInt(Arrays.asList(s.getValue()).size())]);
+                sentence = sentence.replaceFirst("\\[" + s.getKey() + "\\]", s.getValue()[ThreadLocalRandom.current().nextInt(Arrays.asList(s.getValue()).size())]);
             }
         }
 
