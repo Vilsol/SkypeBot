@@ -7,6 +7,7 @@ import io.mazenmc.skypebot.utils.Resource;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 import com.skype.ChatMessage;
 
