@@ -30,7 +30,7 @@ public class Wikipedia implements Module{
         String articleSlug = null;
 
         if (idMatcher.find()) {
-            articleSlug = idMatcher.group(2);
+            articleSlug = idMatcher.group(1);
         }
 
         if (articleSlug == null) {
