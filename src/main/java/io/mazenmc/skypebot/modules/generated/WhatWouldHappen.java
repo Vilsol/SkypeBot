@@ -32,7 +32,7 @@ public class WhatWouldHappen implements Module {
     @Command(name = "whatwouldhappen")
     public static void whatWouldHappen(ChatMessage chat, String message) {
         String option = OPTIONS[ThreadLocalRandom.current().nextInt(OPTIONS.length)];
-        Resource.sendMessage(chat, "If " + message + " happened, " + option);
+        Resource.sendMessage(chat, message + ", " + option);
     }
 
 }
