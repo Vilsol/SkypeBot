@@ -6,6 +6,7 @@ import io.mazenmc.skypebot.engine.bot.Command;
 import io.mazenmc.skypebot.utils.Resource;
 
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class Swear {
 
@@ -16,7 +17,7 @@ public class Swear {
 
     @Command(name = "swear")
     public static void cmdSwear(ChatMessage chat) throws SkypeException {
-        SwearType[] combination = combinations[new Random().nextInt(combinations.length)];
+        SwearType[] combination = combinations[ThreadLocalRandom.current().nextInt(combinations.length)];
         String output = "";
         for (SwearType s : combination) {
             if (!output.equals("")) {
@@ -70,7 +71,7 @@ public class Swear {
         }
 
         public String getRandomWord() {
-            return data[new Random().nextInt(data.length)];
+            return data[ThreadLocalRandom.current().nextInt(data.length)];
         }
 
     }

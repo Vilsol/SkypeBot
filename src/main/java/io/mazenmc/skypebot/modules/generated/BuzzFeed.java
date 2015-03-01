@@ -7,6 +7,7 @@ import io.mazenmc.skypebot.engine.bot.Module;
 import io.mazenmc.skypebot.utils.Resource;
 
 import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class BuzzFeed implements Module {
     private static HashMap<String, List<String>> data = new HashMap<String, List<String>>() {{
@@ -31,12 +32,11 @@ public class BuzzFeed implements Module {
 
     @Command(name = "buzzfeed", cooldown = 15)
     public static void cmdBuzzFeed(ChatMessage chat) throws SkypeException {
-        String sentence = sentences.get(new Random().nextInt(sentences.size()));
+        String sentence = sentences.get(ThreadLocalRandom.current().nextInt(sentences.size()));
 
-        Random r = new Random();
         for (Map.Entry<String, List<String>> s : data.entrySet()) {
             while (sentence.contains("[" + s.getKey() + "]")) {
-                sentence = sentence.replaceFirst("\\[" + s.getKey() + "\\]", s.getValue().get(r.nextInt(s.getValue().size())));
+                sentence = sentence.replaceFirst("\\[" + s.getKey() + "\\]", s.getValue().get(ThreadLocalRandom.current().nextInt(s.getValue().size())));
             }
         }
 
