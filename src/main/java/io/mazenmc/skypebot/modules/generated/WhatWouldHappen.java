@@ -5,6 +5,8 @@ import io.mazenmc.skypebot.engine.bot.Command;
 import io.mazenmc.skypebot.engine.bot.Module;
 import io.mazenmc.skypebot.utils.Resource;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class WhatWouldHappen implements Module {
@@ -36,12 +38,28 @@ public class WhatWouldHappen implements Module {
             "Gentoo takes over the world",
             "Stephen Hawking would be exposed for never having ALS",
             "Garrison would kill himself",
-            "Garrison would make a joke about people dying in Iraq"
+            "Garrison would make a joke about people dying in Iraq",
+            "Bill Gates would come out gay",
+            "Steve Wozniak would release to the world that Steve Jobs is still alive",
+            "The Nokia 3310 would break",
+            "North Korea would Nuke [countries]",
+            "[countries] would start a war against [countries]"
     };
+
+    private static final HashMap<String, String[]> DATA = new HashMap<String, String[]>() {{
+        put("countries", new String[]{"Argentina", "Brazil", "Russia", "USA", "Canada", "China", "North Korea", "France"});
+    }};
 
     @Command(name = "whatwouldhappen")
     public static void whatWouldHappen(ChatMessage chat, String message) {
         String option = OPTIONS[ThreadLocalRandom.current().nextInt(OPTIONS.length)];
+
+        for (Map.Entry<String, String[]> s : DATA.entrySet()) {
+            while (option.contains("[" + s.getKey() + "]")) {
+                option = option.replaceFirst("\\[" + s.getKey() + "\\]", s.getValue()[ThreadLocalRandom.current().nextInt(s.getValue().length)]);
+            }
+        }
+
         Resource.sendMessage(chat, message + ", " + option);
     }
 
