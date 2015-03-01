@@ -23,7 +23,7 @@ public class Wikipedia implements Module{
     String api = "";
 
     @Command(name = "en.wikipedia.org/wiki/", command = false, exact = false)
-    public static void cmdTwitter(ChatMessage chat) throws IOException, JSONException, SkypeException{
+    public static void cmdWikipedia(ChatMessage chat) throws IOException, JSONException, SkypeException{
         String wholeMessage = chat.getContent();
         Matcher idMatcher = Resource.WIKIPEDIA_REGEX.matcher(wholeMessage);
 
