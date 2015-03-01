@@ -39,10 +39,8 @@ public class WhatWouldHappen implements Module {
             "Ubuntu would become the most used operating system",
             "Gentoo takes over the world",
             "Stephen Hawking would be exposed for never having ALS",
-            "Garrison would kill himself",
-            "Garrison would make a joke about [current events]",
-            "Bill Gates would come out gay",
-            "Steve Wozniak would release to the world that Steve Jobs is still alive",
+            "[celebrities] would come out as gay",
+            "[celebrities] would release to the world that Steve Jobs is still alive",
             "the Nokia 3310 would break",
             "North Korea would nuke [countries]",
             "[countries] would start a war against [countries]",
@@ -56,18 +54,22 @@ public class WhatWouldHappen implements Module {
             "[countries] would nuke [countries]",
             "ADDITIONAL PYLONS WOULD BE CONSTRUCTED",
             "mazen.bot would die",
+            "Fox News is scared that [current events] will destroy our children",
             "[members] would kill [members] with [objects]",
             "[members] would ejactulate [objects]",
             "[members] would make a joke about [current events]",
             "[members] would stop using reddit",
-            "[members] and [members] would have sexy time"
+            "[members] and [members] would have sexy time",
+            "[members] would commit suicide"
     };
 
     private static final HashMap<String, String[]> DATA = new HashMap<String, String[]>() {{
         put("countries", new String[]{"Argentina", "Brazil", "Russia", "USA", "Canada", "China", "North Korea", "France", "Australia"});
         put("members", new String[]{"Mazen", "Luke", "rowtn", "Troll", "Garrison", "Erik", "Filip", "Jade", "mattrick", "Vilsol", "Mark"});
         put("objects", new String[]{"a dildo", "a knife", "a Mac", "an iPhone", "an anvil", "spiders", "a kangaroo", "a panda", "a member of ISIS", "a velociraptor", "a nerf gun"});
-        put("current events", new String[] {"people dying in iraq", "the dress", "Gazamo Games releasing in March (sponsor)", "the king of Saudi Arabia dying", "the war against ISIS", "Putin getting bad coffee for breakfast"});
+        put("current events", new String[] {"people dying in iraq", "the dress", "Gazamo Games releasing in March (sponsor)", "the king of Saudi Arabia dying", "the war against ISIS", "Putin getting bad coffee for breakfast", "the war on drugs", "the US military buying more tanks", "drones"});
+        put("celebrities", new String[]{"Bill Gates", "The Sheikh", "Obama", "Putin", "Osama Bin Laden", "Bush", "Jesus", "Steve Wozniak"});
+        put("deceased", new String[]{"Steve Jobs", "Elvis", "L. Ron Hubbard"});
     }};
 
     @Command(name = "whatwouldhappen")
