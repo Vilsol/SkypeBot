@@ -11,7 +11,7 @@ import java.util.Random;
 
 public class ChipDev implements Module {
 
-    private static String[] sentences = new String[]{
+    private static final String[] SENTANCES = new String[] {
             "I select everything from the database and sort it when its in an array.",
             "EvilSeph is my hero.",
             "I only need one class for my plugin",
@@ -43,13 +43,12 @@ public class ChipDev implements Module {
             "I suck, (Lollypops!)",
             "i Don wanna endanger my 5k comp.",
             "Shut up is a good thing! Its the opposite of Shut down, which is turn off != turn on..... You are telling someone to turn on (keep talking!)"
-
             //End actual ChipDev quotes
     };
 
     @Command(name = "chipdev")
     public static void cmdChipDev(ChatMessage chat) throws SkypeException {
-        String sentence = sentences[new Random().nextInt(Arrays.asList(sentences).size())];
+        String sentence = sentences[ThreadLocalRandom.current().nextInt(Arrays.asList(sentences).size())];
 
         Resource.sendMessage(chat, sentence);
     }
