@@ -1,5 +1,27 @@
 package io.mazenmc.skypebot.modules;
 
+import io.mazenmc.skypebot.SkypeBot;
+import io.mazenmc.skypebot.engine.bot.Command;
+import io.mazenmc.skypebot.engine.bot.CommandData;
+import io.mazenmc.skypebot.engine.bot.Module;
+import io.mazenmc.skypebot.engine.bot.ModuleManager;
+import io.mazenmc.skypebot.engine.bot.Optional;
+import io.mazenmc.skypebot.utils.Resource;
+import io.mazenmc.skypebot.utils.Utils;
+
+import java.io.IOException;
+import java.net.URLEncoder;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Map;
+import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
+
+import org.apache.commons.lang.exception.ExceptionUtils;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import com.google.api.client.http.HttpRequestInitializer;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.JsonFactory;
@@ -16,22 +38,6 @@ import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import com.skype.ChatMessage;
 import com.skype.SkypeException;
-import io.mazenmc.skypebot.SkypeBot;
-import io.mazenmc.skypebot.engine.bot.*;
-import io.mazenmc.skypebot.utils.Resource;
-import io.mazenmc.skypebot.utils.Utils;
-import org.apache.commons.lang.exception.ExceptionUtils;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.net.URLEncoder;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.Map;
-import java.util.Random;
-import java.util.concurrent.ThreadLocalRandom;
 
 public class General implements Module {
 
@@ -42,7 +48,7 @@ public class General implements Module {
 
     @Command(name = "8ball")
     public static void cmd8Ball(ChatMessage chat, @Optional
-    String question) {
+            String question) {
         String[] options = new String[]{"It is certain", "It is decidedly so", "Without a doubt", "Yes definitely", "You may rely on it", "As I see it, yes", "Most likely", "Outlook good", "Yes", "Signs point to yes", "Reply hazy try again", "Ask again later", "Better not tell you now", "Cannot predict now", "Concentrate and ask again", "Don't count on it", "My reply is no", "My sources say no", "Outlook not so good", "Very doubtful"};
         int chosen = new Random().nextInt(options.length);
         Resource.sendMessage(chat, options[chosen]);
@@ -144,7 +150,7 @@ public class General implements Module {
 
     @Command(name = "ping")
     public static void cmdPing(ChatMessage chat, @Optional
-    final String ip) throws JSONException, SkypeException {
+            final String ip) throws JSONException, SkypeException {
         if (ip == null) {
             Resource.sendMessage(chat, "Pong");
         } else {
@@ -196,8 +202,8 @@ public class General implements Module {
 
     @Command(name = "rant")
     public static void cmdRant(ChatMessage chat,
-                               @Optional
-                               final String question) throws SkypeException {
+            @Optional
+            final String question) throws SkypeException {
         if (ranting) {
             rantThread.stop();
             ranting = false;
@@ -377,9 +383,9 @@ public class General implements Module {
                 "Beautiful code is short and concise.",
                 "Sometimes when I go to sleep I'm stuck with that annoying bug I cannot fix, and in my dreams I see myself programming. " +
                         "When I wake up I have the solution!",
-                "One of the main reasons I started developing apps was to help people what they want to do like decorate a christmas tree.",
-                "I really like to crochet.",
-                "I made a good website http://slgonzalez.com/"};
+                        "One of the main reasons I started developing apps was to help people what they want to do like decorate a christmas tree.",
+                        "I really like to crochet.",
+        "I made a good website http://slgonzalez.com/"};
         int chosen = new Random().nextInt(options.length);
         Resource.sendMessage(chat, options[chosen]);
     }
@@ -441,5 +447,10 @@ public class General implements Module {
     @Command(name = "has changed the conversation picture.", command = false)
     public static void cmdConvoPictureChange(ChatMessage chatMessage) throws SkypeException {
         Resource.sendMessage("/me would love to remove " + chatMessage.getSenderId() + "'s ass right now");
+    }
+
+    @Command(name = "lenny")
+    public static void cmdLenny(ChatMessage chat) throws SkypeException {
+        Resource.sendMessage(chat, "( ͡° ͜ʖ ͡°)");
     }
 }
