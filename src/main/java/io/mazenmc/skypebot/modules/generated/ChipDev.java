@@ -8,6 +8,7 @@ import io.mazenmc.skypebot.utils.Resource;
 
 import java.util.Arrays;
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class ChipDev implements Module {
 
