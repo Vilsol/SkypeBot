@@ -98,6 +98,8 @@ public class WhatWouldHappen implements Module {
                 option = option.replaceFirst("\\[" + s.getKey() + "\\]", s.getValue()[ThreadLocalRandom.current().nextInt(s.getValue().length)]);
             }
         }
+        
+        message = message.replaceAll("I", chat.getSenderDisplayName().replaceAll("[^A-Za-z0-9 ><.»«]", "")).replaceAll("my", chat.getSenderDisplayName().replaceAll("[^A-Za-z0-9 ><.»«]", "") + "'s");
 
         Resource.sendMessage(chat, message + ", " + option);
     }
