@@ -62,7 +62,8 @@ public class WhatWouldHappen implements Module {
             "[members] and [members] would have sexy time",
             "[members] would commit suicide",
             "wo-oh wait",
-            "[members] gets a girlfriend"
+            "[members] gets a girlfriend",
+            "all hell will break loose"
     };
 
     private static final HashMap<String, String[]> DATA = new HashMap<String, String[]>() {{
