@@ -24,7 +24,7 @@ public class Resource {
     public static final Pattern SPOTIFY_HTTP_REGEX = Pattern.compile("open\\.spotify\\.com/track/([A-z0-9]){22}");
     public static final Pattern SPOTIFY_URI_REGEX = Pattern.compile("spotify:track:([A-z0-9]){22}");
     public static final Pattern TWITTER_REGEX = Pattern.compile("twitter\\.com\\/([A-z0-9]+)\\/status\\/([0-9]{18})");
-    public static final Pattern WIKIPEDIA_REGEX = Pattern.compile("en\\.wikipedia\\.org\\/wiki\\/(.+)");
+    public static final Pattern WIKIPEDIA_REGEX = Pattern.compile("en\\.wikipedia\\.(?:org|com)\\/wiki\\/(.+)");
 
     private static Map<String, Callback<String>> callbacks = new HashMap<>();
 
