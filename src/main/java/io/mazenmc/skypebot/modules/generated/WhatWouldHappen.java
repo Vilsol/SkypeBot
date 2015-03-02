@@ -99,7 +99,9 @@ public class WhatWouldHappen implements Module {
             }
         }
         
-        message = message.replaceAll("I", chat.getSenderDisplayName().replaceAll("[^A-Za-z0-9 ><.»«]", "")).replaceAll("my", chat.getSenderDisplayName().replaceAll("[^A-Za-z0-9 ><.»«]", "") + "'s");
+        String displayName = chat.getSenderDisplayName().replaceAll("[^A-Za-z0-9 ><.»«]", "");
+        
+        message = message.replaceAll("I/i", displayName).replaceAll("my/i", displayName);
 
         Resource.sendMessage(chat, message + ", " + option);
     }
