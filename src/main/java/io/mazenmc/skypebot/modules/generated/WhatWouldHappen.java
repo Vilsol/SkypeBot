@@ -45,7 +45,7 @@ public class WhatWouldHappen implements Module {
             "North Korea would nuke [countries]",
             "[countries] would start a war against [countries]",
             "Jade would stop caring about being pinged",
-            "Mazen would lose his virginity",
+            "[members] would lose his virginity",
             "Mazen would stop making apps to decorate Christmas trees",
             "md_5 would sell Spigot to Mojang without telling anyone",
             "md_5 would go to work for Mojang",
@@ -61,7 +61,8 @@ public class WhatWouldHappen implements Module {
             "[members] would stop using reddit",
             "[members] and [members] would have sexy time",
             "[members] would commit suicide",
-            "wo-oh wait"
+            "wo-oh wait",
+            "[members] gets a girlfriend"
     };
 
     private static final HashMap<String, String[]> DATA = new HashMap<String, String[]>() {{
