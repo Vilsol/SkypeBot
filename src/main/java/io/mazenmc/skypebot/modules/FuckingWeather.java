@@ -34,7 +34,7 @@ public class FuckingWeather implements Module {
         String call = (url + location).replace(' ', '+');
         JSONObject json = new JSONObject(sendGet(call));
 
-        if (json.getInt("cod") != 200 || json == null) {
+        if (json.getInt("cod") != 200) {
             return "I CAN'T GET THE FUCKING WEATHER!";
         }
 
@@ -65,14 +65,14 @@ public class FuckingWeather implements Module {
         BufferedReader in = new BufferedReader(
                 new InputStreamReader(con.getInputStream()));
         String inputLine;
-        StringBuffer response = new StringBuffer();
+        StringBuilder response = new StringBuilder();
 
         while ((inputLine = in.readLine()) != null) {
             response.append(inputLine);
         }
         in.close();
 
-        return response.toString();
+        return response.toString().trim();
     }
 
 }

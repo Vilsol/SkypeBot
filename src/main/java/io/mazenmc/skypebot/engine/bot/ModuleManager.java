@@ -225,7 +225,7 @@ public class ModuleManager {
             }
 
             if (c.command()) {
-                if (!originalCommand.startsWith("@")) {
+                if (!originalCommand.startsWith(Resource.COMMAND_PREFIX)) {
                     return;
                 }
 

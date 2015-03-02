@@ -390,7 +390,7 @@ public class General implements Module {
         Resource.sendMessage(chat, options[chosen]);
     }
 
-    @Command(name = "relevantxkcd")
+    @Command(name = "relevantxkcd", alias = {"xkcd"})
     public static void cmdrelevantxkcd(ChatMessage chat, @Optional String name) {
         if (name == null) {
             try {
@@ -434,7 +434,7 @@ public class General implements Module {
         }
     }
 
-    @Command(name = "roflcopter")
+    @Command(name = "roflcopter", alias = {"rofl"})
     public static void cmdRofl(ChatMessage chat) throws SkypeException {
         Resource.sendMessage(chat, "ROFL all day long! http://goo.gl/pCIqXv");
     }
