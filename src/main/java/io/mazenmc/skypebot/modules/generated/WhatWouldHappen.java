@@ -14,9 +14,9 @@ import com.skype.ChatMessage;
 public class WhatWouldHappen implements Module {
 
     private static final String[] OPTIONS = new String[] {
-            "World Domination would occur",
+            "world domination would occur",
             "an amazing and beautiful thing would happen",
-            "Mazen would die",
+            "[members] would die",
             "ChipDev would become president",
             "codename_B would quit Hypixel",
             "Gazamo would take over the world",
@@ -31,13 +31,13 @@ public class WhatWouldHappen implements Module {
             "Yahoo would release something nice",
             "Apple's HQ would explode",
             "Minecraft would go open-source",
-            "Mazen would become internet famous",
+            "[members] would become internet famous",
             "TridentSDK would go ~~enterprise~~",
-            "Mazen's Skype Chat would become the illuminati",
+            "Mazen's Skype Chat would become [bad groups]",
             "Mazen's Skype Chat would become a daily podcast",
             "ChipDev would be more popular than PewDiePie",
             "Ubuntu would become the most used operating system",
-            "Gentoo takes over the world",
+            "[members] takes over the world",
             "Stephen Hawking would be exposed for never having ALS",
             "[celebrities] would come out as gay",
             "[celebrities] would release to the world that Steve Jobs is still alive",
@@ -45,7 +45,7 @@ public class WhatWouldHappen implements Module {
             "North Korea would nuke [countries]",
             "[countries] would start a war against [countries]",
             "Jade would stop caring about being pinged",
-            "[members] would lose his virginity",
+            "Mazen would lose his virginity",
             "Mazen would stop making apps to decorate Christmas trees",
             "md_5 would sell Spigot to Mojang without telling anyone",
             "md_5 would go to work for Mojang",
@@ -54,7 +54,7 @@ public class WhatWouldHappen implements Module {
             "[countries] would nuke [countries]",
             "ADDITIONAL PYLONS WOULD BE CONSTRUCTED",
             "mazen.bot would die",
-            "Fox News is scared that [current events] will destroy our children",
+            "Fox News is scared that [current events] will destroy [things we care about]",
             "[members] would kill [members] with [objects]",
             "[members] would ejactulate [objects]",
             "[members] would make a joke about [current events]",
@@ -63,16 +63,30 @@ public class WhatWouldHappen implements Module {
             "[members] would commit suicide",
             "wo-oh wait",
             "[members] gets a girlfriend",
-            "all hell will break loose"
+            "all hell will break loose",
+            "[members] would join [bad groups]",
+            "[bad groups] would kill everyone in Mazen's Skype Chat",
+            "[members] would come out of the closet",
+            "[staff] would remove [members]",
+            "[members] would DDoS [members]",
+            "[members] would become the most hated person alive",
+            "[members] and [members] would move in together",
+            "[members], [members], and [members] would have a 3 way",
+            "[members] would shit themselves",
+            "[members] would get a sex change"
     };
 
     private static final HashMap<String, String[]> DATA = new HashMap<String, String[]>() {{
         put("countries", new String[]{"Argentina", "Brazil", "Russia", "USA", "Canada", "China", "North Korea", "France", "Australia"});
         put("members", new String[]{"Mazen", "Luke", "rowtn", "Troll", "Garrison", "Erik", "Filip", "Jade", "mattrick", "Vilsol", "Mark"});
-        put("objects", new String[]{"a dildo", "a knife", "a Mac", "an iPhone", "an anvil", "spiders", "a kangaroo", "a panda", "a member of ISIS", "a velociraptor", "a nerf gun"});
+        put("staff", new String[]{"Mazen", "Jodie", "Drew"});
+        put("objects", new String[]{"a dildo", "a knife", "a Mac", "an iPhone", "an anvil", "spiders", "a kangaroo", "a panda", "a member of ISIS", "a velociraptor", "a nerf gun", "goats", "gay people", "a big black dick", "flying sex snakes", "ChipDev", "a banana", "a hot dog", "a dog", "Mazen's mom"});
         put("current events", new String[] {"people dying in iraq", "the dress", "Gazamo Games releasing in March (sponsor)", "the king of Saudi Arabia dying", "the war against ISIS", "Putin getting bad coffee for breakfast", "the war on drugs", "the US military buying more tanks", "drones"});
-        put("celebrities", new String[]{"Bill Gates", "The Sheikh", "Obama", "Putin", "Osama Bin Laden", "Bush", "Jesus", "Steve Wozniak"});
-        put("deceased", new String[]{"Steve Jobs", "Elvis", "L. Ron Hubbard"});
+        put("celebrities", new String[]{"Bill Gates", "The Sheikh", "Obama", "Putin", "Osama Bin Laden", "Bush", "Jesus", "Steve Wozniak", "Randall Munroe", "Tony Abbott, Lord and Saviour"});
+        put("deceased", new String[]{"Steve Jobs", "Elvis", "L. Ron Hubbard", "Billy Mays"});
+        put("bad groups", new String[]{"the Illumanati", "the KKK", "The New World Order", "the NSA", "ISIS", "Al Qaeda", "FEMA", "Lizard Squad", "Scientology", "the CIA", "Comcast", "Time Warner Cable", "Verizon", "SwiftlyCraft Server"});
+        put("things we care about", new String[]{"our children", "the internet", "our homes", "our privacy", "our safety", "our food supply", "our equality", "our maple syrup", "Net Neutrality", "our water supply", "our freedom", "our military", "our navy", "our soldiers"});
+        put("deceased", new String[]{"Steve Jobs", "Elvis", "L. Ron Hubbard", "Billy Mays"});
     }};
 
     @Command(name = "whatwouldhappen")
