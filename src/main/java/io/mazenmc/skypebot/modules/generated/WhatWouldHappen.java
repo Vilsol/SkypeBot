@@ -101,7 +101,7 @@ public class WhatWouldHappen implements Module {
         
         String displayName = chat.getSenderDisplayName().replaceAll("[^A-Za-z0-9 ><.»«]", "");
         
-        message = message.replaceAll("I/i", displayName).replaceAll("my/i", displayName);
+        message = message.replaceAll("\\sI\\s/i", displayName).replaceAll("\\smy\\s/i", displayName);
 
         Resource.sendMessage(chat, message + ", " + option);
     }
