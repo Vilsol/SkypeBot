@@ -73,20 +73,39 @@ public class WhatWouldHappen implements Module {
             "[members] and [members] would move in together",
             "[members], [members], and [members] would have a 3 way",
             "[members] would shit themselves",
-            "[members] would get a sex change"
+            "[members] would get a sex change",
+            "[members] would get his [body parts] cut off",
+            "[members] would cut off [members]'s [body parts]",
+            "[members] would rub [members]'s [body parts]",
+            "[members] would get [deceased]'s [body parts] in the mail",
+            "[members] would get their [body parts] removed by [bad groups]",
+            "[members] would be drafted into the [countries]/[countries] war",
+            "[members] would be forced to fight the zombie apocalypse with [objects]",
+            "[members] would desecrate [deceased]'s grave",
+            "[members] would shit fury all over [members] ass",
+            "[members] would become an internet meme",
+            "[members] would become [members]'s slave for the day",
+            "[members], [members], and [members] would start an anti feminist cult",
+            "[members] would rape [members] with their [body parts]",
+            "[celeberties] would be arrested for slapping [celeberties] with [objects]",
+            "@swear would be readded",
+            "Luke's cooldowns would be removed",
+            "[bad groups] would target [things we care about]",
+            "@whatwouldhappen would be removed"
     };
 
     private static final HashMap<String, String[]> DATA = new HashMap<String, String[]>() {{
         put("countries", new String[]{"Argentina", "Brazil", "Russia", "USA", "Canada", "China", "North Korea", "France", "Australia"});
         put("members", new String[]{"Mazen", "Luke", "rowtn", "Troll", "Garrison", "Erik", "Filip", "Jade", "mattrick", "Vilsol", "Mark"});
         put("staff", new String[]{"Mazen", "Jodie", "Drew"});
-        put("objects", new String[]{"a dildo", "a knife", "a Mac", "an iPhone", "an anvil", "spiders", "a kangaroo", "a panda", "a member of ISIS", "a velociraptor", "a nerf gun", "goats", "gay people", "a big black dick", "flying sex snakes", "ChipDev", "a banana", "a hot dog", "a dog", "Mazen's mom"});
-        put("current events", new String[] {"people dying in iraq", "the dress", "Gazamo Games releasing in March (sponsor)", "the king of Saudi Arabia dying", "the war against ISIS", "Putin getting bad coffee for breakfast", "the war on drugs", "the US military buying more tanks", "drones"});
+        put("objects", new String[]{"a dildo", "a knife", "a Mac", "an iPhone", "an anvil", "spiders", "a kangaroo", "a panda", "a member of ISIS", "a velociraptor", "a nerf gun", "goats", "gay people", "a big black dick", "flying sex snakes", "ChipDev", "a banana", "a hot dog", "a dog", "Mazen's mom", "washing machine"});
+        put("current events", new String[] {"people dying in Iraq", "the dress", "Gazamo Games releasing in March (sponsor)", "the king of Saudi Arabia dying", "the war against ISIS", "Putin getting bad coffee for breakfast", "the war on drugs", "the US military buying more tanks", "drones", "llamas"});
         put("celebrities", new String[]{"Bill Gates", "The Sheikh", "Obama", "Putin", "Osama Bin Laden", "Bush", "Jesus", "Steve Wozniak", "Randall Munroe", "Tony Abbott, Lord and Saviour"});
         put("deceased", new String[]{"Steve Jobs", "Elvis", "L. Ron Hubbard", "Billy Mays"});
         put("bad groups", new String[]{"the Illumanati", "the KKK", "The New World Order", "the NSA", "ISIS", "Al Qaeda", "FEMA", "Lizard Squad", "Scientology", "the CIA", "Comcast", "Time Warner Cable", "Verizon", "SwiftlyCraft Server"});
         put("things we care about", new String[]{"our children", "the internet", "our homes", "our privacy", "our safety", "our food supply", "our equality", "our maple syrup", "Net Neutrality", "our water supply", "our freedom", "our military", "our navy", "our soldiers"});
         put("deceased", new String[]{"Steve Jobs", "Elvis", "L. Ron Hubbard", "Billy Mays"});
+        put("body parts", new String[]{"head", "balls", "dick", "arm", "left nut", "right nut", "arm", "ear", "foot", "ass", "scalp"});
     }};
 
     @Command(name = "whatwouldhappen")
