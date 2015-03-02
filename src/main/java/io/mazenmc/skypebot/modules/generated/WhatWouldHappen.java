@@ -62,8 +62,8 @@ public class WhatWouldHappen implements Module {
             "[members] and [members] would have sexy time",
             "[members] would commit suicide",
             "wo-oh wait",
-            "[members] gets a girlfriend",
-            "all hell will break loose",
+            "[members] would get a girlfriend",
+            "all hell would break loose",
             "[members] would join [bad groups]",
             "[bad groups] would kill everyone in Mazen's Skype Chat",
             "[members] would come out of the closet",
@@ -98,6 +98,10 @@ public class WhatWouldHappen implements Module {
                 option = option.replaceFirst("\\[" + s.getKey() + "\\]", s.getValue()[ThreadLocalRandom.current().nextInt(s.getValue().length)]);
             }
         }
+        
+        String displayName = chat.getSenderDisplayName().replaceAll("[^A-Za-z0-9 ><.»«]", "");
+        
+        message = message.replaceAll("\\sI\\s/i", displayName).replaceAll("\\s(my|me)\\s/i", displayName + "'s");
 
         Resource.sendMessage(chat, message + ", " + option);
     }
