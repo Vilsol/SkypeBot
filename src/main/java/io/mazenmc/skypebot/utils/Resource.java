@@ -1,13 +1,12 @@
 package io.mazenmc.skypebot.utils;
 
+import com.skype.ChatMessage;
+import com.skype.SkypeException;
 import io.mazenmc.skypebot.SkypeBot;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
-
-import com.skype.ChatMessage;
-import com.skype.SkypeException;
 
 public class Resource {
 
@@ -20,7 +19,7 @@ public class Resource {
     public static final String REGEX_DOUBLE = "(-?[0-9]+\\.[0-9]+)";
     public static final String REGEX_INT = "(-?[0-9]+)";
     public static final String REGEX_WORD = "(\\b+)";
-    public static final String VERSION = "1.5.8";
+    public static final String VERSION = "1.6";
     public static final Pattern SPOTIFY_HTTP_REGEX = Pattern.compile("open\\.spotify\\.com/track/([A-z0-9]){22}");
     public static final Pattern SPOTIFY_URI_REGEX = Pattern.compile("spotify:track:([A-z0-9]){22}");
     public static final Pattern TWITTER_REGEX = Pattern.compile("twitter\\.com\\/([A-z0-9]+)\\/status\\/([0-9]{18})");
