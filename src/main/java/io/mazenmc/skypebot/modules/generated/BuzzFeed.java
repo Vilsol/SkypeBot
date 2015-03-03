@@ -9,6 +9,7 @@ import io.mazenmc.skypebot.utils.Resource;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
+// TODO: MOAR
 public class BuzzFeed implements Module {
     private static HashMap<String, List<String>> data = new HashMap<String, List<String>>() {{
         put("emotion1", Arrays.asList("amazed", "shocked", "excited", "saddened", "happy", "bored"));
