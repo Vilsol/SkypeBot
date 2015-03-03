@@ -5,7 +5,7 @@ import com.skype.SkypeException;
 import io.mazenmc.skypebot.engine.bot.Command;
 import io.mazenmc.skypebot.utils.Resource;
 
-import java.util.concurrent.ThreadLocalRandom;
+import java.util.Random;
 
 // @author Luke Anderson | stuntguy3000
 // TODO: MOAR
@@ -20,9 +20,10 @@ public class Forumla {
 
     @Command(name = "formula", cooldown = 15)
     public static void cmdForumla(ChatMessage chat) throws SkypeException {
-        String thing1 = sentences[ThreadLocalRandom.current().nextInt(sentences.length)];
-        String thing2 = sentences[ThreadLocalRandom.current().nextInt(sentences.length)];
-        String thing3 = sentences[ThreadLocalRandom.current().nextInt(sentences.length)];
+        Random random = new Random();
+        String thing1 = sentences[random.nextInt(sentences.length)];
+        String thing2 = sentences[random.nextInt(sentences.length)];
+        String thing3 = sentences[random.nextInt(sentences.length)];
         Resource.sendMessage(chat, thing1 + " + " + thing2 + " = " + thing3);
     }
 }
