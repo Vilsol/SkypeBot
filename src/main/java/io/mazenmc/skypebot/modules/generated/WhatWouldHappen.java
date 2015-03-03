@@ -5,7 +5,9 @@ import io.mazenmc.skypebot.engine.bot.Command;
 import io.mazenmc.skypebot.engine.bot.Module;
 import io.mazenmc.skypebot.utils.Resource;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class WhatWouldHappen implements Module {
@@ -126,7 +128,7 @@ public class WhatWouldHappen implements Module {
         put("news", new String[]{"Fox News", "CNN", "The Daily Mail", "The New York Times"});
         put("jobs", new String[]{"CEO", "CFO", "Vice President of Networking", "janitor", "intern", "spokesperson"});
         put("operating systems", new String[]{"Ubuntu", "Fedora", "Debian", "Gentoo", "CentOS", "Red Star OS", "Mac OS X", "MS Dos", "Vista"});
-        put("religions", new String[]{"Christianity", "Mormonism", "Islam", "Judaism"});
+        put("religions", new String[]{"Christianity", "Mormonism", "Moronism", "Islam", "Judaism"});
     }};
 
     @Command(name = "whatwouldhappen")
