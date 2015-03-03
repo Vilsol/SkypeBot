@@ -127,8 +127,8 @@ public class WhatWouldHappen implements Module {
         put("projects", new String[]{"TridentSDK", "Sponge", "Bukkit", "Spigot", "Glowstone", "Rainbow", "Granite"});
         put("news", new String[]{"Fox News", "CNN", "The Daily Mail", "The New York Times"});
         put("jobs", new String[]{"CEO", "CFO", "Vice President of Networking", "janitor", "intern", "spokesperson"});
-        put("operating systems", new String[]{"Ubuntu", "Fedora", "Debian", "Gentoo", "CentOS", "Red Star OS", "Mac OS X", "MS Dos", "Vista"});
-        put("religions", new String[]{"Christianity", "Mormonism", "Moronism", "Islam", "Judaism"});
+        put("operating systems", new String[]{"Ubuntu", "Fedora", "Debian", "Gentoo", "CentOS", "Red Star OS", "Mac OS X", "MS Dos", "Vista", "Arch Linux"});
+        put("religions", new String[]{"Christianity", "Mormonism", "Moronism", "Islam", "Judaism", "Last Thursdayism", "Pastafarism"});
     }};
 
     @Command(name = "whatwouldhappen")
