@@ -3,13 +3,14 @@ package io.mazenmc.skypebot.modules.generated;
 import com.skype.ChatMessage;
 import com.skype.SkypeException;
 import io.mazenmc.skypebot.engine.bot.Command;
+import io.mazenmc.skypebot.engine.bot.Module;
 import io.mazenmc.skypebot.utils.Resource;
 
 import java.util.Random;
 
 // @author Luke Anderson | stuntguy3000
 // TODO: MOAR
-public class Forumla {
+public class Forumla implements Module {
     private static String[] sentences = new String[]{
             "ChipDev", "Microsoft", "PornHub", "Your Mother", "Steam", "Java8", "Bukkit", "Facebook", "Twitter", "Instagram", "Sex", "Drugs", "Boobs", "Dicks",
             "Ponies", "Dogs", "Cats", "Mice", "Horses", "Rabbits", "Minecraft", "GTA", "Snapchat", "Tiny Tower", "Tony Abbott", "Kevin Rudd", "Luke", "Mazen",
