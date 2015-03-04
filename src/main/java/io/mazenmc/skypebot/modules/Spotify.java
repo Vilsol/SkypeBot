@@ -48,6 +48,7 @@ public class Spotify implements Module {
         }
 
         // If it works but it is stupid, it is still stupid.
+        assert response != null;
         Matcher songMetadataMatcher = Pattern.compile("<name>(.*?)</name>").matcher(response);
 
         while (songMetadataMatcher.find()) {
