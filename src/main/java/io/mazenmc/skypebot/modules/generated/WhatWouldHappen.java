@@ -13,36 +13,22 @@ import java.util.concurrent.ThreadLocalRandom;
 public class WhatWouldHappen implements Module {
 
     private static final String[] OPTIONS = new String[] {
-            "an amazing and beautiful thing would happen",
-            "ChipDev would become president of [countries]",
             "codename_B would quit Hypixel and go to work for [companies]",
-            "md_5 would stop reflecting his own classes",
-            "ChipDev would remove Dev from his name",
-            "Luke would stop posting flickr photos",
-            "Vilsol's internet would resurrect",
-            "ChipDev would create a useful resource",
-            "Yahoo would release something nice",
             "Minecraft would go open-source",
             "[members] would become internet famous",
             "Mazen's Skype Chat would become [bad groups]",
             "Mazen's Skype Chat would become a daily podcast",
-            "ChipDev would become more popular than [youtubers]",
             "[operating systems] would become the most used operating system",
-            "[members] takes over the world",
-            "Stephen Hawking would be exposed for never having ALS",
             "[celebrities] would come out as gay",
             "[celebrities] would release to the world that [deceased] is still alive",
             "North Korea would nuke [countries]",
             "[countries] would start a war against [countries]",
             "Jade would stop caring about being pinged",
-            "Mazen would lose his virginity",
-            "Mazen would stop making apps to decorate Christmas trees",
+            "[members] would lose their virginity",
             "md_5 would sell Spigot to Mojang without telling anyone",
-            "md_5 would go to work for Mojang",
             "rowtn would have good internet",
             "Mazen's Skype Chat would be killed by Lizard Squad (again)",
             "[countries] would nuke [countries]",
-            "ADDITIONAL PYLONS WOULD BE CONSTRUCTED",
             "[news] is scared that [current events] will destroy [things we care about]",
             "[members] would crash mazen.bot",
             "[members] would break the Nokia 3310 with [objects]",
@@ -86,7 +72,6 @@ public class WhatWouldHappen implements Module {
             "[members] would convert to [religions]",
             "[members] would convince [members] to convert to [religions]",
             "[celebrities] would be arrested for slapping [celebrities] with [objects]",
-            "Luke's cooldowns would be removed",
             "[bad groups] would target [things we care about]",
             "[companies] would hire the ghost of [deceased]",
             "[companies] would be sued by [companies]",
@@ -105,8 +90,7 @@ public class WhatWouldHappen implements Module {
             "[projects] would go ~~enterprise~~",
             "[projects] would go closed-source",
             "[projects] would only work on [operating systems]",
-            "[projects] would sell out to [companies] for [money]",
-            "@whatwouldhappen would be replaced with [objects]"
+            "[projects] would sell out to [companies] for [money]"
     };
 
     private static final HashMap<String, String[]> DATA = new HashMap<String, String[]>() {{
@@ -136,8 +120,10 @@ public class WhatWouldHappen implements Module {
         String option = OPTIONS[new Random().nextInt(OPTIONS.length)];
 
         for (Map.Entry<String, String[]> s : DATA.entrySet()) {
+            Random random = new Random();
+            
             while (option.contains("[" + s.getKey() + "]")) {
-                option = option.replaceFirst("\\[" + s.getKey() + "\\]", s.getValue()[ThreadLocalRandom.current().nextInt(s.getValue().length)]);
+                option = option.replaceFirst("\\[" + s.getKey() + "\\]", s.getValue()[random.nextInt(s.getValue().length)]);
             }
         }
         
