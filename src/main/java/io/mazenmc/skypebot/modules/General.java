@@ -33,7 +33,6 @@ import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class General implements Module {
-
     private static ChatterBotSession cleverBot;
     private static ChatterBotSession jabberWacky;
     private static Thread rantThread;
