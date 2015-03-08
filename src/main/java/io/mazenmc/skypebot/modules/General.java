@@ -1,27 +1,5 @@
 package io.mazenmc.skypebot.modules;
 
-import io.mazenmc.skypebot.SkypeBot;
-import io.mazenmc.skypebot.engine.bot.Command;
-import io.mazenmc.skypebot.engine.bot.CommandData;
-import io.mazenmc.skypebot.engine.bot.Module;
-import io.mazenmc.skypebot.engine.bot.ModuleManager;
-import io.mazenmc.skypebot.engine.bot.Optional;
-import io.mazenmc.skypebot.utils.Resource;
-import io.mazenmc.skypebot.utils.Utils;
-
-import java.io.IOException;
-import java.net.URLEncoder;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.Map;
-import java.util.Random;
-import java.util.concurrent.ThreadLocalRandom;
-
-import org.apache.commons.lang.exception.ExceptionUtils;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import com.google.api.client.http.HttpRequestInitializer;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.JsonFactory;
@@ -38,6 +16,24 @@ import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import com.skype.ChatMessage;
 import com.skype.SkypeException;
+import io.mazenmc.skypebot.SkypeBot;
+import io.mazenmc.skypebot.engine.bot.*;
+import io.mazenmc.skypebot.utils.Resource;
+import io.mazenmc.skypebot.utils.Utils;
+import org.apache.commons.lang.exception.ExceptionUtils;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+import javax.script.ScriptException;
+import java.io.IOException;
+import java.net.URLEncoder;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Map;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class General implements Module {
 
@@ -452,5 +448,12 @@ public class General implements Module {
     @Command(name = "lenny")
     public static void cmdLenny(ChatMessage chat) throws SkypeException {
         Resource.sendMessage(chat, "( ͡° ͜ʖ ͡°)");
+    }
+
+    @Command(name = "eval")
+    public static void cmdEval(ChatMessage chat) throws SkypeException, ScriptException{
+        ScriptEngineManager mgr = new ScriptEngineManager();
+        ScriptEngine engine = mgr.getEngineByName("JavaScript");
+        Resource.sendMessage(engine.eval(chat.getContent()).toString());
     }
 }
