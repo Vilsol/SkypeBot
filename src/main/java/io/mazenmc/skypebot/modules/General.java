@@ -445,4 +445,9 @@ public class General implements Module {
     public static void cmdLenny(ChatMessage chat) throws SkypeException {
         Resource.sendMessage(chat, "( ͡° ͜ʖ ͡°)");
     }
+    
+    @Command(name = "idk")
+    public static void cmdIdk(ChatMessage chat) throws SkypeException {
+        Resource.sendMessage(chat, "¯\_(ツ)_/¯");
+    }
 }
