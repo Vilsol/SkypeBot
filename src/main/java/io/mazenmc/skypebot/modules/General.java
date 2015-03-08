@@ -24,9 +24,6 @@ import org.apache.commons.lang.exception.ExceptionUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
-import javax.script.ScriptException;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.sql.ResultSet;
@@ -448,17 +445,5 @@ public class General implements Module {
     @Command(name = "lenny")
     public static void cmdLenny(ChatMessage chat) throws SkypeException {
         Resource.sendMessage(chat, "( ͡° ͜ʖ ͡°)");
-    }
-
-    @Command(name = "eval")
-    public static void cmdEval(ChatMessage chat, String eval) throws SkypeException, ScriptException{
-        new Thread() {
-            @Override
-            public void run() {
-                ScriptEngineManager mgr = new ScriptEngineManager();
-                ScriptEngine engine = mgr.getEngineByName("JavaScript");
-                Resource.sendMessage(chat, engine.eval(eval).toString());
-            }
-        }.start()
     }
 }
