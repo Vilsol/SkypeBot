@@ -454,6 +454,6 @@ public class General implements Module {
     public static void cmdEval(ChatMessage chat, String eval) throws SkypeException, ScriptException{
         ScriptEngineManager mgr = new ScriptEngineManager();
         ScriptEngine engine = mgr.getEngineByName("JavaScript");
-        Resource.sendMessage(engine.eval(eval).toString());
+        Resource.sendMessage(chat, engine.eval(eval).toString());
     }
 }
