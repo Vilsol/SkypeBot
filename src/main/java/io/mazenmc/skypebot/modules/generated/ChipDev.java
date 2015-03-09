@@ -1,13 +1,13 @@
 package io.mazenmc.skypebot.modules.generated;
 
+import com.google.api.client.util.Joiner;
 import com.skype.ChatMessage;
 import com.skype.SkypeException;
 import io.mazenmc.skypebot.engine.bot.Command;
 import io.mazenmc.skypebot.engine.bot.Module;
 import io.mazenmc.skypebot.utils.Resource;
 
-import java.util.Arrays;
-import java.util.Random;
+import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class ChipDev implements Module {
@@ -54,4 +54,24 @@ public class ChipDev implements Module {
         Resource.sendMessage(chat, sentence);
     }
 
+    @Command(name = "devchip")
+    public static void cmdDevChip(ChatMessage chat) throws SkypeException {
+        String sentence = SENTANCES[ThreadLocalRandom.current().nextInt(SENTANCES.length)];
+
+        List<String> split = Arrays.asList(sentence.split(" "));
+        Collections.shuffle(split);
+        List<String> finalSplit = new ArrayList<>();
+        for (String s : split) {
+            char[] chaz = new char[s.length()];
+            int x = 0;
+            for (char c : s.toCharArray()) {
+                chaz[x] = ThreadLocalRandom.current().nextBoolean() ? Character.toUpperCase(c) : Character.toLowerCase(c);
+                x++;
+            }
+            finalSplit.add(new String(chaz));
+        }
+        String lol = Joiner.on(' ').join(finalSplit);
+
+        Resource.sendMessage(chat, lol);
+    }
 }
