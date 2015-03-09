@@ -66,6 +66,7 @@ public class ChipDev implements Module {
             int x = 0;
             for (char c : s.toCharArray()) {
                 chaz[x] = ThreadLocalRandom.current().nextBoolean() ? Character.toUpperCase(c) : Character.toLowerCase(c);
+                x++;
             }
             finalSplit.add(new String(chaz));
         }
