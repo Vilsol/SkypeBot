@@ -43,7 +43,9 @@ public class ChipDev implements Module {
             "^ sucks..    lollypops",
             "I suck, (Lollypops!)",
             "i Don wanna endanger my 5k comp.",
-            "Shut up is a good thing! Its the opposite of Shut down, which is turn off != turn on..... You are telling someone to turn on (keep talking!)"
+            "Shut up is a good thing! Its the opposite of Shut down, which is turn off != turn on..... You are telling someone to turn on (keep talking!)",
+            "850-950 will not give you super good. Mine costed $2500 but every penny was worth it.",
+            "MY NAME IS JEFF! 1% chance of a chipdev attacking you."
             //End actual ChipDev quotes
     };
 
