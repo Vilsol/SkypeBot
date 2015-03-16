@@ -452,8 +452,10 @@ public class General implements Module {
     }
     
     @Command(name = "confirmed")
-    public static void cmdConfirmed(ChatMessage chat, String conf) throws SkypeException {
-        Resource.sendMessage(chat, conf.trim() + 
-            ThreadLocalRandom.current().nextBoolean() ? " confirmed" : " not confirmed");
+   public static void cmdConfirmed(ChatMessage chat, @Optional
+            String question) {
+        String[] options = new String[]{"Confirmed","No way!","Some day","Soon","Just wait and see","Indubiously"};
+        int chosen = ThreadLocalRandom.current().nextInt(options.length);
+        Resource.sendMessage(chat, options[chosen]);
     }
 }
