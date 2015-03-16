@@ -452,10 +452,11 @@ public class General implements Module {
     }
     
     @Command(name = "confirmed")
-   public static void cmdConfirmed(ChatMessage chat, @Optional
-            String question) {
-        String[] options = new String[]{"Confirmed","No way!","Some day","Soon","Just wait and see","Indubiously"};
+   public static void cmdConfirmed(ChatMessage chat, String question) {
+        String[] options = new String[] { "%s Confirmed", "%s won't happen!" ,"%s will happen some day",
+            "%s will happen some day", "Just wait and see"};
         int chosen = ThreadLocalRandom.current().nextInt(options.length);
-        Resource.sendMessage(chat, options[chosen]);
+
+        Resource.sendMessage(chat, String.format(options[chosen], question));
     }
 }
