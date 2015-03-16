@@ -450,4 +450,11 @@ public class General implements Module {
     public static void cmdIdk(ChatMessage chat) throws SkypeException {
         Resource.sendMessage(chat, "¯\\_(ツ)_/¯");
     }
+    
+    @Command(name = "confirmed")
+    public static void cmdConfirmed(ChatMessage chat) throws SkypeException {
+        String[] options = new String[]{"Yes","No"};
+        int chosen = ThreadLocalRandom.current().nextInt(options.length);
+        Resource.sendMessage(chat, options[chosen]);
+    }
 }
