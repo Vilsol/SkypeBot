@@ -459,4 +459,25 @@ public class General implements Module {
 
         Resource.sendMessage(chat, String.format(options[chosen], question));
     }
+    
+    @Command(name = "phallusexercise", alias = {"whatwouldjustissay"})
+    public static String cmdphallusexercise(String message) {
+        String[] options = new String[]{
+        		"Guys, Can confirm. Penis exersizes DO work.",
+        		"It's only been a week and there is a noticable difference.",
+        		"Excersizing my phallus.",
+        		"Any lady of mine is gunna feel real lucky.",
+        		"If only you guys were as passionate about giving your women pleasure.",
+        		"FYI, I have plenty of ladies.",
+        		"Any women will apreciate your effort. Knowing you care.",
+        		"I'm good at what I do. ;)",
+        		"I expect lots of cake!",
+        		"We could be sex buddies!!! Makin porn together!!",
+        		"All our sex toys are made from 100% ultra-premium custom forumulated silicone; garenteed to last a lifetime.",
+        		"Easy To Clean, Eco-Friendly, Hypoallergenic, Hygienic, Boilable, Bleachable and Dishwasher Safe. ;D",
+        		"Just in case you ever wanted to wash your vibrator with your eating utensils. I know I do."};
+        int chosen = ThreadLocalRandom.current().nextInt(options.length);
+
+        return options[chosen];
+    }
 }
