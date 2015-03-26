@@ -451,6 +451,11 @@ public class General implements Module {
         Resource.sendMessage(chat, "¯\\_(ツ)_/¯");
     }
     
+    @Command(name = "wat")
+    public static void cmdWat(ChatMessage chat) throws SkypeException {
+        Resource.sendMessage(chat, "http://waitw.at O.o");
+    }
+    
     @Command(name = "confirmed")
    public static void cmdConfirmed(ChatMessage chat, String question) {
         String[] options = new String[] { "%s Confirmed", "%s won't happen!" ,"%s will happen some day",
