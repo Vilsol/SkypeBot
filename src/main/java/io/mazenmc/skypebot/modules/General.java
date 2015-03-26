@@ -466,7 +466,7 @@ public class General implements Module {
     }
     
     @Command(name = "phallusexercise", alias = {"whatwouldjustissay"})
-    public static String cmdphallusexercise(String message) {
+    public static String cmdphallusexercise(ChatMessage message, @Optional String special) {
         String[] options = new String[]{
         		"Guys, Can confirm. Penis exersizes DO work.",
         		"It's only been a week and there is a noticable difference.",
