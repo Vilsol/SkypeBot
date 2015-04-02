@@ -62,11 +62,6 @@ public class SkypeBot {
         try {
             Skype.addChatMessageListener(new GlobalChatMessageListener() {
                 public void chatMessageReceived(ChatMessage received) throws SkypeException {
-                    if (messages.size() > 100) {
-                        messages.remove();
-                        stringMessages.remove();
-                    }
-
                     Callback<String> callback = null;
 
                     if ((callback = Resource.getCallback(received.getSenderId())) != null) {
