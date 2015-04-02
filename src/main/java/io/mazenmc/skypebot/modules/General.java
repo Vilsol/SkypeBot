@@ -197,6 +197,10 @@ public class General implements Module {
     public static void cmdRandomSay(ChatMessage chat, @Optional String lol) throws SkypeException {
         List<ChatMessage> messages = SkypeBot.getInstance().getLastMessages();
         ChatMessage message = messages.get(ThreadLocalRandom.current().nextInt(messages.size()));
+
+        while (message.getContent().startsWith("@")) {
+            message = messages.get(ThreadLocalRandom.current().nextInt(messages.size()));
+        }
         
         Resource.sendMessage(chat, message.getSenderDisplayName() + " says " + message.getContent());
     }
