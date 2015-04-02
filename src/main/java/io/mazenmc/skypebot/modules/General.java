@@ -29,6 +29,7 @@ import java.net.URLEncoder;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -190,6 +191,14 @@ public class General implements Module {
         }
 
         Resource.sendMessage(chat, String.valueOf(ThreadLocalRandom.current().nextInt(high - low) + low));
+    }
+
+    @Command(name = "whatwouldrandomsay")
+    public static void cmdRandomSay(ChatMessage chat, @Optional String lol) throws SkypeException {
+        List<ChatMessage> messages = SkypeBot.getInstance().getLastMessages();
+        ChatMessage message = messages.get(ThreadLocalRandom.current().nextInt(messages.size()));
+        
+        Resource.sendMessage(chat, message.getSenderDisplayName() + " says " + message.getContent());
     }
 
     @Command(name = "rant")
