@@ -202,7 +202,7 @@ public class General implements Module {
             message = messages.get(ThreadLocalRandom.current().nextInt(messages.size()));
         }
         
-        Resource.sendMessage(chat, message.getSenderDisplayName() + " says " + message.getContent());
+        Resource.sendMessage(chat, message.getSenderDisplayName() + " says: \" " + message.getContent() + " \" ");
     }
 
     @Command(name = "rant")
