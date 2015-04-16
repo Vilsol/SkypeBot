@@ -46,6 +46,11 @@ public class General implements Module {
         int chosen = ThreadLocalRandom.current().nextInt(options.length);
         Resource.sendMessage(chat, options[chosen]);
     }
+    
+    @Command(name = "nice")
+    public static void cmdNice(ChatMessage chat, @Optional String no) {
+        Resource.sendMessage(chat, "https://www.youtube.com/watch?v=zYt0WbDjJ4E");
+    }
 
     @Command(name = "flickr.com/photos/stuntguy3000", exact = false, command = false)
     public static void cmdStuntguyFlickr(ChatMessage chat) throws SkypeException {
