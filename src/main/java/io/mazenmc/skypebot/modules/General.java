@@ -503,4 +503,14 @@ public class General implements Module {
 
         Resource.sendMessage(message, options[chosen]);
     }
+    
+    @Command(name = "ayy", exact = false, command = false)
+    public static void ayy(ChatMessage message, @Optional ayy) {
+        Resource.sendMessage("lmao");
+    }
+    
+    @Command(name = "alien", exact = false, command = false)
+    public static void ayyLmao(ChatMessage message, @Optional lmao) {
+        Resource.sendMessage("ayy lmao");
+    }
 }
