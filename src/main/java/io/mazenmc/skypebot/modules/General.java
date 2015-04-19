@@ -505,12 +505,12 @@ public class General implements Module {
     }
     
     @Command(name = "ayy", exact = false, command = false)
-    public static void ayy(ChatMessage message, @Optional ayy) {
+    public static void ayy(ChatMessage message, @Optional String ayy) {
         Resource.sendMessage("lmao");
     }
     
     @Command(name = "alien", exact = false, command = false)
-    public static void ayyLmao(ChatMessage message, @Optional lmao) {
+    public static void ayyLmao(ChatMessage message, @Optional String lmao) {
         Resource.sendMessage("ayy lmao");
     }
 }
