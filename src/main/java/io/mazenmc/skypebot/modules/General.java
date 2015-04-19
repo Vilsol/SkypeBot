@@ -47,7 +47,7 @@ public class General implements Module {
         Resource.sendMessage(chat, options[chosen]);
     }
     
-    @Command(name = "nice")
+    @Command(name = "nice", exact = false, command = false)
     public static void cmdNice(ChatMessage chat, @Optional String no) {
         Resource.sendMessage(chat, "https://www.youtube.com/watch?v=zYt0WbDjJ4E");
     }
