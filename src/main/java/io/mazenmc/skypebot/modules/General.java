@@ -506,7 +506,7 @@ public class General implements Module {
     
     @Command(name = "(?i)ayy", exact = false, command = false)
     public static void ayy(ChatMessage message, @Optional String ayy) throws SkypeException {
-        if (chat.getContent().contains("lmao")) {
+        if (message.getContent().contains("lmao")) {
             Resource.sendMessage("ayy lmao");
             return;
         }
