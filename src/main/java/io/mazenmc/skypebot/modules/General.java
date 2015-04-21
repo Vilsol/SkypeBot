@@ -46,8 +46,8 @@ public class General implements Module {
         int chosen = ThreadLocalRandom.current().nextInt(options.length);
         Resource.sendMessage(chat, options[chosen]);
     }
-    
-    @Command(name = "nice", exact = false, command = false)
+
+    @Command(name = "(?i)nice", command = false)
     public static void cmdNice(ChatMessage chat, @Optional String no) {
         Resource.sendMessage(chat, "https://www.youtube.com/watch?v=zYt0WbDjJ4E");
     }
@@ -504,12 +504,17 @@ public class General implements Module {
         Resource.sendMessage(message, options[chosen]);
     }
     
-    @Command(name = "ayy", exact = false, command = false)
+    @Command(name = "(?i)ayy", exact = false, command = false)
     public static void ayy(ChatMessage message, @Optional String ayy) {
+        if (ayy.contains("lmao")) {
+            Resource.sendMessage("ayy lmao");
+            return;
+        }
+        
         Resource.sendMessage("lmao");
     }
     
-    @Command(name = "alien", exact = false, command = false)
+    @Command(name = "(?i)alien", exact = false, command = false)
     public static void ayyLmao(ChatMessage message, @Optional String lmao) {
         Resource.sendMessage("ayy lmao");
     }
