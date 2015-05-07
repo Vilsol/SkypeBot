@@ -47,11 +47,6 @@ public class General implements Module {
         Resource.sendMessage(chat, options[chosen]);
     }
 
-    @Command(name = "(?i)nice", command = false)
-    public static void cmdNice(ChatMessage chat, @Optional String no) {
-        Resource.sendMessage(chat, "https://www.youtube.com/watch?v=zYt0WbDjJ4E");
-    }
-
     @Command(name = "flickr.com/photos/stuntguy3000", exact = false, command = false)
     public static void cmdStuntguyFlickr(ChatMessage chat) throws SkypeException {
         if (chat.getSender().getId().equalsIgnoreCase("stuntguy3000")) {
