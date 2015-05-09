@@ -32,7 +32,7 @@ public class UpdateChecker extends Thread {
             }
 
             try {
-                HttpResponse<JsonNode> response = Unirest.get("https://api.github.com/repos/MazenMC/SkypeBot/commits?page=1" +
+                HttpResponse<JsonNode> response = Unirest.get("https://api.github.com/repos/mkotb/SkypeBot/commits?page=1" +
                         "&access_token=" + accessToken)
                         .header("User-Agent", "Mazen-SkypeBot")
                         .header("Content-Type", "application/json")
