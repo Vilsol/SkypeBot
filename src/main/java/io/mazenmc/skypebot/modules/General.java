@@ -15,9 +15,12 @@ import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import com.skype.ChatMessage;
+import com.skype.Skype;
 import com.skype.SkypeException;
 import io.mazenmc.skypebot.SkypeBot;
 import io.mazenmc.skypebot.engine.bot.*;
+import io.mazenmc.skypebot.stat.MessageStatistic;
+import io.mazenmc.skypebot.stat.StatisticsManager;
 import io.mazenmc.skypebot.utils.Resource;
 import io.mazenmc.skypebot.utils.Utils;
 import org.apache.commons.lang.exception.ExceptionUtils;
@@ -29,9 +32,11 @@ import java.net.URLEncoder;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.stream.IntStream;
 
 public class General implements Module {
     private static ChatterBotSession cleverBot;
@@ -124,6 +129,42 @@ public class General implements Module {
     public static void cmdLmgtfy(ChatMessage chat, String question) throws SkypeException {
         String returnString = "http://lmgtfy.com/?q=";
         Resource.sendMessage(chat, returnString + URLEncoder.encode(question));
+    }
+
+    @Command(name = "stats")
+    public static void cmdStats(ChatMessage chat, @Optional String person) throws SkypeException {
+        if (person != null) {
+            MessageStatistic stat = StatisticsManager.instance().statistics().get(person);
+
+            if (stat == null) {
+                Resource.sendMessage("No found statistic for " + person + "!");
+                return;
+            }
+
+            String displayName = Skype.getUser(person).getDisplayName();
+
+            Resource.sendMessage("---- " + displayName + "'s statistics ----");
+            Resource.sendMessage("Message count: " + stat.messageAmount());
+            Resource.sendMessage("Random message: " + stat.randomMessage());
+            Resource.sendMessage("---------------------------------------");
+            return;
+        }
+
+        List<MessageStatistic> messages = (List<MessageStatistic>) StatisticsManager.instance()
+                .statistics()
+                .values();
+
+        Collections.sort(messages, (a, b) -> a.messageAmount() - b.messageAmount());
+
+        IntStream.range(0, 5).forEach((i) -> {
+            MessageStatistic stat = messages.get(i);
+
+            if (stat == null)
+                return;
+
+            Resource.sendMessage(chat, StatisticsManager.instance().ownerFor(stat) + ": " +
+                    stat.messageAmount());
+        });
     }
 
     @Command(name = "md5")

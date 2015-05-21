@@ -8,6 +8,7 @@ import io.mazenmc.skypebot.api.API;
 import io.mazenmc.skypebot.engine.bot.ModuleManager;
 import io.mazenmc.skypebot.engine.bot.Printer;
 import io.mazenmc.skypebot.handler.CooldownHandler;
+import io.mazenmc.skypebot.stat.StatisticsManager;
 import io.mazenmc.skypebot.utils.Callback;
 import io.mazenmc.skypebot.utils.Resource;
 import io.mazenmc.skypebot.utils.UpdateChecker;
@@ -70,12 +71,14 @@ public class SkypeBot {
                     }
 
                     stringMessages.add(Utils.serializeMessage(received));
+                    StatisticsManager.instance().logMessage(received);
                     messages.add(received);
                     ModuleManager.parseText(received);
                 }
 
                 @Override
                 public void chatMessageSent(ChatMessage sentChatMessage) throws SkypeException {
+                    StatisticsManager.instance().logMessage(sentChatMessage);
                 }
 
                 @Override
@@ -123,6 +126,8 @@ public class SkypeBot {
         twitter = new TwitterFactory(cb.build()).getInstance();
 
         cooldownHandler = new CooldownHandler();
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> StatisticsManager.instance().saveStatistics()));
+        StatisticsManager.instance().loadStatistics();
 
         Resource.sendMessage("/me " + Resource.VERSION + " initialized!");
     }
