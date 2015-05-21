@@ -17,6 +17,7 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 import com.skype.ChatMessage;
 import com.skype.Skype;
 import com.skype.SkypeException;
+import com.skype.User;
 import io.mazenmc.skypebot.SkypeBot;
 import io.mazenmc.skypebot.engine.bot.*;
 import io.mazenmc.skypebot.stat.MessageStatistic;
@@ -32,6 +33,7 @@ import java.net.URLEncoder;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -141,26 +143,33 @@ public class General implements Module {
                 return;
             }
 
-            String displayName = Skype.getUser(person).getDisplayName();
+            User user = Skype.getUser(person);
+            String name = user.getDisplayName();
 
-            Resource.sendMessage("---- " + displayName + "'s statistics ----");
+            if ("".equals(name))
+                name = user.getFullName();
+
+            if ("".equals(name))
+                name = person;
+
+            Resource.sendMessage("---- " + name + "'s statistics ----");
             Resource.sendMessage("Message count: " + stat.messageAmount());
             Resource.sendMessage("Random message: " + stat.randomMessage());
             Resource.sendMessage("---------------------------------------");
             return;
         }
 
-        List<MessageStatistic> messages = (List<MessageStatistic>) StatisticsManager.instance()
+        List<MessageStatistic> messages = new ArrayList<>(StatisticsManager.instance()
                 .statistics()
-                .values();
+                .values());
 
-        Collections.sort(messages, (a, b) -> a.messageAmount() - b.messageAmount());
+        Collections.sort(messages, (a, b) -> b.messageAmount() - a.messageAmount());
 
         IntStream.range(0, 5).forEach((i) -> {
-            MessageStatistic stat = messages.get(i);
-
-            if (stat == null)
+            if (messages.size() <= i)
                 return;
+
+            MessageStatistic stat = messages.get(i);
 
             Resource.sendMessage(chat, StatisticsManager.instance().ownerFor(stat) + ": " +
                     stat.messageAmount());

@@ -6,6 +6,7 @@ import com.skype.ChatMessage;
 import com.skype.SkypeException;
 import io.mazenmc.skypebot.Main;
 import io.mazenmc.skypebot.SkypeBot;
+import io.mazenmc.skypebot.stat.StatisticsManager;
 import org.apache.commons.codec.digest.DigestUtils;
 import sun.misc.BASE64Encoder;
 
@@ -208,6 +209,7 @@ public class Utils {
 
     public static void restartBot() {
         SkypeBot.getInstance().getPrinter().pureSend("/me " + Resource.VERSION + " Restarting...");
+        StatisticsManager.instance().saveStatistics();
         System.out.println("Restarting...");
 
         try {

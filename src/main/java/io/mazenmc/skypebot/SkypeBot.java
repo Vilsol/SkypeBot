@@ -126,7 +126,6 @@ public class SkypeBot {
         twitter = new TwitterFactory(cb.build()).getInstance();
 
         cooldownHandler = new CooldownHandler();
-        Runtime.getRuntime().addShutdownHook(new Thread(() -> StatisticsManager.instance().saveStatistics()));
         StatisticsManager.instance().loadStatistics();
 
         Resource.sendMessage("/me " + Resource.VERSION + " initialized!");

@@ -1,10 +1,14 @@
 package io.mazenmc.skypebot.stat;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.stream.IntStream;
 
 public class MessageStatistic {
     private final List<String> messages;
@@ -13,10 +17,16 @@ public class MessageStatistic {
         messages = new ArrayList<>();
     }
 
-    MessageStatistic(String[] messages) {
+    MessageStatistic(JSONArray messages) {
         this();
 
-        Collections.addAll(this.messages, messages);
+        IntStream.range(0, messages.length()).forEach((i) -> {
+            try {
+                this.messages.add(messages.getString(i));
+            } catch (JSONException ex) {
+                ex.printStackTrace();
+            }
+        });
     }
 
     public int messageAmount() {

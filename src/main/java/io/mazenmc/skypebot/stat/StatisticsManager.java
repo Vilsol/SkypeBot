@@ -21,12 +21,12 @@ public class StatisticsManager {
         return INSTANCE;
     }
 
-    public void logMessage(ChatMessage message) {
-        if (!statistics.containsKey(message.getId()))
-            statistics.put(message.getId(), new MessageStatistic());
+    public void logMessage(ChatMessage message) throws SkypeException {
+        if (!statistics.containsKey(message.getSenderId()))
+            statistics.put(message.getSenderId(), new MessageStatistic());
 
         try {
-            statistics.get(message.getId()).addMessage(message.getContent());
+            statistics.get(message.getSenderId()).addMessage(message.getContent());
         } catch (SkypeException ex) {
             ex.printStackTrace();
         }
@@ -61,15 +61,14 @@ public class StatisticsManager {
             JSONObject object = new JSONObject(source.toString());
 
             object.keys().forEachRemaining((obj) -> {
-                if (!(obj instanceof String))
+                if (!(obj instanceof String)) {
                     return;
+                }
 
                 String key = (String) obj;
 
                 try {
-                    statistics.put(key, new MessageStatistic(object.getJSONArray(key)
-                            .join("^^^^")
-                            .split("^^^^")));
+                    statistics.put(key, new MessageStatistic(object.getJSONArray(key)));
                 } catch (JSONException ex) {
                     ex.printStackTrace();
                 }
