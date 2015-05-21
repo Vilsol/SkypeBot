@@ -3,6 +3,7 @@ package io.mazenmc.skypebot.utils;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
+import io.mazenmc.skypebot.stat.StatisticsManager;
 import net.lingala.zip4j.core.ZipFile;
 import org.json.JSONObject;
 
@@ -120,6 +121,8 @@ public class UpdateChecker extends Thread {
                         Thread.sleep(200L);
                     } catch (InterruptedException ignored) {
                     }
+
+                    StatisticsManager.instance().saveStatistics();
 
                     try {
                         Unirest.shutdown();

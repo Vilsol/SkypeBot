@@ -10,12 +10,12 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class StatisticsManager {
     private static final StatisticsManager INSTANCE = new StatisticsManager();
-    private Map<String, MessageStatistic> statistics = new HashMap<>();
+    private Map<String, MessageStatistic> statistics = new ConcurrentHashMap<>();
 
     public static StatisticsManager instance() {
         return INSTANCE;
