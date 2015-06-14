@@ -567,7 +567,7 @@ public class General implements Module {
         }
 
         object.put("title", args[0]);
-        object.put("options", new JSONArray());
+        object.put("options", new JSONArray(options));
 
         String url = Unirest.post("http://strawpoll.me/api/v2/polls")
                 .body(object.toString())
