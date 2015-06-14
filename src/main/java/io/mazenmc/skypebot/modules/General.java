@@ -569,17 +569,19 @@ public class General implements Module {
         object.put("title", args[0]);
         object.put("options", new JSONArray(options));
 
-        JsonNode url = Unirest.post("http://strawpoll.me/api/v2/polls")
+        JSONObject response = Unirest.post("http://strawpoll.me/api/v2/polls")
                 .header("Content-Type", "application/json")
                 .body(object.toString())
                 .asJson()
-                .getBody();
+                .getBody()
+                .getObject();
 
-        if (url != null) {
-            Resource.sendMessage(message, "Poll created: https://strawpoll.me/" + url.getObject().getInt("id"));
-        } else {
-            Resource.sendMessage(message, "Something happened... not sure what");
+        if (!response.has("id")) {
+            Resource.sendMessage(message, "Invalid request!");
+            return;
         }
+
+        Resource.sendMessage(message, "Poll created: https://strawpoll.me/" + response.getInt("id"));
     }
     
     @Command(name = "(?i)ayy", exact = false, command = false)
