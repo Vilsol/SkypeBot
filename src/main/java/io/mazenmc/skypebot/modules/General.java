@@ -598,13 +598,11 @@ public class General implements Module {
                     int index = 0;
                     JSONArray options = results.getJSONArray("options");
                     JSONArray votes = results.getJSONArray("votes");
-
                     while (!options.isNull(index)) {
                         String msg = (index + 1) + ". " + options.getString(index) + " Votes: " + votes.getInt(index);
                         Resource.sendMessage(message,options.getString(index));
                         index++;
                     }
-
                     Resource.sendMessage(message, "-----------------------------------");
 
                 } catch (Exception ex) {
