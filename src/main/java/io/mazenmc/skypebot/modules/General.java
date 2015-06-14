@@ -552,19 +552,22 @@ public class General implements Module {
 
     @Command(name = "poll", alias = {"strawpoll"})
     public static void cmdPoll(ChatMessage message, String arguments) throws SkypeException, UnirestException, JSONException {
-        String[] args = arguments.split(",");
+        String[] args = arguments.split(":");
 
         if (args.length < 2) {
             Resource.sendMessage(message, "Give the poll options!");
             return;
         }
 
+        String[] options = args[1].split(",");
         JSONObject object = new JSONObject();
 
-        object.put("title", args[0]);
+        if (options.length < 2) {
+            Resource.sendMessage(message, "I kinda need some options for this poll here...");
+        }
 
-        System.arraycopy(args, 1, args, args.length, args.length - 1);
-        object.put("options", new JSONArray(args));
+        object.put("title", args[0]);
+        object.put("options", new JSONArray());
 
         String url = Unirest.post("http://strawpoll.me/api/v2/polls")
                 .body(object.toString())
