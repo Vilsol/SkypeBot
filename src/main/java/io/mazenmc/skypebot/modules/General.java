@@ -574,6 +574,8 @@ public class General implements Module {
                 .asString()
                 .getBody();
 
+        System.out.println(object.toString());
+
         if (url != null) {
             Resource.sendMessage(message, "Poll created: " + url);
         } else {
