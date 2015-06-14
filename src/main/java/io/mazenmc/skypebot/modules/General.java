@@ -25,6 +25,7 @@ import io.mazenmc.skypebot.stat.StatisticsManager;
 import io.mazenmc.skypebot.utils.Resource;
 import io.mazenmc.skypebot.utils.Utils;
 import org.apache.commons.lang.exception.ExceptionUtils;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -547,6 +548,34 @@ public class General implements Module {
         int chosen = ThreadLocalRandom.current().nextInt(options.length);
 
         Resource.sendMessage(message, options[chosen]);
+    }
+
+    @Command(name = "poll", alias = {"strawpoll"})
+    public static void cmdPoll(ChatMessage message, String arguments) throws SkypeException, UnirestException, JSONException {
+        String[] args = arguments.split(",");
+
+        if (args.length < 2) {
+            Resource.sendMessage(message, "Give the poll options!");
+            return;
+        }
+
+        JSONObject object = new JSONObject();
+
+        object.put("title", args[0]);
+
+        System.arraycopy(args, 1, args, args.length, args.length - 1);
+        object.put("options", new JSONArray(args));
+
+        String url = Unirest.post("http://strawpoll.me/api/v2/polls")
+                .body(object.toString())
+                .asString()
+                .getBody();
+
+        if (url != null) {
+            Resource.sendMessage(message, "Poll created: " + url);
+        } else {
+            Resource.sendMessage(message, "Something happened... not sure what");
+        }
     }
     
     @Command(name = "(?i)ayy", exact = false, command = false)
