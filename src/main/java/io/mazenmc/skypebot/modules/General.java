@@ -569,15 +569,14 @@ public class General implements Module {
         object.put("title", args[0]);
         object.put("options", new JSONArray(options));
 
-        String url = Unirest.post("http://strawpoll.me/api/v2/polls")
+        JsonNode url = Unirest.post("http://strawpoll.me/api/v2/polls")
+                .header("Content-Type", "application/x-www-form-urlencoded")
                 .body(object.toString())
-                .asString()
+                .asJson()
                 .getBody();
 
-        System.out.println(object.toString());
-
         if (url != null) {
-            Resource.sendMessage(message, "Poll created: " + url);
+            Resource.sendMessage(message, "Poll created: https://strawpoll.me/" + url.getObject().getString("id"));
         } else {
             Resource.sendMessage(message, "Something happened... not sure what");
         }
