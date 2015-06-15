@@ -591,6 +591,7 @@ public class General implements Module {
                             .asJson()
                             .getBody()
                             .getObject();
+
                     Resource.sendMessage(message, "-----------------------------------");
                     Resource.sendMessage(message, "The poll results are in!");
                     Resource.sendMessage(message, results.getString("title"));
@@ -598,18 +599,19 @@ public class General implements Module {
                     int index = 0;
                     JSONArray options = results.getJSONArray("options");
                     JSONArray votes = results.getJSONArray("votes");
+
                     while (!options.isNull(index)) {
-                        String msg = (index + 1) + ". " + options.getString(index) + " Votes: " + votes.getInt(index);
-                        Resource.sendMessage(message,options.getString(index));
+                        Resource.sendMessage(message, (index + 1) + ". " + options.getString(index) + " Votes: " + votes.getInt(index));
                         index++;
                     }
+
                     Resource.sendMessage(message, "-----------------------------------");
 
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
             }
-        },300000);
+        }, 300000);
 
     }
     
