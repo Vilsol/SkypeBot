@@ -601,7 +601,7 @@ public class General implements Module {
                     JSONArray votes = results.getJSONArray("votes");
 
                     while (!options.isNull(index)) {
-                        Resource.sendMessage(message, (index + 1) + ". " + options.getString(index) + " Votes: " + votes.getInt(index));
+                        Resource.sendMessage(message, options.getString(index) + " - Votes: " + votes.getInt(index));
                         index++;
                     }
 
