@@ -609,7 +609,7 @@ public class General implements Module {
                     ex.printStackTrace();
                 }
             }
-        },1000);
+        },300000);
 
     }
     
