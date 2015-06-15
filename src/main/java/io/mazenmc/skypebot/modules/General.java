@@ -14,16 +14,19 @@ import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
+import com.mashape.unirest.request.GetRequest;
 import com.skype.ChatMessage;
 import com.skype.Skype;
 import com.skype.SkypeException;
 import com.skype.User;
 import io.mazenmc.skypebot.SkypeBot;
 import io.mazenmc.skypebot.engine.bot.*;
+import io.mazenmc.skypebot.engine.bot.Optional;
 import io.mazenmc.skypebot.stat.MessageStatistic;
 import io.mazenmc.skypebot.stat.StatisticsManager;
 import io.mazenmc.skypebot.utils.Resource;
 import io.mazenmc.skypebot.utils.Utils;
+import jdk.nashorn.internal.parser.JSONParser;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -34,10 +37,7 @@ import java.net.URLEncoder;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.IntStream;
 
@@ -580,8 +580,37 @@ public class General implements Module {
             Resource.sendMessage(message, "Invalid request!");
             return;
         }
+        int id = response.getInt("id");
+        Resource.sendMessage(message, "Poll created: https://strawpoll.me/" + id);
 
-        Resource.sendMessage(message, "Poll created: https://strawpoll.me/" + response.getInt("id"));
+        new Timer().schedule(new TimerTask() {
+            @Override
+            public void run() {
+                try {
+                    JSONObject results = Unirest.get("https://strawpoll.me/api/v2/polls/" + id)
+                            .asJson()
+                            .getBody()
+                            .getObject();
+                    Resource.sendMessage(message, "-----------------------------------");
+                    Resource.sendMessage(message, "The poll results are in!");
+                    Resource.sendMessage(message, results.getString("title"));
+
+                    int index = 0;
+                    JSONArray options = results.getJSONArray("options");
+                    JSONArray votes = results.getJSONArray("votes");
+                    while (!options.isNull(index)) {
+                        String msg = (index + 1) + ". " + options.getString(index) + " Votes: " + votes.getInt(index);
+                        Resource.sendMessage(message,options.getString(index));
+                        index++;
+                    }
+                    Resource.sendMessage(message, "-----------------------------------");
+
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+        },300000);
+
     }
     
     @Command(name = "(?i)ayy", exact = false, command = false)
