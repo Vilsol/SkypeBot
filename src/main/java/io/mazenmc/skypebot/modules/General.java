@@ -154,9 +154,11 @@ public class General implements Module {
             if ("".equals(name))
                 name = person;
 
-            Resource.sendMessage("---- " + name + "'s statistics ----");
+            Resource.sendMessage("------ " + name + "'s statistics ------");
             Resource.sendMessage("Message count: " + stat.messageAmount());
+            Resource.sendMessage("Command count: " + stat.commandCount());
             Resource.sendMessage("Random message: " + stat.randomMessage());
+            Resource.sendMessage("Percent of Messages which were commands: " + stat.commandPercent());
             Resource.sendMessage("---------------------------------------");
             return;
         }

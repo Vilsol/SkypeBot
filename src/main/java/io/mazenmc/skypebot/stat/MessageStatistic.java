@@ -37,6 +37,16 @@ public class MessageStatistic {
         return messages.get(ThreadLocalRandom.current().nextInt(messages.size()));
     }
 
+    public int commandCount() {
+        return (int) messages.stream()
+                .filter((s) -> s.startsWith("@"))
+                .count();
+    }
+
+    public double commandPercent() {
+        return ((double) commandCount() / (double) messageAmount()) * 100;
+    }
+
     public void addMessage(String message) {
         messages.add(message);
     }
