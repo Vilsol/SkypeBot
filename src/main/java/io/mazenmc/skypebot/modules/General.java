@@ -158,7 +158,7 @@ public class General implements Module {
             Resource.sendMessage("Message count: " + stat.messageAmount());
             Resource.sendMessage("Command count: " + stat.commandCount());
             Resource.sendMessage("Random message: " + stat.randomMessage());
-            Resource.sendMessage("Percent of Messages which were commands: " + Math.round(stat.commandPercent()));
+            Resource.sendMessage("Percent of Messages which were commands: " + Math.round(stat.commandPercent()) + "%");
             Resource.sendMessage("---------------------------------------");
             return;
         }
@@ -202,7 +202,7 @@ public class General implements Module {
                 .count();
 
         Resource.sendMessage(Math.round(((commands / total) * 100)) + "% of those messages were commands");
-        Resource.sendMessage(commands + " were sent");
+        Resource.sendMessage(commands + " commands were sent");
     }
 
     @Command(name = "md5")
