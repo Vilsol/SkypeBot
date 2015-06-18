@@ -67,7 +67,7 @@ public class Printer extends Thread implements ClipboardOwner {
                 pureSend(messageQueue.remove());
 
                 try {
-                    Thread.sleep(150);
+                    Thread.sleep(300);
                 } catch (InterruptedException ignored) {
                 }
             } else {
