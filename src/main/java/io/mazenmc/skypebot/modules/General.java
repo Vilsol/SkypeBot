@@ -246,14 +246,17 @@ public class General implements Module {
 
     @Command(name = "whatwouldrandomsay")
     public static void cmdRandomSay(ChatMessage chat, @Optional String lol) throws SkypeException {
-        List<ChatMessage> messages = SkypeBot.getInstance().getLastMessages();
-        ChatMessage message = messages.get(ThreadLocalRandom.current().nextInt(messages.size()));
 
-        while (message.getContent().startsWith("@")) {
-            message = messages.get(ThreadLocalRandom.current().nextInt(messages.size()));
+        Map<String, MessageStatistic> messageStatisticMap = StatisticsManager.instance().statistics();
+        String username = (String) messageStatisticMap.keySet().toArray()[ThreadLocalRandom.current().nextInt(0, messageStatisticMap.size())];
+        MessageStatistic statistic = messageStatisticMap.get(username);
+        String message = statistic.randomMessage();
+
+        while (message.startsWith("@")) {
+            message = statistic.randomMessage();
         }
-        
-        Resource.sendMessage(chat, message.getSenderDisplayName() + " says: \" " + message.getContent() + " \" ");
+
+        Resource.sendMessage(chat, username + " says: \" " + message + " \" ");
     }
 
     @Command(name = "rant")
