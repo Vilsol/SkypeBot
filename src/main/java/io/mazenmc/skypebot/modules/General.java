@@ -39,6 +39,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class General implements Module {
@@ -166,15 +167,40 @@ public class General implements Module {
 
         Collections.sort(messages, (a, b) -> b.messageAmount() - a.messageAmount());
 
+        Resource.sendMessage("---------------------------------------");
+
         IntStream.range(0, 5).forEach((i) -> {
             if (messages.size() <= i)
                 return;
 
             MessageStatistic stat = messages.get(i);
 
-            Resource.sendMessage(chat, StatisticsManager.instance().ownerFor(stat) + ": " +
+            Resource.sendMessage(StatisticsManager.instance().ownerFor(stat) + ": " +
                     stat.messageAmount());
         });
+
+        Resource.sendMessage("---------------------------------------");
+
+        int total = messages.stream()
+                .mapToInt(MessageStatistic::messageAmount)
+                .sum();
+
+        Resource.sendMessage(total + " total messages sent in this chat (which has been logged by the bot)");
+        Resource.sendMessage(messages.size() + " members sent messages which were aknowledged by the bot");
+
+        List<List<String>> raw = messages.stream()
+                .map(MessageStatistic::messages)
+                .collect(Collectors.toList());
+        List<String> msgs = new ArrayList<>(total);
+
+        raw.forEach(msgs::addAll);
+
+        long commands = msgs.stream()
+                .filter((s) -> s.startsWith("@"))
+                .count();
+
+        Resource.sendMessage(((commands / total) * 100) + "% of those messages were commands");
+        Resource.sendMessage(commands + " were sent");
     }
 
     @Command(name = "md5")
