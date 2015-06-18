@@ -199,7 +199,7 @@ public class General implements Module {
                 .filter((s) -> s.startsWith("@"))
                 .count();
 
-        Resource.sendMessage(((double) (commands / total) * 100) + "% of those messages were commands");
+        Resource.sendMessage(((float) (commands / total) * 100) + "% of those messages were commands");
         Resource.sendMessage(commands + " were sent");
     }
 
