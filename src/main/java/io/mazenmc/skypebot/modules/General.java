@@ -158,7 +158,7 @@ public class General implements Module {
             Resource.sendMessage("Message count: " + stat.messageAmount());
             Resource.sendMessage("Command count: " + stat.commandCount());
             Resource.sendMessage("Random message: " + stat.randomMessage());
-            Resource.sendMessage("Percent of Messages which were commands: " + stat.commandPercent());
+            Resource.sendMessage("Percent of Messages which were commands: " + Math.round(stat.commandPercent()));
             Resource.sendMessage("---------------------------------------");
             return;
         }
@@ -183,7 +183,7 @@ public class General implements Module {
 
         Resource.sendMessage("---------------------------------------");
 
-        int total = messages.stream()
+        double total = messages.stream()
                 .mapToInt(MessageStatistic::messageAmount)
                 .sum();
 
@@ -193,15 +193,15 @@ public class General implements Module {
         List<List<String>> raw = messages.stream()
                 .map(MessageStatistic::messages)
                 .collect(Collectors.toList());
-        List<String> msgs = new ArrayList<>(total);
+        List<String> msgs = new ArrayList<>((int) total);
 
         raw.forEach(msgs::addAll);
 
-        long commands = msgs.stream()
+        double commands = msgs.stream()
                 .filter((s) -> s.startsWith("@"))
                 .count();
 
-        Resource.sendMessage(((float) (commands / total) * 100) + "% of those messages were commands");
+        Resource.sendMessage(((commands / total) * 100) + "% of those messages were commands");
         Resource.sendMessage(commands + " were sent");
     }
 
