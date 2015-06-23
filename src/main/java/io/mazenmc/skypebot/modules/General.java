@@ -188,7 +188,7 @@ public class General implements Module {
                 .sum();
 
         Resource.sendMessage(total + " total messages sent in this chat (which has been logged by the bot)");
-        Resource.sendMessage(messages.size() + " members sent messages which were aknowledged by the bot");
+        Resource.sendMessage(messages.size() + " members sent messages which were acknowledged by the bot");
 
         List<List<String>> raw = messages.stream()
                 .map(MessageStatistic::messages)
