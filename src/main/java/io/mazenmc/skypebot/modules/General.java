@@ -200,8 +200,12 @@ public class General implements Module {
         double commands = msgs.stream()
                 .filter((s) -> s.startsWith("@"))
                 .count();
+        long characters = msgs.stream()
+                .mapToLong(String::length)
+                .sum();
 
         Resource.sendMessage(Math.round(((commands / total) * 100)) + "% of those messages were commands");
+        Resource.sendMessage(characters + " characters were sent");
         Resource.sendMessage(commands + " commands were sent");
     }
 
