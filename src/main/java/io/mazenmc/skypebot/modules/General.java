@@ -168,6 +168,10 @@ public class General implements Module {
                 .values());
 
         Collections.sort(messages, (a, b) -> b.messageAmount() - a.messageAmount());
+        
+        double total = messages.stream()
+                .mapToInt(MessageStatistic::messageAmount)
+                .sum();
 
         Resource.sendMessage("---------------------------------------");
 
@@ -178,14 +182,10 @@ public class General implements Module {
             MessageStatistic stat = messages.get(i);
 
             Resource.sendMessage(StatisticsManager.instance().ownerFor(stat) + ": " +
-                    stat.messageAmount());
+                    stat.messageAmount() + " - " + (stat.messageAmount()/total)*100 + "%");
         });
 
         Resource.sendMessage("---------------------------------------");
-
-        double total = messages.stream()
-                .mapToInt(MessageStatistic::messageAmount)
-                .sum();
 
         Resource.sendMessage(total + " total messages sent in this chat (which has been logged by the bot)");
         Resource.sendMessage(messages.size() + " members sent messages which were acknowledged by the bot");
