@@ -181,7 +181,7 @@ public class General implements Module {
 
             MessageStatistic stat = messages.get(i);
             
-            Long percentage = Math.round((stat.messageAmount()/total)*100);
+            long percentage = Math.round((stat.messageAmount()/total)*100);
 
             Resource.sendMessage(StatisticsManager.instance().ownerFor(stat) + ": " +
                     stat.messageAmount() + " - " + percentage + "%");
