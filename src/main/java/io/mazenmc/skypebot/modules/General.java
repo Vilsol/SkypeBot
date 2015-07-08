@@ -158,7 +158,7 @@ public class General implements Module {
             Resource.sendMessage("Message count: " + stat.messageAmount());
             Resource.sendMessage("Command count: " + stat.commandCount());
             if (name.equals("troll.dude.3") || name.equals("julian.ayy")) {
-                Resource.sendMessage("Random message: LOOOOOOLL LMAO LMFAO ROFL 4111RRRRR AIIIR OMG LOOOl"));
+                Resource.sendMessage("Random message: LOOOOOOLL LMAO LMFAO ROFL 4111RRRRR AIIIR OMG LOOOl");
             } else {
                 Resource.sendMessage("Random message: " + stat.randomMessage());
             }
