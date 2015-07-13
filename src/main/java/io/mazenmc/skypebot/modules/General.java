@@ -538,7 +538,7 @@ public class General implements Module {
 
     @Command(name = "restoretopic", admin = true)
     public static void cmdRestoreTopic(ChatMessage chatMessage) throws SkypeException {
-        Resource.sendMessage("/topic Mazen's Skype Chat :: Student freebies: https://education.github.com | https://www.jetbrains.com/student/ | http://products.office.com/en-us/student/office-in-education");
+        Resource.sendMessage("/topic Mazen's Skype Chat");
     }
 
     @Command(name = "has changed the conversation picture.", command = false)
