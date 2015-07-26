@@ -37,7 +37,8 @@ public class Wikipedia implements Module{
             Resource.sendMessage(chat, "Invalid Wikipedia URL!");
             return;
         }
-        Resource.sendMessage(chat, getWikipediaSnip(articleSlug));
+
+        Resource.sendMessage(chat, getWikipediaSnip(articleSlug.split(" ")[0]));
     }
 
     public static String getWikipediaSnip(String slug) throws IOException, JSONException{
