@@ -284,10 +284,9 @@ public class General implements Module {
 
     @Command(name = "whatwouldrandomsay")
     public static void cmdRandomSay(ChatMessage chat, @Optional String lol) throws SkypeException {
-
         Map<String, MessageStatistic> messageStatisticMap = StatisticsManager.instance().statistics();
         String username = (String) messageStatisticMap.keySet().toArray()[ThreadLocalRandom.current().nextInt(0, messageStatisticMap.size())];
-        MessageStatistic statistic = messageStatisticMap.get(username);
+        MessageStatistic statistic = messageStatisticMap.get(lol != null ? lol.split(" ")[0] : username);
         String message = statistic.randomMessage();
 
         while (message.startsWith("@")) {
