@@ -128,7 +128,7 @@ public class SkypeBot {
 
         try {
             // register users
-            for (Chat chat : Skype.getAllChats()) {
+            for (Chat chat : Skype.getAllRecentChats()) {
                 for (User user : chat.getAllMembers()) {
                     System.out.println("checked " + user.getId());
                     if (!StatisticsManager.instance().statistics()
