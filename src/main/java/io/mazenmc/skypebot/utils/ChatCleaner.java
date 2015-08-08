@@ -21,7 +21,7 @@ public class ChatCleaner implements Runnable {
                     .filter((person) -> !person.messages().isEmpty())
                     .forEach((person) -> {
                 long lastSpoken = person.messages().stream()
-                        .sorted((m1, m2) -> (int) (m1.time() - m2.time())).findFirst().get().time();
+                        .sorted((m1, m2) -> (int) (m2.time() - m1.time())).findFirst().get().time();
                 long days = TimeUnit.MILLISECONDS.toDays(System.currentTimeMillis() - lastSpoken);
 
                 if (days >= 7) {
