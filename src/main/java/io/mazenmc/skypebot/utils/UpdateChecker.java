@@ -39,12 +39,14 @@ public class UpdateChecker extends Thread {
                         .header("Content-Type", "application/json")
                         .asJson();
 
+                System.out.println(response.getBody().toString());
+
                 JsonNode node = response.getBody();
                 JSONObject recentCommit = node.getArray().getJSONObject(0);
                 String sha = recentCommit.getString("sha");
 
                 if (!lastSha.equals(sha) && !lastSha.equals("--")) {
-                    URL url = new URL("https://github.com/MazenMC/SkypeBot/archive/master.zip");
+                    URL url = new URL("https://github.com/mkotb/SkypeBot/archive/master.zip");
                     HttpsURLConnection c = (HttpsURLConnection) url.openConnection();
                     JSONObject commit = recentCommit.getJSONObject("commit");
 
