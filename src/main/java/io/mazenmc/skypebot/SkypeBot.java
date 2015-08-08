@@ -142,6 +142,12 @@ public class SkypeBot {
         StatisticsManager.instance().loadStatistics();
         new Thread(new ChatCleaner(), "ChatCleaner Thread").start();
 
+        try {
+            for (Chat chat : Skype.getAllChats()) {
+                usersFor(chat);
+            }
+        } catch (SkypeException ignored) {}
+
         Resource.sendMessage("/me " + Resource.VERSION + " initialized!");
     }
 
@@ -230,7 +236,7 @@ public class SkypeBot {
             System.out.println(ex);
             System.out.println(response);
             System.out.println(responseHeader.length());
-            
+
             String data = response.substring(responseHeader.length());
 
             System.out.println(data);
