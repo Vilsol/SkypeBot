@@ -20,7 +20,7 @@ public class ChatCleaner implements Runnable {
             stats.stream().forEach((person) -> {
                 long lastSpoken = person.messages().stream()
                         .sorted((m1, m2) -> (int) (m1.time() - m2.time())).findFirst().get().time();
-                long days = TimeUnit.MILLISECONDS.convert(lastSpoken, TimeUnit.DAYS);
+                long days = TimeUnit.MILLISECONDS.toDays(lastSpoken);
 
                 if (days >= 7) {
                     while (!SkypeBot.getInstance().getPrinter().isQueueEmpty()) {
