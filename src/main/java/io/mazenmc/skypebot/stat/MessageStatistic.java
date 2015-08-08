@@ -42,8 +42,8 @@ public class MessageStatistic {
         return messages.size();
     }
 
-    public String randomMessage() {
-        return messages.get(ThreadLocalRandom.current().nextInt(messages.size())).contents();
+    public Message randomMessage() {
+        return messages.get(ThreadLocalRandom.current().nextInt(messages.size()));
     }
 
     public int commandCount() {

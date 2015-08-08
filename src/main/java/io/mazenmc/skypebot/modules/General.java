@@ -289,13 +289,13 @@ public class General implements Module {
         Map<String, MessageStatistic> messageStatisticMap = StatisticsManager.instance().statistics();
         String username = (String) messageStatisticMap.keySet().toArray()[ThreadLocalRandom.current().nextInt(0, messageStatisticMap.size())];
         MessageStatistic statistic = messageStatisticMap.get(lol != null ? lol.split(" ")[0] : username);
-        String message = statistic.randomMessage();
+        Message message = statistic.randomMessage();
 
-        while (message.startsWith("@")) {
+        while (message.contents().startsWith("@")) {
             message = statistic.randomMessage();
         }
 
-        Resource.sendMessage(chat, username + " says: \" " + message + " \" ");
+        Resource.sendMessage(chat, username + " says: \" " + message.contents() + " \" at " + new Date(message.time()).toString());
     }
 
     @Command(name = "whatwouldrandomquestion")
@@ -303,14 +303,16 @@ public class General implements Module {
         Map<String, MessageStatistic> messageStatisticMap = StatisticsManager.instance().statistics();
         MessageStatistic[] statistics = messageStatisticMap.values().toArray(new MessageStatistic[messageStatisticMap.size()]);
         MessageStatistic stat = statistics[ThreadLocalRandom.current().nextInt(statistics.length)];
-        String message = stat.randomMessage();
+        Message msg = stat.randomMessage();
+        String message = msg.contents();
 
         while (message.startsWith("@") || (!message.endsWith("?") || !message.toLowerCase().startsWith("why"))) {
             stat = statistics[ThreadLocalRandom.current().nextInt(statistics.length)];
-            message = stat.randomMessage();
+            msg = stat.randomMessage();
+            message = msg.contents();
         }
 
-        Resource.sendMessage(chat, stat.name() + " says: \" " + message + " \" ");
+        Resource.sendMessage(chat, stat.name() + " said: \" " + msg.contents() + " \" at " + new Date(msg.time()).toString());
     }
 
     @Command(name = "rant")
