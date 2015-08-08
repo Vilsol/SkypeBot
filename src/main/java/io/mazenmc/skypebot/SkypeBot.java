@@ -61,6 +61,20 @@ public class SkypeBot {
             Skype.addChatMessageListener(new GlobalChatMessageListener() {
                 public void chatMessageReceived(ChatMessage received) throws SkypeException {
                     Callback<String> callback = null;
+                    Chat chat = received.getChat();
+
+                    if (!locked) {
+                        for (User user : chat.getAllMembers()) {
+                            System.out.println("checked " + user.getId());
+                            if (!StatisticsManager.instance().statistics()
+                                    .containsKey(user.getId())) {
+                                StatisticsManager.instance().addStat(user.getId());
+                                System.out.println("added " + user.getId() + " as a valid stat");
+                            }
+                        }
+
+                        locked = true;
+                    }
 
                     if ((callback = Resource.getCallback(received.getSenderId())) != null) {
                         callback.callback(received.getContent());
@@ -125,23 +139,6 @@ public class SkypeBot {
         cooldownHandler = new CooldownHandler();
         StatisticsManager.instance().loadStatistics();
         new Thread(new ChatCleaner(), "ChatCleaner Thread").start();
-
-        try {
-            // register users
-            for (Chat chat : Skype.getAllRecentChats()) {
-                for (User user : chat.getAllMembers()) {
-                    System.out.println("checked " + user.getId());
-                    if (!StatisticsManager.instance().statistics()
-                            .containsKey(user.getId())) {
-                        StatisticsManager.instance().addStat(user.getId());
-                        System.out.println("added " + user.getId() + " as a valid stat");
-                    }
-                }
-            }
-        } catch (SkypeException e) {
-            System.out.println("can't register users");
-            e.printStackTrace();
-        }
 
         Resource.sendMessage("/me " + Resource.VERSION + " initialized!");
     }
