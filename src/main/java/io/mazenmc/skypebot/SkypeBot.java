@@ -127,12 +127,15 @@ public class SkypeBot {
         new Thread(new ChatCleaner(), "ChatCleaner Thread").start();
 
         try {
-            // register old messages
-            for (User user : Skype.getAllChats()[0].getAllMembers()) {
-                if (!StatisticsManager.instance().statistics()
-                        .containsKey(user.getId())) {
-                    StatisticsManager.instance().addStat(user.getId());
-                    System.out.println("added " + user.getId() + " as a valid stat");
+            // register users
+            for (Chat chat : Skype.getAllChats()) {
+                for (User user : chat.getAllMembers()) {
+                    System.out.println("checked " + user.getId());
+                    if (!StatisticsManager.instance().statistics()
+                            .containsKey(user.getId())) {
+                        StatisticsManager.instance().addStat(user.getId());
+                        System.out.println("added " + user.getId() + " as a valid stat");
+                    }
                 }
             }
         } catch (SkypeException e) {
