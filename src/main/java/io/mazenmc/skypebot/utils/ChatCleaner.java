@@ -9,7 +9,6 @@ import io.mazenmc.skypebot.stat.MessageStatistic;
 import io.mazenmc.skypebot.stat.StatisticsManager;
 
 import java.util.Collection;
-import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 public class ChatCleaner implements Runnable {

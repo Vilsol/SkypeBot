@@ -32,6 +32,10 @@ public class MessageStatistic {
                 ex.printStackTrace();
             }
         });
+
+        if (this.messages.isEmpty()) {
+            this.messages.add(new Message("<never sent message>", System.currentTimeMillis()));
+        }
     }
 
     public String name() {
