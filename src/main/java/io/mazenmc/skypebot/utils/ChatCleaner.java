@@ -22,6 +22,8 @@ public class ChatCleaner implements Runnable {
                         .sorted((m1, m2) -> (int) (m1.time() - m2.time())).findFirst().get().time();
                 long days = TimeUnit.MILLISECONDS.toDays(lastSpoken);
 
+                System.out.println("removing " + person.name() + " for inactivity, " + days + ", " + lastSpoken);
+
                 if (days >= 7) {
                     while (!SkypeBot.getInstance().getPrinter().isQueueEmpty()) {
                         try {
