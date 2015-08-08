@@ -153,6 +153,10 @@ public class General implements Module {
             if ("".equals(name))
                 name = person;
 
+            List<Message> messages = stat.messages();
+
+            messages.sort((m1, m2) -> (int) (m2.time() - m1.time()));
+
             Resource.sendMessage("------ " + name + "'s statistics ------");
             Resource.sendMessage("Message count: " + stat.messageAmount());
             Resource.sendMessage("Command count: " + stat.commandCount());
@@ -161,8 +165,8 @@ public class General implements Module {
             } else {
                 Resource.sendMessage("Random message: " + stat.randomMessage().contents());
             }
-            Resource.sendMessage("Last message sent at " + new Date(stat.messages().stream()
-                    .sorted((m1, m2) -> (int) (m2.time() - m1.time())).findFirst().get().time()).toString());
+            Resource.sendMessage("First message sent at " + new Date(messages.get(messages.size() - 1).time()).toString());
+            Resource.sendMessage("Last message sent at " + new Date(messages.get(0).time()).toString());
             Resource.sendMessage("Percent of Messages which were commands: " + Math.round(stat.commandPercent()) + "%");
             Resource.sendMessage("---------------------------------------");
             return;
