@@ -129,7 +129,7 @@ public class SkypeBot {
         if (args.length > 0) {
             try {
                 // register old messages
-                for (ChatMessage message : Skype.getAllBookmarkedChats()[0].getAllChatMessages()) {
+                for (ChatMessage message : Skype.getAllChats()[0].getAllChatMessages()) {
                     StatisticsManager.instance().logMessage(message);
                 }
             } catch (SkypeException e) {
