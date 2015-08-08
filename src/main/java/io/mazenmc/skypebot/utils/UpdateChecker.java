@@ -39,6 +39,9 @@ public class UpdateChecker extends Thread {
                         .header("Content-Type", "application/json")
                         .asJson();
 
+                System.out.println(accessToken);
+                System.out.println("https://api.github.com/repos/mkotb/SkypeBot/commits?page=1" +
+                        "&access_token=" + accessToken);
                 System.out.println(response.getBody().toString());
 
                 JsonNode node = response.getBody();
