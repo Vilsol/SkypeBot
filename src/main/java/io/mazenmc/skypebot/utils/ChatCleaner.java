@@ -9,6 +9,7 @@ import io.mazenmc.skypebot.stat.MessageStatistic;
 import io.mazenmc.skypebot.stat.StatisticsManager;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 public class ChatCleaner implements Runnable {
@@ -20,7 +21,7 @@ public class ChatCleaner implements Runnable {
             stats.stream().forEach((person) -> {
                 long lastSpoken = person.messages().stream()
                         .sorted((m1, m2) -> (int) (m1.time() - m2.time())).findFirst().get().time();
-                long days = TimeUnit.MILLISECONDS.toDays(lastSpoken);
+                long days = TimeUnit.MILLISECONDS.toDays(System.currentTimeMillis() - lastSpoken);
 
                 System.out.println("removing " + person.name() + " for inactivity, " + days + ", " + lastSpoken);
 
