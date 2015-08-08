@@ -124,7 +124,7 @@ public class SkypeBot {
 
         cooldownHandler = new CooldownHandler();
         StatisticsManager.instance().loadStatistics();
-        new Thread(new ChatCleaner(), "ChatCleaner Thread");
+        new Thread(new ChatCleaner(), "ChatCleaner Thread").start();
 
         if (args.length > 0) {
             try {
