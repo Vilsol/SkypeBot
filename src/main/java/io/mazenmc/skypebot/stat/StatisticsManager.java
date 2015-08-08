@@ -23,10 +23,10 @@ public class StatisticsManager {
 
     public void logMessage(ChatMessage message) throws SkypeException {
         if (!statistics.containsKey(message.getSenderId()))
-            statistics.put(message.getSenderId(), new MessageStatistic());
+            statistics.put(message.getSenderId(), new MessageStatistic(message.getSenderId()));
 
         try {
-            statistics.get(message.getSenderId()).addMessage(message.getContent());
+            statistics.get(message.getSenderId()).addMessage(message);
         } catch (SkypeException ex) {
             ex.printStackTrace();
         }
@@ -68,7 +68,7 @@ public class StatisticsManager {
                 String key = (String) obj;
 
                 try {
-                    statistics.put(key, new MessageStatistic(object.getJSONArray(key)));
+                    statistics.put(key, new MessageStatistic(key, object.getJSONArray(key)));
                 } catch (JSONException ex) {
                     ex.printStackTrace();
                 }
@@ -83,7 +83,21 @@ public class StatisticsManager {
 
         for (Map.Entry<String, MessageStatistic> entry : statistics.entrySet()) {
             try {
-                object.put(entry.getKey(), new JSONArray(entry.getValue().messages()));
+                JSONArray array = new JSONArray();
+
+                entry.getValue().messages().forEach((m) -> {
+                    try {
+                        JSONObject obj = new JSONObject();
+
+                        obj.put("contents", m.contents());
+                        obj.put("time", m.time());
+
+                        array.put(obj);
+                    } catch (JSONException ignored) {
+                    }
+                });
+
+                object.put(entry.getKey(), array);
             } catch (JSONException ex) {
                 ex.printStackTrace();
             }

@@ -1,32 +1,41 @@
 package io.mazenmc.skypebot.stat;
 
+import com.skype.ChatMessage;
+import com.skype.SkypeException;
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.IntStream;
 
 public class MessageStatistic {
-    private final List<String> messages;
+    private final String name;
+    private final List<Message> messages;
 
-    MessageStatistic() {
+    MessageStatistic(String name) {
+        this.name = name;
         messages = new ArrayList<>();
     }
 
-    MessageStatistic(JSONArray messages) {
-        this();
+    MessageStatistic(String name, JSONArray messages) {
+        this(name);
 
         IntStream.range(0, messages.length()).forEach((i) -> {
             try {
-                this.messages.add(messages.getString(i));
+                JSONObject object = messages.getJSONObject(i);
+
+                this.messages.add(new Message(object.getString("contents"), object.getLong("time")));
             } catch (JSONException ex) {
                 ex.printStackTrace();
             }
         });
+    }
+
+    public String name() {
+        return name;
     }
 
     public int messageAmount() {
@@ -34,11 +43,12 @@ public class MessageStatistic {
     }
 
     public String randomMessage() {
-        return messages.get(ThreadLocalRandom.current().nextInt(messages.size()));
+        return messages.get(ThreadLocalRandom.current().nextInt(messages.size())).contents();
     }
 
     public int commandCount() {
         return (int) messages.stream()
+                .map(Message::contents)
                 .filter((s) -> s.startsWith("@"))
                 .count();
     }
@@ -47,11 +57,11 @@ public class MessageStatistic {
         return ((double) commandCount() / (double) messageAmount()) * 100;
     }
 
-    public void addMessage(String message) {
-        messages.add(message);
+    public void addMessage(ChatMessage message) throws SkypeException {
+        messages.add(new Message(message.getContent(), message.getTime().getTime()));
     }
 
-    public List<String> messages() {
+    public List<Message> messages() {
         return messages;
     }
 

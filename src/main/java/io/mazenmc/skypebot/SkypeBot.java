@@ -9,10 +9,7 @@ import io.mazenmc.skypebot.engine.bot.ModuleManager;
 import io.mazenmc.skypebot.engine.bot.Printer;
 import io.mazenmc.skypebot.handler.CooldownHandler;
 import io.mazenmc.skypebot.stat.StatisticsManager;
-import io.mazenmc.skypebot.utils.Callback;
-import io.mazenmc.skypebot.utils.Resource;
-import io.mazenmc.skypebot.utils.UpdateChecker;
-import io.mazenmc.skypebot.utils.Utils;
+import io.mazenmc.skypebot.utils.*;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.restlet.Component;
 import org.restlet.Server;
@@ -127,6 +124,7 @@ public class SkypeBot {
 
         cooldownHandler = new CooldownHandler();
         StatisticsManager.instance().loadStatistics();
+        new Thread(new ChatCleaner(), "ChatCleaner Thread");
 
         Resource.sendMessage("/me " + Resource.VERSION + " initialized!");
     }

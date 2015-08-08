@@ -14,7 +14,6 @@ import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
-import com.mashape.unirest.request.GetRequest;
 import com.skype.ChatMessage;
 import com.skype.Skype;
 import com.skype.SkypeException;
@@ -22,11 +21,11 @@ import com.skype.User;
 import io.mazenmc.skypebot.SkypeBot;
 import io.mazenmc.skypebot.engine.bot.*;
 import io.mazenmc.skypebot.engine.bot.Optional;
+import io.mazenmc.skypebot.stat.Message;
 import io.mazenmc.skypebot.stat.MessageStatistic;
 import io.mazenmc.skypebot.stat.StatisticsManager;
 import io.mazenmc.skypebot.utils.Resource;
 import io.mazenmc.skypebot.utils.Utils;
-import jdk.nashorn.internal.parser.JSONParser;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -162,6 +161,8 @@ public class General implements Module {
             } else {
                 Resource.sendMessage("Random message: " + stat.randomMessage());
             }
+            Resource.sendMessage("Last message sent at " + new Date(stat.messages().stream()
+                    .sorted((m1, m2) -> (int) (m1.time() - m2.time())).findFirst().get().time()).toString());
             Resource.sendMessage("Percent of Messages which were commands: " + Math.round(stat.commandPercent()) + "%");
             Resource.sendMessage("---------------------------------------");
             return;
@@ -184,8 +185,8 @@ public class General implements Module {
                 return;
 
             MessageStatistic stat = messages.get(i);
-            
-            long percentage = Math.round((stat.messageAmount()/total)*100);
+
+            long percentage = Math.round((stat.messageAmount() / total) * 100);
 
             Resource.sendMessage(StatisticsManager.instance().ownerFor(stat) + ": " +
                     stat.messageAmount() + " - " + percentage + "%");
@@ -198,6 +199,7 @@ public class General implements Module {
 
         List<List<String>> raw = messages.stream()
                 .map(MessageStatistic::messages)
+                .map((l) -> l.stream().map(Message::contents).collect(Collectors.toList()))
                 .collect(Collectors.toList());
         List<String> msgs = new ArrayList<>((int) total);
 
@@ -294,6 +296,21 @@ public class General implements Module {
         }
 
         Resource.sendMessage(chat, username + " says: \" " + message + " \" ");
+    }
+
+    @Command(name = "whatwouldrandomquestion")
+    public static void cmdRandomQuestion(ChatMessage chat) throws SkypeException {
+        Map<String, MessageStatistic> messageStatisticMap = StatisticsManager.instance().statistics();
+        MessageStatistic[] statistics = messageStatisticMap.values().toArray(new MessageStatistic[messageStatisticMap.size()]);
+        MessageStatistic stat = statistics[ThreadLocalRandom.current().nextInt(statistics.length)];
+        String message = stat.randomMessage();
+
+        while (message.startsWith("@") || (!message.endsWith("?") || !message.toLowerCase().startsWith("why"))) {
+            stat = statistics[ThreadLocalRandom.current().nextInt(statistics.length)];
+            message = stat.randomMessage();
+        }
+
+        Resource.sendMessage(chat, stat.name() + " says: \" " + message + " \" ");
     }
 
     @Command(name = "rant")
