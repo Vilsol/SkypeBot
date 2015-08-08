@@ -18,7 +18,9 @@ public class ChatCleaner implements Runnable {
         while(!Thread.currentThread().isInterrupted()) {
             Collection<MessageStatistic> stats = StatisticsManager.instance().statistics().values();
 
-            stats.stream().forEach((person) -> {
+            stats.stream()
+                    .filter((person) -> !person.messages().isEmpty())
+                    .forEach((person) -> {
                 long lastSpoken = person.messages().stream()
                         .sorted((m1, m2) -> (int) (m1.time() - m2.time())).findFirst().get().time();
                 long days = TimeUnit.MILLISECONDS.toDays(System.currentTimeMillis() - lastSpoken);
