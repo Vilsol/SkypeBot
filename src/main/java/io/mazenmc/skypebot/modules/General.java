@@ -162,7 +162,7 @@ public class General implements Module {
                 Resource.sendMessage("Random message: " + stat.randomMessage().contents());
             }
             Resource.sendMessage("Last message sent at " + new Date(stat.messages().stream()
-                    .sorted((m1, m2) -> (int) (m1.time() - m2.time())).findFirst().get().time()).toString());
+                    .sorted((m1, m2) -> (int) (m2.time() - m1.time())).findFirst().get().time()).toString());
             Resource.sendMessage("Percent of Messages which were commands: " + Math.round(stat.commandPercent()) + "%");
             Resource.sendMessage("---------------------------------------");
             return;

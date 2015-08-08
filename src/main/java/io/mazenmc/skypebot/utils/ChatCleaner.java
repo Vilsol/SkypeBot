@@ -26,15 +26,6 @@ public class ChatCleaner implements Runnable {
 
                 if (days >= 7) {
                     System.out.println("removing " + person.name() + " for inactivity, " + days + ", " + lastSpoken);
-
-                    while (!SkypeBot.getInstance().getPrinter().isQueueEmpty()) {
-                        try {
-                            Thread.sleep(1000L);
-                            System.out.println("sleeping for 1s while queue is occupied");
-                        } catch (InterruptedException ignored) {
-                        }
-                    }
-
                     String name = person.name();
 
                     try {
