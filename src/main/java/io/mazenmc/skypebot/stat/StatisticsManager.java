@@ -32,8 +32,8 @@ public class StatisticsManager {
         }
     }
 
-    public void addStat(String id) {
-        statistics.put(id, new MessageStatistic(id));
+    public void removeStat(String id) {
+        statistics.remove(id);
     }
 
     public String ownerFor(MessageStatistic statistic) {

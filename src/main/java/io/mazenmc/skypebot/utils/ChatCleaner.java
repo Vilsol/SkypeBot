@@ -51,6 +51,7 @@ public class ChatCleaner implements Runnable {
 
                     Resource.sendMessage("RIP " + name + ", may based god have mercy on his soul and fuck his bitches.");
                     Resource.sendMessage("/kick " + person.name());
+                    StatisticsManager.instance().removeStat(person.name());
                 }
             });
 
