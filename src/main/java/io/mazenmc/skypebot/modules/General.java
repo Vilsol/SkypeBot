@@ -159,7 +159,7 @@ public class General implements Module {
             if (name.equals("troll.dude.3") || name.equals("julian.ayy")) {
                 Resource.sendMessage("Random message: LOOOOOOLL LMAO RICE ASIANS LMFAO ROFL 4111RRRRR AIIIR OMG LOOOl");
             } else {
-                Resource.sendMessage("Random message: " + stat.randomMessage());
+                Resource.sendMessage("Random message: " + stat.randomMessage().contents());
             }
             Resource.sendMessage("Last message sent at " + new Date(stat.messages().stream()
                     .sorted((m1, m2) -> (int) (m1.time() - m2.time())).findFirst().get().time()).toString());
