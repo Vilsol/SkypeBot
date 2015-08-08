@@ -32,6 +32,10 @@ public class StatisticsManager {
         }
     }
 
+    public void addStat(String id) {
+        statistics.put(id, new MessageStatistic(id));
+    }
+
     public String ownerFor(MessageStatistic statistic) {
         for (Map.Entry<String, MessageStatistic> entry : statistics.entrySet()) {
             if (entry.getValue().equals(statistic))

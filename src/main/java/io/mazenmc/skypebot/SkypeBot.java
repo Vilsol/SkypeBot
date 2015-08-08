@@ -126,16 +126,18 @@ public class SkypeBot {
         StatisticsManager.instance().loadStatistics();
         new Thread(new ChatCleaner(), "ChatCleaner Thread").start();
 
-        if (args.length > 0) {
-            try {
-                // register old messages
-                for (ChatMessage message : Skype.getAllChats()[0].getRecentChatMessages()) {
-                    StatisticsManager.instance().logMessage(message);
+        try {
+            // register old messages
+            for (User user : Skype.getAllChats()[0].getAllMembers()) {
+                if (!StatisticsManager.instance().statistics()
+                        .containsKey(user.getId())) {
+                    StatisticsManager.instance().addStat(user.getId());
+                    System.out.println("added " + user.getId() + " as a valid stat");
                 }
-            } catch (SkypeException e) {
-                System.out.println("can't register old messages");
-                e.printStackTrace();
             }
+        } catch (SkypeException e) {
+            System.out.println("can't register users");
+            e.printStackTrace();
         }
 
         Resource.sendMessage("/me " + Resource.VERSION + " initialized!");
