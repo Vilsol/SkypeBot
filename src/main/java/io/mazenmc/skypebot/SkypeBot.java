@@ -4,6 +4,8 @@ import com.google.code.chatterbotapi.ChatterBotFactory;
 import com.google.code.chatterbotapi.ChatterBotSession;
 import com.google.code.chatterbotapi.ChatterBotType;
 import com.skype.*;
+import com.skype.connector.Connector;
+import com.skype.connector.ConnectorException;
 import io.mazenmc.skypebot.api.API;
 import io.mazenmc.skypebot.engine.bot.ModuleManager;
 import io.mazenmc.skypebot.engine.bot.Printer;
@@ -64,7 +66,7 @@ public class SkypeBot {
                     Chat chat = received.getChat();
 
                     if (!locked) {
-                        for (User user : chat.getAllMembers()) {
+                        for (User user : usersFor(chat)) {
                             System.out.println("checked " + user.getId());
                             if (!StatisticsManager.instance().statistics()
                                     .containsKey(user.getId())) {
@@ -217,5 +219,36 @@ public class SkypeBot {
 
     public CooldownHandler getCooldownHandler() {
         return cooldownHandler;
+    }
+
+    private User[] usersFor(Chat chat) {
+        try {
+            String ex = "GET CHAT " + chat.getId() + " MEMBERS";
+            String responseHeader = "CHAT " + chat.getId() + " MEMBERS ";
+            String response = Connector.getInstance().execute(ex, responseHeader);
+
+            System.out.println(ex);
+            System.out.println(response);
+            System.out.println(responseHeader.length());
+            
+            String data = response.substring(responseHeader.length());
+
+            System.out.println(data);
+
+            if("".equals(data)) {
+                return new User[0];
+            } else {
+                String[] ids = data.split(" ");
+                User[] users = new User[ids.length];
+
+                for(int i = 0; i < ids.length; ++i) {
+                    users[i] = User.getInstance(ids[i]);
+                }
+
+                return users;
+            }
+        } catch (ConnectorException ignored) {
+            return null;
+        }
     }
 }
