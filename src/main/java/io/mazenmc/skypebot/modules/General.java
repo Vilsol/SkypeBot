@@ -306,7 +306,7 @@ public class General implements Module {
         Message msg = stat.randomMessage();
         String message = msg.contents();
 
-        while (message.startsWith("@") || (!message.endsWith("?") || !message.toLowerCase().startsWith("why"))) {
+        while (message.startsWith("@") || (!message.endsWith("?") && !message.toLowerCase().startsWith("why"))) {
             stat = statistics[ThreadLocalRandom.current().nextInt(statistics.length)];
             msg = stat.randomMessage();
             message = msg.contents();
