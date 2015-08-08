@@ -41,7 +41,7 @@ public class SkypeBot {
     private UpdateChecker updateChecker;
     private CooldownHandler cooldownHandler;
 
-    public SkypeBot() {
+    public SkypeBot(String[] args) {
         instance = this;
 
         System.setProperty("skype.api.impl", "x11");
@@ -126,12 +126,24 @@ public class SkypeBot {
         StatisticsManager.instance().loadStatistics();
         new Thread(new ChatCleaner(), "ChatCleaner Thread");
 
+        if (args.length > 0) {
+            try {
+                // register old messages
+                for (ChatMessage message : Skype.getAllBookmarkedChats()[0].getAllChatMessages()) {
+                    StatisticsManager.instance().logMessage(message);
+                }
+            } catch (SkypeException e) {
+                System.out.println("can't register old messages");
+                e.printStackTrace();
+            }
+        }
+
         Resource.sendMessage("/me " + Resource.VERSION + " initialized!");
     }
 
     public static SkypeBot getInstance() {
         if (instance == null) {
-            new SkypeBot();
+            new SkypeBot(new String[]{});
         }
 
         return instance;
