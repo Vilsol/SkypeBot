@@ -39,7 +39,7 @@ public class Resource {
         }
     }
 
-    public static void sendMessage(String[] message) {
+    public static void sendMessages(String... message) {
         StringBuilder sb = new StringBuilder();
 
         for (String s : message) {

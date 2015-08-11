@@ -3,7 +3,6 @@ package io.mazenmc.skypebot.utils;
 import com.skype.Skype;
 import com.skype.SkypeException;
 import com.skype.User;
-import io.mazenmc.skypebot.SkypeBot;
 import io.mazenmc.skypebot.modules.General;
 import io.mazenmc.skypebot.stat.MessageStatistic;
 import io.mazenmc.skypebot.stat.StatisticsManager;
@@ -40,8 +39,8 @@ public class ChatCleaner implements Runnable {
                     } catch (SkypeException ignored) {
                     }
 
-                    Resource.sendMessage(name + " is getting kicked for inactivity for a week. RIP in peace");
-                    Resource.sendMessage("To honor " + name + ", let us review his statistics");
+                    Resource.sendMessages(name + " is getting kicked for inactivity for a week. RIP in peace",
+                            "To honor " + name + ", let us review his statistics");
 
                     try {
                         General.cmdStats(null, person.name());
@@ -49,8 +48,8 @@ public class ChatCleaner implements Runnable {
                         Resource.sendMessage("Couldn't review his statistics, must've been a terrible member of this chat");
                     }
 
-                    Resource.sendMessage("RIP " + name + ", may based god have mercy on his soul and fuck his bitches.");
-                    Resource.sendMessage("/kick " + person.name());
+                    Resource.sendMessages("RIP " + name + ", may based god have mercy on his soul and fuck his bitches.",
+                            "/kick " + person.name());
                     StatisticsManager.instance().removeStat(person.name());
                 }
             });

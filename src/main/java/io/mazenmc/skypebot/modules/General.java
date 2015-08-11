@@ -171,7 +171,7 @@ public class General implements Module {
             toSend[6] = "Percent of Messages which were commands: " + Math.round(stat.commandPercent()) + "%";
             toSend[7] = "---------------------------------------";
 
-            Resource.sendMessage(toSend);
+            Resource.sendMessages(toSend);
             return;
         }
 
@@ -224,7 +224,7 @@ public class General implements Module {
         toSend.add(characters + " characters were sent");
         toSend.add(commands + " commands were sent");
 
-        Resource.sendMessage(toSend.toArray(new String[toSend.size()]));
+        Resource.sendMessages(toSend.toArray(new String[toSend.size()]));
     }
 
     @Command(name = "md5")
