@@ -67,6 +67,11 @@ public class SkypeBot {
                         callback.callback(received.getContent());
                         return;
                     }
+                    
+                    if (received.getMessage().equals("thank mr bot")) {
+                        Resource.sendMessage("may good cpus and dedotated wams come to you");
+                        return;
+                    }
 
                     stringMessages.add(Utils.serializeMessage(received));
                     StatisticsManager.instance().logMessage(received);
