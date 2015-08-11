@@ -40,7 +40,14 @@ public class Resource {
     }
 
     public static void sendMessage(String[] message) {
-        SkypeBot.getInstance().addToQueue(message);
+        StringBuilder sb = new StringBuilder();
+
+        for (String s : message) {
+            sb.append(s)
+                    .append('\n');
+        }
+
+        sendMessage(sb.toString());
     }
 
     public static void assignCallback(String id, Callback<String> callback) {

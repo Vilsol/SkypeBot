@@ -153,25 +153,29 @@ public class General implements Module {
             if ("".equals(name))
                 name = person;
 
+            String[] toSend = new String[8];
             List<Message> messages = stat.messages();
 
             messages.sort((m1, m2) -> (int) (m2.time() - m1.time()));
 
-            Resource.sendMessage("------ " + name + "'s statistics ------");
-            Resource.sendMessage("Message count: " + stat.messageAmount());
-            Resource.sendMessage("Command count: " + stat.commandCount());
+            toSend[0] = "------ " + name + "'s statistics ------";
+            toSend[1] = "Message count: " + stat.messageAmount();
+            toSend[2] = "Command count: " + stat.commandCount();
             if (name.equals("troll.dude.3") || name.equals("julian.ayy")) {
-                Resource.sendMessage("Random message: LOOOOOOLL LMAO RICE ASIANS LMFAO ROFL 4111RRRRR AIIIR OMG LOOOl");
+                toSend[3] = "Random message: LOOOOOOLL LMAO RICE ASIANS LMFAO ROFL 4111RRRRR AIIIR OMG LOOOl";
             } else {
-                Resource.sendMessage("Random message: " + stat.randomMessage().contents());
+                toSend[3] = "Random message: " + stat.randomMessage().contents();
             }
-            Resource.sendMessage("First message sent at " + new Date(messages.get(messages.size() - 1).time()).toString());
-            Resource.sendMessage("Last message sent at " + new Date(messages.get(0).time()).toString());
-            Resource.sendMessage("Percent of Messages which were commands: " + Math.round(stat.commandPercent()) + "%");
-            Resource.sendMessage("---------------------------------------");
+            toSend[4] = "First message sent at " + new Date(messages.get(messages.size() - 1).time()).toString();
+            toSend[5] = "Last message sent at " + new Date(messages.get(0).time()).toString();
+            toSend[6] = "Percent of Messages which were commands: " + Math.round(stat.commandPercent()) + "%";
+            toSend[7] = "---------------------------------------";
+
+            Resource.sendMessage(toSend);
             return;
         }
 
+        List<String> toSend = new ArrayList<>();
         List<MessageStatistic> messages = new ArrayList<>(StatisticsManager.instance()
                 .statistics()
                 .values());
@@ -182,7 +186,7 @@ public class General implements Module {
                 .mapToInt(MessageStatistic::messageAmount)
                 .sum();
 
-        Resource.sendMessage("---------------------------------------");
+        toSend.add("---------------------------------------");
 
         IntStream.range(0, 5).forEach((i) -> {
             if (messages.size() <= i)
@@ -192,14 +196,14 @@ public class General implements Module {
 
             long percentage = Math.round((stat.messageAmount() / total) * 100);
 
-            Resource.sendMessage(StatisticsManager.instance().ownerFor(stat) + ": " +
+            toSend.add(StatisticsManager.instance().ownerFor(stat) + ": " +
                     stat.messageAmount() + " - " + percentage + "%");
         });
 
-        Resource.sendMessage("---------------------------------------");
+        toSend.add("---------------------------------------");
 
-        Resource.sendMessage(total + " total messages sent in this chat (which has been logged by the bot)");
-        Resource.sendMessage(messages.size() + " members sent messages which were acknowledged by the bot");
+        toSend.add(total + " total messages sent in this chat (which has been logged by the bot)");
+        toSend.add(messages.size() + " members sent messages which were acknowledged by the bot");
 
         List<List<String>> raw = messages.stream()
                 .map(MessageStatistic::messages)
@@ -216,9 +220,11 @@ public class General implements Module {
                 .mapToLong(String::length)
                 .sum();
 
-        Resource.sendMessage(Math.round(((commands / total) * 100)) + "% of those messages were commands");
-        Resource.sendMessage(characters + " characters were sent");
-        Resource.sendMessage(commands + " commands were sent");
+        toSend.add(Math.round(((commands / total) * 100)) + "% of those messages were commands");
+        toSend.add(characters + " characters were sent");
+        toSend.add(commands + " commands were sent");
+
+        Resource.sendMessage(toSend.toArray(new String[toSend.size()]));
     }
 
     @Command(name = "md5")
