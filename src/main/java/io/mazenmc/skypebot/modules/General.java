@@ -343,7 +343,7 @@ public class General implements Module {
 
         try {
             cleverBot = new ChatterBotFactory().create(ChatterBotType.CLEVERBOT).createSession();
-            jabberWacky = new ChatterBotFactory().create(ChatterBotType.JABBERWACKY).createSession();
+            jabberWacky = new ChatterBotFactory().create(ChatterBotType.CLEVERBOT).createSession();
         } catch (Exception ignored) {
         }
 
