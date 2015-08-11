@@ -372,13 +372,24 @@ public class General implements Module {
 
                         assert (cleverBotResponse != null && !cleverBotResponse.trim().equals(""));
 
+                        while (cleverBotResponse.startsWith("\n") ||
+                                cleverBotResponse.contains("app")) {
+                            cleverBotResponse = cleverBot.think(cleverThink);
+                        }
+
                         Resource.sendMessage("[CB] " + cleverBotResponse);
                         Thread.sleep(500);
 
                         String jabberWackyResponse = jabberWacky.think(cleverBotResponse);
+
+                        while (jabberWackyResponse.startsWith("\n") ||
+                                jabberWackyResponse.contains("app")) {
+                            jabberWackyResponse = jabberWacky.think(cleverBotResponse);
+                        }
+
                         cleverThink = jabberWackyResponse;
 
-                        assert (jabberWackyResponse != null && !jabberWackyResponse.trim().equals(""));
+                        assert (!jabberWackyResponse.trim().equals(""));
                         Resource.sendMessage("[JW] " + jabberWackyResponse);
                         Thread.sleep(500);
                     } catch (Exception e) {
