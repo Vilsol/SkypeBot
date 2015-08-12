@@ -142,9 +142,9 @@ public class General implements Module {
 
     @Command(name = "stats")
     public static void cmdStats(ChatMessage chat, @Optional String person) throws SkypeException {
-        
+
         DecimalFormat format = new DecimalFormat("##.#");
-        
+
         if (person != null) {
             MessageStatistic stat = StatisticsManager.instance().statistics().get(person);
 
