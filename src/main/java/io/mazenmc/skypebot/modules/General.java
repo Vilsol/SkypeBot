@@ -209,7 +209,7 @@ public class General implements Module {
 
         toSend.add("---------------------------------------");
 
-        toSend.add(total + " total messages sent in this chat (which has been logged by the bot)");
+        toSend.add((int) total + " total messages sent in this chat (which has been logged by the bot)");
         toSend.add(messages.size() + " members sent messages which were acknowledged by the bot");
 
         List<List<String>> raw = messages.stream()
@@ -229,7 +229,7 @@ public class General implements Module {
 
         toSend.add(Math.round(((commands / total) * 100)) + "% of those messages were commands");
         toSend.add(characters + " characters were sent");
-        toSend.add(commands + " commands were sent");
+        toSend.add((int) commands + " commands were sent");
 
         Resource.sendMessages(toSend.toArray(new String[toSend.size()]));
     }
