@@ -142,6 +142,9 @@ public class General implements Module {
 
     @Command(name = "stats")
     public static void cmdStats(ChatMessage chat, @Optional String person) throws SkypeException {
+        
+        DecimalFormat format = new DecimalFormat("##.#");
+        
         if (person != null) {
             MessageStatistic stat = StatisticsManager.instance().statistics().get(person);
 
@@ -166,7 +169,7 @@ public class General implements Module {
 
             toSend[0] = "------ " + name + "'s statistics ------";
             toSend[1] = "Message count: " + stat.messageAmount();
-            toSend[2] = "Average words per message: " + Math.round(stat.averageWords());
+            toSend[2] = "Average words per message: " + format.format(stat.averageWords());
             toSend[3] = "Command count: " + stat.commandCount();
             if (name.equals("troll.dude.3") || name.equals("julian.ayy")) {
                 toSend[4] = "Random message: LOOOOOOLL LMAO RICE ASIANS LMFAO ROFL 4111RRRRR AIIIR OMG LOOOl";
@@ -175,7 +178,7 @@ public class General implements Module {
             }
             toSend[5] = "First message sent at " + new Date(messages.get(messages.size() - 1).time()).toString();
             toSend[6] = "Last message sent at " + new Date(messages.get(0).time()).toString();
-            toSend[7] = "Percent of Messages which were commands: " + Math.round(stat.commandPercent()) + "%";
+            toSend[7] = "Percent of Messages which were commands: " + format.format(stat.commandPercent()) + "%";
             toSend[8] = "---------------------------------------";
 
             Resource.sendMessages(toSend);
@@ -189,7 +192,6 @@ public class General implements Module {
 
         Collections.sort(messages, (a, b) -> b.messageAmount() - a.messageAmount());
 
-        DecimalFormat format = new DecimalFormat("##.#");
         double total = messages.stream()
                 .mapToInt(MessageStatistic::messageAmount)
                 .sum();
