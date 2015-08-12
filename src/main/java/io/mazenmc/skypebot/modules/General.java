@@ -36,6 +36,7 @@ import java.net.URLEncoder;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.DecimalFormat;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
@@ -186,7 +187,8 @@ public class General implements Module {
                 .values());
 
         Collections.sort(messages, (a, b) -> b.messageAmount() - a.messageAmount());
-        
+
+        DecimalFormat format = new DecimalFormat("##.#");
         double total = messages.stream()
                 .mapToInt(MessageStatistic::messageAmount)
                 .sum();
@@ -199,10 +201,10 @@ public class General implements Module {
 
             MessageStatistic stat = messages.get(i);
 
-            long percentage = Math.round((stat.messageAmount() / total) * 100);
+            double percentage = (stat.messageAmount() / total) * 100;
 
             toSend.add(StatisticsManager.instance().ownerFor(stat) + ": " +
-                    stat.messageAmount() + " - " + percentage + "%");
+                    stat.messageAmount() + " - " + format.format(percentage) + "%");
         });
 
         toSend.add("---------------------------------------");
