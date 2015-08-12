@@ -43,7 +43,10 @@ public class MessageStatistic {
     }
 
     public int wordCount() {
-        return messages.stream().mapToInt((m) -> m.contents().split("[\\s]*").length).sum();
+        return messages.stream()
+                .mapToInt((m) -> m.contents().split("[\\s]*").length)
+                .filter(i -> i < 20)
+                .sum();
     }
 
     public double averageWords() {
