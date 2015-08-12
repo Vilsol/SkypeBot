@@ -310,6 +310,11 @@ public class General implements Module {
             message = statistic.randomMessage();
         }
 
+        if (message.contents().equals("<never sent message>")) {
+            cmdRandomSay(chat, null);
+            return;
+        }
+
         Resource.sendMessage(chat, username + " says: \" " + message.contents() + " \" at " + new Date(message.time()).toString());
     }
 
