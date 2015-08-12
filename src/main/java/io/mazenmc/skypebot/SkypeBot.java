@@ -67,7 +67,7 @@ public class SkypeBot {
                         callback.callback(received.getContent());
                         return;
                     }
-                    
+
                     stringMessages.add(Utils.serializeMessage(received));
                     StatisticsManager.instance().logMessage(received);
                     messages.add(received);
