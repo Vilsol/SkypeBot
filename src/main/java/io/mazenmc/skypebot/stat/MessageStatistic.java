@@ -42,6 +42,14 @@ public class MessageStatistic {
         return name;
     }
 
+    public int wordCount() {
+        return messages.stream().mapToInt((m) -> m.contents().split("[\\s]*").length).sum();
+    }
+
+    public double averageWords() {
+        return wordCount() / messageAmount();
+    }
+
     public int messageAmount() {
         return messages.size();
     }
