@@ -236,10 +236,6 @@ public class ModuleManager {
 
             return;
         }
-
-        if (originalCommand.startsWith(Resource.COMMAND_PREFIX)) {
-            Resource.sendMessage(chat, "Command '" + commandSplit[0] + "' not found!");
-        }
     }
 
 }
