@@ -100,6 +100,11 @@ public class General implements Module {
         Resource.sendMessage("/me notes that " + chat.getSenderDisplayName() + " is truly enlightened.");
     }
 
+    @Command(name = "thank mr bot", exact = false, command = false)
+    public static void cmdThankMrBot(ChatMessage chat) throws SkypeException {
+        Resource.sendMessage("may good cpus and dedotated wams come to you");
+    }
+
     @Command(name = "git", alias = {"repo", "repository", "source"})
     public static void cmdGit(ChatMessage chat) {
         Resource.sendMessage(chat, "Git Repository: https://github.com/MazenMC/SkypeBot");
