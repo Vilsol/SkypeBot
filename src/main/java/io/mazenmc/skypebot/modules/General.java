@@ -286,11 +286,11 @@ public class General implements Module {
                 .sorted((e, e1) -> (int) (e1.getValue() - e.getValue()))
                 .map((e) -> e.getKey())
                 .collect(Collectors.toList());
-        String[] toSend = new String[7];
+        String[] toSend = new String[12];
 
         toSend[0] = "---------------------------------------";
 
-        IntStream.range(0, 5).forEach((i) -> toSend[i + 1] = (i + 1) + ": " + commonWords.get(i));
+        IntStream.range(0, 10).forEach((i) -> toSend[i + 1] = (i + 1) + ": " + commonWords.get(i));
 
         toSend[6] = "---------------------------------------";
         Resource.sendMessages(toSend);
