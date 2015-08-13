@@ -7,8 +7,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class MessageStatistic {
@@ -40,6 +42,25 @@ public class MessageStatistic {
 
     public String name() {
         return name;
+    }
+
+    public List<String> words() {
+        List<String> words = new ArrayList<>();
+
+        messages.stream()
+                .map((s) -> s.contents().split(" "))
+                .forEach((s) -> words.addAll(Arrays.asList(s)));
+
+        return words;
+    }
+
+    public String mostCommonWord() {
+        return words().stream()
+                .collect(Collectors.groupingBy(w -> w, Collectors.counting()))
+                .entrySet().stream()
+                .sorted((e, e1) -> (int) (e1.getValue() - e.getValue()))
+                .findFirst().get()
+                .getKey();
     }
 
     public int wordCount() {

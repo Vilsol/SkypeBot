@@ -162,24 +162,26 @@ public class General implements Module {
             if ("".equals(name))
                 name = person;
 
-            String[] toSend = new String[9];
+            String[] toSend = new String[11];
             List<Message> messages = stat.messages();
 
             messages.sort((m1, m2) -> (int) (m2.time() - m1.time()));
 
             toSend[0] = "------ " + name + "'s statistics ------";
             toSend[1] = "Message count: " + stat.messageAmount();
-            toSend[2] = "Average words per message: " + format.format(stat.averageWords());
-            toSend[3] = "Command count: " + stat.commandCount();
+            toSend[2] = "Word count: " + stat.wordCount();
+            toSend[3] = "Average words per message: " + format.format(stat.averageWords());
+            toSend[4] = "Command count: " + stat.commandCount();
             if (name.equals("troll.dude.3") || name.equals("julian.ayy")) {
-                toSend[4] = "Random message: LOOOOOOLL LMAO RICE ASIANS LMFAO ROFL 4111RRRRR AIIIR OMG LOOOl";
+                toSend[5] = "Random message: LOOOOOOLL LMAO RICE ASIANS LMFAO ROFL 4111RRRRR AIIIR OMG LOOOl";
             } else {
-                toSend[4] = "Random message: " + stat.randomMessage().contents();
+                toSend[5] = "Random message: " + stat.randomMessage().contents();
             }
-            toSend[5] = "First message sent at " + new Date(messages.get(messages.size() - 1).time()).toString();
-            toSend[6] = "Last message sent at " + new Date(messages.get(0).time()).toString();
-            toSend[7] = "Percent of Messages which were commands: " + format.format(stat.commandPercent()) + "%";
-            toSend[8] = "---------------------------------------";
+            toSend[6] = "Most common word: " + stat.mostCommonWord();
+            toSend[7] = "First message sent at " + new Date(messages.get(messages.size() - 1).time()).toString();
+            toSend[8] = "Last message sent at " + new Date(messages.get(0).time()).toString();
+            toSend[9] = "Percent of Messages which were commands: " + format.format(stat.commandPercent()) + "%";
+            toSend[10] = "---------------------------------------";
 
             Resource.sendMessages(toSend);
             return;
