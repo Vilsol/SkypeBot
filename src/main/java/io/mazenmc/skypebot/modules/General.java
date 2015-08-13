@@ -292,7 +292,7 @@ public class General implements Module {
         IntStream.range(0, 10).forEach((i) -> {
             Map.Entry<String, Long> entry = commonWords.get(i);
 
-            toSend[i + 1] = (i + 1) + ". " + entry.getKey() + ":" + entry.getValue();
+            toSend[i + 1] = (i + 1) + ". " + entry.getKey() + " with " + entry.getValue() + " occurrences";
         });
 
         toSend[11] = "---------------------------------------";
