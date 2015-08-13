@@ -292,7 +292,7 @@ public class General implements Module {
 
         IntStream.range(0, 10).forEach((i) -> toSend[i + 1] = (i + 1) + ": " + commonWords.get(i));
 
-        toSend[6] = "---------------------------------------";
+        toSend[11] = "---------------------------------------";
         Resource.sendMessages(toSend);
     }
 
