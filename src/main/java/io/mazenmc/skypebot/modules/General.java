@@ -280,17 +280,20 @@ public class General implements Module {
 
         words.removeIf((s) -> s.equals("") || s.equals(" "));
 
-        List<String> commonWords = words.stream()
+        List<Map.Entry<String, Long>> commonWords = words.stream()
                 .collect(Collectors.groupingBy(w -> w, Collectors.counting()))
                 .entrySet().stream()
                 .sorted((e, e1) -> (int) (e1.getValue() - e.getValue()))
-                .map((e) -> e.getKey())
                 .collect(Collectors.toList());
         String[] toSend = new String[12];
 
         toSend[0] = "---------------------------------------";
 
-        IntStream.range(0, 10).forEach((i) -> toSend[i + 1] = (i + 1) + ": " + commonWords.get(i));
+        IntStream.range(0, 10).forEach((i) -> {
+            Map.Entry<String, Long> entry = commonWords.get(i);
+
+            toSend[i + 1] = (i + 1) + ". " + entry.getKey() + ":" + entry.getValue();
+        });
 
         toSend[11] = "---------------------------------------";
         Resource.sendMessages(toSend);
