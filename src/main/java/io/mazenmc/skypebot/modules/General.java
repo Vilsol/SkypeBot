@@ -258,6 +258,44 @@ public class General implements Module {
         Resource.sendMessages(toSend.toArray(new String[toSend.size()]));
     }
 
+    @Command(name = "wordstats")
+    public static void cmdWordStats(ChatMessage chat, @Optional String lol) {
+        List<MessageStatistic> messages = new ArrayList<>(StatisticsManager.instance()
+                .statistics()
+                .values());
+        List<List<String>> raw = messages.stream()
+                .map(MessageStatistic::messages)
+                .map((l) -> l.stream().map(Message::contents).collect(Collectors.toList()))
+                .collect(Collectors.toList());
+        List<String> msgs = new ArrayList<>((int) messages.stream()
+                .mapToInt(MessageStatistic::messageAmount)
+                .sum());
+
+        raw.forEach(msgs::addAll);
+        List<String> words = new ArrayList<>();
+
+        msgs.stream()
+                .map((s) -> s.split(" "))
+                .forEach((s) -> words.addAll(Arrays.asList(s)));
+
+        words.removeIf((s) -> s.equals("") || s.equals(" "));
+
+        List<String> commonWords = words.stream()
+                .collect(Collectors.groupingBy(w -> w, Collectors.counting()))
+                .entrySet().stream()
+                .sorted((e, e1) -> (int) (e1.getValue() - e.getValue()))
+                .map((e) -> e.getKey())
+                .collect(Collectors.toList());
+        String[] toSend = new String[7];
+
+        toSend[0] = "---------------------------------------";
+
+        IntStream.range(0, 5).forEach((i) -> toSend[i + 1] = (i + 1) + ": " + commonWords.get(i));
+
+        toSend[6] = "---------------------------------------";
+        Resource.sendMessages(toSend);
+    }
+
     @Command(name = "md5")
     public static void cmdMd5(ChatMessage chat) {
         String s = "md_1 = 1% of devs (people who know their shit)\n" +
