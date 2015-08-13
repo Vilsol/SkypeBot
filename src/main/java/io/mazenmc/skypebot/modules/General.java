@@ -229,10 +229,16 @@ public class General implements Module {
         long characters = msgs.stream()
                 .mapToLong(String::length)
                 .sum();
+        long words = msgs.stream()
+                .mapToInt((s) -> s.split("[\\s]*").length)
+                .sum();
+        double wordPerMessage = words / msgs.size();
 
         toSend.add(Math.round(((commands / total) * 100)) + "% of those messages were commands");
+        toSend.add(words + " words were sent");
         toSend.add(characters + " characters were sent");
         toSend.add((int) commands + " commands were sent");
+        toSend.add("Average words per message: " + format.format(wordPerMessage));
 
         Resource.sendMessages(toSend.toArray(new String[toSend.size()]));
     }
