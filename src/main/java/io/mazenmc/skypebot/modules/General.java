@@ -240,7 +240,7 @@ public class General implements Module {
         String mostCommonWord = words.stream()
                 .collect(Collectors.groupingBy(w -> w, Collectors.counting()))
                 .entrySet().stream()
-                .sorted((e, e1) -> (int) (e.getValue() - e1.getValue()))
+                .sorted((e, e1) -> (int) (e1.getValue() - e.getValue()))
                 .findFirst().get()
                 .getKey();
         double wordPerMessage = words.size() / msgs.size();
