@@ -229,16 +229,27 @@ public class General implements Module {
         long characters = msgs.stream()
                 .mapToLong(String::length)
                 .sum();
-        long words = msgs.stream()
-                .mapToInt((s) -> s.split("[\\s]*").length)
-                .sum();
-        double wordPerMessage = words / msgs.size();
+        List<String> words = new ArrayList<>();
+
+        msgs.stream()
+                .map((s) -> s.split("[\\s]*"))
+                .forEach((s) -> words.addAll(Arrays.asList(s)));
+
+        String mostCommonWord = words.stream()
+                .collect(Collectors.groupingBy(w -> w, Collectors.counting()))
+                .entrySet().stream()
+                .sorted((e, e1) -> (int) (e.getValue() - e1.getValue()))
+                .findFirst().get()
+                .getKey();
+        double wordPerMessage = words.size() / msgs.size();
 
         toSend.add(Math.round(((commands / total) * 100)) + "% of those messages were commands");
-        toSend.add(words + " words were sent");
+        toSend.add(words.size() + " words were sent");
         toSend.add(characters + " characters were sent");
         toSend.add((int) commands + " commands were sent");
+        toSend.add("---------------------------------------");
         toSend.add("Average words per message: " + format.format(wordPerMessage));
+        toSend.add("Most common word: " + mostCommonWord);
 
         Resource.sendMessages(toSend.toArray(new String[toSend.size()]));
     }
