@@ -232,10 +232,10 @@ public class General implements Module {
         List<String> words = new ArrayList<>();
 
         msgs.stream()
-                .map((s) -> s.split("[\\s]*"))
+                .map((s) -> s.split(" "))
                 .forEach((s) -> words.addAll(Arrays.asList(s)));
 
-        words.removeIf((s) -> s.equals(""));
+        words.removeIf((s) -> s.equals("") || s.equals(" "));
 
         String mostCommonWord = words.stream()
                 .collect(Collectors.groupingBy(w -> w, Collectors.counting()))
