@@ -231,6 +231,8 @@ public class General implements Module {
                 .sum();
         List<String> words = new ArrayList<>();
 
+        words.removeIf((s) -> s.equals(""));
+
         msgs.stream()
                 .map((s) -> s.split("[\\s]*"))
                 .forEach((s) -> words.addAll(Arrays.asList(s)));
