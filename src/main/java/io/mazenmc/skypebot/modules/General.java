@@ -50,7 +50,7 @@ public class General implements Module {
     private static boolean ranting = false;
 
     @Command(name = "exclude", admin = true)
-    public static void cmdExclude(ChatMessage chat, String person, int days) {
+    public static void cmdExclude(ChatMessage chat, int days, String person) {
         MessageStatistic statistic = StatisticsManager.instance().statistics().get(person);
 
         if (statistic == null) {
