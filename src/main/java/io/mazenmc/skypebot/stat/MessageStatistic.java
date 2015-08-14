@@ -49,6 +49,7 @@ public class MessageStatistic {
 
         messages.stream()
                 .map((s) -> s.contents().split(" "))
+                .filter((s) -> !s.trim().isEmpty())
                 .forEach((s) -> words.addAll(Arrays.asList(s)));
 
         return words;
