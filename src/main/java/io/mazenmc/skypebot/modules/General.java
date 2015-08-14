@@ -37,6 +37,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.DecimalFormat;
+import java.time.Instant;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
@@ -47,6 +48,21 @@ public class General implements Module {
     private static ChatterBotSession jabberWacky;
     private static Thread rantThread;
     private static boolean ranting = false;
+
+    @Command(name = "exclude", admin = true)
+    public static void cmdExclude(ChatMessage chat, String person, int days) {
+        MessageStatistic statistic = StatisticsManager.instance().statistics().get(person);
+
+        if (statistic == null) {
+            Resource.sendMessage(chat, "Couldn't find statistic by " + person);
+            return;
+        }
+
+        Date date = new Date(System.currentTimeMillis() + (days * 86_400_000));
+
+        statistic.addMessage(new Message("Gone until " + date.toString(), date.getTime()));
+        Resource.sendMessage(chat, "Successfully excluded " + person + " from chat cleaner until " + date.toString());
+    }
 
     @Command(name = "8ball")
     public static void cmd8Ball(ChatMessage chat, @Optional

@@ -97,6 +97,10 @@ public class MessageStatistic {
         messages.add(new Message(message.getContent(), message.getTime().getTime()));
     }
 
+    public void addMessage(Message message) {
+        messages.add(message);
+    }
+
     public List<Message> messages() {
         return messages;
     }
