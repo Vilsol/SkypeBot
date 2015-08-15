@@ -48,8 +48,8 @@ public class ChatCleaner implements Runnable {
                         Resource.sendMessage("Couldn't review his statistics, must've been a terrible member of this chat");
                     }
 
-                    Resource.sendMessages("RIP " + name + ", may based god have mercy on his soul and fuck his bitches.",
-                            "/kick " + person.name());
+                    Resource.sendMessages("RIP " + name + ", may based god have mercy on his soul and fuck his bitches.");
+                    Resource.sendMessage("/kick " + person.name());
                     StatisticsManager.instance().removeStat(person.name());
                 }
             });
