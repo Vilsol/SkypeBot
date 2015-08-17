@@ -64,6 +64,20 @@ public class General implements Module {
         Resource.sendMessage(chat, "Successfully excluded " + person + " from chat cleaner until " + date.toString());
     }
 
+    @Command(name = "kick", admin = true)
+    public static void cmdReset(ChatMessage chat, String person) {
+        MessageStatistic statistic = StatisticsManager.instance().statistics().get(person);
+
+        if (statistic == null) {
+            Resource.sendMessage(chat, "Couldn't find statistic by " + person);
+            return;
+        }
+
+        StatisticsManager.instance().removeStat(person);
+        Resource.sendMessage("/kick " + person);
+        Resource.sendMessage("Kicked " + person + " and removed their stats");
+    }
+
     @Command(name = "8ball")
     public static void cmd8Ball(ChatMessage chat, @Optional
             String question) {
