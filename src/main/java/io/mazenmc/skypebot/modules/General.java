@@ -208,8 +208,11 @@ public class General implements Module {
                 .statistics()
                 .values());
 
-        Collections.sort(messages, (a, b) -> b.messageAmount() - a.messageAmount());
+        Collections.sort(messages, (a, b) -> b.wordCount() - a.wordCount());
 
+        long wordTotal = messages.stream()
+                .mapToInt(MessageStatistic::wordCount)
+                .sum();
         double total = messages.stream()
                 .mapToInt(MessageStatistic::messageAmount)
                 .sum();
@@ -222,10 +225,10 @@ public class General implements Module {
 
             MessageStatistic stat = messages.get(i);
 
-            double percentage = (stat.messageAmount() / total) * 100;
+            double percentage = (stat.wordCount() / wordTotal) * 100;
 
             toSend.add(StatisticsManager.instance().ownerFor(stat) + ": " +
-                    stat.messageAmount() + " - " + format.format(percentage) + "%");
+                    stat.wordCount() + " - " + format.format(percentage) + "%");
         });
 
         toSend.add("---------------------------------------");
