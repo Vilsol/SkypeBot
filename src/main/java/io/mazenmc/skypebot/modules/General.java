@@ -238,8 +238,7 @@ public class General implements Module {
                 return;
 
             MessageStatistic stat = messages.get(i);
-
-            double percentage = (stat.wordCount() / wordTotal) * 100;
+            double percentage = ((double)stat.wordCount() / wordTotal) * 100;
 
             toSend.add(StatisticsManager.instance().ownerFor(stat) + ": " +
                     stat.wordCount() + " - " + format.format(percentage) + "%");
