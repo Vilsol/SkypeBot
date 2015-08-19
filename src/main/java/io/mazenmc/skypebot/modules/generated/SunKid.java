@@ -10,7 +10,7 @@ import io.mazenmc.skypebot.utils.Resource;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class ChipDev implements Module {
+public class SunKid implements Module {
     // RIP in spelling
     private static final String[] SENTANCES = new String[] {
             // These are acutal quotes
@@ -34,8 +34,8 @@ public class ChipDev implements Module {
             "now that everyone is butt hurt and talking shit",
             "Are you trolling?", // by far the best quote
             "If you tp to someone and suspect them for bottling then you can ban them. Good luck detecting who;s bottling", // >bottling
-            I made the bot with 10 hours of free time anyone knowledgeable could re-create it",
-            "I made it for the "lolz", if the butt hurt strikes then I guess it strikes",
+            "I made the bot with 10 hours of free time anyone knowledgeable could re-create it",
+            "I made it for the \"lolz\", if the butt hurt strikes then I guess it strikes",
             "I'll put a method to detect the client", // lolwat
             "it crashes a lot when you load resources packs",
             "a market for a minecraft bot",
@@ -43,7 +43,7 @@ public class ChipDev implements Module {
             "I'm referring to a client sided bot. Like a hacked client",
             "I'm a contributor to Bukkit I am fully aware of what spigot is used for",
             "Plebs like yourself may find it unimaginable to write code that is from an API so I understand where you are coming from, buddy", // HAHHA LOOOL
-            "Minecraft being "open-source" takes the tedious part out of reverse engineering.",
+            "Minecraft being \"open-source\" takes the tedious part out of reverse engineering.",
             "Runescape hasn't been able to detect it for 14 years",
             "They way I do it in my Runescape bot is identical to the way I do it in Minecraft",
             "community driven makes it harder to defend against as there is no way to protect all servers and there isn't enough budget to per server to invest it human pattern detection.",
