@@ -28,7 +28,7 @@ public class SunKid implements Module {
             "Sorry did that upset you. Maybe you can draw yourself a picture",
             "Mineplex, most likely won't be able to manual ban as they have 20k players", // Not sure wtf this was but ok
             "I'm calling bullshit", 
-            "there is no way you made a full implementation of a bot" // there is more but it's funnier without it
+            "there is no way you made a full implementation of a bot", // there is more but it's funnier without it
             "I'm sending actual key board input and mouse input",
             "You would have to find something that I fucked up on that isn;t the norm",
             "now that everyone is butt hurt and talking shit",
