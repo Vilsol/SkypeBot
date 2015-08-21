@@ -14,6 +14,7 @@ public class SunKid implements Module {
     // RIP in spelling
     private static final String[] SENTANCES = new String[] {
             // These are acutal quotes
+            "Google can tell you more than anyone can type in this thread.",
             "I am 17 years old have been programming since the age of so",
             "I am a contributor to the famous Bukkit and CraftBukkit",
             "I am a official developer of TRiBot. The most used Runescape bat",
