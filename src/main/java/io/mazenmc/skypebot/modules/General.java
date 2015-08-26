@@ -818,4 +818,9 @@ public class General implements Module {
     public static void ayyLmao(ChatMessage message, @Optional String lmao) {
         Resource.sendMessage("ayy lmao");
     }
+    
+    @Command(name = "aikar")
+    public static void lordSaviorAikar(ChatMessage chat) throws SkypeException {
+        Resource.sendMessage("All kneel and hail our lord and savoir Aikar");
+    }
 }
