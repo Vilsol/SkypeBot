@@ -821,6 +821,6 @@ public class General implements Module {
     
     @Command(name = "aikar")
     public static void lordSaviorAikar(ChatMessage chat) throws SkypeException {
-        Resource.sendMessage("All kneel and hail our lord and savoir Aikar");
+        Resource.sendMessage("All kneel and hail our lord and saviour Aikar, god of timings™ and all other glory which is efficiency improvements");
     }
 }
