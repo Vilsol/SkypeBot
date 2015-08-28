@@ -66,7 +66,7 @@ public class MessageStatistic {
     public int wordCount() {
         return messages.stream()
                 .mapToInt((m) -> m.contents().split(" ").length)
-                .filter(i -> i < 50 && i > 2)
+                .filter(i -> i > 2)
                 .sum();
     }
 
