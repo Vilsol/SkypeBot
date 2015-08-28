@@ -54,6 +54,8 @@ public class ChatCleaner implements Runnable {
                 }
             });
 
+            StatisticsManager.instance().saveStatistics();
+
             try {
                 Thread.sleep(1800000);
             } catch (InterruptedException ignored) {
