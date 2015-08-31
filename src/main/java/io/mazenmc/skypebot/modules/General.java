@@ -58,7 +58,7 @@ public class General implements Module {
             return;
         }
 
-        Date date = new Date(System.currentTimeMillis() + (days * 86400000L));
+        Date date = new Date(System.currentTimeMillis() + ((long)days * 86400000L));
 
         statistic.addMessage(new Message("Gone until " + date.toString(), date.getTime()));
         Resource.sendMessage(chat, "Successfully excluded " + person + " from chat cleaner until " + date.toString());
