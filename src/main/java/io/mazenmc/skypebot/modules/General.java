@@ -699,6 +699,11 @@ public class General implements Module {
         Resource.sendMessage(chat, "( ͡° ͜ʖ ͡°)");
     }
     
+    @Command(name = "flip")
+    public static void cmdLenny(ChatMessage chat) throws SkypeException {
+        Resource.sendMessage(chat, "(╯°□°）╯︵ ┻━┻)");
+    }
+    
     @Command(name = "idk")
     public static void cmdIdk(ChatMessage chat) throws SkypeException {
         Resource.sendMessage(chat, "¯\\_(ツ)_/¯");
