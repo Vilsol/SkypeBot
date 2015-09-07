@@ -700,7 +700,7 @@ public class General implements Module {
     }
     
     @Command(name = "flip")
-    public static void cmdLenny(ChatMessage chat) throws SkypeException {
+    public static void cmdFlip(ChatMessage chat) throws SkypeException {
         Resource.sendMessage(chat, "(╯°□°）╯︵ ┻━┻)");
     }
     
