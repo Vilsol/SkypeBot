@@ -684,7 +684,7 @@ public class General implements Module {
         Resource.sendMessage(chat, "ROFL all day long! http://goo.gl/pCIqXv");
     }
 
-    @Command(name = "restoretopic", admin = true)
+    @Command(name = "restoretopic")
     public static void cmdRestoreTopic(ChatMessage chatMessage) throws SkypeException {
         Resource.sendMessage("/topic Mazen's Skype Chat");
     }
