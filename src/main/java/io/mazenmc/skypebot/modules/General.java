@@ -304,6 +304,7 @@ public class General implements Module {
                 .sum());
 
         raw.forEach(msgs::addAll);
+        msgs.replaceAll(String::toLowerCase);
         List<String> words = new ArrayList<>();
 
         msgs.stream()
