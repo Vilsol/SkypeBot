@@ -341,7 +341,8 @@ public class General implements Module {
                 .filter((person) -> !person.messages().isEmpty())
                 .map((person) -> new HashMap.SimpleEntry<>(person, timestamp - person.messages().stream()
                         .sorted((m1, m2) -> (int) (m2.time() - m1.time())).findFirst().get().time()))
-                .sorted((person, person1) -> (int) (person1.getValue() - person.getValue())).collect(Collectors.toList());
+                .sorted((person, person1) -> (int) (person.getValue() - person1.getValue()))
+                .collect(Collectors.toList());
         String[] toSend = new String[12];
 
         toSend[0] = "---------------------------------------";
