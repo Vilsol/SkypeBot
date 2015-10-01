@@ -335,14 +335,15 @@ public class General implements Module {
 
     @Command(name = "kicklist")
     public static void kickList(ChatMessage chat) {
+        long timestamp = System.currentTimeMillis();
         Collection<MessageStatistic> stats = StatisticsManager.instance().statistics().values();
         List<Map.Entry<MessageStatistic, Long>> sorted = stats.stream()
                 .filter((person) -> !person.messages().isEmpty())
                 .map((person) -> new HashMap.SimpleEntry<>(person, person.messages().stream()
                         .sorted((m1, m2) -> (int) (m2.time() - m1.time())).findFirst().get().time()))
                 .sorted((person, person1) -> {
-                    long days = TimeUnit.MILLISECONDS.toDays(System.currentTimeMillis() - person.getValue());
-                    long days1 = TimeUnit.MILLISECONDS.toDays(System.currentTimeMillis() - person1.getValue());
+                    long days = TimeUnit.MILLISECONDS.toDays(timestamp - person.getValue());
+                    long days1 = TimeUnit.MILLISECONDS.toDays(timestamp - person1.getValue());
 
                     return (int) (days - days1);
                 }).collect(Collectors.toList());
@@ -352,7 +353,7 @@ public class General implements Module {
 
         IntStream.range(0, 10).forEach((i) -> {
             Map.Entry<MessageStatistic, Long> entry = sorted.get(i);
-            long days = TimeUnit.MILLISECONDS.toDays(System.currentTimeMillis() - entry.getValue());
+            long days = TimeUnit.MILLISECONDS.toDays(timestamp - entry.getValue());
 
             toSend[i + 1] = (i + 1) + ". " + entry.getKey().name() + " to be kicked in " + days + " days";
         });
