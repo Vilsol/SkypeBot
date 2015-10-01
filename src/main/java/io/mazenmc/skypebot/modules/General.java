@@ -40,6 +40,7 @@ import java.text.DecimalFormat;
 import java.time.Instant;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -326,6 +327,34 @@ public class General implements Module {
             Map.Entry<String, Long> entry = commonWords.get(i);
 
             toSend[i + 1] = (i + 1) + ". " + entry.getKey() + " with " + entry.getValue() + " occurrences";
+        });
+
+        toSend[11] = "---------------------------------------";
+        Resource.sendMessages(toSend);
+    }
+
+    @Command(name = "kicklist")
+    public static void kickList(ChatMessage chat) {
+        Collection<MessageStatistic> stats = StatisticsManager.instance().statistics().values();
+        List<Map.Entry<MessageStatistic, Long>> sorted = stats.stream()
+                .filter((person) -> !person.messages().isEmpty())
+                .map((person) -> new HashMap.SimpleEntry<>(person, person.messages().stream()
+                        .sorted((m1, m2) -> (int) (m2.time() - m1.time())).findFirst().get().time()))
+                .sorted((person, person1) -> {
+                    long days = TimeUnit.MILLISECONDS.toDays(System.currentTimeMillis() - person.getValue());
+                    long days1 = TimeUnit.MILLISECONDS.toDays(System.currentTimeMillis() - person1.getValue());
+
+                    return (int) (days - days1);
+                }).collect(Collectors.toList());
+        String[] toSend = new String[12];
+
+        toSend[0] = "---------------------------------------";
+
+        IntStream.range(0, 10).forEach((i) -> {
+            Map.Entry<MessageStatistic, Long> entry = sorted.get(i);
+            long days = TimeUnit.MILLISECONDS.toDays(System.currentTimeMillis() - entry.getValue());
+
+            toSend[i + 1] = (i + 1) + ". " + entry.getKey().name() + " to be kicked in " + days + " days";
         });
 
         toSend[11] = "---------------------------------------";
