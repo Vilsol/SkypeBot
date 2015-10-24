@@ -39,7 +39,6 @@ public class ModuleManager {
         try {
             if (data.getCommand().cooldown() > 0 && !Arrays.asList(Resource.GROUP_ADMINS).contains(chat.getSenderId())) {
                 if (!SkypeBot.getInstance().getCooldownHandler().canUse(data.getCommand())) {
-                    Resource.sendMessage(chat, "Command is cooling down! Time Left: " + SkypeBot.getInstance().getCooldownHandler().getCooldownLeft(data.getCommand().name()));
                     return;
                 }
             }
@@ -47,9 +46,6 @@ public class ModuleManager {
             long difference = System.currentTimeMillis() - lastCommand;
 
             if (difference <= 5000L) {
-                if (difference <= 4000L) {
-                    Resource.sendMessage(chat, "Woah, slow down there bud. Try again in " + TimeUnit.MILLISECONDS.toSeconds(2000L - difference) + " second(s)");
-                }
                 return;
             }
         } catch (SkypeException e) {
