@@ -446,12 +446,12 @@ public class General implements Module {
         if (user != null) {
             String displayName = user.getDisplayName();
 
-            if (displayName != null) {
+            if ("".equals(displayName)) {
                 username = displayName;
             } else {
                 displayName = user.getFullName();
 
-                if (displayName != null) {
+                if ("".equals(displayName)) {
                     username = displayName;
                 }
             }
