@@ -426,10 +426,27 @@ public class General implements Module {
     }
 
     @Command(name = "whatwouldrandomsay")
-    public static void cmdRandomSay(ChatMessage chat, @Optional String lol) throws SkypeException {
+    public static void cmdRandomSay(ChatMessage chat) throws SkypeException {
         Map<String, MessageStatistic> messageStatisticMap = StatisticsManager.instance().statistics();
         String username = (String) messageStatisticMap.keySet().toArray()[ThreadLocalRandom.current().nextInt(0, messageStatisticMap.size())];
-        MessageStatistic statistic = messageStatisticMap.get(lol != null ? lol.split(" ")[0] : username);
+        randomSay(chat, username);
+    }
+
+    @Command(name = "whatwouldselectsay")
+    public static void cmdSelectSay(ChatMessage chat, String username) throws SkypeException {
+        MessageStatistic stat = StatisticsManager.instance().statistics().get(username);
+
+        if (stat == null) {
+            Resource.sendMessage("No found statistic for " + username + "!");
+            return;
+        }
+
+        randomSay(chat, username);
+    }
+
+    private static void randomSay(ChatMessage chat, String username) throws SkypeException {
+        Map<String, MessageStatistic> messageStatisticMap = StatisticsManager.instance().statistics();
+        MessageStatistic statistic = messageStatisticMap.get(username);
         Message message = statistic.randomMessage();
 
         while (message.contents().startsWith("@")) {
@@ -437,24 +454,7 @@ public class General implements Module {
         }
 
         if (message.contents().equals("<never sent message>")) {
-            cmdRandomSay(chat, null);
             return;
-        }
-
-        User user = Skype.getUser(username);
-
-        if (user != null) {
-            String displayName = user.getDisplayName();
-
-            if ("".equals(displayName)) {
-                username = displayName;
-            } else {
-                displayName = user.getFullName();
-
-                if ("".equals(displayName)) {
-                    username = displayName;
-                }
-            }
         }
 
         Resource.sendMessage(chat, username + " says: \" " + message.contents() + " \" at " + new Date(message.time()).toString());
