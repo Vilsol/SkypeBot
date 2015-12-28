@@ -441,6 +441,22 @@ public class General implements Module {
             return;
         }
 
+        User user = Skype.getUser(username);
+
+        if (user != null) {
+            String displayName = user.getDisplayName();
+
+            if (displayName != null) {
+                username = displayName;
+            } else {
+                displayName = user.getFullName();
+
+                if (displayName != null) {
+                    username = displayName;
+                }
+            }
+        }
+
         Resource.sendMessage(chat, username + " says: \" " + message.contents() + " \" at " + new Date(message.time()).toString());
     }
 
