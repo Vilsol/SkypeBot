@@ -757,7 +757,7 @@ public class General implements Module {
         Resource.sendMessage("basoon*");
     }
 
-    @Command(name = "(?i)savage", command = false)
+    @Command(name = "(?i)savage", command = false, alias = "(?i)brutal")
     public static void savageDettector(ChatMessage chatMessage) throws SkypeException {
         String[] options = new String[] {
                 "https://i.imgur.com/t137FTZ.jpg",
