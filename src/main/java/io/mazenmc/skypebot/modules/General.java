@@ -757,6 +757,21 @@ public class General implements Module {
         Resource.sendMessage("basoon*");
     }
 
+    @Command(name = "(?i)savage", command = false)
+    public static void savageDettector(ChatMessage chatMessage) throws SkypeException {
+        String[] options = new String[] {
+                "https://i.imgur.com/t137FTZ.jpg",
+                "https://i.imgur.com/jLLRs2j.jpg",
+                "https://i.imgur.com/sES5tg1.png",
+                "https://i.imgur.com/kHQUtvf.jpg",
+                "https://i.imgur.com/VaHSXD4.png",
+                "https://i.imgur.com/sDdHFWp.png",
+                "https://i.imgur.com/KOCnBca.gif"
+        };
+        int chosen = ThreadLocalRandom.current().nextInt(options.length);
+        Resource.sendMessage(options[chosen]);
+    }
+
     @Command(name = "lenny")
     public static void cmdLenny(ChatMessage chat) throws SkypeException {
         Resource.sendMessage(chat, "( ͡° ͜ʖ ͡°)");
