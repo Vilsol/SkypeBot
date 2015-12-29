@@ -752,7 +752,7 @@ public class General implements Module {
         Resource.sendMessage(chatMessage, "Blows Air Strongly Out Of Nose");
     }
 
-    @Command(name = "lol", command = false, exact = false)
+    @Command(name = "(?i)lol", command = false, exact = false)
     public static void lolDetect(ChatMessage chatMessage) throws SkypeException {
         Resource.sendMessage("basoon*");
     }
