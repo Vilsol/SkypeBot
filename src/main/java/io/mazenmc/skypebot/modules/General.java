@@ -816,7 +816,8 @@ public class General implements Module {
         		"We could be sex buddies!!! Makin porn together!!",
         		"All our sex toys are made from 100% ultra-premium custom forumulated silicone; garenteed to last a lifetime.",
         		"Easy To Clean, Eco-Friendly, Hypoallergenic, Hygienic, Boilable, Bleachable and Dishwasher Safe. ;D",
-        		"Just in case you ever wanted to wash your vibrator with your eating utensils. I know I do."};
+        		"Just in case you ever wanted to wash your vibrator with your eating utensils. I know I do.",
+                "I think I've been deepthroating too much... It hurts so much to swallow... ;-;"};
         int chosen = ThreadLocalRandom.current().nextInt(options.length);
 
         Resource.sendMessage(message, options[chosen]);
