@@ -193,7 +193,9 @@ public class General implements Module {
             if ("".equals(name))
                 name = person;
 
-            String[] toSend = new String[11];
+            String[] toSend = new String[13];
+            Message first = Utils.firstSpoken(stat);
+            Message last = Utils.lastSpoken(stat);
 
             toSend[0] = "------ " + name + "'s statistics ------";
             toSend[1] = "Message count: " + stat.messageAmount();
@@ -206,10 +208,12 @@ public class General implements Module {
                 toSend[5] = "Random message: " + stat.randomMessage().contents();
             }
             toSend[6] = "Most common word: " + stat.mostCommonWord();
-            toSend[7] = "First message sent at " + new Date(Utils.firstSpoken(stat).time()).toString();
-            toSend[8] = "Last message sent at " + new Date(Utils.lastSpoken(stat).time()).toString();
-            toSend[9] = "Percent of Messages which were commands: " + format.format(stat.commandPercent()) + "%";
-            toSend[10] = "---------------------------------------";
+            toSend[7] = "First message sent at " + new Date(first.time()).toString();
+            toSend[8] = "First message: " + first.contents();
+            toSend[9] = "Last message sent at " + new Date(last.time()).toString();
+            toSend[10] = "Last message: " + last.contents();
+            toSend[11] = "Percent of Messages which were commands: " + format.format(stat.commandPercent()) + "%";
+            toSend[12] = "---------------------------------------";
 
             Resource.sendMessages(toSend);
             return;
