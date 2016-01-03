@@ -40,6 +40,7 @@ public class CardsAgainstHumanity extends BaseGame implements Module {
     private List<CAHCard> whiteCards = new ArrayList<>();
     private boolean countingDown = false;
     int attempts = 0;
+    CAHJoinTask task;
 
     // Init Class
     public CardsAgainstHumanity() {
@@ -598,6 +599,21 @@ public class CardsAgainstHumanity extends BaseGame implements Module {
             Resource.sendMessage(message, "Yeah.. about playing that card, I wasn't really able to do that.");
         }
     }
+
+    @Command(name = "forcestart", admin = true)
+    public static void forceStart(ChatMessage message) throws SkypeException {
+        CardsAgainstHumanity cah = current();
+
+        if (cah.activePlayers().size() < 3) {
+            Resource.sendMessage(message, "There are not enough players! You idiot!");
+            return;
+        }
+
+        cah.task.cancel();
+        cah.task = null;
+        cah.sendToAll("Let the games begin!");
+        cah.startGame();
+    }
 }
 
 class CzarOption {
@@ -658,6 +674,7 @@ class CAHJoinTask extends TimerTask {
     public CAHJoinTask(CardsAgainstHumanity cah) {
         this.cardsAgainstHumanity = cah;
         new Timer().schedule(this, 60000);
+        cardsAgainstHumanity.task = this;
     }
 
     @Override
@@ -678,5 +695,6 @@ class CAHJoinTask extends TimerTask {
 
         cardsAgainstHumanity.sendToAll("Let the games begin!");
         cardsAgainstHumanity.startGame();
+        cardsAgainstHumanity.task = null;
     }
 }
