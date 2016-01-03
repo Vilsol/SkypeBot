@@ -142,7 +142,7 @@ public class CardsAgainstHumanity extends BaseGame implements Module {
                 }
 
                 sendToAll(GameLang.GAME_CAH_ALLPLAYED);
-                sendToAll(options.toString());
+                sendToAll("\n" + options.toString());
                 send(cardCzar, createCzarKeyboard());
                 czarChoosing = true;
             }
