@@ -11,7 +11,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-public class UnoGame implements Game {
+public class UnoGame {
 
     private boolean finished;
     private Map<String, Deck> decks = new LinkedHashMap<>(); // TODO change to queue

@@ -111,22 +111,43 @@ public class ModuleManager {
         Reflections r = new Reflections(modulePackage);
         Set<Class<? extends Module>> classes = r.getSubTypesOf(Module.class);
 
-        for (Class<? extends Module> c : classes) {
-            for (Method m : c.getMethods()) {
-                Command command;
-                command = m.getAnnotation(Command.class);
+        classes.forEach(ModuleManager::registerModule);
+    }
 
-                if (command != null) {
-                    CommandData data = new CommandData(command, m);
+    public static void registerModule(Class<? extends Module> c) {
+        for (Method m : c.getMethods()) {
+            Command command;
+            command = m.getAnnotation(Command.class);
 
-                    System.out.println("registered " + command.name());
+            if (command != null) {
+                CommandData data = new CommandData(command, m);
 
-                    commandData.put(command.name(), data);
-                    allCommands.put(command.name(), data);
-                    if (command.alias() != null && command.alias().length > 0) {
-                        for (String s : command.alias()) {
-                            allCommands.put(s, data);
-                        }
+                System.out.println("registered " + command.name());
+
+                commandData.put(command.name(), data);
+                allCommands.put(command.name(), data);
+                if (command.alias() != null && command.alias().length > 0) {
+                    for (String s : command.alias()) {
+                        allCommands.put(s, data);
+                    }
+                }
+            }
+        }
+    }
+
+    public static void removeModule(Class<? extends Module> c) {
+        for (Method m : c.getMethods()) {
+            Command command;
+            command = m.getAnnotation(Command.class);
+
+            if (command != null) {
+                System.out.println("unregistered " + command.name());
+
+                commandData.remove(command.name());
+                allCommands.remove(command.name());
+                if (command.alias() != null && command.alias().length > 0) {
+                    for (String s : command.alias()) {
+                        allCommands.remove(s);
                     }
                 }
             }

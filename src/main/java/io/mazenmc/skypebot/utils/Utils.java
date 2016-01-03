@@ -231,6 +231,10 @@ public class Utils {
         return s;
     }
 
+    public static <T> T optionalGet(Optional<T> optional) {
+        return optional.isPresent() ? optional.get() : null;
+    }
+
     public static String upload(Collection<String> s) {
         return upload(Joiner.on("\n").join(s));
     }
