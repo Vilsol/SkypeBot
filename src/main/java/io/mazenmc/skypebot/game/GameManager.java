@@ -14,6 +14,7 @@ public class GameManager {
 
     private GameManager() {
         registeredGames.add(CardsAgainstHumanity.class);
+        new GameTimer();
     }
 
     public static GameManager instance() {

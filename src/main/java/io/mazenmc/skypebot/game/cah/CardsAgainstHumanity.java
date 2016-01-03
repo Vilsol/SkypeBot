@@ -609,8 +609,11 @@ public class CardsAgainstHumanity extends BaseGame implements Module {
             return;
         }
 
-        cah.task.cancel();
-        cah.task = null;
+        if (cah.task != null) {
+            cah.task.cancel();
+            cah.task = null;
+        }
+
         cah.sendToAll("Let the games begin!");
         cah.startGame();
     }
@@ -657,7 +660,7 @@ class CAHRoundDelay extends TimerTask {
     public CAHRoundDelay(CardsAgainstHumanity cardsAgainstHumanity) {
         this.cardsAgainstHumanity = cardsAgainstHumanity;
         this.cardsAgainstHumanity.secondsSincePlay = 0;
-        new Timer().schedule(this, 1000);
+        new Timer().schedule(this, 60000);
     }
 
     @Override
