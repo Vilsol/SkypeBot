@@ -199,9 +199,9 @@ public class CardsAgainstHumanity extends BaseGame implements Module {
         secondsSincePlay++;
 
         if (!czarChoosing) {
-            if (secondsSincePlay == 30) {
+            if (secondsSincePlay == 60) {
                 sendToAll(GameLang.GAME_CAH_TIMEWARNING);
-            } else if (secondsSincePlay == 40) {
+            } else if (secondsSincePlay == 80) {
                 sendToAll(GameLang.GAME_CAH_TIMENOTICE);
                 checkPlayers(true);
             }
