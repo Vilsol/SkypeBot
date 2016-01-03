@@ -82,7 +82,7 @@ public class CardsAgainstHumanity extends BaseGame implements Module {
         }
 
         if (state() == GameState.CHOOSING || forcePlay) {
-            int toPlay = activePlayers().size();
+            int toPlay = activePlayers().size() - 1; // exclude czar
             if (playedCards.size() == toPlay || forcePlay) {
                 if (!forcePlay) {
                     for (Map.Entry<String, LinkedList<CAHCard>> cardPlay : playedCards.entrySet()) {
