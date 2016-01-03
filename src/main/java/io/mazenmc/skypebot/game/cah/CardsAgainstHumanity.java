@@ -545,6 +545,7 @@ public class CardsAgainstHumanity extends BaseGame implements Module {
         }
 
         cah.chosenDecks.add(pack);
+        Resource.sendMessage(message, "That extra pack has been added!");
     }
 
     @Command(name = "cahstart")
@@ -667,7 +668,7 @@ class CAHJoinTask extends TimerTask {
                 cardsAgainstHumanity.sendToAll("Not enough players to start CAH, trying again.\nAttempt: " + cardsAgainstHumanity.attempts +
                         "\nResending description...");
                 cardsAgainstHumanity.sendToAll(cardsAgainstHumanity.description());
-                new Timer().schedule(new CAHJoinTask(cardsAgainstHumanity), 60000);
+                new CAHJoinTask(cardsAgainstHumanity);
             } else {
                 cardsAgainstHumanity.sendToAll("Attempt 3 has been reached! Cancelling CAH.");
                 GameManager.instance().stopGame();
