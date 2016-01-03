@@ -39,6 +39,7 @@ public class CardsAgainstHumanity extends BaseGame implements Module {
     private HashMap<String, List<CAHCard>> userCards = new HashMap<>();
     private List<CAHCard> whiteCards = new ArrayList<>();
     private boolean countingDown = false;
+    int attempts = 0;
 
     // Init Class
     public CardsAgainstHumanity() {
@@ -651,7 +652,6 @@ class CAHRoundDelay extends TimerTask {
 }
 
 class CAHJoinTask extends TimerTask {
-    private int attempts = 0;
     private CardsAgainstHumanity cardsAgainstHumanity;
 
     public CAHJoinTask(CardsAgainstHumanity cah) {
@@ -662,16 +662,17 @@ class CAHJoinTask extends TimerTask {
     @Override
     public void run() {
         if (cardsAgainstHumanity.activePlayers().size() <= 3) {
-            if (attempts < 3) {
-                attempts++;
-                cardsAgainstHumanity.sendToAll("Not enough players to start CAH, trying again.\nAttempt: " + attempts +
+            if (cardsAgainstHumanity.attempts < 3) {
+                cardsAgainstHumanity.attempts++;
+                cardsAgainstHumanity.sendToAll("Not enough players to start CAH, trying again.\nAttempt: " + cardsAgainstHumanity.attempts +
                         "\nResending description...");
                 cardsAgainstHumanity.sendToAll(cardsAgainstHumanity.description());
-                new Timer().schedule(this, 60000);
+                new Timer().schedule(new CAHJoinTask(cardsAgainstHumanity), 60000);
             } else {
                 cardsAgainstHumanity.sendToAll("Attempt 3 has been reached! Cancelling CAH.");
                 GameManager.instance().stopGame();
             }
+            return;
         }
 
         cardsAgainstHumanity.sendToAll("Let the games begin!");
