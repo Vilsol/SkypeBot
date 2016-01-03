@@ -617,6 +617,17 @@ public class CardsAgainstHumanity extends BaseGame implements Module {
         cah.sendToAll("Let the games begin!");
         cah.startGame();
     }
+
+    @Command(name = "cahlist")
+    public static void cahList(ChatMessage message) {
+        StringBuilder builder = new StringBuilder();
+
+        for (String s : current().activePlayers()) {
+            builder.append(s).append(", ");
+        }
+
+        Resource.sendMessage(message, builder.toString());
+    }
 }
 
 class CzarOption {
