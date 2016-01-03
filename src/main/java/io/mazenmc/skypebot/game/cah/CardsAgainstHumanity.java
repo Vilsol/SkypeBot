@@ -212,11 +212,11 @@ public class CardsAgainstHumanity extends BaseGame implements Module {
     public void removePlayer(String username) {
         super.removePlayer(username);
 
-        if (cardCzar.equals(username) && checkPlayers(false)) {
+        if (username.equals(cardCzar) && checkPlayers(false)) {
             nextRound();
         }
 
-        if (activePlayers().size() < 3) {
+        if (state() == GameState.INGAME && activePlayers().size() < 3) {
             sendToAll("There are no longer enough players to continue CAH! Ending game...");
             GameManager.instance().stopGame();
         }
