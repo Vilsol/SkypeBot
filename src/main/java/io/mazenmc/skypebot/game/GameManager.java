@@ -46,6 +46,6 @@ public class GameManager {
     }
 
     private Class<? extends Game> findGame(String name) {
-        return Utils.optionalGet(registeredGames.stream().filter((c) -> c.getName().equalsIgnoreCase(name)).findFirst());
+        return Utils.optionalGet(registeredGames.stream().filter((c) -> c.getSimpleName().equalsIgnoreCase(name)).findFirst());
     }
 }
