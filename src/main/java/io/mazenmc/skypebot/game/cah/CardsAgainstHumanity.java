@@ -412,7 +412,7 @@ public class CardsAgainstHumanity extends BaseGame implements Module {
             return false;
         }
 
-        CAHCard cahCard = userCards.get(number);
+        CAHCard cahCard = userCards.get(number - 1);
         LinkedList<CAHCard> cards = new LinkedList<>();
 
         if (playedCards.containsKey(sender)) {
