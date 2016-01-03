@@ -194,9 +194,6 @@ public class General implements Module {
                 name = person;
 
             String[] toSend = new String[11];
-            List<Message> messages = stat.messages();
-
-            messages.sort((m1, m2) -> (int) (m2.time() - m1.time()));
 
             toSend[0] = "------ " + name + "'s statistics ------";
             toSend[1] = "Message count: " + stat.messageAmount();
@@ -209,8 +206,8 @@ public class General implements Module {
                 toSend[5] = "Random message: " + stat.randomMessage().contents();
             }
             toSend[6] = "Most common word: " + stat.mostCommonWord();
-            toSend[7] = "First message sent at " + new Date(messages.get(messages.size() - 1).time()).toString();
-            toSend[8] = "Last message sent at " + new Date(messages.get(0).time()).toString();
+            toSend[7] = "First message sent at " + new Date(Utils.firstSpoken(stat).time()).toString();
+            toSend[8] = "Last message sent at " + new Date(Utils.lastSpoken(stat).time()).toString();
             toSend[9] = "Percent of Messages which were commands: " + format.format(stat.commandPercent()) + "%";
             toSend[10] = "---------------------------------------";
 

@@ -6,6 +6,8 @@ import com.skype.ChatMessage;
 import com.skype.SkypeException;
 import io.mazenmc.skypebot.Main;
 import io.mazenmc.skypebot.SkypeBot;
+import io.mazenmc.skypebot.stat.Message;
+import io.mazenmc.skypebot.stat.MessageStatistic;
 import io.mazenmc.skypebot.stat.StatisticsManager;
 import org.apache.commons.codec.digest.DigestUtils;
 import sun.misc.BASE64Encoder;
@@ -229,6 +231,40 @@ public class Utils {
         }
 
         return s;
+    }
+
+    public static Message lastSpoken(MessageStatistic statistic) {
+        Message message = null;
+
+        for (Message msg : statistic.messages()) {
+            if (message == null) {
+                message = msg;
+                continue;
+            }
+
+            if (msg.time() > message.time()) {
+                message = msg;
+            }
+        }
+
+        return message;
+    }
+
+    public static Message firstSpoken(MessageStatistic statistic) {
+        Message message = null;
+
+        for (Message msg : statistic.messages()) {
+            if (message == null) {
+                message = msg;
+                continue;
+            }
+
+            if (msg.time() < message.time()) {
+                message = msg;
+            }
+        }
+
+        return message;
     }
 
     public static <T> T optionalGet(Optional<T> optional) {
