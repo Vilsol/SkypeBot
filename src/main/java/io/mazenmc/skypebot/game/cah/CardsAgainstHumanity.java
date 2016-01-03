@@ -387,11 +387,13 @@ public class CardsAgainstHumanity extends BaseGame implements Module {
                 }
                 return true;
             } else {
+                System.out.println("not the czar");
                 return false;
             }
         }
 
         if (state() != GameState.CHOOSING) {
+            System.out.println("not choosing time");
             return false;
         }
 
