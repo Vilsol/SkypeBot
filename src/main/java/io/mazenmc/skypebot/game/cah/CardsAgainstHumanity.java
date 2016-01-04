@@ -468,7 +468,6 @@ public class CardsAgainstHumanity extends BaseGame implements Module {
 
             if (winner != null) {
                 sendToAll(String.format(GameLang.GAME_CAH_WIN_ROUND, String.valueOf(number), winner.getId()));
-                nextRound();
                 incrementScore(winner.getId());
 
                 String gameWinner = null;
