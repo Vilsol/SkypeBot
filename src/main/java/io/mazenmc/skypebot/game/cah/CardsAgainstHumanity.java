@@ -73,6 +73,10 @@ public class CardsAgainstHumanity extends BaseGame implements Module {
     @Override
     public void end() {
         ModuleManager.removeModule(CardsAgainstHumanity.class);
+
+        if (task != null) {
+            task.cancel();
+        }
     }
 
     public boolean checkPlayers(boolean forcePlay) {
