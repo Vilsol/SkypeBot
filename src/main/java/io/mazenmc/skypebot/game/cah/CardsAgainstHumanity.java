@@ -632,6 +632,24 @@ public class CardsAgainstHumanity extends BaseGame implements Module {
 
         Resource.sendMessage(message, builder.toString());
     }
+
+    @Command(name = "cahscores")
+    public static void cahScores(ChatMessage message) throws SkypeException {
+        CardsAgainstHumanity cah = current();
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("---------------------------\n");
+
+        for (Map.Entry<String, Integer> e : cah.scores.entrySet()) {
+            sb.append(e.getKey())
+                    .append(": ")
+                    .append(e.getValue())
+                    .append("\n");
+        }
+
+        sb.append("---------------------------");
+        current().send(message.getSenderId(), sb.toString());
+    }
 }
 
 class CzarOption {
