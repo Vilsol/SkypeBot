@@ -117,21 +117,7 @@ public class SkypeBot {
             try {
                 newSkype.login();
                 System.out.println("Logged in with username " + username);
-                newSkype.getEventManager().registerEvents(new SkypeEventListener() {
-                    public void onMessage(SkypeMessageReceivedEvent e) {
-                        Callback<String> callback = null;
-                        SkypeMessage received = e.getMessage();
-
-                        if ((callback = Resource.getCallback(received.getSender().getUsername())) != null) {
-                            callback.callback(received.getMessage());
-                            return;
-                        }
-
-                        StatisticsManager.instance().logMessage(received);
-                        ModuleManager.parseText(received);
-                    }
-
-                });
+                newSkype.getEventManager().registerEvents(new SkypeEventListener());
                 System.out.println("Reassigned new skype");
                 skype = newSkype;
                 if (oldSkype != null) oldSkype.logout();
@@ -161,7 +147,21 @@ public class SkypeBot {
         }
     }
 
-    private interface SkypeEventListener {}
+    @SuppressWarnings("unused")
+    private class SkypeEventListener {
+        public void onMessage(SkypeMessageReceivedEvent e) {
+            Callback<String> callback;
+            SkypeMessage received = e.getMessage();
+
+            if ((callback = Resource.getCallback(received.getSender().getUsername())) != null) {
+                callback.callback(received.getMessage());
+                return;
+            }
+
+            StatisticsManager.instance().logMessage(received);
+            ModuleManager.parseText(received);
+        }
+    }
 
     public static SkypeBot getInstance() {
         if (instance == null) {
