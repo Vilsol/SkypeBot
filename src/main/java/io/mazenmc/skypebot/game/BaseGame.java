@@ -104,7 +104,7 @@ public abstract class BaseGame implements Game {
 
     @Override
     public SkypeUser fetchUser(String name) {
-        return SkypeBot.getInstance().getEzSkype().getSkypeUser(name);
+        return Utils.getUser(name);
     }
 
     @Override

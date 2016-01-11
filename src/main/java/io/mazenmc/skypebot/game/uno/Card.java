@@ -34,7 +34,7 @@ public class Card {
                         Resource.sendMessage(Utils.getDisplayName(Utils.getUser(next.getKey())) + " drew 4 cards!");
                     }
 
-                    Resource.sendMessage("What color would you like to choose next, " + owner.getDisplayName() + "?");
+                    Resource.sendMessage("What color would you like to choose next, " + Utils.getDisplayName(owner) + "?");
                     Resource.sendMessage("Available colors: RED, BLUE, GREEN, YELLOW");
                     Resource.assignCallback(owner.getUsername(), (message) -> {
                         Color c = Color.valueOf(message.toUpperCase());
