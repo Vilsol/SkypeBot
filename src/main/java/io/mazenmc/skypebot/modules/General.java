@@ -14,10 +14,8 @@ import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
-import com.skype.ChatMessage;
-import com.skype.Skype;
-import com.skype.SkypeException;
-import com.skype.User;
+import in.kyle.ezskypeezlife.api.obj.SkypeMessage;
+import in.kyle.ezskypeezlife.api.obj.SkypeUser;
 import io.mazenmc.skypebot.SkypeBot;
 import io.mazenmc.skypebot.engine.bot.*;
 import io.mazenmc.skypebot.engine.bot.Optional;
@@ -37,7 +35,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.DecimalFormat;
-import java.time.Instant;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
@@ -51,7 +48,7 @@ public class General implements Module {
     private static boolean ranting = false;
 
     @Command(name = "exclude", admin = true)
-    public static void cmdExclude(ChatMessage chat, int days, String person) {
+    public static void cmdExclude(SkypeMessage chat, int days, String person) {
         MessageStatistic statistic = StatisticsManager.instance().statistics().get(person);
 
         if (statistic == null) {
@@ -66,7 +63,7 @@ public class General implements Module {
     }
 
     @Command(name = "kick", admin = true)
-    public static void cmdReset(ChatMessage chat, String person) {
+    public static void cmdReset(SkypeMessage chat, String person) {
         MessageStatistic statistic = StatisticsManager.instance().statistics().get(person);
 
         if (statistic == null) {
@@ -80,7 +77,7 @@ public class General implements Module {
     }
 
     @Command(name = "8ball")
-    public static void cmd8Ball(ChatMessage chat, @Optional
+    public static void cmd8Ball(SkypeMessage chat, @Optional
             String question) {
         String[] options = new String[]{"It is certain", "It is decidedly so", "Without a doubt", "Yes definitely", "You may rely on it", "As I see it, yes", "Most likely", "Outlook good", "Yes", "Signs point to yes", "Reply hazy try again", "Ask again later", "Better not tell you now", "Cannot predict now", "Concentrate and ask again", "Don't count on it", "My reply is no", "My sources say no", "Outlook not so good", "Very doubtful"};
         int chosen = ThreadLocalRandom.current().nextInt(options.length);
@@ -88,25 +85,25 @@ public class General implements Module {
     }
 
     @Command(name = "flickr.com/photos/stuntguy3000", exact = false, command = false)
-    public static void cmdStuntguyFlickr(ChatMessage chat) throws SkypeException {
-        if (chat.getSender().getId().equalsIgnoreCase("stuntguy3000")) {
+    public static void cmdStuntguyFlickr(SkypeMessage chat) throws Exception {
+        if (chat.getSender().getUsername().equalsIgnoreCase("stuntguy3000")) {
             Resource.sendMessage("Nobody likes your photos, Luke.");
         }
     }
 
     @Command(name = "about")
-    public static void cmdAbout(ChatMessage chat) {
+    public static void cmdAbout(SkypeMessage chat) {
         Resource.sendMessage(chat, "Originally created by Vilsol, reincarnated and improved by MazenMC and stuntguy3000");
         Resource.sendMessage(chat, "Version: " + Resource.VERSION);
     }
 
     @Command(name = "bot")
-    public static void cmdBot(ChatMessage chat, String message) {
+    public static void cmdBot(SkypeMessage chat, String message) {
         Resource.sendMessage("/me " + message);
     }
 
     @Command(name = "choice")
-    public static void choice(ChatMessage chat, String message) {
+    public static void choice(SkypeMessage chat, String message) {
         String[] choices = message.trim().split(",");
 
         if (choices.length == 1) {
@@ -118,32 +115,32 @@ public class General implements Module {
     }
 
     @Command(name = "c")
-    public static void cmdC(ChatMessage chat, String question) throws SkypeException {
+    public static void cmdC(SkypeMessage chat, String question) throws Exception {
         Resource.sendMessage(chat, SkypeBot.getInstance().askQuestion(question));
     }
 
     @Command(name = "doc")
-    public static void cmdDoc(ChatMessage chat) {
+    public static void cmdDoc(SkypeMessage chat) {
         Resource.sendMessage(chat, "https://docs.google.com/document/d/1LoTYCauVyEiiLZ5Klw3UB8rbEtkzNn7VLmgm87Fzyy0/edit#");
     }
 
     @Command(name = "fish go moo", exact = false, command = false)
-    public static void cmdFishGoMoo(ChatMessage chat) throws SkypeException {
-        Resource.sendMessage("/me notes that " + chat.getSenderDisplayName() + " is truly enlightened.");
+    public static void cmdFishGoMoo(SkypeMessage chat) throws Exception {
+        Resource.sendMessage("/me notes that " + Utils.getDisplayName(chat.getSender()) + " is truly enlightened.");
     }
 
     @Command(name = "thank mr bot", exact = false, command = false)
-    public static void cmdThankMrBot(ChatMessage chat) throws SkypeException {
+    public static void cmdThankMrBot(SkypeMessage chat) throws Exception {
         Resource.sendMessage("may good cpus and dedotated wams come to you");
     }
 
     @Command(name = "git", alias = {"repo", "repository", "source"})
-    public static void cmdGit(ChatMessage chat) {
+    public static void cmdGit(SkypeMessage chat) {
         Resource.sendMessage(chat, "Git Repository: https://github.com/MazenMC/SkypeBot");
     }
 
     @Command(name = "help", alias = {"commands"})
-    public static void cmdHelp(ChatMessage chat) {
+    public static void cmdHelp(SkypeMessage chat) {
         String commands = "";
 
         for (Map.Entry<String, CommandData> data : ModuleManager.getCommands().entrySet()) {
@@ -166,13 +163,13 @@ public class General implements Module {
     }
 
     @Command(name = "lmgtfy")
-    public static void cmdLmgtfy(ChatMessage chat, String question) throws SkypeException {
+    public static void cmdLmgtfy(SkypeMessage chat, String question) throws Exception {
         String returnString = "http://lmgtfy.com/?q=";
         Resource.sendMessage(chat, returnString + URLEncoder.encode(question));
     }
 
     @Command(name = "stats")
-    public static void cmdStats(ChatMessage chat, @Optional String person) throws SkypeException {
+    public static void cmdStats(SkypeMessage chat, @Optional String person) throws Exception {
 
         DecimalFormat format = new DecimalFormat("##.#");
 
@@ -184,14 +181,8 @@ public class General implements Module {
                 return;
             }
 
-            User user = Skype.getUser(person);
-            String name = user.getDisplayName();
-
-            if ("".equals(name))
-                name = user.getFullName();
-
-            if ("".equals(name))
-                name = person;
+            SkypeUser user = Utils.getUser(person);
+            String name = Utils.getDisplayName(user);
 
             String[] toSend = new String[13];
             Message first = Utils.firstSpoken(stat);
@@ -293,7 +284,7 @@ public class General implements Module {
     }
 
     @Command(name = "wordstats")
-    public static void cmdWordStats(ChatMessage chat, @Optional String lol) {
+    public static void cmdWordStats(SkypeMessage chat, @Optional String lol) {
         List<MessageStatistic> messages = new ArrayList<>(StatisticsManager.instance()
                 .statistics()
                 .values());
@@ -335,7 +326,7 @@ public class General implements Module {
     }
 
     @Command(name = "kicklist")
-    public static void kickList(ChatMessage chat) {
+    public static void kickList(SkypeMessage chat) {
         long timestamp = System.currentTimeMillis();
         Collection<MessageStatistic> stats = StatisticsManager.instance().statistics().values();
         List<Map.Entry<MessageStatistic, Long>> sorted = stats.stream()
@@ -360,7 +351,7 @@ public class General implements Module {
     }
 
     @Command(name = "md5")
-    public static void cmdMd5(ChatMessage chat) {
+    public static void cmdMd5(SkypeMessage chat) {
         String s = "md_1 = 1% of devs (people who know their shit)\n" +
                 "md_2 = uses one class for everything\n" +
                 "md_3 = true == true, yoo!\n" +
@@ -375,8 +366,8 @@ public class General implements Module {
     }
 
     @Command(name = "ping")
-    public static void cmdPing(ChatMessage chat, @Optional
-            final String ip) throws JSONException, SkypeException {
+    public static void cmdPing(SkypeMessage chat, @Optional
+            final String ip) throws JSONException, Exception {
         if (ip == null) {
             Resource.sendMessage(chat, "Pong");
         } else {
@@ -405,7 +396,7 @@ public class General implements Module {
     }
 
     @Command(name = "quote")
-    public static void cmdQuote(ChatMessage chat, String category) throws SkypeException {
+    public static void cmdQuote(SkypeMessage chat, String category) throws Exception {
         try {
             HttpResponse<JsonNode> response = Unirest.post("https://andruxnet-random-famous-quotes.p.mashape.com/cat=" + category).header("X-Mashape-Key", "rIizXnIZ7Umsh3o3sfCLfL86lZY2p1bda69jsnAqK1Sc6C5CV1").header("Content-Type", "application/x-www-form-urlencoded").asJson();
             Resource.sendMessage(chat, "\"" + response.getBody().getObject().get("quote") + "\" - " + response.getBody().getObject().get("author"));
@@ -414,7 +405,7 @@ public class General implements Module {
     }
 
     @Command(name = "random")
-    public static void cmdRandom(ChatMessage chat, int number1, int number2) throws SkypeException {
+    public static void cmdRandom(SkypeMessage chat, int number1, int number2) throws Exception {
         int high = Math.max(number1, number2);
         int low = Math.min(number1, number2);
 
@@ -427,14 +418,14 @@ public class General implements Module {
     }
 
     @Command(name = "whatwouldrandomsay")
-    public static void cmdRandomSay(ChatMessage chat) throws SkypeException {
+    public static void cmdRandomSay(SkypeMessage chat) throws Exception {
         Map<String, MessageStatistic> messageStatisticMap = StatisticsManager.instance().statistics();
         String username = (String) messageStatisticMap.keySet().toArray()[ThreadLocalRandom.current().nextInt(0, messageStatisticMap.size())];
         randomSay(chat, username);
     }
 
     @Command(name = "whatwouldselectsay")
-    public static void cmdSelectSay(ChatMessage chat, String username) throws SkypeException {
+    public static void cmdSelectSay(SkypeMessage chat, String username) throws Exception {
         MessageStatistic stat = StatisticsManager.instance().statistics().get(username);
 
         if (stat == null) {
@@ -445,7 +436,7 @@ public class General implements Module {
         randomSay(chat, username);
     }
 
-    private static void randomSay(ChatMessage chat, String username) throws SkypeException {
+    private static void randomSay(SkypeMessage chat, String username) throws Exception {
         Map<String, MessageStatistic> messageStatisticMap = StatisticsManager.instance().statistics();
         MessageStatistic statistic = messageStatisticMap.get(username);
         Message message = statistic.randomMessage();
@@ -462,7 +453,7 @@ public class General implements Module {
     }
 
     @Command(name = "whatwouldrandomquestion")
-    public static void cmdRandomQuestion(ChatMessage chat) throws SkypeException {
+    public static void cmdRandomQuestion(SkypeMessage chat) throws Exception {
         Map<String, MessageStatistic> messageStatisticMap = StatisticsManager.instance().statistics();
         MessageStatistic[] statistics = messageStatisticMap.values().toArray(new MessageStatistic[messageStatisticMap.size()]);
         MessageStatistic stat = statistics[ThreadLocalRandom.current().nextInt(statistics.length)];
@@ -479,9 +470,9 @@ public class General implements Module {
     }
 
     @Command(name = "rant")
-    public static void cmdRant(ChatMessage chat,
+    public static void cmdRant(SkypeMessage chat,
             @Optional
-            final String question) throws SkypeException {
+            final String question) throws Exception {
         if (ranting) {
             rantThread.stop();
             ranting = false;
@@ -558,12 +549,12 @@ public class General implements Module {
     }
 
     @Command(name = "restart", admin = true)
-    public static void cmdRestart(ChatMessage chat) {
+    public static void cmdRestart(SkypeMessage chat) {
         Utils.restartBot();
     }
 
     @Command(name = "sql", cooldown = 30)
-    public static void cmdSQL(ChatMessage chat, String query) throws SQLException, SkypeException {
+    public static void cmdSQL(SkypeMessage chat, String query) throws SQLException, Exception {
         if (SkypeBot.getInstance().getDatabase() == null) {
             Resource.sendMessage(chat, "Connection is down!");
             return;
@@ -606,12 +597,12 @@ public class General implements Module {
     }
 
     @Command(name = "topkek")
-    public static void cmdTopKek(ChatMessage chat) throws SkypeException {
+    public static void cmdTopKek(SkypeMessage chat) throws Exception {
         Resource.sendMessage(chat, "https://topkek.mazenmc.io/ Gotta be safe while keking!");
     }
 
     @Command(name = "define")
-    public static void cmddefine(ChatMessage chat, String word) throws Exception {
+    public static void cmddefine(SkypeMessage chat, String word) throws Exception {
         HttpResponse<String> response = Unirest.get("https://mashape-community-urban-dictionary.p.mashape.com/define?term=" + word.replace(" ", "+"))
                 .header("X-Mashape-Key", Resource.KEY_URBAND)
                 .header("Accept", "text/plain")
@@ -632,8 +623,8 @@ public class General implements Module {
     }
 
     @Command(name = "^https?://(?:[a-z\\-]+\\.)+[a-z]{2,6}(?:/[^/#?]+)+\\.(?:jpg|gif|png)$", command = false, exact = false)
-    public static void pornDetect(ChatMessage chat) throws Exception {
-        String message = chat.getContent();
+    public static void pornDetect(SkypeMessage chat) throws Exception {
+        String message = chat.getMessage();
         String link = null;
 
         for (String part : message.split(" ")) {
@@ -653,14 +644,14 @@ public class General implements Module {
                     .asJson();
 
             if ("True".equals(response.getBody().getObject().getString("Is Porn"))) {
-                Resource.sendMessage(chat.getSenderDisplayName() + "'s image is probably porn");
+                Resource.sendMessage(Utils.getDisplayName(chat.getSender()) + "'s image is probably porn");
             }
         } catch (Exception ignored) {
         }
     }
 
     @Command(name = "dreamincode", alias = {"whatwouldmazensay"})
-    public static void cmddreamincode(ChatMessage chat) throws SkypeException {
+    public static void cmddreamincode(SkypeMessage chat) throws Exception {
         String[] options = new String[] {
             "No, I'm not interested in having a girlfriend I find it a tremendous waste of time.",
             "Hi, my name is Santiago Gonzalez and I'm 14 and I like to program.",
@@ -690,7 +681,7 @@ public class General implements Module {
     }
 
     @Command(name = "relevantxkcd", alias = {"xkcd"})
-    public static void cmdrelevantxkcd(ChatMessage chat, @Optional String name) {
+    public static void cmdrelevantxkcd(SkypeMessage chat, @Optional String name) {
         if (name == null) {
             try {
                 HttpResponse<JsonNode> response = Unirest.get("http://xkcd.com/info.0.json")
@@ -734,32 +725,32 @@ public class General implements Module {
     }
 
     @Command(name = "roflcopter", alias = {"rofl"})
-    public static void cmdRofl(ChatMessage chat) throws SkypeException {
+    public static void cmdRofl(SkypeMessage chat) throws Exception {
         Resource.sendMessage(chat, "ROFL all day long! http://goo.gl/pCIqXv");
     }
 
     @Command(name = "restoretopic")
-    public static void cmdRestoreTopic(ChatMessage chatMessage) throws SkypeException {
+    public static void cmdRestoreTopic(SkypeMessage chat) throws Exception {
         Resource.sendMessage("/topic Mazen's Skype Chat");
     }
 
     @Command(name = "has changed the conversation picture.", command = false)
-    public static void cmdConvoPictureChange(ChatMessage chatMessage) throws SkypeException {
-        Resource.sendMessage("/me would love to remove " + chatMessage.getSenderId() + "'s ass right now");
+    public static void cmdConvoPictureChange(SkypeMessage chat) throws Exception {
+        Resource.sendMessage("/me would love to remove " + chat.getSender().getUsername() + "'s ass right now");
     }
 
     @Command(name = "basoon")
-    public static void cmdBasoon(ChatMessage chatMessage) throws SkypeException {
-        Resource.sendMessage(chatMessage, "Blows Air Strongly Out Of Nose");
+    public static void cmdBasoon(SkypeMessage chat) throws Exception {
+        Resource.sendMessage(chat, "Blows Air Strongly Out Of Nose");
     }
 
     @Command(name = "(?i)lol", command = false, exact = false)
-    public static void lolDetect(ChatMessage chatMessage) throws SkypeException {
+    public static void lolDetect(SkypeMessage chat) throws Exception {
         Resource.sendMessage("basoon*");
     }
 
     @Command(name = "(?i)savage", command = false, alias = "(?i)brutal")
-    public static void savageDettector(ChatMessage chatMessage) throws SkypeException {
+    public static void savageDettector(SkypeMessage chat) throws Exception {
         String[] options = new String[] {
                 "https://i.imgur.com/t137FTZ.jpg",
                 "https://i.imgur.com/jLLRs2j.jpg",
@@ -774,27 +765,27 @@ public class General implements Module {
     }
 
     @Command(name = "lenny")
-    public static void cmdLenny(ChatMessage chat) throws SkypeException {
+    public static void cmdLenny(SkypeMessage chat) throws Exception {
         Resource.sendMessage(chat, "( ͡° ͜ʖ ͡°)");
     }
     
     @Command(name = "flip")
-    public static void cmdFlip(ChatMessage chat) throws SkypeException {
+    public static void cmdFlip(SkypeMessage chat) throws Exception {
         Resource.sendMessage(chat, "(╯°□°）╯︵ ┻━┻)");
     }
     
     @Command(name = "idk")
-    public static void cmdIdk(ChatMessage chat) throws SkypeException {
+    public static void cmdIdk(SkypeMessage chat) throws Exception {
         Resource.sendMessage(chat, "¯\\_(ツ)_/¯");
     }
     
     @Command(name = "wat")
-    public static void cmdWat(ChatMessage chat) throws SkypeException {
+    public static void cmdWat(SkypeMessage chat) throws Exception {
         Resource.sendMessage(chat, "http://waitw.at O.o");
     }
     
     @Command(name = "confirmed")
-   public static void cmdConfirmed(ChatMessage chat, String question) {
+   public static void cmdConfirmed(SkypeMessage chat, String question) {
         String[] options = new String[] { "%s Confirmed", "%s won't happen!" ,"%s will happen some day",
             "%s will happen some day", "Just wait and see"};
         int chosen = ThreadLocalRandom.current().nextInt(options.length);
@@ -803,7 +794,7 @@ public class General implements Module {
     }
     
     @Command(name = "phallusexercise", alias = {"whatwouldjustissay"})
-    public static void cmdphallusexercise(ChatMessage message, @Optional String special) {
+    public static void cmdphallusexercise(SkypeMessage message, @Optional String special) {
         String[] options = new String[] {
         		"Guys, Can confirm. Penis exersizes DO work.",
         		"It's only been a week and there is a noticable difference.",
@@ -825,7 +816,7 @@ public class General implements Module {
     }
 
     @Command(name = "poll", alias = {"strawpoll"})
-    public static void cmdPoll(ChatMessage message, String arguments) throws SkypeException, UnirestException, JSONException {
+    public static void cmdPoll(SkypeMessage message, String arguments) throws Exception, UnirestException, JSONException {
         String[] args = arguments.split(":");
 
         if (args.length < 2) {
@@ -890,8 +881,8 @@ public class General implements Module {
     }
     
     @Command(name = "(?i)ayy", exact = false, command = false)
-    public static void ayy(ChatMessage message, @Optional String ayy) throws SkypeException {
-        if (message.getContent().contains("lmao")) {
+    public static void ayy(SkypeMessage message, @Optional String ayy) throws Exception {
+        if (message.getMessage().contains("lmao")) {
             Resource.sendMessage("ayy lmao");
             return;
         }
@@ -900,12 +891,12 @@ public class General implements Module {
     }
     
     @Command(name = "(?i)alien", exact = false, command = false)
-    public static void ayyLmao(ChatMessage message, @Optional String lmao) {
+    public static void ayyLmao(SkypeMessage message, @Optional String lmao) {
         Resource.sendMessage("ayy lmao");
     }
     
     @Command(name = "aikar")
-    public static void lordSaviorAikar(ChatMessage chat) throws SkypeException {
+    public static void lordSaviorAikar(SkypeMessage chat) throws Exception {
         Resource.sendMessage("All kneel and hail our lord and saviour Aikar, god of timings™ and all other glory which is efficiency improvements");
     }
 }

@@ -1,8 +1,5 @@
 package io.mazenmc.skypebot.utils;
 
-import com.skype.Skype;
-import com.skype.SkypeException;
-import com.skype.User;
 import io.mazenmc.skypebot.modules.General;
 import io.mazenmc.skypebot.stat.MessageStatistic;
 import io.mazenmc.skypebot.stat.StatisticsManager;
@@ -24,26 +21,14 @@ public class ChatCleaner implements Runnable {
 
                 if (days >= 7) {
                     System.out.println("removing " + person.name() + " for inactivity, " + days + ", " + lastSpoken);
-                    String name = person.name();
-
-                    try {
-                        User user = Skype.getUser(person.name());
-                        name = user.getDisplayName();
-
-                        if ("".equals(name))
-                            name = user.getFullName();
-
-                        if ("".equals(name))
-                            name = person.name();
-                    } catch (SkypeException ignored) {
-                    }
+                    String name = Utils.getDisplayName(Utils.getUser(person.name()));
 
                     Resource.sendMessages(name + " is getting kicked for inactivity for a week. RIP in peace",
                             "To honor " + name + ", let us review his statistics");
 
                     try {
                         General.cmdStats(null, person.name());
-                    } catch (SkypeException ex) {
+                    } catch (Exception ex) {
                         Resource.sendMessage("Couldn't review his statistics, must've been a terrible member of this chat");
                     }
 

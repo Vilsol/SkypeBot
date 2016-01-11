@@ -2,8 +2,8 @@ package io.mazenmc.skypebot.utils;
 
 import com.google.common.base.Joiner;
 import com.mashape.unirest.http.Unirest;
-import com.skype.ChatMessage;
-import com.skype.SkypeException;
+import in.kyle.ezskypeezlife.api.obj.SkypeMessage;
+import in.kyle.ezskypeezlife.api.obj.SkypeUser;
 import io.mazenmc.skypebot.Main;
 import io.mazenmc.skypebot.SkypeBot;
 import io.mazenmc.skypebot.stat.Message;
@@ -210,7 +210,8 @@ public class Utils {
     }
 
     public static void restartBot() {
-        SkypeBot.getInstance().getPrinter().pureSend("/me " + Resource.VERSION + " Restarting...");
+        String displayName = getDisplayName(SkypeBot.getInstance().getEzSkype().getLocalUser());
+        SkypeBot.getInstance().sendMessage("<b>" + displayName + "</b>" + Resource.VERSION + " Restarting...");
         StatisticsManager.instance().saveStatistics();
         System.out.println("Restarting...");
 
@@ -222,12 +223,13 @@ public class Utils {
         System.exit(0);
     }
 
-    public static String serializeMessage(ChatMessage message) {
+    public static String serializeMessage(SkypeMessage message) {
         String s = "";
+        String displayName = getDisplayName(message.getSender());
 
         try {
-            s += "[" + message.getTime().toString() + "] " + message.getSenderDisplayName() + ": " + message.getContent();
-        } catch (SkypeException ignored) {
+            s += "[" + new Date().toString() + "] " + displayName + ": " + message.getMessage();
+        } catch (Exception ignored) {
         }
 
         return s;
@@ -308,5 +310,14 @@ public class Utils {
         in.close();
 
         return a.toString();
+    }
+
+    public static SkypeUser getUser(String username) {
+        return SkypeBot.getInstance().getEzSkype().getSkypeUser(username);
+    }
+
+    public static String getDisplayName(SkypeUser user) {
+        Optional<String> displayOpt = user.getDisplayName();
+        return displayOpt.isPresent() ? displayOpt.get() : user.getUsername();
     }
 }

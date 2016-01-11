@@ -1,5 +1,6 @@
 package io.mazenmc.skypebot.modules;
 
+import in.kyle.ezskypeezlife.api.obj.SkypeMessage;
 import io.mazenmc.skypebot.engine.bot.Command;
 import io.mazenmc.skypebot.engine.bot.Module;
 import io.mazenmc.skypebot.utils.Resource;
@@ -13,15 +14,13 @@ import java.net.URL;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.skype.ChatMessage;
-
 public class FuckingWeather implements Module {
 
     //Imperial because fuck Celsius right?
     private static String url = "http://api.openweathermap.org/data/2.5/weather?units=imperial&q=";
 
     @Command(name = "fuckingweather")
-    public static void cmdFuckingWeather(ChatMessage chat, String location) {
+    public static void cmdFuckingWeather(SkypeMessage chat, String location) {
         try {
             Resource.sendMessage(chat, getWeather(location));
         } catch (Exception e) {

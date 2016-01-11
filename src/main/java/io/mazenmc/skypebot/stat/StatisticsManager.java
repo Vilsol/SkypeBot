@@ -1,7 +1,6 @@
 package io.mazenmc.skypebot.stat;
 
-import com.skype.ChatMessage;
-import com.skype.SkypeException;
+import in.kyle.ezskypeezlife.api.obj.SkypeMessage;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -21,13 +20,14 @@ public class StatisticsManager {
         return INSTANCE;
     }
 
-    public void logMessage(ChatMessage message) throws SkypeException {
-        if (!statistics.containsKey(message.getSenderId()))
-            statistics.put(message.getSenderId(), new MessageStatistic(message.getSenderId()));
+    public void logMessage(SkypeMessage message) {
+        String senderId = message.getSender().getUsername();
+        if (!statistics.containsKey(senderId))
+            statistics.put(senderId, new MessageStatistic(senderId));
 
         try {
-            statistics.get(message.getSenderId()).addMessage(message);
-        } catch (SkypeException ex) {
+            statistics.get(senderId).addMessage(message);
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
