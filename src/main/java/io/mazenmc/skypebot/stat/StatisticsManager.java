@@ -1,6 +1,6 @@
 package io.mazenmc.skypebot.stat;
 
-import in.kyle.ezskypeezlife.api.obj.SkypeMessage;
+import com.samczsun.skype4j.chat.messages.ReceivedMessage;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -20,7 +20,7 @@ public class StatisticsManager {
         return INSTANCE;
     }
 
-    public void logMessage(SkypeMessage message) {
+    public void logMessage(ReceivedMessage message) {
         String senderId = message.getSender().getUsername();
         if (!statistics.containsKey(senderId))
             statistics.put(senderId, new MessageStatistic(senderId));

@@ -1,6 +1,6 @@
 package io.mazenmc.skypebot.utils;
 
-import in.kyle.ezskypeezlife.api.obj.SkypeMessage;
+import com.samczsun.skype4j.chat.messages.ReceivedMessage;
 import io.mazenmc.skypebot.SkypeBot;
 
 import java.util.HashMap;
@@ -31,7 +31,7 @@ public class Resource {
         SkypeBot.getInstance().sendMessage(message);
     }
 
-    public static void sendMessage(SkypeMessage chatMessage, String message) {
+    public static void sendMessage(ReceivedMessage chatMessage, String message) {
         String displayName = Utils.getDisplayName(chatMessage.getSender());
         try {
             SkypeBot.getInstance().sendMessage("(" + displayName.replaceAll("[^A-Za-z0-9 ><.»«]", "") + ") " + message);

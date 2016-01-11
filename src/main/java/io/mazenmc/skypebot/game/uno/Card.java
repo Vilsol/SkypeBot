@@ -1,6 +1,6 @@
 package io.mazenmc.skypebot.game.uno;
 
-import in.kyle.ezskypeezlife.api.obj.SkypeUser;
+import com.samczsun.skype4j.user.User;
 import io.mazenmc.skypebot.utils.Resource;
 import io.mazenmc.skypebot.utils.Utils;
 
@@ -23,7 +23,7 @@ public class Card {
         return face;
     }
 
-    public void play(UnoGame game, SkypeUser owner) {
+    public void play(UnoGame game, User owner) {
         switch (color) {
             case WILD:
                 try {
@@ -60,7 +60,7 @@ public class Card {
                     game.next();
 
                     Map.Entry<String, Deck> current = game.current();
-                    SkypeUser user;
+                    User user;
 
                     try {
                         user = Utils.getUser(current.getKey());

@@ -3,18 +3,19 @@ package io.mazenmc.skypebot;
 import com.google.code.chatterbotapi.ChatterBotFactory;
 import com.google.code.chatterbotapi.ChatterBotSession;
 import com.google.code.chatterbotapi.ChatterBotType;
-import in.kyle.ezskypeezlife.EzSkype;
-import in.kyle.ezskypeezlife.api.SkypeConversationType;
-import in.kyle.ezskypeezlife.api.SkypeCredentials;
-import in.kyle.ezskypeezlife.api.obj.SkypeConversation;
-import in.kyle.ezskypeezlife.api.obj.SkypeMessage;
-import in.kyle.ezskypeezlife.events.conversation.SkypeMessageReceivedEvent;
+import com.samczsun.skype4j.Skype;
+import com.samczsun.skype4j.SkypeBuilder;
+import com.samczsun.skype4j.chat.Chat;
+import com.samczsun.skype4j.chat.messages.ReceivedMessage;
+import com.samczsun.skype4j.events.EventHandler;
+import com.samczsun.skype4j.events.Listener;
+import com.samczsun.skype4j.events.chat.message.MessageReceivedEvent;
+import com.samczsun.skype4j.exceptions.ConnectionException;
 import io.mazenmc.skypebot.api.API;
 import io.mazenmc.skypebot.engine.bot.ModuleManager;
 import io.mazenmc.skypebot.handler.CooldownHandler;
 import io.mazenmc.skypebot.stat.StatisticsManager;
 import io.mazenmc.skypebot.utils.*;
-import org.apache.commons.lang.exception.ExceptionUtils;
 import org.restlet.Component;
 import org.restlet.Server;
 import org.restlet.data.Protocol;
@@ -43,7 +44,7 @@ public class SkypeBot {
     private ChatterBotSession bot;
     private twitter4j.Twitter twitter;
     private boolean locked = false;
-    private EzSkype skype;
+    private Skype skype;
     private UpdateChecker updateChecker;
     private CooldownHandler cooldownHandler;
     private String username;
@@ -111,20 +112,14 @@ public class SkypeBot {
     }
 
     public void loadSkype() {
-        scheduler.scheduleAtFixedRate(() -> {
-            EzSkype oldSkype = skype;
-            EzSkype newSkype = new EzSkype(new SkypeCredentials(username, password));
-            try {
-                newSkype.login();
-                System.out.println("Logged in with username " + username);
-                newSkype.getEventManager().registerEvents(new SkypeEventListener());
-                System.out.println("Reassigned new skype");
-                skype = newSkype;
-                if (oldSkype != null) oldSkype.logout();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }, 0, 3, TimeUnit.HOURS);
+        try {
+            skype = new SkypeBuilder(username, password).withAllResources().build();
+            skype.login();
+            skype.getEventDispatcher().registerListener(new SkypeEventListener());
+            System.out.println("");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void loadConfig() throws IOException {
@@ -147,14 +142,14 @@ public class SkypeBot {
         }
     }
 
-    @SuppressWarnings("unused")
-    private class SkypeEventListener {
-        public void onMessage(SkypeMessageReceivedEvent e) {
+    private class SkypeEventListener implements Listener {
+        @EventHandler
+        public void onMessage(MessageReceivedEvent event) {
             Callback<String> callback;
-            SkypeMessage received = e.getMessage();
+            ReceivedMessage received = event.getMessage();
 
             if ((callback = Resource.getCallback(received.getSender().getUsername())) != null) {
-                callback.callback(received.getMessage());
+                callback.callback(received.getContent().asPlaintext());
                 return;
             }
 
@@ -171,7 +166,7 @@ public class SkypeBot {
         return instance;
     }
 
-    public EzSkype getEzSkype() {
+    public Skype getSkype() {
         return skype;
     }
 
@@ -183,7 +178,7 @@ public class SkypeBot {
         try {
             return bot.think(question);
         } catch (Exception ignored) {
-            return "I am overthinking... (" + ExceptionUtils.getStackTrace(ignored) + ")";
+            return "I am overthinking...";
         }
     }
 
@@ -191,18 +186,24 @@ public class SkypeBot {
         return database;
     }
 
-    private SkypeConversation groupConv;
+    private Chat groupConv;
 
     public void sendMessage(String message) {
         if (groupConv == null) {
-            for (SkypeConversation conv : skype.getConversations().values()) {
-                if (conv.getConversationType() == SkypeConversationType.GROUP) {
-                    groupConv = conv;
-                    break;
-                }
+            for (Chat conv : skype.getAllChats()) {
+                groupConv = conv;
             }
         }
-        groupConv.sendMessage(message);
+
+        try {
+            groupConv.sendMessage(message);
+        } catch (ConnectionException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public Chat groupConv() {
+        return groupConv;
     }
 
     public Twitter getTwitter() {

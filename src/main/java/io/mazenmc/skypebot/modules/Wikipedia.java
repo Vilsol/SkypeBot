@@ -1,6 +1,6 @@
 package io.mazenmc.skypebot.modules;
 
-import in.kyle.ezskypeezlife.api.obj.SkypeMessage;
+import com.samczsun.skype4j.chat.messages.ReceivedMessage;
 import io.mazenmc.skypebot.engine.bot.Command;
 import io.mazenmc.skypebot.engine.bot.Module;
 import io.mazenmc.skypebot.utils.Resource;
@@ -16,14 +16,13 @@ import java.util.regex.Matcher;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-
 public class Wikipedia implements Module{
 
     String api = "";
 
     @Command(name = "en.wikipedia.org/wiki/", command = false, exact = false)
-    public static void cmdWikipedia(SkypeMessage chat) throws IOException, JSONException, Exception{
-        String wholeMessage = chat.getMessage();
+    public static void cmdWikipedia(ReceivedMessage chat) throws IOException, JSONException, Exception{
+        String wholeMessage = chat.getContent().asPlaintext();
         Matcher idMatcher = Resource.WIKIPEDIA_REGEX.matcher(wholeMessage);
 
         String articleSlug = null;

@@ -2,8 +2,8 @@ package io.mazenmc.skypebot.utils;
 
 import com.google.common.base.Joiner;
 import com.mashape.unirest.http.Unirest;
-import in.kyle.ezskypeezlife.api.obj.SkypeMessage;
-import in.kyle.ezskypeezlife.api.obj.SkypeUser;
+import com.samczsun.skype4j.chat.messages.ReceivedMessage;
+import com.samczsun.skype4j.user.User;
 import io.mazenmc.skypebot.Main;
 import io.mazenmc.skypebot.SkypeBot;
 import io.mazenmc.skypebot.stat.Message;
@@ -210,8 +210,7 @@ public class Utils {
     }
 
     public static void restartBot() {
-        String displayName = getDisplayName(SkypeBot.getInstance().getEzSkype().getLocalUser());
-        SkypeBot.getInstance().sendMessage("<b>" + displayName + "</b>" + Resource.VERSION + " Restarting...");
+        SkypeBot.getInstance().sendMessage("Mazen's Bot: " + Resource.VERSION + " Restarting...");
         StatisticsManager.instance().saveStatistics();
         System.out.println("Restarting...");
 
@@ -223,12 +222,12 @@ public class Utils {
         System.exit(0);
     }
 
-    public static String serializeMessage(SkypeMessage message) {
+    public static String serializeMessage(ReceivedMessage message) {
         String s = "";
         String displayName = getDisplayName(message.getSender());
 
         try {
-            s += "[" + new Date().toString() + "] " + displayName + ": " + message.getMessage();
+            s += "[" + new Date().toString() + "] " + displayName + ": " + message.getContent().asPlaintext();
         } catch (Exception ignored) {
         }
 
@@ -312,12 +311,11 @@ public class Utils {
         return a.toString();
     }
 
-    public static SkypeUser getUser(String username) {
-        return SkypeBot.getInstance().getEzSkype().getSkypeUser(username);
+    public static User getUser(String username) {
+        return SkypeBot.getInstance().groupConv().getUser(username);
     }
 
-    public static String getDisplayName(SkypeUser user) {
-        Optional<String> displayOpt = user.getDisplayName();
-        return displayOpt.isPresent() ? displayOpt.get() : user.getUsername();
+    public static String getDisplayName(User user) {
+        return user.getDisplayName();
     }
 }

@@ -1,7 +1,7 @@
 package io.mazenmc.skypebot.game.uno;
 
-import in.kyle.ezskypeezlife.api.obj.SkypeUser;
-import io.mazenmc.skypebot.game.Game;
+
+import com.samczsun.skype4j.user.User;
 import io.mazenmc.skypebot.utils.Resource;
 import io.mazenmc.skypebot.utils.Utils;
 
@@ -21,7 +21,7 @@ public class UnoGame {
         topCard = randomCard();
     }
 
-    public Deck deckFor(SkypeUser user) {
+    public Deck deckFor(User user) {
         return decks.get(user.getUsername());
     }
 
@@ -39,10 +39,10 @@ public class UnoGame {
 
         for (Map.Entry<String, Deck> entry : decks.entrySet()) {
             try {
-                SkypeUser user = Utils.getUser(entry.getKey());
+                User user = Utils.getUser(entry.getKey());
 
-                user.sendMessage("Your deck:");
-                user.sendMessage(entry.getValue().toString());
+                user.getChat().sendMessage("Your deck:");
+                user.getChat().sendMessage(entry.getValue().toString());
             } catch (Exception ignored) {
             }
         }

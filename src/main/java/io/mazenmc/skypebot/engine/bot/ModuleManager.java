@@ -1,10 +1,9 @@
 package io.mazenmc.skypebot.engine.bot;
 
-import in.kyle.ezskypeezlife.api.obj.SkypeMessage;
+import com.samczsun.skype4j.chat.messages.ReceivedMessage;
 import io.mazenmc.skypebot.SkypeBot;
 import io.mazenmc.skypebot.utils.Resource;
 import io.mazenmc.skypebot.utils.Utils;
-import org.apache.commons.lang.exception.ExceptionUtils;
 import org.reflections.Reflections;
 import sun.reflect.MethodAccessor;
 
@@ -22,7 +21,7 @@ public class ModuleManager {
 
     private static long lastCommand = 0L;
 
-    private static void executeCommand(SkypeMessage chat, CommandData data, Matcher m) {
+    private static void executeCommand(ReceivedMessage chat, CommandData data, Matcher m) {
         if (data.getCommand().admin()) {
             try {
                 if (!Arrays.asList(Resource.GROUP_ADMINS).contains(chat.getSender().getUsername())) {
@@ -91,13 +90,13 @@ public class ModuleManager {
                 lastCommand = System.currentTimeMillis();
             }
         } catch (NoSuchFieldException | InvocationTargetException | IllegalAccessException | NoSuchMethodException e) {
-            Resource.sendMessage(chat, "Failed... (" + ExceptionUtils.getStackTrace(e) + ")");
+            Resource.sendMessage(chat, "Failed...");
         }
 
         try {
             methodAccessor.invoke(null, a.toArray());
         } catch (Exception e) {
-            Resource.sendMessage(chat, "Failed... (" + Utils.upload(ExceptionUtils.getStackTrace(e)) + ")");
+            Resource.sendMessage(chat, "Failed...");
         }
 
     }
@@ -153,11 +152,11 @@ public class ModuleManager {
         }
     }
 
-    public static void parseText(SkypeMessage chat) {
+    public static void parseText(ReceivedMessage chat) {
         String command;
         String originalCommand;
         try {
-            command = chat.getMessage();
+            command = chat.getContent().asPlaintext();
             originalCommand = command;
         } catch (Exception ignored) {
             System.out.println("Skype exception occurred");
@@ -249,7 +248,6 @@ public class ModuleManager {
             }
 
             Resource.sendMessage(chat, "Incorrect syntax: " + correct);
-
             return;
         }
     }

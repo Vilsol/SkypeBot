@@ -1,7 +1,7 @@
 package io.mazenmc.skypebot.game.cah;
 
-import in.kyle.ezskypeezlife.api.obj.SkypeMessage;
-import in.kyle.ezskypeezlife.api.obj.SkypeUser;
+import com.samczsun.skype4j.chat.messages.ReceivedMessage;
+import com.samczsun.skype4j.user.User;
 import io.mazenmc.skypebot.engine.bot.Command;
 import io.mazenmc.skypebot.engine.bot.Module;
 import io.mazenmc.skypebot.engine.bot.ModuleManager;
@@ -459,7 +459,7 @@ public class CardsAgainstHumanity extends BaseGame implements Module {
 
     boolean tryCzar(int number) {
         if (czarChoosing) {
-            SkypeUser winner = null;
+            User winner = null;
             for (CzarOption czarOption : czarOptions) {
                 if (czarOption.optionNumber() == number) {
                     winner = czarOption.owner();
@@ -507,7 +507,7 @@ public class CardsAgainstHumanity extends BaseGame implements Module {
     }
 
     @Command(name = "pack")
-    public static void pack(SkypeMessage message, Integer number) {
+    public static void pack(ReceivedMessage message, Integer number) {
         CardsAgainstHumanity cah = current();
         CAHCardPack pack = cah.allCardPacks.get("cah.v" + number + ".cards");
         CAHCardPack base = cah.base();
@@ -532,7 +532,7 @@ public class CardsAgainstHumanity extends BaseGame implements Module {
     }
 
     @Command(name = "extra")
-    public static void extra(SkypeMessage message, Integer number) {
+    public static void extra(ReceivedMessage message, Integer number) {
         CardsAgainstHumanity cah = current();
         CAHCardPack pack = cah.allCardPacks.get("cah.x" + number + ".cards");
 
@@ -556,7 +556,7 @@ public class CardsAgainstHumanity extends BaseGame implements Module {
     }
 
     @Command(name = "cahstart")
-    public static void start(SkypeMessage message) {
+    public static void start(ReceivedMessage message) {
         CardsAgainstHumanity cah = current();
         cah.countingDown = true;
         new CAHJoinTask(cah);
@@ -564,7 +564,7 @@ public class CardsAgainstHumanity extends BaseGame implements Module {
     }
 
     @Command(name = "join")
-    public static void join(SkypeMessage message) throws Exception {
+    public static void join(ReceivedMessage message) throws Exception {
         String senderId = message.getSender().getUsername();
         CardsAgainstHumanity cah = current();
 
@@ -578,7 +578,7 @@ public class CardsAgainstHumanity extends BaseGame implements Module {
     }
 
     @Command(name = "leave")
-    public static void leave(SkypeMessage message) throws Exception {
+    public static void leave(ReceivedMessage message) throws Exception {
         String senderId = message.getSender().getUsername();
         CardsAgainstHumanity cah = current();
 
@@ -592,7 +592,7 @@ public class CardsAgainstHumanity extends BaseGame implements Module {
     }
 
     @Command(name = "select")
-    public static void select(SkypeMessage message, Integer card) throws Exception {
+    public static void select(ReceivedMessage message, Integer card) throws Exception {
         String senderId = message.getSender().getUsername();
         CardsAgainstHumanity cah = current();
 
@@ -607,7 +607,7 @@ public class CardsAgainstHumanity extends BaseGame implements Module {
     }
 
     @Command(name = "forcestart", admin = true)
-    public static void forceStart(SkypeMessage message) throws Exception {
+    public static void forceStart(ReceivedMessage message) throws Exception {
         CardsAgainstHumanity cah = current();
 
         if (cah.activePlayers().size() < 3) {
@@ -625,7 +625,7 @@ public class CardsAgainstHumanity extends BaseGame implements Module {
     }
 
     @Command(name = "cahlist")
-    public static void cahList(SkypeMessage message) {
+    public static void cahList(ReceivedMessage message) {
         StringBuilder builder = new StringBuilder();
 
         for (String s : current().activePlayers()) {
@@ -636,7 +636,7 @@ public class CardsAgainstHumanity extends BaseGame implements Module {
     }
 
     @Command(name = "cahscores")
-    public static void cahScores(SkypeMessage message) throws Exception {
+    public static void cahScores(ReceivedMessage message) throws Exception {
         CardsAgainstHumanity cah = current();
         StringBuilder sb = new StringBuilder();
 
@@ -656,10 +656,10 @@ public class CardsAgainstHumanity extends BaseGame implements Module {
 
 class CzarOption {
     private int optionNumber;
-    private SkypeUser owner;
+    private User owner;
     private String text;
 
-    CzarOption(SkypeUser owner) {
+    CzarOption(User owner) {
         this.owner = owner;
     }
 
@@ -671,11 +671,11 @@ class CzarOption {
         this.optionNumber = optionNumber;
     }
 
-    public SkypeUser owner() {
+    public User owner() {
         return owner;
     }
 
-    public void setOwner(SkypeUser owner) {
+    public void setOwner(User owner) {
         this.owner = owner;
     }
 

@@ -1,6 +1,6 @@
 package io.mazenmc.skypebot.modules;
 
-import in.kyle.ezskypeezlife.api.obj.SkypeMessage;
+import com.samczsun.skype4j.chat.messages.ReceivedMessage;
 import io.mazenmc.skypebot.engine.bot.Command;
 import io.mazenmc.skypebot.engine.bot.Module;
 import io.mazenmc.skypebot.utils.Resource;
@@ -20,7 +20,7 @@ public class FuckingWeather implements Module {
     private static String url = "http://api.openweathermap.org/data/2.5/weather?units=imperial&q=";
 
     @Command(name = "fuckingweather")
-    public static void cmdFuckingWeather(SkypeMessage chat, String location) {
+    public static void cmdFuckingWeather(ReceivedMessage chat, String location) {
         try {
             Resource.sendMessage(chat, getWeather(location));
         } catch (Exception e) {

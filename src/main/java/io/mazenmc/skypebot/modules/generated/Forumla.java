@@ -1,6 +1,6 @@
 package io.mazenmc.skypebot.modules.generated;
 
-import in.kyle.ezskypeezlife.api.obj.SkypeMessage;
+import com.samczsun.skype4j.chat.messages.ReceivedMessage;
 import io.mazenmc.skypebot.engine.bot.Command;
 import io.mazenmc.skypebot.engine.bot.Module;
 import io.mazenmc.skypebot.utils.Resource;
@@ -19,7 +19,7 @@ public class Forumla implements Module {
     };
 
     @Command(name = "formula", cooldown = 15)
-    public static void cmdForumla(SkypeMessage chat) throws Exception {
+    public static void cmdForumla(ReceivedMessage chat) throws Exception {
         Random random = new Random();
         String thing1 = sentences[random.nextInt(sentences.length)];
         String thing2 = sentences[random.nextInt(sentences.length)];

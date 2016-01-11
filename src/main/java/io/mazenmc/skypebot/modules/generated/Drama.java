@@ -1,6 +1,6 @@
 package io.mazenmc.skypebot.modules.generated;
 
-import in.kyle.ezskypeezlife.api.obj.SkypeMessage;
+import com.samczsun.skype4j.chat.messages.ReceivedMessage;
 import io.mazenmc.skypebot.engine.bot.Command;
 import io.mazenmc.skypebot.engine.bot.Module;
 import io.mazenmc.skypebot.utils.Resource;
@@ -145,7 +145,7 @@ public class Drama implements Module {
     };
 
     @Command(name = "drama", cooldown = 15)
-    public static void cmdDrama(SkypeMessage chat) throws Exception {
+    public static void cmdDrama(ReceivedMessage chat) throws Exception {
         String sentence = sentences[ThreadLocalRandom.current().nextInt(Arrays.asList(sentences).size())];
 
         for (Map.Entry<String, String[]> s : data.entrySet()) {

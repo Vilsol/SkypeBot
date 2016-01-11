@@ -1,7 +1,7 @@
 package io.mazenmc.skypebot.modules.generated;
 
 import com.google.api.client.util.Joiner;
-import in.kyle.ezskypeezlife.api.obj.SkypeMessage;
+import com.samczsun.skype4j.chat.messages.ReceivedMessage;
 import io.mazenmc.skypebot.engine.bot.Command;
 import io.mazenmc.skypebot.engine.bot.Module;
 import io.mazenmc.skypebot.utils.Resource;
@@ -49,14 +49,14 @@ public class ChipDev implements Module {
     };
 
     @Command(name = "chipdev")
-    public static void cmdChipDev(SkypeMessage chat) throws Exception {
+    public static void cmdChipDev(ReceivedMessage chat) throws Exception {
         String sentence = SENTANCES[ThreadLocalRandom.current().nextInt(SENTANCES.length)];
 
         Resource.sendMessage(chat, sentence);
     }
 
     @Command(name = "devchip")
-    public static void cmdDevChip(SkypeMessage chat) throws Exception {
+    public static void cmdDevChip(ReceivedMessage chat) throws Exception {
         String sentence = SENTANCES[ThreadLocalRandom.current().nextInt(SENTANCES.length)];
 
         List<String> split = Arrays.asList(sentence.split(" "));
