@@ -5,6 +5,7 @@ import com.google.code.chatterbotapi.ChatterBotSession;
 import com.google.code.chatterbotapi.ChatterBotType;
 import in.kyle.ezskypeezlife.EzSkype;
 import in.kyle.ezskypeezlife.api.SkypeConversationType;
+import in.kyle.ezskypeezlife.api.SkypeCredentials;
 import in.kyle.ezskypeezlife.api.obj.SkypeConversation;
 import in.kyle.ezskypeezlife.api.obj.SkypeMessage;
 import in.kyle.ezskypeezlife.events.conversation.SkypeMessageReceivedEvent;
@@ -21,6 +22,7 @@ import twitter4j.Twitter;
 import twitter4j.TwitterFactory;
 import twitter4j.conf.ConfigurationBuilder;
 
+import java.io.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -29,6 +31,9 @@ import java.util.List;
 import java.util.Properties;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class SkypeBot {
 
@@ -43,6 +48,9 @@ public class SkypeBot {
     private Queue<String> stringMessages = new ConcurrentLinkedQueue<>();
     private UpdateChecker updateChecker;
     private CooldownHandler cooldownHandler;
+    private String username;
+    private String password;
+    private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 
     public SkypeBot(String[] args) {
         instance = this;
@@ -56,50 +64,8 @@ public class SkypeBot {
         ModuleManager.loadModules("io.mazenmc.skypebot.modules");
 
         try {
-            skype.getEventManager().registerEvents(new SkypeEventListener() {
-                public void onMessage(SkypeMessageReceivedEvent e) {
-                    Callback<String> callback = null;
-                    SkypeMessage received = e.getMessage();
-
-                    if ((callback = Resource.getCallback(received.getSender().getUsername())) != null) {
-                        callback.callback(received.getMessage());
-                        return;
-                    }
-
-                    stringMessages.add(Utils.serializeMessage(received));
-                    StatisticsManager.instance().logMessage(received);
-                    messages.add(received);
-                    ModuleManager.parseText(received);
-                }
-
-            });
-            /*
-            Skype.addChatMessageListener(new GlobalChatMessageListener() {
-                public void chatMessageReceived(ChatMessage received) throws SkypeException {
-                    Callback<String> callback = null;
-                    Chat chat = received.getChat();
-
-                    if ((callback = Resource.getCallback(received.getSenderId())) != null) {
-                        callback.callback(received.getContent());
-                        return;
-                    }
-
-                    stringMessages.add(Utils.serializeMessage(received));
-                    StatisticsManager.instance().logMessage(received);
-                    messages.add(received);
-                    ModuleManager.parseText(received);
-                }
-
-                @Override
-                public void chatMessageSent(ChatMessage sentChatMessage) throws SkypeException {
-                    StatisticsManager.instance().logMessage(sentChatMessage);
-                }
-
-                @Override
-                public void newChatStarted(Chat chat, User[] users) {
-                }
-            });
-            */
+            loadConfig();
+            loadSkype();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -145,6 +111,59 @@ public class SkypeBot {
         new Thread(new ChatCleaner(), "ChatCleaner Thread").start();
 
         Resource.sendMessage("/me " + Resource.VERSION + " initialized!");
+    }
+
+    public void loadSkype() {
+        scheduler.scheduleAtFixedRate(() -> {
+            EzSkype oldSkype = skype;
+            EzSkype newSkype = new EzSkype(new SkypeCredentials(username, password));
+            try {
+                newSkype.login();
+                System.out.println("Logged in with username " + username);
+                newSkype.getEventManager().registerEvents(new SkypeEventListener() {
+                    public void onMessage(SkypeMessageReceivedEvent e) {
+                        Callback<String> callback = null;
+                        SkypeMessage received = e.getMessage();
+
+                        if ((callback = Resource.getCallback(received.getSender().getUsername())) != null) {
+                            callback.callback(received.getMessage());
+                            return;
+                        }
+
+                        stringMessages.add(Utils.serializeMessage(received));
+                        StatisticsManager.instance().logMessage(received);
+                        messages.add(received);
+                        ModuleManager.parseText(received);
+                    }
+
+                });
+                System.out.println("Reassigned new skype");
+                skype = newSkype;
+                if (oldSkype != null) oldSkype.logout();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }, 0, 3, TimeUnit.HOURS);
+    }
+
+    public void loadConfig() throws IOException {
+        Properties prop = new Properties();
+        File config = new File("bot.properties");
+        if (!config.exists()) {
+            try (OutputStream output = new FileOutputStream(config)) {
+                prop.setProperty("username", "your.skype.username");
+                prop.setProperty("password", "your.skype.password");
+                prop.store(output, null);
+            }
+            System.out.println("Generated default configuration. Exiting.");
+            return;
+        }
+
+        try (InputStream input = new FileInputStream(config)) {
+            prop.load(input);
+            username = prop.getProperty("username");
+            password = prop.getProperty("password");
+        }
     }
 
     private interface SkypeEventListener {}
