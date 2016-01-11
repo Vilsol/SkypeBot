@@ -43,9 +43,7 @@ public class SkypeBot {
     private ChatterBotSession bot;
     private twitter4j.Twitter twitter;
     private boolean locked = false;
-    private Queue<SkypeMessage> messages = new ConcurrentLinkedQueue<>();
     private EzSkype skype;
-    private Queue<String> stringMessages = new ConcurrentLinkedQueue<>();
     private UpdateChecker updateChecker;
     private CooldownHandler cooldownHandler;
     private String username;
@@ -54,7 +52,6 @@ public class SkypeBot {
 
     public SkypeBot(String[] args) {
         instance = this;
-
 
         try {
             bot = new ChatterBotFactory().create(ChatterBotType.CLEVERBOT).createSession();
@@ -130,9 +127,7 @@ public class SkypeBot {
                             return;
                         }
 
-                        stringMessages.add(Utils.serializeMessage(received));
                         StatisticsManager.instance().logMessage(received);
-                        messages.add(received);
                         ModuleManager.parseText(received);
                     }
 
