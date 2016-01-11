@@ -3,10 +3,13 @@ package io.mazenmc.skypebot;
 import com.google.code.chatterbotapi.ChatterBotFactory;
 import com.google.code.chatterbotapi.ChatterBotSession;
 import com.google.code.chatterbotapi.ChatterBotType;
-import com.skype.*;
+import in.kyle.ezskypeezlife.EzSkype;
+import in.kyle.ezskypeezlife.api.SkypeConversationType;
+import in.kyle.ezskypeezlife.api.obj.SkypeConversation;
+import in.kyle.ezskypeezlife.api.obj.SkypeMessage;
+import in.kyle.ezskypeezlife.events.conversation.SkypeMessageReceivedEvent;
 import io.mazenmc.skypebot.api.API;
 import io.mazenmc.skypebot.engine.bot.ModuleManager;
-import io.mazenmc.skypebot.engine.bot.Printer;
 import io.mazenmc.skypebot.handler.CooldownHandler;
 import io.mazenmc.skypebot.stat.StatisticsManager;
 import io.mazenmc.skypebot.utils.*;
@@ -35,8 +38,8 @@ public class SkypeBot {
     private ChatterBotSession bot;
     private twitter4j.Twitter twitter;
     private boolean locked = false;
-    private Queue<ChatMessage> messages = new ConcurrentLinkedQueue<>();
-    private Printer printer;
+    private Queue<SkypeMessage> messages = new ConcurrentLinkedQueue<>();
+    private EzSkype skype;
     private Queue<String> stringMessages = new ConcurrentLinkedQueue<>();
     private UpdateChecker updateChecker;
     private CooldownHandler cooldownHandler;
@@ -44,10 +47,6 @@ public class SkypeBot {
     public SkypeBot(String[] args) {
         instance = this;
 
-        System.setProperty("skype.api.impl", "x11");
-
-        printer = new Printer();
-        printer.start();
 
         try {
             bot = new ChatterBotFactory().create(ChatterBotType.CLEVERBOT).createSession();
@@ -56,8 +55,25 @@ public class SkypeBot {
 
         ModuleManager.loadModules("io.mazenmc.skypebot.modules");
 
-        Skype.setDaemon(false);
         try {
+            skype.getEventManager().registerEvents(new SkypeEventListener() {
+                public void onMessage(SkypeMessageReceivedEvent e) {
+                    Callback<String> callback = null;
+                    SkypeMessage received = e.getMessage();
+
+                    if ((callback = Resource.getCallback(received.getSender().getUsername())) != null) {
+                        callback.callback(received.getMessage());
+                        return;
+                    }
+
+                    stringMessages.add(Utils.serializeMessage(received));
+                    StatisticsManager.instance().logMessage(received);
+                    messages.add(received);
+                    ModuleManager.parseText(received);
+                }
+
+            });
+            /*
             Skype.addChatMessageListener(new GlobalChatMessageListener() {
                 public void chatMessageReceived(ChatMessage received) throws SkypeException {
                     Callback<String> callback = null;
@@ -83,7 +99,8 @@ public class SkypeBot {
                 public void newChatStarted(Chat chat, User[] users) {
                 }
             });
-        } catch (SkypeException e) {
+            */
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -130,6 +147,8 @@ public class SkypeBot {
         Resource.sendMessage("/me " + Resource.VERSION + " initialized!");
     }
 
+    private interface SkypeEventListener {}
+
     public static SkypeBot getInstance() {
         if (instance == null) {
             new SkypeBot(new String[]{});
@@ -138,8 +157,8 @@ public class SkypeBot {
         return instance;
     }
 
-    public void addToQueue(String[] message) {
-        printer.addToQueue(message);
+    public EzSkype getEzSkype() {
+        return skype;
     }
 
     public String askQuestion(String question) {
@@ -158,44 +177,18 @@ public class SkypeBot {
         return database;
     }
 
-    public Printer getPrinter() {
-        return printer;
-    }
-
-    public List<ChatMessage> getLastMessages() {
-        List<ChatMessage> list = new LinkedList<>();
-        Queue<ChatMessage> newMessages = new ConcurrentLinkedQueue<>();
-
-        messages.stream().forEach(m -> {
-            list.add(m);
-            newMessages.add(m);
-        });
-
-        messages = newMessages;
-
-        return list;
-    }
-
-    public List<String> getLastStringMessages() {
-        List<String> list = new LinkedList<>();
-        Queue<String> newMessages = new ConcurrentLinkedQueue<>();
-
-        stringMessages.stream().forEach(m -> {
-            list.add(m);
-            newMessages.add(m);
-        });
-
-        stringMessages = newMessages;
-
-        return list;
-    }
-
-    public boolean isQueueEmpty() {
-        return printer.isQueueEmpty();
-    }
+    private SkypeConversation groupConv;
 
     public void sendMessage(String message) {
-        printer.sendMessage(message);
+        if (groupConv == null) {
+            for (SkypeConversation conv : skype.getConversations().values()) {
+                if (conv.getConversationType() == SkypeConversationType.GROUP) {
+                    groupConv = conv;
+                    break;
+                }
+            }
+        }
+        groupConv.sendMessage(message);
     }
 
     public Twitter getTwitter() {

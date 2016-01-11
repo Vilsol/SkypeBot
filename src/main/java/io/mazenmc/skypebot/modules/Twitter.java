@@ -1,7 +1,6 @@
 package io.mazenmc.skypebot.modules;
 
-import com.skype.ChatMessage;
-import com.skype.SkypeException;
+import in.kyle.ezskypeezlife.api.obj.SkypeMessage;
 import io.mazenmc.skypebot.SkypeBot;
 import io.mazenmc.skypebot.engine.bot.Command;
 import io.mazenmc.skypebot.engine.bot.Module;
@@ -9,13 +8,12 @@ import io.mazenmc.skypebot.utils.Resource;
 import twitter4j.Status;
 import twitter4j.TwitterException;
 
-import java.io.IOException;
 import java.util.regex.Matcher;
 
 public class Twitter implements Module {
     @Command(name = "twitter\\.com\\/[A-z0-9]+\\/status\\/[0-9]{18}", command = false, exact = false)
-    public static void cmdTwitter(ChatMessage chat) throws SkypeException, IOException {
-        String wholeMessage = chat.getContent();
+    public static void cmdTwitter(SkypeMessage chat) throws Exception {
+        String wholeMessage = chat.getMessage();
         Matcher idMatcher = Resource.TWITTER_REGEX.matcher(wholeMessage);
 
         String tweetID = null;

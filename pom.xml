@@ -15,6 +15,14 @@
             <name>Restlet repository</name>
             <url>http://maven.restlet.com</url>
         </repository>
+        <repository>
+            <id>EzSkype-mvn-repo</id>
+            <url>https://raw.github.com/AkHo1ic/EzSkype/mvn-repo/</url>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>always</updatePolicy>
+            </snapshots>
+        </repository>
     </repositories>
 
     <properties>
@@ -24,10 +32,9 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.github.taksan</groupId>
-            <artifactId>skype-java-api</artifactId>
-            <version>1.4</version>
-            <scope>compile</scope>
+            <groupId>in.kyle</groupId>
+            <artifactId>EzSkypeEzLife</artifactId>
+            <version>1.2.9-SNAPSHOT</version>
         </dependency>
 
         <dependency>

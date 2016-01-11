@@ -1,6 +1,6 @@
 package io.mazenmc.skypebot.game;
 
-import com.skype.User;
+import in.kyle.ezskypeezlife.api.obj.SkypeUser;
 
 import java.util.List;
 
@@ -12,9 +12,9 @@ public interface Game {
     int minPlayers();
     void setMinPlayers(int minPlayers);
     List<String> activePlayers();
-    void addPlayer(User user);
+    void addPlayer(SkypeUser user);
     void removePlayer(String player);
-    User fetchUser(String name);
+    SkypeUser fetchUser(String name);
     void sendToAll(String message);
     void send(String user, String message);
     void startGame();

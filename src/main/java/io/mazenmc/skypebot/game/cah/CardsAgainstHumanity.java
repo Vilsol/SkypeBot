@@ -1,9 +1,7 @@
 package io.mazenmc.skypebot.game.cah;
 
-import com.skype.ChatMessage;
-import com.skype.Skype;
-import com.skype.SkypeException;
-import com.skype.User;
+import in.kyle.ezskypeezlife.api.obj.SkypeMessage;
+import in.kyle.ezskypeezlife.api.obj.SkypeUser;
 import io.mazenmc.skypebot.engine.bot.Command;
 import io.mazenmc.skypebot.engine.bot.Module;
 import io.mazenmc.skypebot.engine.bot.ModuleManager;
@@ -103,7 +101,7 @@ public class CardsAgainstHumanity extends BaseGame implements Module {
                 for (Map.Entry<String, LinkedList<CAHCard>> playerCards : playedCards.entrySet()) {
                     int segmentID = 0;
                     int cardCount = 0;
-                    CzarOption czarOption = new CzarOption(Skype.getUser(playerCards.getKey()));
+                    CzarOption czarOption = new CzarOption(Utils.getUser(playerCards.getKey()));
                     StringBuilder modifiedBlackCard = new StringBuilder();
                     modifiedBlackCard.append(blackCardSplit[segmentID]);
 
@@ -461,7 +459,7 @@ public class CardsAgainstHumanity extends BaseGame implements Module {
 
     boolean tryCzar(int number) {
         if (czarChoosing) {
-            User winner = null;
+            SkypeUser winner = null;
             for (CzarOption czarOption : czarOptions) {
                 if (czarOption.optionNumber() == number) {
                     winner = czarOption.owner();
@@ -471,9 +469,9 @@ public class CardsAgainstHumanity extends BaseGame implements Module {
             }
 
             if (winner != null) {
-                sendToAll(String.format(GameLang.GAME_CAH_WIN_ROUND, String.valueOf(number), winner.getId()));
+                sendToAll(String.format(GameLang.GAME_CAH_WIN_ROUND, String.valueOf(number), winner.getUsername()));
                 nextRound();
-                incrementScore(winner.getId());
+                incrementScore(winner.getUsername());
 
                 String gameWinner = null;
                 for (String user : activePlayers()) {
@@ -509,7 +507,7 @@ public class CardsAgainstHumanity extends BaseGame implements Module {
     }
 
     @Command(name = "pack")
-    public static void pack(ChatMessage message, Integer number) {
+    public static void pack(SkypeMessage message, Integer number) {
         CardsAgainstHumanity cah = current();
         CAHCardPack pack = cah.allCardPacks.get("cah.v" + number + ".cards");
         CAHCardPack base = cah.base();
@@ -534,7 +532,7 @@ public class CardsAgainstHumanity extends BaseGame implements Module {
     }
 
     @Command(name = "extra")
-    public static void extra(ChatMessage message, Integer number) {
+    public static void extra(SkypeMessage message, Integer number) {
         CardsAgainstHumanity cah = current();
         CAHCardPack pack = cah.allCardPacks.get("cah.x" + number + ".cards");
 
@@ -558,7 +556,7 @@ public class CardsAgainstHumanity extends BaseGame implements Module {
     }
 
     @Command(name = "cahstart")
-    public static void start(ChatMessage message) {
+    public static void start(SkypeMessage message) {
         CardsAgainstHumanity cah = current();
         cah.countingDown = true;
         new CAHJoinTask(cah);
@@ -566,8 +564,8 @@ public class CardsAgainstHumanity extends BaseGame implements Module {
     }
 
     @Command(name = "join")
-    public static void join(ChatMessage message) throws SkypeException {
-        String senderId = message.getSenderId();
+    public static void join(SkypeMessage message) throws Exception {
+        String senderId = message.getSender().getUsername();
         CardsAgainstHumanity cah = current();
 
         if (cah.isPlaying(senderId)) {
@@ -580,8 +578,8 @@ public class CardsAgainstHumanity extends BaseGame implements Module {
     }
 
     @Command(name = "leave")
-    public static void leave(ChatMessage message) throws SkypeException {
-        String senderId = message.getSenderId();
+    public static void leave(SkypeMessage message) throws Exception {
+        String senderId = message.getSender().getUsername();
         CardsAgainstHumanity cah = current();
 
         if (!cah.isPlaying(senderId)) {
@@ -594,8 +592,8 @@ public class CardsAgainstHumanity extends BaseGame implements Module {
     }
 
     @Command(name = "select")
-    public static void select(ChatMessage message, Integer card) throws SkypeException {
-        String senderId = message.getSenderId();
+    public static void select(SkypeMessage message, Integer card) throws Exception {
+        String senderId = message.getSender().getUsername();
         CardsAgainstHumanity cah = current();
 
         if (!cah.isPlaying(senderId)) {
@@ -609,7 +607,7 @@ public class CardsAgainstHumanity extends BaseGame implements Module {
     }
 
     @Command(name = "forcestart", admin = true)
-    public static void forceStart(ChatMessage message) throws SkypeException {
+    public static void forceStart(SkypeMessage message) throws Exception {
         CardsAgainstHumanity cah = current();
 
         if (cah.activePlayers().size() < 3) {
@@ -627,7 +625,7 @@ public class CardsAgainstHumanity extends BaseGame implements Module {
     }
 
     @Command(name = "cahlist")
-    public static void cahList(ChatMessage message) {
+    public static void cahList(SkypeMessage message) {
         StringBuilder builder = new StringBuilder();
 
         for (String s : current().activePlayers()) {
@@ -638,7 +636,7 @@ public class CardsAgainstHumanity extends BaseGame implements Module {
     }
 
     @Command(name = "cahscores")
-    public static void cahScores(ChatMessage message) throws SkypeException {
+    public static void cahScores(SkypeMessage message) throws Exception {
         CardsAgainstHumanity cah = current();
         StringBuilder sb = new StringBuilder();
 
@@ -652,16 +650,16 @@ public class CardsAgainstHumanity extends BaseGame implements Module {
         }
 
         sb.append("---------------------------");
-        current().send(message.getSenderId(), sb.toString());
+        current().send(message.getSender().getUsername(), sb.toString());
     }
 }
 
 class CzarOption {
     private int optionNumber;
-    private User owner;
+    private SkypeUser owner;
     private String text;
 
-    CzarOption(User owner) {
+    CzarOption(SkypeUser owner) {
         this.owner = owner;
     }
 
@@ -673,11 +671,11 @@ class CzarOption {
         this.optionNumber = optionNumber;
     }
 
-    public User owner() {
+    public SkypeUser owner() {
         return owner;
     }
 
-    public void setOwner(User owner) {
+    public void setOwner(SkypeUser owner) {
         this.owner = owner;
     }
 

@@ -1,7 +1,6 @@
 package io.mazenmc.skypebot.modules.generated;
 
-import com.skype.ChatMessage;
-import com.skype.SkypeException;
+import in.kyle.ezskypeezlife.api.obj.SkypeMessage;
 import io.mazenmc.skypebot.engine.bot.Command;
 import io.mazenmc.skypebot.engine.bot.Module;
 import io.mazenmc.skypebot.utils.Resource;
@@ -32,7 +31,7 @@ public class BuzzFeed implements Module {
     }};
 
     @Command(name = "buzzfeed", cooldown = 15)
-    public static void cmdBuzzFeed(ChatMessage chat) throws SkypeException {
+    public static void cmdBuzzFeed(SkypeMessage chat) throws Exception {
         String sentence = sentences.get(ThreadLocalRandom.current().nextInt(sentences.size()));
 
         for (Map.Entry<String, List<String>> s : data.entrySet()) {

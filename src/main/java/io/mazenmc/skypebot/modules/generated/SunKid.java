@@ -1,8 +1,7 @@
 package io.mazenmc.skypebot.modules.generated;
 
 import com.google.api.client.util.Joiner;
-import com.skype.ChatMessage;
-import com.skype.SkypeException;
+import in.kyle.ezskypeezlife.api.obj.SkypeMessage;
 import io.mazenmc.skypebot.engine.bot.Command;
 import io.mazenmc.skypebot.engine.bot.Module;
 import io.mazenmc.skypebot.utils.Resource;
@@ -59,7 +58,7 @@ public class SunKid implements Module {
     };
 
     @Command(name = "sunkid")
-    public static void cmdSunKid(ChatMessage chat) throws SkypeException {
+    public static void cmdSunKid(SkypeMessage chat) throws Exception {
         String sentence = SENTANCES[ThreadLocalRandom.current().nextInt(SENTANCES.length)];
 
         Resource.sendMessage(chat, sentence);

@@ -1,7 +1,6 @@
 package io.mazenmc.skypebot.engine.bot;
 
-import com.skype.ChatMessage;
-import com.skype.SkypeException;
+import in.kyle.ezskypeezlife.api.obj.SkypeMessage;
 import io.mazenmc.skypebot.SkypeBot;
 import io.mazenmc.skypebot.utils.Resource;
 import io.mazenmc.skypebot.utils.Utils;
@@ -13,7 +12,6 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -24,20 +22,21 @@ public class ModuleManager {
 
     private static long lastCommand = 0L;
 
-    private static void executeCommand(ChatMessage chat, CommandData data, Matcher m) {
+    private static void executeCommand(SkypeMessage chat, CommandData data, Matcher m) {
         if (data.getCommand().admin()) {
             try {
-                if (!Arrays.asList(Resource.GROUP_ADMINS).contains(chat.getSenderId())) {
+                if (!Arrays.asList(Resource.GROUP_ADMINS).contains(chat.getSender().getUsername())) {
                     Resource.sendMessage(chat, "Access Denied!");
                     return;
                 }
-            } catch (SkypeException ignored) {
+            } catch (Exception ignored) {
                 return;
             }
         }
 
         try {
-            if (data.getCommand().cooldown() > 0 && !Arrays.asList(Resource.GROUP_ADMINS).contains(chat.getSenderId())) {
+            if (data.getCommand().cooldown() > 0 &&
+                    !Arrays.asList(Resource.GROUP_ADMINS).contains(chat.getSender().getUsername())) {
                 if (!SkypeBot.getInstance().getCooldownHandler().canUse(data.getCommand())) {
                     return;
                 }
@@ -48,7 +47,7 @@ public class ModuleManager {
             if (difference <= 5000L) {
                 return;
             }
-        } catch (SkypeException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -154,13 +153,13 @@ public class ModuleManager {
         }
     }
 
-    public static void parseText(ChatMessage chat) {
+    public static void parseText(SkypeMessage chat) {
         String command;
         String originalCommand;
         try {
-            command = chat.getContent();
-            originalCommand = chat.getContent();
-        } catch (SkypeException ignored) {
+            command = chat.getMessage();
+            originalCommand = command;
+        } catch (Exception ignored) {
             System.out.println("Skype exception occurred");
             return;
         }

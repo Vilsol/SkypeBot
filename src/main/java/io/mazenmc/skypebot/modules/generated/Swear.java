@@ -1,7 +1,6 @@
 package io.mazenmc.skypebot.modules.generated;
 
-import com.skype.ChatMessage;
-import com.skype.SkypeException;
+import in.kyle.ezskypeezlife.api.obj.SkypeMessage;
 import io.mazenmc.skypebot.engine.bot.Command;
 import io.mazenmc.skypebot.engine.bot.Module;
 import io.mazenmc.skypebot.utils.Resource;
@@ -16,7 +15,7 @@ public class Swear implements Module {
             {SwearType.gilles, SwearType.handelend}};
 
     @Command(name = "swear")
-    public static void cmdSwear(ChatMessage chat) throws SkypeException {
+    public static void cmdSwear(SkypeMessage chat) throws Exception {
         SwearType[] combination = combinations[ThreadLocalRandom.current().nextInt(combinations.length)];
         String output = "";
         for (SwearType s : combination) {

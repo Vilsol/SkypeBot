@@ -1,8 +1,8 @@
 package io.mazenmc.skypebot.game;
 
-import com.skype.Skype;
-import com.skype.SkypeException;
-import com.skype.User;
+import in.kyle.ezskypeezlife.api.obj.SkypeConversation;
+import in.kyle.ezskypeezlife.api.obj.SkypeUser;
+import io.mazenmc.skypebot.SkypeBot;
 import io.mazenmc.skypebot.utils.Resource;
 import io.mazenmc.skypebot.utils.Utils;
 import org.apache.commons.lang.exception.ExceptionUtils;
@@ -43,9 +43,9 @@ public abstract class BaseGame implements Game {
     }
 
     @Override
-    public void addPlayer(User user) {
-        activePlayers.add(user.getId());
-        scores.put(user.getId(), 0);
+    public void addPlayer(SkypeUser user) {
+        activePlayers.add(user.getUsername());
+        scores.put(user.getUsername(), 0);
     }
 
     @Override
@@ -96,15 +96,15 @@ public abstract class BaseGame implements Game {
     @Override
     public void send(String user, String message) {
         try {
-            Skype.getUser(user).send(message);
-        } catch (SkypeException e) {
+            fetchUser(user).sendMessage(message);
+        } catch (Exception e) {
             Resource.sendMessage("Failed to send a message to " + user + "... (" + Utils.upload(ExceptionUtils.getStackTrace(e)) + ")");
         }
     }
 
     @Override
-    public User fetchUser(String name) {
-        return Skype.getUser(name);
+    public SkypeUser fetchUser(String name) {
+        return SkypeBot.getInstance().getEzSkype().getSkypeUser(name);
     }
 
     @Override

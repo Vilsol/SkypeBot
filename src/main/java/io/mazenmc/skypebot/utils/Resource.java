@@ -1,11 +1,11 @@
 package io.mazenmc.skypebot.utils;
 
-import com.skype.ChatMessage;
-import com.skype.SkypeException;
+import in.kyle.ezskypeezlife.api.obj.SkypeMessage;
 import io.mazenmc.skypebot.SkypeBot;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.regex.Pattern;
 
 public class Resource {
@@ -31,10 +31,11 @@ public class Resource {
         SkypeBot.getInstance().sendMessage(message);
     }
 
-    public static void sendMessage(ChatMessage chatMessage, String message) {
+    public static void sendMessage(SkypeMessage chatMessage, String message) {
+        String displayName = Utils.getDisplayName(chatMessage.getSender());
         try {
-            SkypeBot.getInstance().sendMessage("(" + chatMessage.getSenderDisplayName().replaceAll("[^A-Za-z0-9 ><.»«]", "") + ") " + message);
-        } catch (SkypeException ex) {
+            SkypeBot.getInstance().sendMessage("(" + displayName.replaceAll("[^A-Za-z0-9 ><.»«]", "") + ") " + message);
+        } catch (Exception ex) {
             sendMessage("Error occurred! " + ex.getMessage());
         }
     }

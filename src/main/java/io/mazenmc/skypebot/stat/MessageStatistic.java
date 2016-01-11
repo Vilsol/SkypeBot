@@ -1,7 +1,6 @@
 package io.mazenmc.skypebot.stat;
 
-import com.skype.ChatMessage;
-import com.skype.SkypeException;
+import in.kyle.ezskypeezlife.api.obj.SkypeMessage;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -93,8 +92,8 @@ public class MessageStatistic {
         return ((double) commandCount() / (double) messageAmount()) * 100;
     }
 
-    public void addMessage(ChatMessage message) throws SkypeException {
-        messages.add(new Message(message.getContent(), message.getTime().getTime()));
+    public void addMessage(SkypeMessage message) {
+        messages.add(new Message(message.getMessage(), System.currentTimeMillis()));
     }
 
     public void addMessage(Message message) {
