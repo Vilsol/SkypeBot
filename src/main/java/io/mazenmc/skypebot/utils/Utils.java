@@ -2,8 +2,6 @@ package io.mazenmc.skypebot.utils;
 
 import com.google.common.base.Joiner;
 import com.mashape.unirest.http.Unirest;
-import com.samczsun.skype4j.chat.messages.ReceivedMessage;
-import com.samczsun.skype4j.user.User;
 import io.mazenmc.skypebot.Main;
 import io.mazenmc.skypebot.SkypeBot;
 import io.mazenmc.skypebot.stat.Message;
@@ -11,6 +9,7 @@ import io.mazenmc.skypebot.stat.MessageStatistic;
 import io.mazenmc.skypebot.stat.StatisticsManager;
 import org.apache.commons.codec.digest.DigestUtils;
 import sun.misc.BASE64Encoder;
+import xyz.gghost.jskype.user.User;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
@@ -222,12 +221,12 @@ public class Utils {
         System.exit(0);
     }
 
-    public static String serializeMessage(ReceivedMessage message) {
+    public static String serializeMessage(xyz.gghost.jskype.message.Message message) {
         String s = "";
         String displayName = getDisplayName(message.getSender());
 
         try {
-            s += "[" + new Date().toString() + "] " + displayName + ": " + message.getContent().asPlaintext();
+            s += "[" + new Date().toString() + "] " + displayName + ": " + message.getMessage();
         } catch (Exception ignored) {
         }
 
@@ -312,7 +311,7 @@ public class Utils {
     }
 
     public static User getUser(String username) {
-        return SkypeBot.getInstance().groupConv().getUser(username);
+        return SkypeBot.getInstance().getSkype().getUserByUsername(username);
     }
 
     public static String getDisplayName(User user) {

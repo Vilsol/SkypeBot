@@ -16,12 +16,8 @@
             <url>http://maven.restlet.com</url>
         </repository>
         <repository>
-            <id>EzSkype-mvn-repo</id>
-            <url>https://raw.github.com/AkHo1ic/EzSkype/mvn-repo/</url>
-            <snapshots>
-                <enabled>true</enabled>
-                <updatePolicy>always</updatePolicy>
-            </snapshots>
+            <id>xyz.gghost</id>
+            <url>http://gghost.xyz/maven/</url>
         </repository>
     </repositories>
 
@@ -32,9 +28,10 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.samczsun</groupId>
-            <artifactId>skype4j</artifactId>
-            <version>0.1.4</version>
+            <groupId>xyz.gghost</groupId>
+            <artifactId>jskype</artifactId>
+            <version>3.8.1</version>
+            <scope>compile</scope>
         </dependency>
 
         <dependency>

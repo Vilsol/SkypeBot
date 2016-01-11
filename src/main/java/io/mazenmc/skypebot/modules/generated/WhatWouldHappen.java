@@ -1,6 +1,6 @@
 package io.mazenmc.skypebot.modules.generated;
 
-import com.samczsun.skype4j.chat.messages.ReceivedMessage;
+import xyz.gghost.jskype.message.Message;
 import io.mazenmc.skypebot.engine.bot.Command;
 import io.mazenmc.skypebot.engine.bot.Module;
 import io.mazenmc.skypebot.utils.Resource;
@@ -116,7 +116,7 @@ public class WhatWouldHappen implements Module {
     }};
 
     @Command(name = "whatwouldhappen")
-    public static void whatWouldHappen(ReceivedMessage chat, String message) throws Exception {
+    public static void whatWouldHappen(Message chat, String message) throws Exception {
         String option = OPTIONS[new Random().nextInt(OPTIONS.length)];
 
         for (Map.Entry<String, String[]> s : DATA.entrySet()) {

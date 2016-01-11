@@ -14,12 +14,11 @@ import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
-import com.samczsun.skype4j.chat.messages.ReceivedMessage;
-import com.samczsun.skype4j.user.User;
+import xyz.gghost.jskype.message.Message;
+import xyz.gghost.jskype.user.User;
 import io.mazenmc.skypebot.SkypeBot;
 import io.mazenmc.skypebot.engine.bot.*;
 import io.mazenmc.skypebot.engine.bot.Optional;
-import io.mazenmc.skypebot.stat.Message;
 import io.mazenmc.skypebot.stat.MessageStatistic;
 import io.mazenmc.skypebot.stat.StatisticsManager;
 import io.mazenmc.skypebot.utils.Resource;
@@ -47,7 +46,7 @@ public class General implements Module {
     private static boolean ranting = false;
 
     @Command(name = "exclude", admin = true)
-    public static void cmdExclude(ReceivedMessage chat, int days, String person) {
+    public static void cmdExclude(Message chat, int days, String person) {
         MessageStatistic statistic = StatisticsManager.instance().statistics().get(person);
 
         if (statistic == null) {
@@ -57,12 +56,12 @@ public class General implements Module {
 
         Date date = new Date(System.currentTimeMillis() + ((long)days * 86400000L));
 
-        statistic.addMessage(new Message("Gone until " + date.toString(), date.getTime()));
+        statistic.addMessage(new io.mazenmc.skypebot.stat.Message("Gone until " + date.toString(), date.getTime()));
         Resource.sendMessage(chat, "Successfully excluded " + person + " from chat cleaner until " + date.toString());
     }
 
     @Command(name = "kick", admin = true)
-    public static void cmdReset(ReceivedMessage chat, String person) {
+    public static void cmdReset(Message chat, String person) {
         MessageStatistic statistic = StatisticsManager.instance().statistics().get(person);
 
         if (statistic == null) {
@@ -76,7 +75,7 @@ public class General implements Module {
     }
 
     @Command(name = "8ball")
-    public static void cmd8Ball(ReceivedMessage chat, @Optional
+    public static void cmd8Ball(Message chat, @Optional
             String question) {
         String[] options = new String[]{"It is certain", "It is decidedly so", "Without a doubt", "Yes definitely", "You may rely on it", "As I see it, yes", "Most likely", "Outlook good", "Yes", "Signs point to yes", "Reply hazy try again", "Ask again later", "Better not tell you now", "Cannot predict now", "Concentrate and ask again", "Don't count on it", "My reply is no", "My sources say no", "Outlook not so good", "Very doubtful"};
         int chosen = ThreadLocalRandom.current().nextInt(options.length);
@@ -84,25 +83,25 @@ public class General implements Module {
     }
 
     @Command(name = "flickr.com/photos/stuntguy3000", exact = false, command = false)
-    public static void cmdStuntguyFlickr(ReceivedMessage chat) throws Exception {
+    public static void cmdStuntguyFlickr(Message chat) throws Exception {
         if (chat.getSender().getUsername().equalsIgnoreCase("stuntguy3000")) {
             Resource.sendMessage("Nobody likes your photos, Luke.");
         }
     }
 
     @Command(name = "about")
-    public static void cmdAbout(ReceivedMessage chat) {
+    public static void cmdAbout(Message chat) {
         Resource.sendMessage(chat, "Originally created by Vilsol, reincarnated and improved by MazenMC and stuntguy3000");
         Resource.sendMessage(chat, "Version: " + Resource.VERSION);
     }
 
     @Command(name = "bot")
-    public static void cmdBot(ReceivedMessage chat, String message) {
+    public static void cmdBot(Message chat, String message) {
         Resource.sendMessage("/me " + message);
     }
 
     @Command(name = "choice")
-    public static void choice(ReceivedMessage chat, String message) {
+    public static void choice(Message chat, String message) {
         String[] choices = message.trim().split(",");
 
         if (choices.length == 1) {
@@ -114,32 +113,32 @@ public class General implements Module {
     }
 
     @Command(name = "c")
-    public static void cmdC(ReceivedMessage chat, String question) throws Exception {
+    public static void cmdC(Message chat, String question) throws Exception {
         Resource.sendMessage(chat, SkypeBot.getInstance().askQuestion(question));
     }
 
     @Command(name = "doc")
-    public static void cmdDoc(ReceivedMessage chat) {
+    public static void cmdDoc(Message chat) {
         Resource.sendMessage(chat, "https://docs.google.com/document/d/1LoTYCauVyEiiLZ5Klw3UB8rbEtkzNn7VLmgm87Fzyy0/edit#");
     }
 
     @Command(name = "fish go moo", exact = false, command = false)
-    public static void cmdFishGoMoo(ReceivedMessage chat) throws Exception {
+    public static void cmdFishGoMoo(Message chat) throws Exception {
         Resource.sendMessage("/me notes that " + Utils.getDisplayName(chat.getSender()) + " is truly enlightened.");
     }
 
     @Command(name = "thank mr bot", exact = false, command = false)
-    public static void cmdThankMrBot(ReceivedMessage chat) throws Exception {
+    public static void cmdThankMrBot(Message chat) throws Exception {
         Resource.sendMessage("may good cpus and dedotated wams come to you");
     }
 
     @Command(name = "git", alias = {"repo", "repository", "source"})
-    public static void cmdGit(ReceivedMessage chat) {
+    public static void cmdGit(Message chat) {
         Resource.sendMessage(chat, "Git Repository: https://github.com/MazenMC/SkypeBot");
     }
 
     @Command(name = "help", alias = {"commands"})
-    public static void cmdHelp(ReceivedMessage chat) {
+    public static void cmdHelp(Message chat) {
         String commands = "";
 
         for (Map.Entry<String, CommandData> data : ModuleManager.getCommands().entrySet()) {
@@ -162,13 +161,13 @@ public class General implements Module {
     }
 
     @Command(name = "lmgtfy")
-    public static void cmdLmgtfy(ReceivedMessage chat, String question) throws Exception {
+    public static void cmdLmgtfy(Message chat, String question) throws Exception {
         String returnString = "http://lmgtfy.com/?q=";
         Resource.sendMessage(chat, returnString + URLEncoder.encode(question));
     }
 
     @Command(name = "stats")
-    public static void cmdStats(ReceivedMessage chat, @Optional String person) throws Exception {
+    public static void cmdStats(Message chat, @Optional String person) throws Exception {
 
         DecimalFormat format = new DecimalFormat("##.#");
 
@@ -184,8 +183,8 @@ public class General implements Module {
             String name = Utils.getDisplayName(user);
 
             String[] toSend = new String[13];
-            Message first = Utils.firstSpoken(stat);
-            Message last = Utils.lastSpoken(stat);
+            io.mazenmc.skypebot.stat.Message first = Utils.firstSpoken(stat);
+            io.mazenmc.skypebot.stat.Message last = Utils.lastSpoken(stat);
 
             toSend[0] = "------ " + name + "'s statistics ------";
             toSend[1] = "Message count: " + stat.messageAmount();
@@ -243,7 +242,7 @@ public class General implements Module {
 
         List<List<String>> raw = messages.stream()
                 .map(MessageStatistic::messages)
-                .map((l) -> l.stream().map(Message::contents).collect(Collectors.toList()))
+                .map((l) -> l.stream().map(io.mazenmc.skypebot.stat.Message::contents).collect(Collectors.toList()))
                 .collect(Collectors.toList());
         List<String> msgs = new ArrayList<>((int) total);
 
@@ -283,13 +282,13 @@ public class General implements Module {
     }
 
     @Command(name = "wordstats")
-    public static void cmdWordStats(ReceivedMessage chat, @Optional String lol) {
+    public static void cmdWordStats(Message chat, @Optional String lol) {
         List<MessageStatistic> messages = new ArrayList<>(StatisticsManager.instance()
                 .statistics()
                 .values());
         List<List<String>> raw = messages.stream()
                 .map(MessageStatistic::messages)
-                .map((l) -> l.stream().map(Message::contents).collect(Collectors.toList()))
+                .map((l) -> l.stream().map(io.mazenmc.skypebot.stat.Message::contents).collect(Collectors.toList()))
                 .collect(Collectors.toList());
         List<String> msgs = new ArrayList<>((int) messages.stream()
                 .mapToInt(MessageStatistic::messageAmount)
@@ -325,7 +324,7 @@ public class General implements Module {
     }
 
     @Command(name = "kicklist")
-    public static void kickList(ReceivedMessage chat) {
+    public static void kickList(Message chat) {
         long timestamp = System.currentTimeMillis();
         Collection<MessageStatistic> stats = StatisticsManager.instance().statistics().values();
         List<Map.Entry<MessageStatistic, Long>> sorted = stats.stream()
@@ -350,7 +349,7 @@ public class General implements Module {
     }
 
     @Command(name = "md5")
-    public static void cmdMd5(ReceivedMessage chat) {
+    public static void cmdMd5(Message chat) {
         String s = "md_1 = 1% of devs (people who know their shit)\n" +
                 "md_2 = uses one class for everything\n" +
                 "md_3 = true == true, yoo!\n" +
@@ -365,7 +364,7 @@ public class General implements Module {
     }
 
     @Command(name = "ping")
-    public static void cmdPing(ReceivedMessage chat, @Optional
+    public static void cmdPing(Message chat, @Optional
             final String ip) throws JSONException, Exception {
         if (ip == null) {
             Resource.sendMessage(chat, "Pong");
@@ -395,7 +394,7 @@ public class General implements Module {
     }
 
     @Command(name = "quote")
-    public static void cmdQuote(ReceivedMessage chat, String category) throws Exception {
+    public static void cmdQuote(Message chat, String category) throws Exception {
         try {
             HttpResponse<JsonNode> response = Unirest.post("https://andruxnet-random-famous-quotes.p.mashape.com/cat=" + category).header("X-Mashape-Key", "rIizXnIZ7Umsh3o3sfCLfL86lZY2p1bda69jsnAqK1Sc6C5CV1").header("Content-Type", "application/x-www-form-urlencoded").asJson();
             Resource.sendMessage(chat, "\"" + response.getBody().getObject().get("quote") + "\" - " + response.getBody().getObject().get("author"));
@@ -404,7 +403,7 @@ public class General implements Module {
     }
 
     @Command(name = "random")
-    public static void cmdRandom(ReceivedMessage chat, int number1, int number2) throws Exception {
+    public static void cmdRandom(Message chat, int number1, int number2) throws Exception {
         int high = Math.max(number1, number2);
         int low = Math.min(number1, number2);
 
@@ -417,14 +416,14 @@ public class General implements Module {
     }
 
     @Command(name = "whatwouldrandomsay")
-    public static void cmdRandomSay(ReceivedMessage chat) throws Exception {
+    public static void cmdRandomSay(Message chat) throws Exception {
         Map<String, MessageStatistic> messageStatisticMap = StatisticsManager.instance().statistics();
         String username = (String) messageStatisticMap.keySet().toArray()[ThreadLocalRandom.current().nextInt(0, messageStatisticMap.size())];
         randomSay(chat, username);
     }
 
     @Command(name = "whatwouldselectsay")
-    public static void cmdSelectSay(ReceivedMessage chat, String username) throws Exception {
+    public static void cmdSelectSay(Message chat, String username) throws Exception {
         MessageStatistic stat = StatisticsManager.instance().statistics().get(username);
 
         if (stat == null) {
@@ -435,10 +434,10 @@ public class General implements Module {
         randomSay(chat, username);
     }
 
-    private static void randomSay(ReceivedMessage chat, String username) throws Exception {
+    private static void randomSay(Message chat, String username) throws Exception {
         Map<String, MessageStatistic> messageStatisticMap = StatisticsManager.instance().statistics();
         MessageStatistic statistic = messageStatisticMap.get(username);
-        Message message = statistic.randomMessage();
+        io.mazenmc.skypebot.stat.Message message = statistic.randomMessage();
 
         while (message.contents().startsWith("@")) {
             message = statistic.randomMessage();
@@ -452,11 +451,11 @@ public class General implements Module {
     }
 
     @Command(name = "whatwouldrandomquestion")
-    public static void cmdRandomQuestion(ReceivedMessage chat) throws Exception {
+    public static void cmdRandomQuestion(Message chat) throws Exception {
         Map<String, MessageStatistic> messageStatisticMap = StatisticsManager.instance().statistics();
         MessageStatistic[] statistics = messageStatisticMap.values().toArray(new MessageStatistic[messageStatisticMap.size()]);
         MessageStatistic stat = statistics[ThreadLocalRandom.current().nextInt(statistics.length)];
-        Message msg = stat.randomMessage();
+        io.mazenmc.skypebot.stat.Message msg = stat.randomMessage();
         String message = msg.contents();
 
         while (message.startsWith("@") || (!message.endsWith("?") && !message.toLowerCase().startsWith("why"))) {
@@ -469,7 +468,7 @@ public class General implements Module {
     }
 
     @Command(name = "rant")
-    public static void cmdRant(ReceivedMessage chat,
+    public static void cmdRant(Message chat,
             @Optional
             final String question) throws Exception {
         if (ranting) {
@@ -548,12 +547,12 @@ public class General implements Module {
     }
 
     @Command(name = "restart", admin = true)
-    public static void cmdRestart(ReceivedMessage chat) {
+    public static void cmdRestart(Message chat) {
         Utils.restartBot();
     }
 
     @Command(name = "sql", cooldown = 30)
-    public static void cmdSQL(ReceivedMessage chat, String query) throws SQLException, Exception {
+    public static void cmdSQL(Message chat, String query) throws SQLException, Exception {
         if (SkypeBot.getInstance().getDatabase() == null) {
             Resource.sendMessage(chat, "Connection is down!");
             return;
@@ -596,12 +595,12 @@ public class General implements Module {
     }
 
     @Command(name = "topkek")
-    public static void cmdTopKek(ReceivedMessage chat) throws Exception {
+    public static void cmdTopKek(Message chat) throws Exception {
         Resource.sendMessage(chat, "https://topkek.mazenmc.io/ Gotta be safe while keking!");
     }
 
     @Command(name = "define")
-    public static void cmddefine(ReceivedMessage chat, String word) throws Exception {
+    public static void cmddefine(Message chat, String word) throws Exception {
         HttpResponse<String> response = Unirest.get("https://mashape-community-urban-dictionary.p.mashape.com/define?term=" + word.replace(" ", "+"))
                 .header("X-Mashape-Key", Resource.KEY_URBAND)
                 .header("Accept", "text/plain")
@@ -622,8 +621,8 @@ public class General implements Module {
     }
 
     @Command(name = "^https?://(?:[a-z\\-]+\\.)+[a-z]{2,6}(?:/[^/#?]+)+\\.(?:jpg|gif|png)$", command = false, exact = false)
-    public static void pornDetect(ReceivedMessage chat) throws Exception {
-        String message = chat.getContent().asPlaintext();
+    public static void pornDetect(Message chat) throws Exception {
+        String message = chat.getMessage();
         String link = null;
 
         for (String part : message.split(" ")) {
@@ -650,7 +649,7 @@ public class General implements Module {
     }
 
     @Command(name = "dreamincode", alias = {"whatwouldmazensay"})
-    public static void cmddreamincode(ReceivedMessage chat) throws Exception {
+    public static void cmddreamincode(Message chat) throws Exception {
         String[] options = new String[] {
             "No, I'm not interested in having a girlfriend I find it a tremendous waste of time.",
             "Hi, my name is Santiago Gonzalez and I'm 14 and I like to program.",
@@ -680,7 +679,7 @@ public class General implements Module {
     }
 
     @Command(name = "relevantxkcd", alias = {"xkcd"})
-    public static void cmdrelevantxkcd(ReceivedMessage chat, @Optional String name) {
+    public static void cmdrelevantxkcd(Message chat, @Optional String name) {
         if (name == null) {
             try {
                 HttpResponse<JsonNode> response = Unirest.get("http://xkcd.com/info.0.json")
@@ -724,32 +723,32 @@ public class General implements Module {
     }
 
     @Command(name = "roflcopter", alias = {"rofl"})
-    public static void cmdRofl(ReceivedMessage chat) throws Exception {
+    public static void cmdRofl(Message chat) throws Exception {
         Resource.sendMessage(chat, "ROFL all day long! http://goo.gl/pCIqXv");
     }
 
     @Command(name = "restoretopic")
-    public static void cmdRestoreTopic(ReceivedMessage chat) throws Exception {
+    public static void cmdRestoreTopic(Message chat) throws Exception {
         Resource.sendMessage("/topic Mazen's Skype Chat");
     }
 
     @Command(name = "has changed the conversation picture.", command = false)
-    public static void cmdConvoPictureChange(ReceivedMessage chat) throws Exception {
+    public static void cmdConvoPictureChange(Message chat) throws Exception {
         Resource.sendMessage("/me would love to remove " + chat.getSender().getUsername() + "'s ass right now");
     }
 
     @Command(name = "basoon")
-    public static void cmdBasoon(ReceivedMessage chat) throws Exception {
+    public static void cmdBasoon(Message chat) throws Exception {
         Resource.sendMessage(chat, "Blows Air Strongly Out Of Nose");
     }
 
     @Command(name = "(?i)lol", command = false, exact = false)
-    public static void lolDetect(ReceivedMessage chat) throws Exception {
+    public static void lolDetect(Message chat) throws Exception {
         Resource.sendMessage("basoon*");
     }
 
     @Command(name = "(?i)savage", command = false, alias = "(?i)brutal")
-    public static void savageDettector(ReceivedMessage chat) throws Exception {
+    public static void savageDettector(Message chat) throws Exception {
         String[] options = new String[] {
                 "https://i.imgur.com/t137FTZ.jpg",
                 "https://i.imgur.com/jLLRs2j.jpg",
@@ -764,27 +763,27 @@ public class General implements Module {
     }
 
     @Command(name = "lenny")
-    public static void cmdLenny(ReceivedMessage chat) throws Exception {
+    public static void cmdLenny(Message chat) throws Exception {
         Resource.sendMessage(chat, "( ͡° ͜ʖ ͡°)");
     }
     
     @Command(name = "flip")
-    public static void cmdFlip(ReceivedMessage chat) throws Exception {
+    public static void cmdFlip(Message chat) throws Exception {
         Resource.sendMessage(chat, "(╯°□°）╯︵ ┻━┻)");
     }
     
     @Command(name = "idk")
-    public static void cmdIdk(ReceivedMessage chat) throws Exception {
+    public static void cmdIdk(Message chat) throws Exception {
         Resource.sendMessage(chat, "¯\\_(ツ)_/¯");
     }
     
     @Command(name = "wat")
-    public static void cmdWat(ReceivedMessage chat) throws Exception {
+    public static void cmdWat(Message chat) throws Exception {
         Resource.sendMessage(chat, "http://waitw.at O.o");
     }
     
     @Command(name = "confirmed")
-   public static void cmdConfirmed(ReceivedMessage chat, String question) {
+   public static void cmdConfirmed(Message chat, String question) {
         String[] options = new String[] { "%s Confirmed", "%s won't happen!" ,"%s will happen some day",
             "%s will happen some day", "Just wait and see"};
         int chosen = ThreadLocalRandom.current().nextInt(options.length);
@@ -793,7 +792,7 @@ public class General implements Module {
     }
     
     @Command(name = "phallusexercise", alias = {"whatwouldjustissay"})
-    public static void cmdphallusexercise(ReceivedMessage message, @Optional String special) {
+    public static void cmdphallusexercise(Message message, @Optional String special) {
         String[] options = new String[] {
         		"Guys, Can confirm. Penis exersizes DO work.",
         		"It's only been a week and there is a noticable difference.",
@@ -815,7 +814,7 @@ public class General implements Module {
     }
 
     @Command(name = "poll", alias = {"strawpoll"})
-    public static void cmdPoll(ReceivedMessage message, String arguments) throws Exception, UnirestException, JSONException {
+    public static void cmdPoll(Message message, String arguments) throws Exception, UnirestException, JSONException {
         String[] args = arguments.split(":");
 
         if (args.length < 2) {
@@ -880,8 +879,8 @@ public class General implements Module {
     }
     
     @Command(name = "(?i)ayy", exact = false, command = false)
-    public static void ayy(ReceivedMessage message, @Optional String ayy) throws Exception {
-        if (message.getContent().asPlaintext().contains("lmao")) {
+    public static void ayy(Message message, @Optional String ayy) throws Exception {
+        if (message.getMessage().contains("lmao")) {
             Resource.sendMessage("ayy lmao");
             return;
         }
@@ -890,12 +889,12 @@ public class General implements Module {
     }
     
     @Command(name = "(?i)alien", exact = false, command = false)
-    public static void ayyLmao(ReceivedMessage message, @Optional String lmao) {
+    public static void ayyLmao(Message message, @Optional String lmao) {
         Resource.sendMessage("ayy lmao");
     }
     
     @Command(name = "aikar")
-    public static void lordSaviorAikar(ReceivedMessage chat) throws Exception {
+    public static void lordSaviorAikar(Message chat) throws Exception {
         Resource.sendMessage("All kneel and hail our lord and saviour Aikar, god of timings™ and all other glory which is efficiency improvements");
     }
 }
