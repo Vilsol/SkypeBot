@@ -108,8 +108,6 @@ public class SkypeBot {
         cooldownHandler = new CooldownHandler();
         StatisticsManager.instance().loadStatistics();
         new Thread(new ChatCleaner(), "ChatCleaner Thread").start();
-
-        Resource.sendMessage("/me " + Resource.VERSION + " initialized!");
     }
 
     public void loadSkype() {
@@ -124,11 +122,11 @@ public class SkypeBot {
                 skype = newSkype;
                 newSkype.subscribe();
                 if (oldSkype != null) oldSkype.logout();
+                else Resource.sendMessage("/me " + Resource.VERSION + " initialized!");
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }, 0, 3, TimeUnit.HOURS);
-
     }
 
     public void loadConfig() throws IOException {
