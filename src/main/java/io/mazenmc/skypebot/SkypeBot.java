@@ -187,7 +187,11 @@ public class SkypeBot {
     public void sendMessage(String message) {
         if (groupConv == null) {
             for (Group conv : skype.getGroups()) {
-                groupConv = conv;
+                if (conv.getTopic().contains("Mazen's Skype Chat")) {
+                    groupConv = conv;
+                    System.out.println(conv.getLongId() + " has been selected");
+                    break;
+                }
             }
         }
 
