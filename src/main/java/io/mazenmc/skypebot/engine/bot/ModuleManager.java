@@ -1,11 +1,11 @@
 package io.mazenmc.skypebot.engine.bot;
 
+import com.samczsun.skype4j.chat.messages.ReceivedMessage;
 import io.mazenmc.skypebot.SkypeBot;
 import io.mazenmc.skypebot.utils.Resource;
 import io.mazenmc.skypebot.utils.Utils;
 import org.reflections.Reflections;
 import sun.reflect.MethodAccessor;
-import xyz.gghost.jskype.message.Message;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -21,7 +21,7 @@ public class ModuleManager {
 
     private static long lastCommand = 0L;
 
-    private static void executeCommand(Message chat, CommandData data, Matcher m) {
+    private static void executeCommand(ReceivedMessage chat, CommandData data, Matcher m) {
         if (data.getCommand().admin()) {
             try {
                 if (!Arrays.asList(Resource.GROUP_ADMINS).contains(chat.getSender().getUsername())) {
@@ -152,11 +152,11 @@ public class ModuleManager {
         }
     }
 
-    public static void parseText(Message chat) {
+    public static void parseText(ReceivedMessage chat) {
         String command;
         String originalCommand;
         try {
-            command = chat.getMessage();
+            command = chat.getContent().asPlaintext();
             originalCommand = command;
         } catch (Exception ignored) {
             System.out.println("Skype exception occurred");

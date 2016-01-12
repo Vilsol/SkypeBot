@@ -1,7 +1,6 @@
 package io.mazenmc.skypebot.game;
 
-import io.mazenmc.skypebot.SkypeBot;
-import xyz.gghost.jskype.user.User;
+import com.samczsun.skype4j.user.User;
 import io.mazenmc.skypebot.utils.Resource;
 import io.mazenmc.skypebot.utils.Utils;
 
@@ -94,7 +93,7 @@ public abstract class BaseGame implements Game {
     @Override
     public void send(String user, String message) {
         try {
-            fetchUser(user).getGroup(SkypeBot.getInstance().getSkype()).sendMessage(message);
+            fetchUser(user).getChat().sendMessage(message);
         } catch (Exception e) {
             Resource.sendMessage("Failed to send a message to " + user + "...");
         }

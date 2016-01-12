@@ -1,9 +1,9 @@
 package io.mazenmc.skypebot.stat;
 
+import com.samczsun.skype4j.chat.messages.ReceivedMessage;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import xyz.gghost.jskype.message.*;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -20,7 +20,7 @@ public class StatisticsManager {
         return INSTANCE;
     }
 
-    public void logMessage(xyz.gghost.jskype.message.Message message) {
+    public void logMessage(ReceivedMessage message) {
         String senderId = message.getSender().getUsername();
         if (!statistics.containsKey(senderId))
             statistics.put(senderId, new MessageStatistic(senderId));

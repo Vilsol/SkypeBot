@@ -1,6 +1,6 @@
 package io.mazenmc.skypebot.modules;
 
-import xyz.gghost.jskype.message.Message;
+import com.samczsun.skype4j.chat.messages.ReceivedMessage;
 import io.mazenmc.skypebot.engine.bot.Command;
 import io.mazenmc.skypebot.engine.bot.Module;
 import io.mazenmc.skypebot.utils.Resource;
@@ -12,8 +12,8 @@ import java.util.regex.Pattern;
 
 public class Spotify implements Module {
     @Command(name = "open.spotify.com/track/", command = false, exact = false)
-    public static void cmdSpotifyHTTP(Message chat) throws Exception, IOException {
-        String wholeMessage = chat.getMessage();
+    public static void cmdSpotifyHTTP(ReceivedMessage chat) throws Exception, IOException {
+        String wholeMessage = chat.getContent().asPlaintext();
         Matcher idMatcher = Resource.SPOTIFY_HTTP_REGEX.matcher(wholeMessage);
 
         String spotifyURI = null;
@@ -29,7 +29,7 @@ public class Spotify implements Module {
         }
     }
 
-    private static void resolve(Message chat, String spotifyURI) {
+    private static void resolve(ReceivedMessage chat, String spotifyURI) {
         // TODO: Do this properly
         String spotifyID;
         if (spotifyURI.contains("/")) {
@@ -65,8 +65,8 @@ public class Spotify implements Module {
     }
 
     @Command(name = "spotify:track:", command = false, exact = false)
-    public static void cmdSpotifyURI(Message chat) throws Exception, IOException {
-        String wholeMessage = chat.getMessage();
+    public static void cmdSpotifyURI(ReceivedMessage chat) throws Exception, IOException {
+        String wholeMessage = chat.getContent().asPlaintext();
         Matcher idMatcher = Resource.SPOTIFY_URI_REGEX.matcher(wholeMessage);
 
         String spotifyURI = null;

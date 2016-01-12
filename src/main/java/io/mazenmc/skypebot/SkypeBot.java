@@ -3,6 +3,14 @@ package io.mazenmc.skypebot;
 import com.google.code.chatterbotapi.ChatterBotFactory;
 import com.google.code.chatterbotapi.ChatterBotSession;
 import com.google.code.chatterbotapi.ChatterBotType;
+import com.samczsun.skype4j.Skype;
+import com.samczsun.skype4j.SkypeBuilder;
+import com.samczsun.skype4j.chat.Chat;
+import com.samczsun.skype4j.chat.messages.ReceivedMessage;
+import com.samczsun.skype4j.events.EventHandler;
+import com.samczsun.skype4j.events.Listener;
+import com.samczsun.skype4j.events.chat.message.MessageReceivedEvent;
+import com.samczsun.skype4j.exceptions.ConnectionException;
 import io.mazenmc.skypebot.api.API;
 import io.mazenmc.skypebot.engine.bot.ModuleManager;
 import io.mazenmc.skypebot.handler.CooldownHandler;
@@ -14,11 +22,6 @@ import org.restlet.data.Protocol;
 import twitter4j.Twitter;
 import twitter4j.TwitterFactory;
 import twitter4j.conf.ConfigurationBuilder;
-import xyz.gghost.jskype.Group;
-import xyz.gghost.jskype.SkypeAPI;
-import xyz.gghost.jskype.event.EventListener;
-import xyz.gghost.jskype.events.UserChatEvent;
-import xyz.gghost.jskype.message.Message;
 
 import java.io.*;
 import java.sql.Connection;
@@ -41,7 +44,7 @@ public class SkypeBot {
     private ChatterBotSession bot;
     private twitter4j.Twitter twitter;
     private boolean locked = false;
-    private SkypeAPI skype;
+    private Skype skype;
     private UpdateChecker updateChecker;
     private CooldownHandler cooldownHandler;
     private String username;
@@ -105,15 +108,15 @@ public class SkypeBot {
         StatisticsManager.instance().loadStatistics();
         new Thread(new ChatCleaner(), "ChatCleaner Thread").start();
 
-        Resource.sendMessage("*Mazen's Bot* " + Resource.VERSION + " initialized!");
+        Resource.sendMessage("/me " + Resource.VERSION + " initialized!");
     }
 
     public void loadSkype() {
         try {
-            skype = new SkypeAPI(username, password);
+            skype = new SkypeBuilder(username, password).withAllResources().build();
             skype.login();
-            skype.getEventManager().registerListener(new SkypeEventListener());
-            System.out.println("logged in with username " + username);
+            skype.getEventDispatcher().registerListener(new SkypeEventListener());
+            System.out.println("");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -139,17 +142,14 @@ public class SkypeBot {
         }
     }
 
-    public class SkypeEventListener implements EventListener {
-        public void onMessage(UserChatEvent event) {
-            if (event.getUser().getUsername().equals(username)) {
-                return;
-            }
-
+    private class SkypeEventListener implements Listener {
+        @EventHandler
+        public void onMessage(MessageReceivedEvent event) {
             Callback<String> callback;
-            Message received = event.getMsg();
+            ReceivedMessage received = event.getMessage();
 
             if ((callback = Resource.getCallback(received.getSender().getUsername())) != null) {
-                callback.callback(received.getMessage());
+                callback.callback(received.getContent().asPlaintext());
                 return;
             }
 
@@ -166,7 +166,7 @@ public class SkypeBot {
         return instance;
     }
 
-    public SkypeAPI getSkype() {
+    public Skype getSkype() {
         return skype;
     }
 
@@ -186,22 +186,23 @@ public class SkypeBot {
         return database;
     }
 
-    private Group groupConv;
+    private Chat groupConv;
 
     public void sendMessage(String message) {
         if (groupConv == null) {
-            for (Group conv : skype.getGroups()) {
-                if (conv.getLongId().equals("19:7cb2a86653594e18abb707e03e2d1848@thread.skype")) { // limit to Mazen's skype chat
-                    groupConv = conv;
-                    break;
-                }
+            for (Chat conv : skype.getAllChats()) {
+                groupConv = conv;
             }
         }
 
-        groupConv.sendMessage(message);
+        try {
+            groupConv.sendMessage(message);
+        } catch (ConnectionException e) {
+            e.printStackTrace();
+        }
     }
 
-    public Group groupConv() {
+    public Chat groupConv() {
         return groupConv;
     }
 

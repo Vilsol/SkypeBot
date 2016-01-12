@@ -1,6 +1,6 @@
 package io.mazenmc.skypebot.game;
 
-import xyz.gghost.jskype.user.User;
+import com.samczsun.skype4j.user.User;
 import java.util.List;
 
 public interface Game {

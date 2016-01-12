@@ -1,6 +1,6 @@
 package io.mazenmc.skypebot.modules;
 
-import xyz.gghost.jskype.message.Message;
+import com.samczsun.skype4j.chat.messages.ReceivedMessage;
 import io.mazenmc.skypebot.engine.bot.Command;
 import io.mazenmc.skypebot.engine.bot.Module;
 import io.mazenmc.skypebot.game.Game;
@@ -9,7 +9,7 @@ import io.mazenmc.skypebot.utils.Resource;
 
 public class GameModule implements Module {
     @Command(name = "startgame")
-    public static void startGame(Message message, String name) throws Exception {
+    public static void startGame(ReceivedMessage message, String name) throws Exception {
         Game game = GameManager.instance().startGame(name);
 
         if (game == null) {
@@ -22,7 +22,7 @@ public class GameModule implements Module {
     }
 
     @Command(name = "forceend", admin = true)
-    public static void endGame(Message message) {
+    public static void endGame(ReceivedMessage message) {
         Game current = GameManager.instance().current();
 
         if (current == null) {

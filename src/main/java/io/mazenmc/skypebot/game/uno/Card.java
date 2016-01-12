@@ -1,6 +1,6 @@
 package io.mazenmc.skypebot.game.uno;
 
-import xyz.gghost.jskype.user.User;
+import com.samczsun.skype4j.user.User;
 import io.mazenmc.skypebot.utils.Resource;
 import io.mazenmc.skypebot.utils.Utils;
 

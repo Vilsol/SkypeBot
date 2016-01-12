@@ -1,6 +1,6 @@
 package io.mazenmc.skypebot.modules.generated;
 
-import xyz.gghost.jskype.message.Message;
+import com.samczsun.skype4j.chat.messages.ReceivedMessage;
 import io.mazenmc.skypebot.engine.bot.Command;
 import io.mazenmc.skypebot.engine.bot.Module;
 import io.mazenmc.skypebot.utils.Resource;
@@ -31,7 +31,7 @@ public class BuzzFeed implements Module {
     }};
 
     @Command(name = "buzzfeed", cooldown = 15)
-    public static void cmdBuzzFeed(Message chat) throws Exception {
+    public static void cmdBuzzFeed(ReceivedMessage chat) throws Exception {
         String sentence = sentences.get(ThreadLocalRandom.current().nextInt(sentences.size()));
 
         for (Map.Entry<String, List<String>> s : data.entrySet()) {

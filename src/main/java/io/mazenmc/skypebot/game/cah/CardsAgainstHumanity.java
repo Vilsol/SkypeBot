@@ -1,5 +1,7 @@
 package io.mazenmc.skypebot.game.cah;
 
+import com.samczsun.skype4j.chat.messages.ReceivedMessage;
+import com.samczsun.skype4j.user.User;
 import io.mazenmc.skypebot.engine.bot.Command;
 import io.mazenmc.skypebot.engine.bot.Module;
 import io.mazenmc.skypebot.engine.bot.ModuleManager;
@@ -9,8 +11,6 @@ import io.mazenmc.skypebot.game.GameManager;
 import io.mazenmc.skypebot.game.GameState;
 import io.mazenmc.skypebot.utils.Resource;
 import io.mazenmc.skypebot.utils.Utils;
-import xyz.gghost.jskype.message.Message;
-import xyz.gghost.jskype.user.User;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -507,7 +507,7 @@ public class CardsAgainstHumanity extends BaseGame implements Module {
     }
 
     @Command(name = "pack")
-    public static void pack(Message message, Integer number) {
+    public static void pack(ReceivedMessage message, Integer number) {
         CardsAgainstHumanity cah = current();
         CAHCardPack pack = cah.allCardPacks.get("cah.v" + number + ".cards");
         CAHCardPack base = cah.base();
@@ -532,7 +532,7 @@ public class CardsAgainstHumanity extends BaseGame implements Module {
     }
 
     @Command(name = "extra")
-    public static void extra(Message message, Integer number) {
+    public static void extra(ReceivedMessage message, Integer number) {
         CardsAgainstHumanity cah = current();
         CAHCardPack pack = cah.allCardPacks.get("cah.x" + number + ".cards");
 
@@ -556,7 +556,7 @@ public class CardsAgainstHumanity extends BaseGame implements Module {
     }
 
     @Command(name = "cahstart")
-    public static void start(Message message) {
+    public static void start(ReceivedMessage message) {
         CardsAgainstHumanity cah = current();
         cah.countingDown = true;
         new CAHJoinTask(cah);
@@ -564,7 +564,7 @@ public class CardsAgainstHumanity extends BaseGame implements Module {
     }
 
     @Command(name = "join")
-    public static void join(Message message) throws Exception {
+    public static void join(ReceivedMessage message) throws Exception {
         String senderId = message.getSender().getUsername();
         CardsAgainstHumanity cah = current();
 
@@ -578,7 +578,7 @@ public class CardsAgainstHumanity extends BaseGame implements Module {
     }
 
     @Command(name = "leave")
-    public static void leave(Message message) throws Exception {
+    public static void leave(ReceivedMessage message) throws Exception {
         String senderId = message.getSender().getUsername();
         CardsAgainstHumanity cah = current();
 
@@ -592,7 +592,7 @@ public class CardsAgainstHumanity extends BaseGame implements Module {
     }
 
     @Command(name = "select")
-    public static void select(Message message, Integer card) throws Exception {
+    public static void select(ReceivedMessage message, Integer card) throws Exception {
         String senderId = message.getSender().getUsername();
         CardsAgainstHumanity cah = current();
 
@@ -607,7 +607,7 @@ public class CardsAgainstHumanity extends BaseGame implements Module {
     }
 
     @Command(name = "forcestart", admin = true)
-    public static void forceStart(Message message) throws Exception {
+    public static void forceStart(ReceivedMessage message) throws Exception {
         CardsAgainstHumanity cah = current();
 
         if (cah.activePlayers().size() < 3) {
@@ -625,7 +625,7 @@ public class CardsAgainstHumanity extends BaseGame implements Module {
     }
 
     @Command(name = "cahlist")
-    public static void cahList(Message message) {
+    public static void cahList(ReceivedMessage message) {
         StringBuilder builder = new StringBuilder();
 
         for (String s : current().activePlayers()) {
@@ -636,7 +636,7 @@ public class CardsAgainstHumanity extends BaseGame implements Module {
     }
 
     @Command(name = "cahscores")
-    public static void cahScores(Message message) throws Exception {
+    public static void cahScores(ReceivedMessage message) throws Exception {
         CardsAgainstHumanity cah = current();
         StringBuilder sb = new StringBuilder();
 
