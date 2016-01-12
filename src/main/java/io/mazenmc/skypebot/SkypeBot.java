@@ -118,6 +118,7 @@ public class SkypeBot {
             skype.login();
             skype.getEventDispatcher().registerListener(new SkypeEventListener());
             System.out.println("Logged in as " + username);
+            skype.subscribe();
         } catch (Exception e) {
             e.printStackTrace();
         }

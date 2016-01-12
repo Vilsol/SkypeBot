@@ -168,7 +168,7 @@ public class ModuleManager {
             return;
         }
 
-        System.out.println("Received chat message: " + command);
+        System.out.println("Received chat message: " + command + " from " + chat.getChat().getIdentity());
 
         if (command.length() < 1) {
             System.out.println("low command length");
