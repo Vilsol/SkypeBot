@@ -105,7 +105,7 @@ public class SkypeBot {
         StatisticsManager.instance().loadStatistics();
         new Thread(new ChatCleaner(), "ChatCleaner Thread").start();
 
-        Resource.sendMessage("/me " + Resource.VERSION + " initialized!");
+        Resource.sendMessage("*Mazen's Bot* " + Resource.VERSION + " initialized!");
     }
 
     public void loadSkype() {
