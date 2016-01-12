@@ -139,7 +139,7 @@ public class SkypeBot {
         }
     }
 
-    private class SkypeEventListener implements EventListener {
+    public class SkypeEventListener implements EventListener {
         public void onMessage(UserChatEvent event) {
             Callback<String> callback;
             Message received = event.getMsg();
