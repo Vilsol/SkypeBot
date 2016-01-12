@@ -12,6 +12,8 @@ import com.samczsun.skype4j.events.EventHandler;
 import com.samczsun.skype4j.events.Listener;
 import com.samczsun.skype4j.events.chat.message.MessageReceivedEvent;
 import com.samczsun.skype4j.exceptions.ConnectionException;
+import com.samczsun.skype4j.internal.SkypeEventDispatcher;
+import com.samczsun.skype4j.internal.SkypeImpl;
 import io.mazenmc.skypebot.api.API;
 import io.mazenmc.skypebot.engine.bot.ModuleManager;
 import io.mazenmc.skypebot.handler.CooldownHandler;
@@ -25,13 +27,11 @@ import twitter4j.TwitterFactory;
 import twitter4j.conf.ConfigurationBuilder;
 
 import java.io.*;
+import java.lang.reflect.Field;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Properties;
-import java.util.Queue;
+import java.util.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -111,22 +111,36 @@ public class SkypeBot {
     }
 
     public void loadSkype() {
+        Field listenerMap = null;
+        try {
+            listenerMap = SkypeEventDispatcher.class.getDeclaredField("listeners");
+            listenerMap.setAccessible(true);
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        }
+        final Field finalListenerMap = listenerMap;
         scheduler.scheduleAtFixedRate(() -> {
             Skype oldSkype = skype;
             Skype newSkype = new SkypeBuilder(username, password).withAllResources().build();
             try {
                 newSkype.login();
                 System.out.println("Logged in with username " + username);
+                newSkype.subscribe();
                 newSkype.getEventDispatcher().registerListener(new SkypeEventListener());
                 System.out.println("Reassigned new skype");
                 skype = newSkype;
-                newSkype.subscribe();
-                if (oldSkype != null) oldSkype.logout();
-                else Resource.sendMessage("*Mazen's Bot* " + Resource.VERSION + " initialized!");
+                if (oldSkype != null) {
+                    if (finalListenerMap != null) {
+                        Map<?, ?> listeners = (Map<?, ?>) finalListenerMap.get(oldSkype.getEventDispatcher());
+                        listeners.clear();
+                    }
+                    oldSkype.logout();
+                    ((SkypeImpl) oldSkype).shutdown();
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        }, 0, 3, TimeUnit.HOURS);
+        }, 0, 8, TimeUnit.HOURS);
     }
 
     public void loadConfig() throws IOException {
