@@ -199,14 +199,10 @@ public class SkypeBot {
 
     public void sendMessage(String message) {
         if (groupConv == null) {
-            for (Chat conv : skype.getAllChats()) {
-                if (conv instanceof GroupChat) {
-                    if (((GroupChat) conv).getTopic().contains("Mazen's Skype")) {
-                        groupConv = conv;
-                        System.out.println(conv.getIdentity() + " was the chosen group conv");
-                        break;
-                    }
-                }
+            try {
+                groupConv = skype.getOrLoadChat("19:7cb2a86653594e18abb707e03e2d1848@thread.skype");
+            } catch (Exception ex) {
+                ex.printStackTrace();
             }
         }
 
