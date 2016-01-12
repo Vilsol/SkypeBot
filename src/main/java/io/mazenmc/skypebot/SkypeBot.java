@@ -113,15 +113,22 @@ public class SkypeBot {
     }
 
     public void loadSkype() {
-        try {
-            skype = new SkypeBuilder(username, password).withAllResources().build();
-            skype.login();
-            skype.getEventDispatcher().registerListener(new SkypeEventListener());
-            System.out.println("Logged in as " + username);
-            skype.subscribe();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        scheduler.scheduleAtFixedRate(() -> {
+            Skype oldSkype = skype;
+            Skype newSkype = new SkypeBuilder(username, password).withAllResources().build();
+            try {
+                newSkype.login();
+                System.out.println("Logged in with username " + username);
+                newSkype.getEventDispatcher().registerListener(new SkypeEventListener());
+                System.out.println("Reassigned new skype");
+                skype = newSkype;
+                newSkype.subscribe();
+                if (oldSkype != null) oldSkype.logout();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }, 0, 3, TimeUnit.HOURS);
+
     }
 
     public void loadConfig() throws IOException {
