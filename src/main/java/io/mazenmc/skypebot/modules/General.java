@@ -791,6 +791,15 @@ public class General implements Module {
 
         Resource.sendMessage(chat, String.format(options[chosen], question));
     }
+
+    @Command(name = "pme")
+    public static void cmdPme(ReceivedMessage chat, String msg) {
+        try {
+            SkypeBot.getInstance().getSkype().getContact(chat.getSender().getUsername()).getPrivateConversation().sendMessage(msg);
+        } catch (Exception e) {
+            Resource.sendMessage("Failed to send a message to you...");
+        }
+    }
     
     @Command(name = "phallusexercise", alias = {"whatwouldjustissay"})
     public static void cmdphallusexercise(ReceivedMessage message, @Optional String special) {

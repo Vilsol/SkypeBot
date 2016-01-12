@@ -122,7 +122,7 @@ public class SkypeBot {
                 skype = newSkype;
                 newSkype.subscribe();
                 if (oldSkype != null) oldSkype.logout();
-                else Resource.sendMessage("/me " + Resource.VERSION + " initialized!");
+                else Resource.sendMessage("*Mazen's Bot* " + Resource.VERSION + " initialized!");
             } catch (Exception e) {
                 e.printStackTrace();
             }
