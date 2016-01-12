@@ -141,6 +141,10 @@ public class SkypeBot {
 
     public class SkypeEventListener implements EventListener {
         public void onMessage(UserChatEvent event) {
+            if (event.getUser().getUsername().equals(username)) {
+                return;
+            }
+
             Callback<String> callback;
             Message received = event.getMsg();
 
@@ -187,9 +191,8 @@ public class SkypeBot {
     public void sendMessage(String message) {
         if (groupConv == null) {
             for (Group conv : skype.getGroups()) {
-                if (conv.getTopic().contains("Mazen's Skype Chat")) {
+                if (conv.getLongId().equals("19:7cb2a86653594e18abb707e03e2d1848@thread.skype")) { // limit to Mazen's skype chat
                     groupConv = conv;
-                    System.out.println(conv.getLongId() + " has been selected");
                     break;
                 }
             }
