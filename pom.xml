@@ -34,7 +34,7 @@
         <dependency>
             <groupId>com.samczsun</groupId>
             <artifactId>skype4j</artifactId>
-            <version>0.1.4</version>
+            <version>0.1.5-SNAPSHOT</version>
         </dependency>
 
         <dependency>
