@@ -6,6 +6,7 @@ import com.google.code.chatterbotapi.ChatterBotType;
 import com.samczsun.skype4j.Skype;
 import com.samczsun.skype4j.SkypeBuilder;
 import com.samczsun.skype4j.chat.Chat;
+import com.samczsun.skype4j.chat.GroupChat;
 import com.samczsun.skype4j.chat.messages.ReceivedMessage;
 import com.samczsun.skype4j.events.EventHandler;
 import com.samczsun.skype4j.events.Listener;
@@ -191,7 +192,13 @@ public class SkypeBot {
     public void sendMessage(String message) {
         if (groupConv == null) {
             for (Chat conv : skype.getAllChats()) {
-                groupConv = conv;
+                if (conv instanceof GroupChat) {
+                    if (((GroupChat) conv).getTopic().contains("Mazen's Skype")) {
+                        groupConv = conv;
+                        System.out.println(conv.getIdentity() + " was the chosen group conv");
+                        break;
+                    }
+                }
             }
         }
 
