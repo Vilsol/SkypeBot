@@ -319,7 +319,7 @@ public class Utils {
         }
 
         in.close();
-        return new JSONObject(builder.toString()).getJSONObject("res").getJSONObject("image").getString("original_image");
+        return builder.toString();
     }
 
     public static String getUrlSource(String urlInput) throws IOException {
