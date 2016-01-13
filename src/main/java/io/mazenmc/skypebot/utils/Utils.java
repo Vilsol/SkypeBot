@@ -304,7 +304,7 @@ public class Utils {
                 .header("Client-ID", "9c83a6e27418b4c")
                 .field("image", image)
                 .asJson().getBody().getObject()
-                .getJSONObject("data").getString("link");
+                .toString();
     }
 
     public static String getUrlSource(String urlInput) throws IOException {
