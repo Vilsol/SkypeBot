@@ -301,7 +301,7 @@ public class Utils {
     public static String upload(File image) throws Exception {
         return Unirest.post("https://api.imgur.com/3/image.json")
                 .header("Content-Type", "image/png")
-                .header("Client-ID", "9c83a6e27418b4c")
+                .header("Authorization", "Client-ID 9c83a6e27418b4c")
                 .field("image", image)
                 .asJson().getBody().getObject()
                 .toString();
