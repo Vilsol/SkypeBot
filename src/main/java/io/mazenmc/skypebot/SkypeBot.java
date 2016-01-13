@@ -145,7 +145,7 @@ public class SkypeBot {
                     ((SkypeImpl) oldSkype).shutdown();
                 } else {
                     sendMessage(Message.create().with(Text.rich("Mazen's Bot " + Resource.VERSION + " initialized!")
-                            .withColor(Color.GREEN)));
+                            .withColor(Color.RED)));
                 }
             } catch (Exception e) {
                 e.printStackTrace();
