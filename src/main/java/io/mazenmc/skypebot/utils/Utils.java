@@ -299,10 +299,12 @@ public class Utils {
     }
 
     public static String upload(File image) throws Exception {
+        byte[] data = Files.readAllBytes(Paths.get(image.getAbsolutePath()));
+
         return Unirest.post("https://api.imgur.com/3/image.json")
                 .header("Content-Type", "image/png")
                 .header("Authorization", "Client-ID 9c83a6e27418b4c")
-                .field("image", image)
+                .field("image", data)
                 .asJson().getBody().getObject()
                 .toString();
     }
