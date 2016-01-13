@@ -299,13 +299,12 @@ public class Utils {
     }
 
     public static String upload(File image) throws Exception {
-        byte[] fileBytes = Files.readAllBytes(Paths.get(image.getAbsolutePath()));
-
-        return Unirest.post("https://imgur.com/api/upload.json")
+        return Unirest.post("https://api.imgur.com/3/image.json")
                 .header("Content-Type", "image/png")
-                .routeParam("key", "8ad122d50cf51a71fa6ddc64b11edabc")
-                .body(fileBytes).asJson().getBody().getObject()
-                .getJSONObject("rsp").getJSONObject("image").getString("imgur_page");
+                .header("Client-ID", "9c83a6e27418b4c")
+                .field("image", image)
+                .asJson().getBody().getObject()
+                .getJSONObject("data").getString("link");
     }
 
     public static String getUrlSource(String urlInput) throws IOException {
