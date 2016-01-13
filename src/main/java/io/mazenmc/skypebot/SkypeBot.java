@@ -143,6 +143,9 @@ public class SkypeBot {
                     }
                     oldSkype.logout();
                     ((SkypeImpl) oldSkype).shutdown();
+                } else {
+                    sendMessage(Message.create().with(Text.rich("Mazen's Bot " + Resource.VERSION + " initialized!")
+                            .withColor(Color.GREEN)));
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -186,8 +189,7 @@ public class SkypeBot {
         }
 
         @EventHandler
-        public void onImage(PictureReceivedEvent event) {
-            System.out.println("picture called");
+        public void onImage(PictureReceivedEvent event) { // abandoned until a later time
             File file = new File("lastImage.png");
 
             if (file.exists()) {
@@ -243,6 +245,22 @@ public class SkypeBot {
     private Chat groupConv;
 
     public void sendMessage(String message) {
+        try {
+            groupConv().sendMessage(message);
+        } catch (ConnectionException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void sendMessage(Message message) {
+        try {
+            groupConv().sendMessage(message);
+        } catch (ConnectionException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public Chat groupConv() {
         if (groupConv == null) {
             try {
                 groupConv = skype.getOrLoadChat("19:7cb2a86653594e18abb707e03e2d1848@thread.skype");
@@ -251,14 +269,6 @@ public class SkypeBot {
             }
         }
 
-        try {
-            groupConv.sendMessage(message);
-        } catch (ConnectionException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public Chat groupConv() {
         return groupConv;
     }
 
