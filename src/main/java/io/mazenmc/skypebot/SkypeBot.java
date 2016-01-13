@@ -187,10 +187,6 @@ public class SkypeBot {
 
         @EventHandler
         public void onImage(PictureReceivedEvent event) {
-            if (event.getChat().getIdentity().equals(groupConv.getIdentity())) {
-                return;
-            }
-
             File file = new File("lastImage.png");
 
             if (file.exists()) {

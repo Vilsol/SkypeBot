@@ -14,6 +14,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class UpdateChecker extends Thread {
 
@@ -78,7 +79,7 @@ public class UpdateChecker extends Thread {
                             .redirectErrorStream(true).directory(output);
                     Process process = builder.start();
 
-                    process.waitFor();
+                    process.waitFor(90, TimeUnit.SECONDS);
 
                     File compiled = new File(output, "target/skypebot-1.0-SNAPSHOT-jar-with-dependencies.jar");
                     File current = new File("skypebot-1.0-SNAPSHOT-jar-with-dependencies.jar");
