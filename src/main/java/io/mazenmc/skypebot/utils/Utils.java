@@ -305,8 +305,8 @@ public class Utils {
     public static String upload(File image) throws Exception {
         Process process = new ProcessBuilder()
                 .command("/usr/bin/curl", "-F", "\"key=b3625162d3418ac51a9ee805b1840452\"",
-                        "-H", "\"Expect: \"", "-F", "\"image=@" + image.getPath() +"\"", "https://imgur.com/api/upload.json")
-                .redirectErrorStream(true)
+                        "-H", "\"Expect: \"", "-F", "\"image=@lastImage.png", "https://imgur.com/api/upload.json",
+                        "2>/dev/null")
                 .directory(image.getParentFile())
                 .start();
 
