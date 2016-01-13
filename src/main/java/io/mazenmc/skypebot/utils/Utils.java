@@ -306,6 +306,8 @@ public class Utils {
         Process process = new ProcessBuilder()
                 .command("/usr/bin/curl", "-F", "\"key=b3625162d3418ac51a9ee805b1840452\"",
                         "-H", "\"Expect: \"", "-F", "\"image=@" + image.getPath() +"\"", "https://imgur.com/api/upload.json")
+                .redirectErrorStream(true)
+                .directory(image.getParentFile())
                 .start();
 
         process.waitFor(10000, TimeUnit.MILLISECONDS);
@@ -319,6 +321,7 @@ public class Utils {
         }
 
         in.close();
+        System.out.println("output: " + builder.toString())
         return builder.toString();
     }
 
