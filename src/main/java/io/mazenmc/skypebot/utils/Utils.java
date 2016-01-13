@@ -12,6 +12,7 @@ import io.mazenmc.skypebot.stat.Message;
 import io.mazenmc.skypebot.stat.MessageStatistic;
 import io.mazenmc.skypebot.stat.StatisticsManager;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.json.JSONObject;
 import sun.misc.BASE64Encoder;
 
 import javax.crypto.Mac;
@@ -300,13 +301,23 @@ public class Utils {
     }
 
     public static String upload(File image) throws Exception {
-        byte[] data = Files.readAllBytes(Paths.get(image.getAbsolutePath()));
+        Process process = new ProcessBuilder()
+                .command("/usr/bin/curl", "-F", "\"key=b3625162d3418ac51a9ee805b1840452\"",
+                        "-H", "\"Expect: \"", "-F", "\"image=@" + image.getPath() +"\"", "https://imgur.com/api/upload.json")
+                .start();
 
-        return Unirest.post("https://imgur.com/api/upload.json")
-                .field("key", "b3625162d3418ac51a9ee805b1840452")
-                .field("image", data)
-                .asJson().getBody().getObject()
-                .toString();
+        process.wait(10000);
+
+        BufferedReader in = new BufferedReader(new InputStreamReader(process.getInputStream()));
+        String tmp;
+        StringBuilder builder = new StringBuilder();
+
+        while ((tmp = in.readLine()) != null) {
+            builder.append(tmp);
+        }
+
+        in.close();
+        return new JSONObject(builder.toString()).getJSONObject("res").getJSONObject("image").getString("original_image");
     }
 
     public static String getUrlSource(String urlInput) throws IOException {
