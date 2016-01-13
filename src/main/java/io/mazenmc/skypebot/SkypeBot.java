@@ -129,6 +129,7 @@ public class SkypeBot {
                 newSkype.getEventDispatcher().registerListener(new SkypeEventListener());
                 System.out.println("Reassigned new skype");
                 skype = newSkype;
+                groupConv = null;
                 if (oldSkype != null) {
                     if (finalListenerMap != null) {
                         Map<?, ?> listeners = (Map<?, ?>) finalListenerMap.get(oldSkype.getEventDispatcher());
