@@ -73,50 +73,7 @@ public class UpdateChecker extends Thread {
 
                     zip.extractAll(System.getProperty("user.dir"));
 
-                    Resource.sendMessage("Set up local repository! Compiling...");
-
-                    ProcessBuilder builder = new ProcessBuilder("/usr/bin/mvn", "clean", "compile", "assembly:single")
-                            .redirectErrorStream(true).directory(output);
-                    Process process = builder.start();
-
-                    process.waitFor(90, TimeUnit.SECONDS);
-
-                    File compiled = new File(output, "target/skypebot-1.0-SNAPSHOT-jar-with-dependencies.jar");
-                    File current = new File("skypebot-1.0-SNAPSHOT-jar-with-dependencies.jar");
-
-                    if (!compiled.exists()) {
-                        BufferedReader in = new BufferedReader(new InputStreamReader(process.getInputStream()));
-                        String tmp;
-                        List<String> lines = new ArrayList<>();
-
-                        while ((tmp = in.readLine()) != null) {
-                            lines.add(tmp);
-                        }
-
-                        in.close();
-
-                        Resource.sendMessage("Whoops! Project did not compile correctly " + Utils.upload(lines));
-                        lastSha = sha;
-                        continue;
-                    }
-
-                    current.delete();
-                    current.createNewFile();
-
-                    FileOutputStream fos = new FileOutputStream(current);
-                    FileInputStream fis = new FileInputStream(compiled);
-                    byte[] buffer = new byte[1024];
-                    int i;
-
-                    while ((i = fis.read(buffer)) > 0) {
-                        fos.write(buffer, 0, i);
-                    }
-
-                    fis.close();
-                    fos.close();
-                    process.destroy();
-
-                    Resource.sendMessage("Finished compiling! Restarting...");
+                    Resource.sendMessage("Restarting...");
 
                     try {
                         Thread.sleep(200L);
