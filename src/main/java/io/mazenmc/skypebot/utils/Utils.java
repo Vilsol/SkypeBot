@@ -302,7 +302,7 @@ public class Utils {
         byte[] data = Files.readAllBytes(Paths.get(image.getAbsolutePath()));
 
         return Unirest.post("https://imgur.com/api/upload.json")
-                .header("Authorization", "Client-ID 9c83a6e27418b4c")
+                .field("key", "b3625162d3418ac51a9ee805b1840452")
                 .field("image", data)
                 .asJson().getBody().getObject()
                 .toString();
