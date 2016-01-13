@@ -12,6 +12,8 @@ import com.samczsun.skype4j.events.EventHandler;
 import com.samczsun.skype4j.events.Listener;
 import com.samczsun.skype4j.events.chat.message.MessageReceivedEvent;
 import com.samczsun.skype4j.events.chat.sent.PictureReceivedEvent;
+import com.samczsun.skype4j.events.error.MajorErrorEvent;
+import com.samczsun.skype4j.events.error.MinorErrorEvent;
 import com.samczsun.skype4j.exceptions.ConnectionException;
 import com.samczsun.skype4j.formatting.Message;
 import com.samczsun.skype4j.formatting.Text;
@@ -67,6 +69,7 @@ public class SkypeBot {
         }
 
         ModuleManager.loadModules("io.mazenmc.skypebot.modules");
+        System.setProperty("com.samczsun.skype4j.debugExceptions", "true");
 
         try {
             loadConfig();
@@ -211,6 +214,16 @@ public class SkypeBot {
 
                 ex.printStackTrace();
             }
+        }
+
+        @EventHandler
+        public void onMajorError(MajorErrorEvent event) {
+            event.getError().printStackTrace();
+        }
+
+        @EventHandler
+        public void onMinorError(MinorErrorEvent event) {
+            event.getError().printStackTrace();
         }
     }
 
