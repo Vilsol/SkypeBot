@@ -321,7 +321,7 @@ public class Utils {
         }
 
         in.close();
-        System.out.println("output: " + builder.toString())
+        System.out.println("output: " + builder.toString());
         return builder.toString();
     }
 
