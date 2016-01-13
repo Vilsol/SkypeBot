@@ -187,6 +187,7 @@ public class SkypeBot {
 
         @EventHandler
         public void onImage(PictureReceivedEvent event) {
+            System.out.println("picture called");
             File file = new File("lastImage.png");
 
             if (file.exists()) {
