@@ -69,7 +69,7 @@ public class SkypeBot {
         }
 
         ModuleManager.loadModules("io.mazenmc.skypebot.modules");
-        System.setProperty("com.samczsun.skype4j.debugExceptions", "true");
+        //System.setProperty("com.samczsun.skype4j.debugExceptions", "true");
 
         try {
             loadConfig();
@@ -214,16 +214,6 @@ public class SkypeBot {
 
                 ex.printStackTrace();
             }
-        }
-
-        @EventHandler
-        public void onMajorError(MajorErrorEvent event) {
-            event.getError().printStackTrace();
-        }
-
-        @EventHandler
-        public void onMinorError(MinorErrorEvent event) {
-            event.getError().printStackTrace();
         }
     }
 
