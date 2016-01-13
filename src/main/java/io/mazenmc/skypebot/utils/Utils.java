@@ -4,6 +4,7 @@ import com.google.common.base.Joiner;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import com.samczsun.skype4j.chat.messages.ReceivedMessage;
+import com.samczsun.skype4j.exceptions.ConnectionException;
 import com.samczsun.skype4j.user.User;
 import io.mazenmc.skypebot.Main;
 import io.mazenmc.skypebot.SkypeBot;
@@ -327,6 +328,11 @@ public class Utils {
     }
 
     public static String getDisplayName(User user) {
-        return user.getDisplayName();
+        try {
+            return user.getDisplayName();
+        } catch (ConnectionException ex) {
+            ex.printStackTrace();
+            return null;
+        }
     }
 }
