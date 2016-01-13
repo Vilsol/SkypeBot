@@ -3,6 +3,7 @@ package io.mazenmc.skypebot.utils;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
+import io.mazenmc.skypebot.SkypeBot;
 import io.mazenmc.skypebot.stat.StatisticsManager;
 import net.lingala.zip4j.core.ZipFile;
 import org.json.JSONObject;
@@ -87,6 +88,7 @@ public class UpdateChecker extends Thread {
                     } catch (IOException ignored) {
                     }
 
+                    SkypeBot.getInstance().getSkype().logout();
                     System.exit(0);
                 } else {
                     lastSha = sha;

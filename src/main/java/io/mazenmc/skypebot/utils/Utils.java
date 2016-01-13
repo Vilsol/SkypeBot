@@ -219,7 +219,8 @@ public class Utils {
 
         try {
             Unirest.shutdown();
-        } catch (IOException ignored) {
+            SkypeBot.getInstance().getSkype().logout();
+        } catch (IOException | ConnectionException ignored) {
         }
 
         System.exit(0);
