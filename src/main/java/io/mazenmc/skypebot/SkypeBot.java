@@ -11,7 +11,10 @@ import com.samczsun.skype4j.chat.messages.ReceivedMessage;
 import com.samczsun.skype4j.events.EventHandler;
 import com.samczsun.skype4j.events.Listener;
 import com.samczsun.skype4j.events.chat.message.MessageReceivedEvent;
+import com.samczsun.skype4j.events.chat.sent.PictureReceivedEvent;
 import com.samczsun.skype4j.exceptions.ConnectionException;
+import com.samczsun.skype4j.formatting.Message;
+import com.samczsun.skype4j.formatting.Text;
 import com.samczsun.skype4j.internal.SkypeEventDispatcher;
 import com.samczsun.skype4j.internal.SkypeImpl;
 import io.mazenmc.skypebot.api.API;
@@ -26,12 +29,15 @@ import twitter4j.Twitter;
 import twitter4j.TwitterFactory;
 import twitter4j.conf.ConfigurationBuilder;
 
+import javax.imageio.ImageIO;
+import java.awt.*;
 import java.io.*;
 import java.lang.reflect.Field;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.*;
+import java.util.List;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -177,6 +183,35 @@ public class SkypeBot {
 
             StatisticsManager.instance().logMessage(received);
             ModuleManager.parseText(received);
+        }
+
+        @EventHandler
+        public void onImage(PictureReceivedEvent event) {
+            if (event.getChat().getIdentity().equals(groupConv.getIdentity())) {
+                return;
+            }
+
+            File file = new File("lastImage.png");
+
+            if (file.exists()) {
+                file.delete();
+            }
+
+            try {
+                ImageIO.write(event.getSentImage(), "png", file);
+                String link = Utils.upload(file);
+
+                sendMessage(event.getSender().getUsername() + " sent an image...");
+                sendMessage(link);
+            } catch (Exception ex) {
+                try {
+                    event.getChat().sendMessage(Message.create().with(Text
+                            .rich("ERROR: Unable to send image to group chat").withColor(Color.RED)));
+                } catch (Exception ignored) {
+                }
+
+                ex.printStackTrace();
+            }
         }
     }
 

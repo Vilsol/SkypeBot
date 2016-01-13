@@ -2,6 +2,7 @@ package io.mazenmc.skypebot.utils;
 
 import com.google.common.base.Joiner;
 import com.mashape.unirest.http.Unirest;
+import com.mashape.unirest.http.exceptions.UnirestException;
 import com.samczsun.skype4j.chat.messages.ReceivedMessage;
 import com.samczsun.skype4j.user.User;
 import io.mazenmc.skypebot.Main;
@@ -295,6 +296,16 @@ public class Utils {
         }
 
         return null;
+    }
+
+    public static String upload(File image) throws Exception {
+        byte[] fileBytes = Files.readAllBytes(Paths.get(image.getAbsolutePath()));
+
+        return Unirest.post("https://imgur.com/api/upload.json")
+                .header("Content-Type", "image/png")
+                .routeParam("key", "8ad122d50cf51a71fa6ddc64b11edabc")
+                .body(fileBytes).asJson().getBody().getObject()
+                .getJSONObject("rsp").getJSONObject("image").getString("imgur_page");
     }
 
     public static String getUrlSource(String urlInput) throws IOException {
