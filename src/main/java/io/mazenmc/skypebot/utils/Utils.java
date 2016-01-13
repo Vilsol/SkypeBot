@@ -31,6 +31,7 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 public class Utils {
 
@@ -307,7 +308,7 @@ public class Utils {
                         "-H", "\"Expect: \"", "-F", "\"image=@" + image.getPath() +"\"", "https://imgur.com/api/upload.json")
                 .start();
 
-        process.wait(10000);
+        process.waitFor(10000, TimeUnit.MILLISECONDS);
 
         BufferedReader in = new BufferedReader(new InputStreamReader(process.getInputStream()));
         String tmp;
