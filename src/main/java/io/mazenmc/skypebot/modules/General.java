@@ -214,10 +214,10 @@ public class General implements Module {
                 .statistics()
                 .values());
 
-        Collections.sort(messages, (a, b) -> b.wordCount() - a.wordCount());
+        Collections.sort(messages, (a, b) -> b.letterCount() - a.letterCount());
 
-        long wordTotal = messages.stream()
-                .mapToInt(MessageStatistic::wordCount)
+        int letterTotal = messages.stream()
+                .mapToInt(MessageStatistic::letterCount)
                 .sum();
         double total = messages.stream()
                 .mapToInt(MessageStatistic::messageAmount)
@@ -230,14 +230,15 @@ public class General implements Module {
                 return;
 
             MessageStatistic stat = messages.get(i);
-            double percentage = ((double)stat.wordCount() / wordTotal) * 100;
+            double percentage = ((double)stat.letterCount() / letterTotal) * 100;
 
             toSend.add(StatisticsManager.instance().ownerFor(stat) + ": " +
-                    stat.wordCount() + " - " + format.format(percentage) + "%");
+                    stat.letterCount() + " - " + format.format(percentage) + "%");
         });
 
         toSend.add("---------------------------------------");
 
+        toSend.add(letterTotal + " total characters sent in this chat");
         toSend.add((int) total + " total messages sent in this chat (which has been logged by the bot)");
         toSend.add(messages.size() + " members sent messages which were acknowledged by the bot");
 

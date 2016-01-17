@@ -69,6 +69,12 @@ public class MessageStatistic {
                 .sum();
     }
 
+    public int letterCount() {
+        return messages.stream()
+                .mapToInt((m) -> m.contents().chars().filter((i) -> ((char) i) != ' ').sum())
+                .sum();
+    }
+
     public double averageWords() {
         return wordCount() / messageAmount();
     }
