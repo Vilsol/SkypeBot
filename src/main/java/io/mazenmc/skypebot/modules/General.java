@@ -744,11 +744,6 @@ public class General implements Module {
         Resource.sendMessage(chat, "Blows Air Strongly Out Of Nose");
     }
 
-    @Command(name = "(?i)lol", command = false, exact = false)
-    public static void lolDetect(ReceivedMessage chat) throws Exception {
-        Resource.sendMessage("basoon*");
-    }
-
     @Command(name = "(?i)savage", command = false, alias = "(?i)brutal")
     public static void savageDettector(ReceivedMessage chat) throws Exception {
         String[] options = new String[] {
