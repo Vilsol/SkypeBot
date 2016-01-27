@@ -304,15 +304,13 @@ public class Utils {
 
     public static String upload(File image) throws Exception {
         Process process = new ProcessBuilder()
-                .command("/usr/bin/curl", "-sS", "-F", "\"key=b3625162d3418ac51a9ee805b1840452\"",
-                        "-H", "\"Expect: \"", "-F", "\"image=@lastImage.png", "https://imgur.com/api/upload.json",
-                        "> image_url")
+                .command("/bin/bash", "imgur.sh", image.getAbsolutePath())
                 .redirectErrorStream(true)
                 .directory(image.getParentFile())
                 .start();
 
         process.waitFor(10000, TimeUnit.MILLISECONDS);
-        return Files.readAllLines(Paths.get(image.getParentFile().getAbsolutePath(), "image_url")).get(0);
+        return new BufferedReader(new InputStreamReader(process.getInputStream())).readLine();
     }
 
     public static String getUrlSource(String urlInput) throws IOException {
