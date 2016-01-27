@@ -201,8 +201,8 @@ public class SkypeBot {
                 ImageIO.write(event.getSentImage(), "png", file);
                 String link = Utils.upload(file);
 
-                event.getChat().sendMessage(event.getSender().getUsername() + " sent an image...");
-                event.getChat().sendMessage(link);
+                Resource.sendMessage(Utils.getDisplayName(event.getSender()) + " sent an image...");
+                Resource.sendMessage(link);
             } catch (Exception ex) {
                 try {
                     event.getChat().sendMessage(Message.create().with(Text

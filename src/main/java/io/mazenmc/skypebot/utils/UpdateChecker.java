@@ -50,10 +50,10 @@ public class UpdateChecker extends Thread {
                     HttpsURLConnection c = (HttpsURLConnection) url.openConnection();
                     JSONObject commit = recentCommit.getJSONObject("commit");
 
-                    /*Resource.sendMessage("Found new commit: " +
+                    Resource.sendMessage("Found new commit: " +
                             commit.getJSONObject("author").getString("name") + " - " +
                             commit.getString("message") + " (" + sha + ")");
-                    Resource.sendMessage(recentCommit.getString("html_url"));*/
+                    Resource.sendMessage(recentCommit.getString("html_url"));
 
                     try (InputStream stream = c.getInputStream()) {
                         File f = new File("master.zip");
@@ -74,7 +74,7 @@ public class UpdateChecker extends Thread {
 
                     zip.extractAll(System.getProperty("user.dir"));
 
-                    //Resource.sendMessage("Restarting...");
+                    Resource.sendMessage("Restarting...");
 
                     try {
                         Thread.sleep(200L);
