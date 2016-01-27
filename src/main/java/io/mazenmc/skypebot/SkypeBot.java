@@ -203,8 +203,11 @@ public class SkypeBot {
                 }
 
                 ImageIO.write(event.getSentImage(), "png", file);
+                event.getChat().sendMessage(Message.create().with(Text.rich("Uploading image...").withColor(Color.CYAN)));
+
                 String link = Utils.upload(file);
 
+                event.getChat().sendMessage(Message.create().with(Text.rich("Uploaded!").withColor(Color.GREEN)));
                 Resource.sendMessage(event.getSender().getUsername() + " sent an image...");
                 Resource.sendMessage(link);
             } catch (Exception ex) {
