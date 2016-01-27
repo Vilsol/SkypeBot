@@ -321,6 +321,15 @@ public class Utils {
         }
 
         in.close();
+        in = new BufferedReader(new InputStreamReader(process.getErrorStream()));
+
+        builder.append("\nerror:\n");
+
+        while ((tmp = in.readLine()) != null) {
+            builder.append(tmp);
+        }
+
+        in.close();
         System.out.println("output: " + builder.toString());
         return builder.toString();
     }
