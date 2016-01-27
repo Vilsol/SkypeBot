@@ -198,10 +198,14 @@ public class SkypeBot {
             }
 
             try {
+                if (!groupConv.getAllUsers().contains(event.getSender())) {
+                    return; // don't let randoms send pics
+                }
+
                 ImageIO.write(event.getSentImage(), "png", file);
                 String link = Utils.upload(file);
 
-                Resource.sendMessage(Utils.getDisplayName(event.getSender()) + " sent an image...");
+                Resource.sendMessage(event.getSender().getUsername() + " sent an image...");
                 Resource.sendMessage(link);
             } catch (Exception ex) {
                 try {
