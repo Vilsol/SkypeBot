@@ -304,34 +304,15 @@ public class Utils {
 
     public static String upload(File image) throws Exception {
         Process process = new ProcessBuilder()
-                .command("/usr/bin/curl", "-F", "\"key=b3625162d3418ac51a9ee805b1840452\"",
-                        "-H", "\"Expect: \"", "-F", "\"image=@lastImage.png", "https://imgur.com/api/upload.json")
+                .command("/usr/bin/curl", "-sS", "-F", "\"key=b3625162d3418ac51a9ee805b1840452\"",
+                        "-H", "\"Expect: \"", "-F", "\"image=@lastImage.png", "https://imgur.com/api/upload.json",
+                        "> image_url")
                 .redirectErrorStream(true)
                 .directory(image.getParentFile())
                 .start();
 
         process.waitFor(10000, TimeUnit.MILLISECONDS);
-
-        BufferedReader in = new BufferedReader(new InputStreamReader(process.getInputStream()));
-        String tmp;
-        StringBuilder builder = new StringBuilder();
-
-        while ((tmp = in.readLine()) != null) {
-            builder.append(tmp);
-        }
-
-        in.close();
-        in = new BufferedReader(new InputStreamReader(process.getErrorStream()));
-
-        builder.append("\nerror:\n");
-
-        while ((tmp = in.readLine()) != null) {
-            builder.append(tmp);
-        }
-
-        in.close();
-        System.out.println("output: " + builder.toString());
-        return builder.toString();
+        return Files.readAllLines(Paths.get(image.getParentFile().getAbsolutePath(), "image_url")).get(0);
     }
 
     public static String getUrlSource(String urlInput) throws IOException {
