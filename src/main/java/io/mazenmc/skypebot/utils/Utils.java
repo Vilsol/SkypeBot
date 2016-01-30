@@ -328,6 +328,13 @@ public class Utils {
     }
 
     public static User getUser(String username) {
+        while (SkypeBot.getInstance().groupConv() == null) { // wait for boot up
+            try {
+                Thread.sleep(500L); // wait half a second
+            } catch (InterruptedException ignored) {
+            }
+        }
+
         return SkypeBot.getInstance().groupConv().getUser(username);
     }
 
