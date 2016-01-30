@@ -1,5 +1,6 @@
 package io.mazenmc.skypebot.utils;
 
+import com.samczsun.skype4j.chat.Chat;
 import com.samczsun.skype4j.chat.messages.ReceivedMessage;
 import io.mazenmc.skypebot.SkypeBot;
 
@@ -34,7 +35,13 @@ public class Resource {
     public static void sendMessage(ReceivedMessage chatMessage, String message) {
         String displayName = Utils.getDisplayName(chatMessage.getSender());
         try {
-            SkypeBot.getInstance().sendMessage("(" + displayName.replaceAll("[^A-Za-z0-9 ><.»«]", "") + ") " + message);
+            Chat chat = chatMessage.getChat();
+
+            if (chat.getAllUsers().size() > 2) {
+                message = "(" + displayName.replaceAll("[^A-Za-z0-9 ><.»«]", "") + ") " + message;
+            }
+
+            chat.sendMessage(message);
         } catch (Exception ex) {
             sendMessage("Error occurred! " + ex.getMessage());
         }

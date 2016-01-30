@@ -190,7 +190,7 @@ public class SkypeBot {
         }
 
         @EventHandler
-        public void onImage(PictureReceivedEvent event) { // abandoned until a later time
+        public void onImage(PictureReceivedEvent event) {
             File file = new File("lastImage.png");
 
             if (file.exists()) {
