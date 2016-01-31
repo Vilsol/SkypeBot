@@ -113,6 +113,11 @@ public class General implements Module {
         Resource.sendMessage("I say " + choices[ThreadLocalRandom.current().nextInt(choices.length)].trim());
     }
 
+    @Command(name = "hof", alias = {"halloffame", "hallofame"})
+    public static void cmdHof(ReceivedMessage chat) {
+        Resource.sendMessage(chat, "https://gist.github.com/mkotb/3befd5bf719496278052");
+    }
+
     @Command(name = "c")
     public static void cmdC(ReceivedMessage chat, String question) throws Exception {
         Resource.sendMessage(chat, SkypeBot.getInstance().askQuestion(question));
