@@ -13,19 +13,16 @@ import java.util.Random;
 public class WhatWouldHappen implements Module {
 
     private static final String[] OPTIONS = new String[] {
-            "codename_B would quit Hypixel and go to work for [companies]",
             "Minecraft would go open-source",
             "[members] would become internet famous",
             "Mazen's Skype Chat would become [bad groups]",
             "Mazen's Skype Chat would become a daily podcast",
             "[operating systems] would become the most used operating system",
-            "[celebrities] would come out as gay",
+            /*"[celebrities] would come out as gay",
             "[celebrities] would release to the world that [deceased] is still alive",
             "North Korea would nuke [countries]",
-            "[countries] would start a war against [countries]",
-            "Jade would stop caring about being pinged",
+            "[countries] would start a war against [countries]",*/
             "[members] would lose their virginity",
-            "md_5 would sell Spigot to Mojang without telling anyone",
             "rowtn would have good internet",
             "Mazen's Skype Chat would be killed by Lizard Squad (again)",
             "[countries] would nuke [countries]",
@@ -40,6 +37,7 @@ public class WhatWouldHappen implements Module {
             "[members] and [members] would have sexy time",
             "[members] would commit suicide",
             "[members] would get a girlfriend",
+            "[members] would date [members]",
             "all hell would break loose in [countries]",
             "[members] would join [bad groups]",
             "[bad groups] would kill everyone in Mazen's Skype Chat",
@@ -66,12 +64,12 @@ public class WhatWouldHappen implements Module {
             "[members] would become [members]'s slave for the day",
             "[members], [members], and [members] would start an anti feminist cult",
             "[members] would rape [members] with their [body parts]",
-            "[members] would be sued by [companies",
+            "[members] would be sued by [companies]",
             "[members] would move to [countries]",
             "[members] would buy the rights to [projects] for [money]",
             "[members] would convert to [religions]",
-            "[members] would convince [members] to convert to [religions]",
-            "[celebrities] would be arrested for slapping [celebrities] with [objects]",
+            "[members] would convince [members] to convert to [religions]"
+            /*"[celebrities] would be arrested for slapping [celebrities] with [objects]",
             "[bad groups] would target [things we care about]",
             "[companies] would hire the ghost of [deceased]",
             "[companies] would be sued by [companies]",
@@ -84,13 +82,12 @@ public class WhatWouldHappen implements Module {
             "[companies] would spend [money] to hire [celebrities] as their new [jobs]",
             "[companies] would donate [money] to charity",
             "[companies] would spend [money] bribing the government of [countries]",
-            "Xiaomi would copy [companies]",
             "[projects] would succeed",
             "[projects] would shut down",
             "[projects] would go ~~enterprise~~",
             "[projects] would go closed-source",
             "[projects] would only work on [operating systems]",
-            "[projects] would sell out to [companies] for [money]"
+            "[projects] would sell out to [companies] for [money]"*/
     };
 
     private static final HashMap<String, String[]> DATA = new HashMap<String, String[]>() {{
