@@ -120,7 +120,12 @@ public class WhatWouldHappen implements Module {
             Random random = new Random();
             
             while (option.contains("[" + s.getKey() + "]")) {
-                option = option.replaceFirst("\\[" + s.getKey() + "\\]", s.getValue()[random.nextInt(s.getValue().length)]);
+                String replace;
+
+                while (option.contains((replace = s.getValue()[random.nextInt(s.getValue().length)]))) {
+                }
+
+                option = option.replaceFirst("\\[" + s.getKey() + "\\]", replace);
             }
         }
         
