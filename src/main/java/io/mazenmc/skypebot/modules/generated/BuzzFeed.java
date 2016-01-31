@@ -27,7 +27,6 @@ public class BuzzFeed implements Module {
         add("The top [number] [things] that will make you [action]!");
         add("[number] of the sexiest [things] that will leave you [emotion1]");
         add("Which of the [number] [things] do you [emotion2] the most?");
-        add("This command needs [number] more sentences. Contribute by typing @git");
     }};
 
     @Command(name = "buzzfeed", cooldown = 15)
