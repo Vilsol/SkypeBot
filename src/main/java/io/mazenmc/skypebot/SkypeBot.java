@@ -118,40 +118,21 @@ public class SkypeBot {
     }
 
     public void loadSkype() {
-        Field listenerMap = null;
+        Skype newSkype = new SkypeBuilder(username, password).withAllResources().build();
+
         try {
-            listenerMap = SkypeEventDispatcher.class.getDeclaredField("listeners");
-            listenerMap.setAccessible(true);
-        } catch (NoSuchFieldException e) {
+            newSkype.login();
+            System.out.println("Logged in with username " + username);
+            newSkype.subscribe();
+            newSkype.getEventDispatcher().registerListener(new SkypeEventListener());
+            System.out.println("Reassigned new skype");
+            skype = newSkype;
+            groupConv = null;
+            sendMessage(Message.create().with(Text.rich("Mazen's Bot " + Resource.VERSION + " initialized!")
+                    .withColor(Color.RED)));
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        final Field finalListenerMap = listenerMap;
-        scheduler.scheduleAtFixedRate(() -> {
-            Skype oldSkype = skype;
-            Skype newSkype = new SkypeBuilder(username, password).withAllResources().build();
-            try {
-                newSkype.login();
-                System.out.println("Logged in with username " + username);
-                newSkype.subscribe();
-                newSkype.getEventDispatcher().registerListener(new SkypeEventListener());
-                System.out.println("Reassigned new skype");
-                skype = newSkype;
-                groupConv = null;
-                if (oldSkype != null) {
-                    if (finalListenerMap != null) {
-                        Map<?, ?> listeners = (Map<?, ?>) finalListenerMap.get(oldSkype.getEventDispatcher());
-                        listeners.clear();
-                    }
-                    oldSkype.logout();
-                    ((SkypeImpl) oldSkype).shutdown();
-                } else {
-                    sendMessage(Message.create().with(Text.rich("Mazen's Bot " + Resource.VERSION + " initialized!")
-                            .withColor(Color.RED)));
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }, 0, 8, TimeUnit.HOURS);
     }
 
     public void loadConfig() throws IOException {
