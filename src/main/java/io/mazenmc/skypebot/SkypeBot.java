@@ -166,8 +166,8 @@ public class SkypeBot {
                 return;
             }
 
-            StatisticsManager.instance().logMessage(received);
             ModuleManager.parseText(received);
+            StatisticsManager.instance().logMessage(received);
         }
 
         @EventHandler
