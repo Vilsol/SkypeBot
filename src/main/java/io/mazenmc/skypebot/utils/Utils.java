@@ -243,6 +243,10 @@ public class Utils {
         Message message = null;
 
         for (Message msg : statistic.messages()) {
+            if(msg.contents().startsWith("@")) {
+                continue;
+            }
+
             if (message == null) {
                 message = msg;
                 continue;
