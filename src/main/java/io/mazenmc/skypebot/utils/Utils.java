@@ -214,7 +214,6 @@ public class Utils {
     }
 
     public static void restartBot() {
-        SkypeBot.getInstance().sendMessage("Mazen's Bot: " + Resource.VERSION + " Restarting...");
         StatisticsManager.instance().saveStatistics();
         System.out.println("Restarting...");
 

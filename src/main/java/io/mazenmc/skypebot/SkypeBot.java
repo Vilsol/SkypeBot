@@ -114,6 +114,7 @@ public class SkypeBot {
 
         cooldownHandler = new CooldownHandler();
         StatisticsManager.instance().loadStatistics();
+        new SuicideThread().commit(); // GO AWAY STUPID SKYPE NOT WORKING BS ADJSUHDAUJS
         //new Thread(new ChatCleaner(), "ChatCleaner Thread").start(); nobody cares lol
     }
 
@@ -128,8 +129,6 @@ public class SkypeBot {
             System.out.println("Reassigned new skype");
             skype = newSkype;
             groupConv = null;
-            sendMessage(Message.create().with(Text.rich("Mazen's Bot " + Resource.VERSION + " initialized!")
-                    .withColor(Color.RED)));
         } catch (Exception e) {
             e.printStackTrace();
         }
