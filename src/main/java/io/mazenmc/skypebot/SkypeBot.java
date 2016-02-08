@@ -178,7 +178,7 @@ public class SkypeBot {
             }
 
             try {
-                if (!groupConv.getAllUsers().stream().anyMatch((u) -> u.getUsername().equals(event.getSender().getUsername()))) {
+                if (!groupConv().getAllUsers().stream().anyMatch((u) -> u.getUsername().equals(event.getSender().getUsername()))) {
                     return; // don't let randoms send pics
                 }
 
