@@ -172,6 +172,11 @@ public class General implements Module {
         Resource.sendMessage(chat, returnString + URLEncoder.encode(question));
     }
 
+    @Command(name = "gh", alias = {"hangouts", "ghangouts", "googleh"})
+    public static void cmdGh(ReceivedMessage chat) {
+        Resource.sendMessage(chat, "https://imgur.com/a/ISm8W");
+    }
+
     @Command(name = "stats")
     public static void cmdStats(ReceivedMessage chat, @Optional String person) throws Exception {
 
