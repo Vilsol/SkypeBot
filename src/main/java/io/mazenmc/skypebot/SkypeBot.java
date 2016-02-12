@@ -13,6 +13,7 @@ import com.samczsun.skype4j.events.Listener;
 import com.samczsun.skype4j.events.chat.message.MessageReceivedEvent;
 import com.samczsun.skype4j.events.chat.sent.PictureReceivedEvent;
 import com.samczsun.skype4j.exceptions.ConnectionException;
+import com.samczsun.skype4j.exceptions.handler.ErrorHandler;
 import com.samczsun.skype4j.formatting.Message;
 import com.samczsun.skype4j.formatting.Text;
 import com.samczsun.skype4j.internal.SkypeEventDispatcher;
@@ -57,6 +58,9 @@ public class SkypeBot {
     private String username;
     private String password;
     private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+    Field listenerMap;
+    Runnable relogRunnable;
+    ErrorHandler errorHandler;
 
     public SkypeBot(String[] args) {
         instance = this;
@@ -114,24 +118,64 @@ public class SkypeBot {
 
         cooldownHandler = new CooldownHandler();
         StatisticsManager.instance().loadStatistics();
-        new SuicideThread().commit(); // GO AWAY STUPID SKYPE NOT WORKING BS ADJSUHDAUJS
+        //new SuicideThread().commit(); // GO AWAY STUPID SKYPE NOT WORKING BS ADJSUHDAUJS
         //new Thread(new ChatCleaner(), "ChatCleaner Thread").start(); nobody cares lol
     }
 
     public void loadSkype() {
-        Skype newSkype = new SkypeBuilder(username, password).withAllResources().build();
-
         try {
-            newSkype.login();
-            System.out.println("Logged in with username " + username);
-            newSkype.subscribe();
-            newSkype.getEventDispatcher().registerListener(new SkypeEventListener());
-            System.out.println("Reassigned new skype");
-            skype = newSkype;
-            groupConv = null;
-        } catch (Exception e) {
+            listenerMap = SkypeEventDispatcher.class.getDeclaredField("listeners");
+            listenerMap.setAccessible(true);
+        } catch (NoSuchFieldException e) {
             e.printStackTrace();
         }
+        errorHandler = (errorSource, error, shutdown) -> {
+            if (shutdown) {
+                System.out.println("Error detected, relogging: " + error.toString());
+                skype = null;
+                scheduler.submit(relogRunnable);
+            }
+        };
+        relogRunnable = () -> {
+            System.out.println("Starting relog process");
+            Skype newSkype = null;
+            boolean retry = true;
+            while (retry) {
+                try {
+                    newSkype = new SkypeBuilder(username, password).withAllResources()
+                            .withExceptionHandler(errorHandler).build();
+                    newSkype.login();
+                    System.out.println("Logged in with username " + username);
+                    newSkype.subscribe();
+                    System.out.println("Successfully subscribed");
+                    newSkype.getEventDispatcher().registerListener(new SkypeEventListener());
+                    retry = false;
+                } catch (Throwable t) {
+                    t.printStackTrace();
+                    try {
+                        Thread.sleep(10000);
+                    } catch (InterruptedException ignored) {
+                    }
+                }
+            }
+            Skype oldSkype = skype;
+            if (oldSkype != null) {
+                try {
+                    Map<?, ?> listeners = (Map<?, ?>) listenerMap.get(oldSkype.getEventDispatcher());
+                    listeners.clear();
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    System.out.println("Logging out of old Skype");
+                    oldSkype.logout();
+                } catch (Throwable t) {
+                    t.printStackTrace();
+                }
+            }
+            skype = newSkype;
+        };
+        scheduler.scheduleAtFixedRate(relogRunnable, 0, 8, TimeUnit.HOURS);
     }
 
     public void loadConfig() throws IOException {
