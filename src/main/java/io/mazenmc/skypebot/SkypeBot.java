@@ -58,9 +58,9 @@ public class SkypeBot {
     private String username;
     private String password;
     private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-    Field listenerMap;
-    Runnable relogRunnable;
-    ErrorHandler errorHandler;
+    private Field listenerMap;
+    private Runnable relogRunnable;
+    private ErrorHandler errorHandler;
 
     public SkypeBot(String[] args) {
         instance = this;
