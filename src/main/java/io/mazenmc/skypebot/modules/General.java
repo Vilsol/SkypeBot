@@ -15,6 +15,8 @@ import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import com.samczsun.skype4j.chat.messages.ReceivedMessage;
+import com.samczsun.skype4j.exceptions.ConnectionException;
+import com.samczsun.skype4j.exceptions.NoSuchContactException;
 import com.samczsun.skype4j.user.User;
 import io.mazenmc.skypebot.SkypeBot;
 import io.mazenmc.skypebot.engine.bot.*;
@@ -175,6 +177,16 @@ public class General implements Module {
     @Command(name = "gh", alias = {"hangouts", "ghangouts", "googleh"})
     public static void cmdGh(ReceivedMessage chat) {
         Resource.sendMessage(chat, "https://imgur.com/a/ISm8W");
+    }
+
+    @Command(name = "loveme")
+    public static void cmdAdd(ReceivedMessage chat) {
+        try {
+            chat.getSender().getContact().sendRequest("I love you <3");
+            Resource.sendMessage("I'll love you...");
+        } catch (ConnectionException | NoSuchContactException ex) {
+            Resource.sendMessage("Unable to love you :c Maybe try to open up your privacy settings?");
+        }
     }
 
     @Command(name = "stats")
