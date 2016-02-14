@@ -45,7 +45,6 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 public class SkypeBot {
-
     private static SkypeBot instance;
     Connection database;
     private Server apiServer;
