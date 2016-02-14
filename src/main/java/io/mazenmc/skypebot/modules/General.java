@@ -99,21 +99,16 @@ public class General implements Module {
         Resource.sendMessage(chat, "Version: " + Resource.VERSION);
     }
 
-    @Command(name = "bot")
-    public static void cmdBot(ReceivedMessage chat, String message) {
-        Resource.sendMessage("/me " + message);
-    }
-
     @Command(name = "choice")
     public static void choice(ReceivedMessage chat, String message) {
         String[] choices = message.trim().split(",");
 
         if (choices.length == 1) {
-            Resource.sendMessage("Give me choices!");
+            Resource.sendMessage(chat, "Give me choices!");
             return;
         }
 
-        Resource.sendMessage("I say " + choices[ThreadLocalRandom.current().nextInt(choices.length)].trim());
+        Resource.sendMessage(chat, "I say " + choices[ThreadLocalRandom.current().nextInt(choices.length)].trim());
     }
 
     @Command(name = "hof", alias = {"halloffame", "hallofame"})
@@ -183,11 +178,22 @@ public class General implements Module {
     @Command(name = "loveme")
     public static void cmdAdd(ReceivedMessage chat) {
         try {
+            String[] possibleCards = {"https://i.imgur.com/4WAW8vM.jpg",
+                    "https://i.imgur.com/8zMPZYa.png", "https://i.imgur.com/w4JdQFP.jpg",
+                    "https://i.imgur.com/nymmBgA.jpg", "https://i.imgur.com/J0E0SHS.jpg",
+                    "https://i.imgur.com/G7nAIgU.jpg", "https://i.imgur.com/qsfSjK0.jpg",
+                    "https://i.imgur.com/V1D4Ku8.jpg", "https://i.imgur.com/jO5baBM.png",
+                    "https://i.imgur.com/LXiQo1g.png", "https://i.imgur.com/Hj9VDIx.jpg",
+                    "https://i.imgur.com/88F1rR6.jpg", "https://i.imgur.com/zM3wXsv.jpg",
+                    "https://i.imgur.com/kUqruhJ.jpg", "https://i.imgur.com/wf7t0ad.jpg",
+                    "https://i.imgur.com/WBZI9yS.jpg"};
+
             chat.getSender().getContact().sendRequest("I love you");
             chat.getSender().getContact().getPrivateConversation().sendMessage("You can be my special friend <3");
-            Resource.sendMessage("I'll love you...");
+            chat.getSender().getContact().getPrivateConversation().sendMessage(possibleCards[ThreadLocalRandom.current().nextInt(possibleCards.length)]);
+            Resource.sendMessage(chat, "I'll love you...");
         } catch (ConnectionException | ChatNotFoundException | NoSuchContactException ex) {
-            Resource.sendMessage("Unable to love you :c Maybe try to open up your privacy settings?");
+            Resource.sendMessage(chat, "Unable to love you :c Maybe try to open up your privacy settings?");
         }
     }
 
