@@ -89,7 +89,7 @@ public class General implements Module {
     @Command(name = "flickr.com/photos/stuntguy3000", exact = false, command = false)
     public static void cmdStuntguyFlickr(ReceivedMessage chat) throws Exception {
         if (chat.getSender().getUsername().equalsIgnoreCase("stuntguy3000")) {
-            Resource.sendMessage("Nobody likes your photos, Luke.");
+            Resource.sendMessage(chat, "Nobody likes your photos, Luke.");
         }
     }
 
@@ -128,12 +128,12 @@ public class General implements Module {
 
     @Command(name = "fish go moo", exact = false, command = false)
     public static void cmdFishGoMoo(ReceivedMessage chat) throws Exception {
-        Resource.sendMessage("/me notes that " + Utils.getDisplayName(chat.getSender()) + " is truly enlightened.");
+        Resource.sendMessage(chat, "/me notes that " + Utils.getDisplayName(chat.getSender()) + " is truly enlightened.");
     }
 
     @Command(name = "thank mr bot", exact = false, command = false)
     public static void cmdThankMrBot(ReceivedMessage chat) throws Exception {
-        Resource.sendMessage("may good cpus and dedotated wams come to you");
+        Resource.sendMessage(chat, "may good cpus and dedotated wams come to you");
     }
 
     @Command(name = "git", alias = {"repo", "repository", "source"})
@@ -206,7 +206,7 @@ public class General implements Module {
             MessageStatistic stat = StatisticsManager.instance().statistics().get(person);
 
             if (stat == null) {
-                Resource.sendMessage("No found statistic for " + person + "!");
+                Resource.sendMessage(chat, "No found statistic for " + person + "!");
                 return;
             }
 
@@ -459,7 +459,7 @@ public class General implements Module {
         MessageStatistic stat = StatisticsManager.instance().statistics().get(username);
 
         if (stat == null) {
-            Resource.sendMessage("No found statistic for " + username + "!");
+            Resource.sendMessage(chat, "No found statistic for " + username + "!");
             return;
         }
 
@@ -761,12 +761,12 @@ public class General implements Module {
 
     @Command(name = "restoretopic")
     public static void cmdRestoreTopic(ReceivedMessage chat) throws Exception {
-        Resource.sendMessage("/topic Mazen's Skype Chat");
+        Resource.sendMessage(chat, "/topic Mazen's Skype Chat");
     }
 
     @Command(name = "has changed the conversation picture.", command = false)
     public static void cmdConvoPictureChange(ReceivedMessage chat) throws Exception {
-        Resource.sendMessage("/me would love to remove " + chat.getSender().getUsername() + "'s ass right now");
+        Resource.sendMessage(chat, "/me would love to remove " + chat.getSender().getUsername() + "'s ass right now");
     }
 
     @Command(name = "basoon")

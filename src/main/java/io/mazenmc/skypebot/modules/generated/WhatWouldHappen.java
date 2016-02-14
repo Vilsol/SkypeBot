@@ -92,7 +92,7 @@ public class WhatWouldHappen implements Module {
 
     private static final HashMap<String, String[]> DATA = new HashMap<String, String[]>() {{
         put("countries", new String[]{"Argentina", "Brazil", "Russia", "The US", "Canada", "China", "North Korea", "France", "Australia", "Saudi Arabia", "Egypt", "The UK", "Texas"});
-        put("members", new String[]{"Mazen", "Luke", "Filip", "mattrick", "Vilsol", "Mark", "Julian", "Heather", "Matthew", "Richmond", "Raino", "Nick", "Boet", "Gilles", "Brendan", "Justis", "Tiger", "Vemacs", "Callan"});
+        put("members", new String[]{"Mazen", "Luke", "Filip", "mattrick", "Jodie", "Vilsol", "Mark", "Julian", "Heather", "Matthew", "Richmond", "Raino", "Nick", "Boet", "Gilles", "Brendan", "Justis", "Tiger", "Vemacs", "Callan"});
         put("staff", new String[]{"Mazen", "Jodie"});
         put("objects", new String[]{"a dildo", "a knife", "a Mac", "an iPhone", "an anvil", "spiders", "a kangaroo", "a panda", "a member of ISIS", "a velociraptor", "a nerf gun", "goats", "gay people", "flying sex snakes", "ChipDev", "a banana", "a hot dog", "a dog", "Mazen's penis", "washing machine"});
         put("current events", new String[] {"people dying in Iraq", "the dress", "the king of Saudi Arabia dying", "the war against ISIS", "Putin getting bad coffee for breakfast", "the war on drugs", "the US military buying more tanks", "drones", "llamas"});
