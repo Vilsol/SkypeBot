@@ -58,7 +58,7 @@ public class WhatWouldHappen implements Module {
             "[members] would commit a federal crime by publicly sexually abusing [members]",
             "[members] has 99 problems, but screwing [members] up the ass is not one",
             "[members] would screw [members]'s mum just to piss them off",
-            "[members] would have oral sex with [members]'s dead grandparent for 12 hours",
+            "[members] would have oral sex with [members] for 12 hours continuously",
             "[members] would cry during sex with [members]",
             "[members] would complain about [members]'s sexual performance",
             "[members] would take leftovers and reverse feed them to [members]",
