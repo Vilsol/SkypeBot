@@ -157,7 +157,11 @@ public class SkypeBot {
                     }
                 }
             }
+
+            groupConv = null;
             Skype oldSkype = skype;
+            skype = newSkype;
+
             if (oldSkype != null) {
                 try {
                     Map<?, ?> listeners = (Map<?, ?>) listenerMap.get(oldSkype.getEventDispatcher());
@@ -171,9 +175,11 @@ public class SkypeBot {
                 } catch (Throwable t) {
                     t.printStackTrace();
                 }
+            } else {
+                sendMessage(Message.create().with(Text.rich("Mazen's Bot " + Resource.VERSION + " started!")
+                        .withColor(Color.GREEN)));
             }
-            skype = newSkype;
-            groupConv = null;
+
         };
         scheduler.scheduleAtFixedRate(relogRunnable, 0, 8, TimeUnit.HOURS);
     }
@@ -289,7 +295,8 @@ public class SkypeBot {
         try {
             groupConv().sendMessage(message);
         } catch (ConnectionException e) {
-            e.printStackTrace();
+            groupConv = null;
+            sendMessage(message);
         }
     }
 
