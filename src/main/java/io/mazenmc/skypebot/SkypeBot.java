@@ -148,7 +148,6 @@ public class SkypeBot {
                     newSkype.subscribe();
                     System.out.println("Successfully subscribed");
                     newSkype.getEventDispatcher().registerListener(new SkypeEventListener());
-                    groupConv = null;
                     retry = false;
                 } catch (Throwable t) {
                     t.printStackTrace();
@@ -174,6 +173,7 @@ public class SkypeBot {
                 }
             }
             skype = newSkype;
+            groupConv = null;
         };
         scheduler.scheduleAtFixedRate(relogRunnable, 0, 8, TimeUnit.HOURS);
     }
