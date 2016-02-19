@@ -148,6 +148,7 @@ public class SkypeBot {
                     newSkype.subscribe();
                     System.out.println("Successfully subscribed");
                     newSkype.getEventDispatcher().registerListener(new SkypeEventListener());
+                    groupConv = null;
                     retry = false;
                 } catch (Throwable t) {
                     t.printStackTrace();
