@@ -471,7 +471,7 @@ public class General implements Module {
         MessageStatistic statistic = messageStatisticMap.get(username);
         Message message = statistic.randomMessage();
 
-        while (message.contents().startsWith("@")) {
+        while (message.contents().startsWith("@") || message.contents().split(" ").length <= 3) {
             message = statistic.randomMessage();
         }
 
