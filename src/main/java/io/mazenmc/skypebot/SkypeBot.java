@@ -280,7 +280,8 @@ public class SkypeBot {
         try {
             groupConv().sendMessage(message);
         } catch (ConnectionException e) {
-            e.printStackTrace();
+            groupConv = null;
+            sendMessage(message);
         }
     }
 
