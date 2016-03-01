@@ -812,7 +812,7 @@ public class General implements Module {
     @Command(name = "confirmed")
    public static void cmdConfirmed(ReceivedMessage chat, String question) {
         String[] options = new String[] { "%s Confirmed", "%s won't happen!" ,"%s will happen some day",
-            "%s will happen some day", "Just wait and see"};
+                "%s will happen some day", "Just wait and see"};
         int chosen = ThreadLocalRandom.current().nextInt(options.length);
 
         Resource.sendMessage(chat, String.format(options[chosen], question));

@@ -2,6 +2,7 @@ package io.mazenmc.skypebot.utils;
 
 import com.samczsun.skype4j.chat.Chat;
 import com.samczsun.skype4j.chat.messages.ReceivedMessage;
+import com.samczsun.skype4j.formatting.Message;
 import io.mazenmc.skypebot.SkypeBot;
 
 import java.util.HashMap;
@@ -43,7 +44,7 @@ public class Resource {
 
             message = message.replaceAll("(https?:\\/\\/(www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{2,256}\\.[a-z]{2,6}\\b(?:[-a-zA-Z0-9@:%_\\+.~#?&//=]*))", "<a href=\"$1\">$1</a>");
 
-            chat.sendMessage(message);
+            chat.sendMessage(Message.fromHtml(message));
         } catch (Exception ex) {
             sendMessage("Error occurred! " + ex.getMessage());
         }
