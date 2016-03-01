@@ -1,7 +1,7 @@
 package io.mazenmc.skypebot.engine.bot;
 
 import com.samczsun.skype4j.chat.messages.ReceivedMessage;
-import io.mazenmc.skypebot.SkypeBot;
+import io.mazenmc.skypebot.engine.bot.generic.StringResponse;
 import io.mazenmc.skypebot.utils.Resource;
 import io.mazenmc.skypebot.utils.Utils;
 import org.reflections.Reflections;
@@ -15,11 +15,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class ModuleManager {
-
     private static HashMap<String, CommandData> allCommands = new HashMap<>();
     private static HashMap<String, CommandData> commandData = new HashMap<>();
-
-    private static long lastCommand = 0L;
 
     private static void executeCommand(ReceivedMessage chat, CommandData data, Matcher m) {
         if (data.getCommand().admin()) {
@@ -33,21 +30,9 @@ public class ModuleManager {
             }
         }
 
-        try {
-            if (data.getCommand().cooldown() > 0 &&
-                    !Arrays.asList(Resource.GROUP_ADMINS).contains(chat.getSender().getUsername())) {
-                if (!SkypeBot.getInstance().getCooldownHandler().canUse(data.getCommand())) {
-                    return;
-                }
-            }
-
-            long difference = System.currentTimeMillis() - lastCommand;
-
-            if (difference <= 5000L) {
-                return;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (data.getMethod() == null) {
+            Resource.sendMessage(chat, data.getResponse().process(chat)); // simple operations
+            return;
         }
 
         List<Object> a = new ArrayList<>();
@@ -87,7 +72,6 @@ public class ModuleManager {
                 acquireMethodAccessorMethod.setAccessible(true);
                 methodAccessor = (MethodAccessor) acquireMethodAccessorMethod.invoke(data.getMethod(), null);
 
-                lastCommand = System.currentTimeMillis();
             }
         } catch (NoSuchFieldException | InvocationTargetException | IllegalAccessException | NoSuchMethodException e) {
             Resource.sendMessage(chat, "Failed...");
@@ -112,13 +96,45 @@ public class ModuleManager {
         classes.forEach(ModuleManager::registerModule);
     }
 
+    public static void registerCommand(CommandBuilder builder, StringResponse response) {
+        CommandData data = new CommandData(builder.internal(), response);
+
+        System.out.println("registered " + builder.getName());
+
+        commandData.put(builder.getName(), data);
+        allCommands.put(builder.getName(), data);
+
+        for (String s : builder.getAlias()) {
+            allCommands.put(s, data);
+        }
+    }
+
+    public static void removeCommand(String command) {
+        CommandData data = allCommands.get(command);
+
+        if (data == null) {
+            return;
+        }
+
+        commandData.remove(data.getCommand().name());
+        allCommands.remove(data.getCommand().name());
+
+        for (String s : data.getCommand().alias()) {
+            allCommands.remove(s);
+        }
+
+        System.out.println("unregistered " + data.getCommand().name());
+    }
+
     public static void registerModule(Class<? extends Module> c) {
         for (Method m : c.getMethods()) {
             Command command;
             command = m.getAnnotation(Command.class);
 
             if (command != null) {
-                CommandData data = new CommandData(command, m);
+                CommandInternal internal = new CommandInternal(command.name(), command.admin(), command.alias(),
+                        command.command(), command.exact());
+                CommandData data = new CommandData(internal, m);
 
                 System.out.println("registered " + command.name());
 
@@ -168,7 +184,7 @@ public class ModuleManager {
             return;
         }
 
-        System.out.println("Received chat message: " + command + " from " + chat.getChat().getIdentity());
+        System.out.println("Received chat message: " + command);
 
         if (command.length() < 1) {
             System.out.println("low command length");
@@ -232,7 +248,7 @@ public class ModuleManager {
 
         if (allCommands.containsKey(commandSplit[0].toLowerCase())) {
             CommandData d = allCommands.get(commandSplit[0].toLowerCase());
-            Command c = d.getCommand();
+            CommandInternal c = d.getCommand();
 
             String correct = commandSplit[0];
             if (!d.getParameterNames().equals("")) {
