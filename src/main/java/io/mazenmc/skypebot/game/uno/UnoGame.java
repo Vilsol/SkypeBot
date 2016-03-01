@@ -1,17 +1,16 @@
 package io.mazenmc.skypebot.game.uno;
 
-import com.skype.Skype;
-import com.skype.SkypeException;
-import com.skype.User;
-import io.mazenmc.skypebot.game.Game;
+
+import com.samczsun.skype4j.user.User;
 import io.mazenmc.skypebot.utils.Resource;
+import io.mazenmc.skypebot.utils.Utils;
 
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-public class UnoGame implements Game {
+public class UnoGame {
 
     private boolean finished;
     private Map<String, Deck> decks = new LinkedHashMap<>(); // TODO change to queue
@@ -23,7 +22,7 @@ public class UnoGame implements Game {
     }
 
     public Deck deckFor(User user) {
-        return decks.get(user.getId());
+        return decks.get(user.getUsername());
     }
 
     public int position() {
@@ -40,11 +39,11 @@ public class UnoGame implements Game {
 
         for (Map.Entry<String, Deck> entry : decks.entrySet()) {
             try {
-                User user = Skype.getUser(entry.getKey());
+                User user = Utils.getUser(entry.getKey());
 
-                user.send("Your deck:");
-                user.send(entry.getValue().toString());
-            } catch (SkypeException ignored) {
+                user.getChat().sendMessage("Your deck:");
+                user.getChat().sendMessage(entry.getValue().toString());
+            } catch (Exception ignored) {
             }
         }
 

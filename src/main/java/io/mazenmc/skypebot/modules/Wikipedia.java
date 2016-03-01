@@ -1,5 +1,6 @@
 package io.mazenmc.skypebot.modules;
 
+import com.samczsun.skype4j.chat.messages.ReceivedMessage;
 import io.mazenmc.skypebot.engine.bot.Command;
 import io.mazenmc.skypebot.engine.bot.Module;
 import io.mazenmc.skypebot.utils.Resource;
@@ -15,16 +16,13 @@ import java.util.regex.Matcher;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.skype.ChatMessage;
-import com.skype.SkypeException;
-
 public class Wikipedia implements Module{
 
     String api = "";
 
     @Command(name = "en.wikipedia.org/wiki/", command = false, exact = false)
-    public static void cmdWikipedia(ChatMessage chat) throws IOException, JSONException, SkypeException{
-        String wholeMessage = chat.getContent();
+    public static void cmdWikipedia(ReceivedMessage chat) throws IOException, JSONException, Exception{
+        String wholeMessage = chat.getContent().asPlaintext();
         Matcher idMatcher = Resource.WIKIPEDIA_REGEX.matcher(wholeMessage);
 
         String articleSlug = null;
@@ -37,7 +35,8 @@ public class Wikipedia implements Module{
             Resource.sendMessage(chat, "Invalid Wikipedia URL!");
             return;
         }
-        Resource.sendMessage(chat, getWikipediaSnip(articleSlug));
+
+        Resource.sendMessage(chat, getWikipediaSnip(articleSlug.split(" ")[0]));
     }
 
     public static String getWikipediaSnip(String slug) throws IOException, JSONException{

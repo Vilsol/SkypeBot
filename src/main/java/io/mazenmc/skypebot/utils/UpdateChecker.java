@@ -3,6 +3,8 @@ package io.mazenmc.skypebot.utils;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
+import io.mazenmc.skypebot.SkypeBot;
+import io.mazenmc.skypebot.stat.StatisticsManager;
 import net.lingala.zip4j.core.ZipFile;
 import org.json.JSONObject;
 
@@ -13,6 +15,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class UpdateChecker extends Thread {
 
@@ -32,7 +35,7 @@ public class UpdateChecker extends Thread {
             }
 
             try {
-                HttpResponse<JsonNode> response = Unirest.get("https://api.github.com/repos/MazenMC/SkypeBot/commits?page=1" +
+                HttpResponse<JsonNode> response = Unirest.get("https://api.github.com/repos/mkotb/SkypeBot/commits?page=1" +
                         "&access_token=" + accessToken)
                         .header("User-Agent", "Mazen-SkypeBot")
                         .header("Content-Type", "application/json")
@@ -43,7 +46,7 @@ public class UpdateChecker extends Thread {
                 String sha = recentCommit.getString("sha");
 
                 if (!lastSha.equals(sha) && !lastSha.equals("--")) {
-                    URL url = new URL("https://github.com/MazenMC/SkypeBot/archive/master.zip");
+                    URL url = new URL("https://github.com/mkotb/SkypeBot/archive/master.zip");
                     HttpsURLConnection c = (HttpsURLConnection) url.openConnection();
                     JSONObject commit = recentCommit.getJSONObject("commit");
 
@@ -71,66 +74,29 @@ public class UpdateChecker extends Thread {
 
                     zip.extractAll(System.getProperty("user.dir"));
 
-                    Resource.sendMessage("Set up local repository! Compiling...");
-
-                    ProcessBuilder builder = new ProcessBuilder("/usr/bin/mvn", "clean", "compile", "assembly:single")
-                            .redirectErrorStream(true).directory(output);
-                    Process process = builder.start();
-
-                    process.waitFor();
-
-                    File compiled = new File(output, "target/skypebot-1.0-SNAPSHOT-jar-with-dependencies.jar");
-                    File current = new File("skypebot-1.0-SNAPSHOT-jar-with-dependencies.jar");
-
-                    if (!compiled.exists()) {
-                        BufferedReader in = new BufferedReader(new InputStreamReader(process.getInputStream()));
-                        String tmp;
-                        List<String> lines = new ArrayList<>();
-
-                        while ((tmp = in.readLine()) != null) {
-                            lines.add(tmp);
-                        }
-
-                        in.close();
-
-                        Resource.sendMessage("Whoops! Project did not compile correctly " + Utils.upload(lines));
-                        lastSha = sha;
-                        continue;
-                    }
-
-                    current.delete();
-                    current.createNewFile();
-
-                    FileOutputStream fos = new FileOutputStream(current);
-                    FileInputStream fis = new FileInputStream(compiled);
-                    byte[] buffer = new byte[1024];
-                    int i;
-
-                    while ((i = fis.read(buffer)) > 0) {
-                        fos.write(buffer, 0, i);
-                    }
-
-                    fis.close();
-                    fos.close();
-                    process.destroy();
-
-                    Resource.sendMessage("Finished compiling! Restarting...");
+                    Resource.sendMessage("Restarting...");
 
                     try {
                         Thread.sleep(200L);
                     } catch (InterruptedException ignored) {
                     }
 
+                    StatisticsManager.instance().saveStatistics();
+
                     try {
                         Unirest.shutdown();
                     } catch (IOException ignored) {
                     }
 
+                    SkypeBot.getInstance().getSkype().logout();
                     System.exit(0);
                 } else {
                     lastSha = sha;
                 }
-            } catch (Exception ignored) {
+
+                System.out.println("checked commit");
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
     }

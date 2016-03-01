@@ -1,11 +1,12 @@
 package io.mazenmc.skypebot.utils;
 
-import com.skype.ChatMessage;
-import com.skype.SkypeException;
+import com.samczsun.skype4j.chat.Chat;
+import com.samczsun.skype4j.chat.messages.ReceivedMessage;
 import io.mazenmc.skypebot.SkypeBot;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.regex.Pattern;
 
 public class Resource {
@@ -19,7 +20,7 @@ public class Resource {
     public static final String REGEX_DOUBLE = "(-?[0-9]+\\.[0-9]+)";
     public static final String REGEX_INT = "(-?[0-9]+)";
     public static final String REGEX_WORD = "(\\b+)";
-    public static final String VERSION = "1.6";
+    public static final String VERSION = "1.7";
     public static final Pattern SPOTIFY_HTTP_REGEX = Pattern.compile("open\\.spotify\\.com/track/([A-z0-9]){22}");
     public static final Pattern SPOTIFY_URI_REGEX = Pattern.compile("spotify:track:([A-z0-9]){22}");
     public static final Pattern TWITTER_REGEX = Pattern.compile("twitter\\.com\\/([A-z0-9]+)\\/status\\/([0-9]{18})");
@@ -31,16 +32,30 @@ public class Resource {
         SkypeBot.getInstance().sendMessage(message);
     }
 
-    public static void sendMessage(ChatMessage chatMessage, String message) {
+    public static void sendMessage(ReceivedMessage chatMessage, String message) {
+        String displayName = Utils.getDisplayName(chatMessage.getSender());
         try {
-            SkypeBot.getInstance().sendMessage("(" + chatMessage.getSenderDisplayName().replaceAll("[^A-Za-z0-9 ><.»«]", "") + ") " + message);
-        } catch (SkypeException ex) {
+            Chat chat = chatMessage.getChat();
+
+            if (chat.getAllUsers().size() > 2) {
+                message = "(" + displayName.replaceAll("[^A-Za-z0-9 ><.»«]", "") + ") " + message;
+            }
+
+            chat.sendMessage(message);
+        } catch (Exception ex) {
             sendMessage("Error occurred! " + ex.getMessage());
         }
     }
 
-    public static void sendMessage(String[] message) {
-        SkypeBot.getInstance().addToQueue(message);
+    public static void sendMessages(String... message) {
+        StringBuilder sb = new StringBuilder();
+
+        for (String s : message) {
+            sb.append(s)
+                    .append('\n');
+        }
+
+        sendMessage(sb.toString());
     }
 
     public static void assignCallback(String id, Callback<String> callback) {

@@ -1,9 +1,8 @@
 package io.mazenmc.skypebot.game.uno;
 
-import com.skype.Skype;
-import com.skype.SkypeException;
-import com.skype.User;
+import com.samczsun.skype4j.user.User;
 import io.mazenmc.skypebot.utils.Resource;
+import io.mazenmc.skypebot.utils.Utils;
 
 import java.util.Map;
 
@@ -32,12 +31,12 @@ public class Card {
                         Map.Entry<String, Deck> next = game.peek();
 
                         next.getValue().draw(4, game);
-                        Resource.sendMessage(Skype.getUser(next.getKey()).getDisplayName() + " drew 4 cards!");
+                        Resource.sendMessage(Utils.getDisplayName(Utils.getUser(next.getKey())) + " drew 4 cards!");
                     }
 
-                    Resource.sendMessage("What color would you like to choose next, " + owner.getDisplayName() + "?");
+                    Resource.sendMessage("What color would you like to choose next, " + Utils.getDisplayName(owner) + "?");
                     Resource.sendMessage("Available colors: RED, BLUE, GREEN, YELLOW");
-                    Resource.assignCallback(owner.getId(), (message) -> {
+                    Resource.assignCallback(owner.getUsername(), (message) -> {
                         Color c = Color.valueOf(message.toUpperCase());
 
                         if (c == Color.WILD) {
@@ -51,7 +50,7 @@ public class Card {
                         game.next();
                         game.addCard(new Card(c, f));
                     });
-                } catch (SkypeException ignored) {
+                } catch (Exception ignored) {
                 }
 
                 break;
@@ -64,11 +63,11 @@ public class Card {
                     User user;
 
                     try {
-                        user = Skype.getUser(current.getKey());
+                        user = Utils.getUser(current.getKey());
 
-                        Resource.sendMessage(user.getDisplayName() + " drew 2 cards!");
+                        Resource.sendMessage(Utils.getDisplayName(user) + " drew 2 cards!");
                         current.getValue().draw(2, game);
-                    } catch (SkypeException ignored) {
+                    } catch (Exception ignored) {
                     }
                 }
 

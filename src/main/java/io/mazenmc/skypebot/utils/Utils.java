@@ -2,11 +2,17 @@ package io.mazenmc.skypebot.utils;
 
 import com.google.common.base.Joiner;
 import com.mashape.unirest.http.Unirest;
-import com.skype.ChatMessage;
-import com.skype.SkypeException;
+import com.mashape.unirest.http.exceptions.UnirestException;
+import com.samczsun.skype4j.chat.messages.ReceivedMessage;
+import com.samczsun.skype4j.exceptions.ConnectionException;
+import com.samczsun.skype4j.user.User;
 import io.mazenmc.skypebot.Main;
 import io.mazenmc.skypebot.SkypeBot;
+import io.mazenmc.skypebot.stat.Message;
+import io.mazenmc.skypebot.stat.MessageStatistic;
+import io.mazenmc.skypebot.stat.StatisticsManager;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.json.JSONObject;
 import sun.misc.BASE64Encoder;
 
 import javax.crypto.Mac;
@@ -25,6 +31,7 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 public class Utils {
 
@@ -207,26 +214,70 @@ public class Utils {
     }
 
     public static void restartBot() {
-        SkypeBot.getInstance().getPrinter().pureSend("/me " + Resource.VERSION + " Restarting...");
+        StatisticsManager.instance().saveStatistics();
         System.out.println("Restarting...");
 
         try {
             Unirest.shutdown();
-        } catch (IOException ignored) {
+            SkypeBot.getInstance().getSkype().logout();
+        } catch (IOException | ConnectionException ignored) {
         }
 
         System.exit(0);
     }
 
-    public static String serializeMessage(ChatMessage message) {
+    public static String serializeMessage(ReceivedMessage message) {
         String s = "";
+        String displayName = getDisplayName(message.getSender());
 
         try {
-            s += "[" + message.getTime().toString() + "] " + message.getSenderDisplayName() + ": " + message.getContent();
-        } catch (SkypeException ignored) {
+            s += "[" + new Date().toString() + "] " + displayName + ": " + message.getContent().asPlaintext();
+        } catch (Exception ignored) {
         }
 
         return s;
+    }
+
+    public static Message lastSpoken(MessageStatistic statistic) {
+        Message message = null;
+
+        for (Message msg : statistic.messages()) {
+            if(msg.contents().startsWith("@")) {
+                continue;
+            }
+
+            if (message == null) {
+                message = msg;
+                continue;
+            }
+
+            if (msg.time() > message.time()) {
+                message = msg;
+            }
+        }
+
+        return message;
+    }
+
+    public static Message firstSpoken(MessageStatistic statistic) {
+        Message message = null;
+
+        for (Message msg : statistic.messages()) {
+            if (message == null) {
+                message = msg;
+                continue;
+            }
+
+            if (msg.time() < message.time()) {
+                message = msg;
+            }
+        }
+
+        return message;
+    }
+
+    public static <T> T optionalGet(Optional<T> optional) {
+        return optional.isPresent() ? optional.get() : null;
     }
 
     public static String upload(Collection<String> s) {
@@ -254,6 +305,17 @@ public class Utils {
         return null;
     }
 
+    public static String upload(File image) throws Exception {
+        Process process = new ProcessBuilder()
+                .command("/bin/bash", "imgur.sh", image.getAbsolutePath())
+                .redirectErrorStream(true)
+                .directory(image.getParentFile())
+                .start();
+
+        process.waitFor(10000, TimeUnit.MILLISECONDS);
+        return new BufferedReader(new InputStreamReader(process.getInputStream())).readLine();
+    }
+
     public static String getUrlSource(String urlInput) throws IOException {
         URL url = new URL(urlInput);
         URLConnection urlConnection = url.openConnection();
@@ -266,5 +328,25 @@ public class Utils {
         in.close();
 
         return a.toString();
+    }
+
+    public static User getUser(String username) {
+        while (SkypeBot.getInstance().groupConv() == null) { // wait for boot up
+            try {
+                Thread.sleep(500L); // wait half a second
+            } catch (InterruptedException ignored) {
+            }
+        }
+
+        return SkypeBot.getInstance().groupConv().getUser(username);
+    }
+
+    public static String getDisplayName(User user) {
+        try {
+            return user.getDisplayName();
+        } catch (ConnectionException ex) {
+            ex.printStackTrace();
+            return null;
+        }
     }
 }

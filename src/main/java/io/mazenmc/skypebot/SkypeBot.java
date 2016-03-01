@@ -3,16 +3,26 @@ package io.mazenmc.skypebot;
 import com.google.code.chatterbotapi.ChatterBotFactory;
 import com.google.code.chatterbotapi.ChatterBotSession;
 import com.google.code.chatterbotapi.ChatterBotType;
-import com.skype.*;
+import com.samczsun.skype4j.Skype;
+import com.samczsun.skype4j.SkypeBuilder;
+import com.samczsun.skype4j.chat.Chat;
+import com.samczsun.skype4j.chat.GroupChat;
+import com.samczsun.skype4j.chat.messages.ReceivedMessage;
+import com.samczsun.skype4j.events.EventHandler;
+import com.samczsun.skype4j.events.Listener;
+import com.samczsun.skype4j.events.chat.message.MessageReceivedEvent;
+import com.samczsun.skype4j.events.chat.sent.PictureReceivedEvent;
+import com.samczsun.skype4j.exceptions.ConnectionException;
+import com.samczsun.skype4j.exceptions.handler.ErrorHandler;
+import com.samczsun.skype4j.formatting.Message;
+import com.samczsun.skype4j.formatting.Text;
+import com.samczsun.skype4j.internal.SkypeEventDispatcher;
+import com.samczsun.skype4j.internal.SkypeImpl;
 import io.mazenmc.skypebot.api.API;
 import io.mazenmc.skypebot.engine.bot.ModuleManager;
-import io.mazenmc.skypebot.engine.bot.Printer;
 import io.mazenmc.skypebot.handler.CooldownHandler;
-import io.mazenmc.skypebot.utils.Callback;
-import io.mazenmc.skypebot.utils.Resource;
-import io.mazenmc.skypebot.utils.UpdateChecker;
-import io.mazenmc.skypebot.utils.Utils;
-import org.apache.commons.lang.exception.ExceptionUtils;
+import io.mazenmc.skypebot.stat.StatisticsManager;
+import io.mazenmc.skypebot.utils.*;
 import org.restlet.Component;
 import org.restlet.Server;
 import org.restlet.data.Protocol;
@@ -20,36 +30,39 @@ import twitter4j.Twitter;
 import twitter4j.TwitterFactory;
 import twitter4j.conf.ConfigurationBuilder;
 
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.io.*;
+import java.lang.reflect.Field;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.LinkedList;
+import java.util.*;
 import java.util.List;
-import java.util.Properties;
-import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class SkypeBot {
-
     private static SkypeBot instance;
     Connection database;
     private Server apiServer;
     private ChatterBotSession bot;
     private twitter4j.Twitter twitter;
     private boolean locked = false;
-    private Queue<ChatMessage> messages = new ConcurrentLinkedQueue<>();
-    private Printer printer;
-    private Queue<String> stringMessages = new ConcurrentLinkedQueue<>();
+    private Skype skype;
     private UpdateChecker updateChecker;
     private CooldownHandler cooldownHandler;
+    private String username;
+    private String password;
+    private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+    private Field listenerMap;
+    private Runnable relogRunnable;
+    private ErrorHandler errorHandler;
 
-    public SkypeBot() {
+    public SkypeBot(String[] args) {
         instance = this;
-
-        System.setProperty("skype.api.impl", "x11");
-
-        printer = new Printer();
-        printer.start();
 
         try {
             bot = new ChatterBotFactory().create(ChatterBotType.CLEVERBOT).createSession();
@@ -57,37 +70,12 @@ public class SkypeBot {
         }
 
         ModuleManager.loadModules("io.mazenmc.skypebot.modules");
+        //System.setProperty("com.samczsun.skype4j.debugExceptions", "true");
 
-        Skype.setDaemon(false);
         try {
-            Skype.addChatMessageListener(new GlobalChatMessageListener() {
-                public void chatMessageReceived(ChatMessage received) throws SkypeException {
-                    if (messages.size() > 100) {
-                        messages.remove();
-                        stringMessages.remove();
-                    }
-
-                    Callback<String> callback = null;
-
-                    if ((callback = Resource.getCallback(received.getSenderId())) != null) {
-                        callback.callback(received.getContent());
-                        return;
-                    }
-
-                    stringMessages.add(Utils.serializeMessage(received));
-                    messages.add(received);
-                    ModuleManager.parseText(received);
-                }
-
-                @Override
-                public void chatMessageSent(ChatMessage sentChatMessage) throws SkypeException {
-                }
-
-                @Override
-                public void newChatStarted(Chat chat, User[] users) {
-                }
-            });
-        } catch (SkypeException e) {
+            loadConfig();
+            loadSkype();
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -128,20 +116,152 @@ public class SkypeBot {
         twitter = new TwitterFactory(cb.build()).getInstance();
 
         cooldownHandler = new CooldownHandler();
+        StatisticsManager.instance().loadStatistics();
+        //new SuicideThread().commit(); // GO AWAY STUPID SKYPE NOT WORKING BS ADJSUHDAUJS
+        //new Thread(new ChatCleaner(), "ChatCleaner Thread").start(); nobody cares lol
+    }
 
-        Resource.sendMessage("/me " + Resource.VERSION + " initialized!");
+    public void loadSkype() {
+        try {
+            listenerMap = SkypeEventDispatcher.class.getDeclaredField("listeners");
+            listenerMap.setAccessible(true);
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        }
+        errorHandler = (errorSource, error, shutdown) -> {
+            if (shutdown) {
+                System.out.println("Error detected, relogging: " + error.toString());
+                skype = null;
+                scheduler.submit(relogRunnable);
+            }
+        };
+        relogRunnable = () -> {
+            System.out.println("Starting relog process");
+            Skype newSkype = null;
+            boolean retry = true;
+            while (retry) {
+                try {
+                    newSkype = new SkypeBuilder(username, password).withAllResources()
+                            .withExceptionHandler(errorHandler).build();
+                    newSkype.login();
+                    System.out.println("Logged in with username " + username);
+                    newSkype.subscribe();
+                    System.out.println("Successfully subscribed");
+                    newSkype.getEventDispatcher().registerListener(new SkypeEventListener());
+                    retry = false;
+                } catch (Throwable t) {
+                    t.printStackTrace();
+                    try {
+                        Thread.sleep(10000);
+                    } catch (InterruptedException ignored) {
+                    }
+                }
+            }
+
+            groupConv = null;
+            Skype oldSkype = skype;
+            skype = newSkype;
+
+            if (oldSkype != null) {
+                try {
+                    Map<?, ?> listeners = (Map<?, ?>) listenerMap.get(oldSkype.getEventDispatcher());
+                    listeners.clear();
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    System.out.println("Logging out of old Skype");
+                    oldSkype.logout();
+                } catch (Throwable t) {
+                    t.printStackTrace();
+                }
+            } else {
+                sendMessage(Message.create().with(Text.rich("Mazen's Bot " + Resource.VERSION + " started!")
+                        .withColor(Color.GREEN)));
+            }
+
+        };
+        scheduler.scheduleAtFixedRate(relogRunnable, 0, 8, TimeUnit.HOURS);
+    }
+
+    public void loadConfig() throws IOException {
+        Properties prop = new Properties();
+        File config = new File("bot.properties");
+        if (!config.exists()) {
+            try (OutputStream output = new FileOutputStream(config)) {
+                prop.setProperty("username", "your.skype.username");
+                prop.setProperty("password", "your.skype.password");
+                prop.store(output, null);
+            }
+            System.out.println("Generated default configuration. Exiting.");
+            return;
+        }
+
+        try (InputStream input = new FileInputStream(config)) {
+            prop.load(input);
+            username = prop.getProperty("username");
+            password = prop.getProperty("password");
+        }
+    }
+
+    private class SkypeEventListener implements Listener {
+        @EventHandler
+        public void onMessage(MessageReceivedEvent event) {
+            Callback<String> callback;
+            ReceivedMessage received = event.getMessage();
+
+            if ((callback = Resource.getCallback(received.getSender().getUsername())) != null) {
+                callback.callback(received.getContent().asPlaintext());
+                return;
+            }
+
+            ModuleManager.parseText(received);
+            StatisticsManager.instance().logMessage(received);
+        }
+
+        @EventHandler
+        public void onImage(PictureReceivedEvent event) {
+            File file = new File("lastImage.png");
+
+            if (file.exists()) {
+                file.delete();
+            }
+
+            try {
+                if (!groupConv().getAllUsers().stream().anyMatch((u) -> u.getUsername().equals(event.getSender().getUsername()))) {
+                    return; // don't let randoms send pics
+                }
+
+                ImageIO.write(event.getSentImage(), "png", file);
+                event.getChat().sendMessage(Message.create().with(Text.rich("Uploading image...").withColor(Color.CYAN)));
+
+                String link = Utils.upload(file);
+
+                event.getChat().sendMessage(Message.create().with(Text.rich("Uploaded!").withColor(Color.GREEN)));
+                Resource.sendMessage(event.getSender().getUsername() + " sent an image...");
+                Resource.sendMessage(link);
+            } catch (Exception ex) {
+                try {
+                    event.getChat().sendMessage(Message.create().with(Text
+                            .rich("ERROR: Unable to send image to group chat").withColor(Color.RED)));
+                } catch (Exception ignored) {
+                }
+
+                ex.printStackTrace();
+            }
+        }
     }
 
     public static SkypeBot getInstance() {
         if (instance == null) {
-            new SkypeBot();
+            new SkypeBot(new String[]{});
         }
 
         return instance;
     }
 
-    public void addToQueue(String[] message) {
-        printer.addToQueue(message);
+    public Skype getSkype() {
+        return skype;
     }
 
     public String askQuestion(String question) {
@@ -152,7 +272,7 @@ public class SkypeBot {
         try {
             return bot.think(question);
         } catch (Exception ignored) {
-            return "I am overthinking... (" + ExceptionUtils.getStackTrace(ignored) + ")";
+            return "I am overthinking...";
         }
     }
 
@@ -160,44 +280,36 @@ public class SkypeBot {
         return database;
     }
 
-    public Printer getPrinter() {
-        return printer;
-    }
-
-    public List<ChatMessage> getLastMessages() {
-        List<ChatMessage> list = new LinkedList<>();
-        Queue<ChatMessage> newMessages = new ConcurrentLinkedQueue<>();
-
-        messages.stream().forEach(m -> {
-            list.add(m);
-            newMessages.add(m);
-        });
-
-        messages = newMessages;
-
-        return list;
-    }
-
-    public List<String> getLastStringMessages() {
-        List<String> list = new LinkedList<>();
-        Queue<String> newMessages = new ConcurrentLinkedQueue<>();
-
-        stringMessages.stream().forEach(m -> {
-            list.add(m);
-            newMessages.add(m);
-        });
-
-        stringMessages = newMessages;
-
-        return list;
-    }
-
-    public boolean isQueueEmpty() {
-        return printer.isQueueEmpty();
-    }
+    private Chat groupConv;
 
     public void sendMessage(String message) {
-        printer.sendMessage(message);
+        try {
+            groupConv().sendMessage(message);
+        } catch (ConnectionException e) {
+            groupConv = null;
+            sendMessage(message);
+        }
+    }
+
+    public void sendMessage(Message message) {
+        try {
+            groupConv().sendMessage(message);
+        } catch (ConnectionException e) {
+            groupConv = null;
+            sendMessage(message);
+        }
+    }
+
+    public Chat groupConv() {
+        if (groupConv == null) {
+            try {
+                groupConv = skype.getOrLoadChat("19:7cb2a86653594e18abb707e03e2d1848@thread.skype");
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+
+        return groupConv;
     }
 
     public Twitter getTwitter() {

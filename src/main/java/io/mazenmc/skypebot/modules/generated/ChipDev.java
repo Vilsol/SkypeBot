@@ -1,13 +1,12 @@
 package io.mazenmc.skypebot.modules.generated;
 
-import com.skype.ChatMessage;
-import com.skype.SkypeException;
+import com.google.api.client.util.Joiner;
+import com.samczsun.skype4j.chat.messages.ReceivedMessage;
 import io.mazenmc.skypebot.engine.bot.Command;
 import io.mazenmc.skypebot.engine.bot.Module;
 import io.mazenmc.skypebot.utils.Resource;
 
-import java.util.Arrays;
-import java.util.Random;
+import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class ChipDev implements Module {
@@ -43,15 +42,37 @@ public class ChipDev implements Module {
             "^ sucks..    lollypops",
             "I suck, (Lollypops!)",
             "i Don wanna endanger my 5k comp.",
-            "Shut up is a good thing! Its the opposite of Shut down, which is turn off != turn on..... You are telling someone to turn on (keep talking!)"
+            "Shut up is a good thing! Its the opposite of Shut down, which is turn off != turn on..... You are telling someone to turn on (keep talking!)",
+            "850-950 will not give you super good. Mine costed $2500 but every penny was worth it.",
+            "MY NAME IS JEFF! 1% chance of a chipdev attacking you."
             //End actual ChipDev quotes
     };
 
     @Command(name = "chipdev")
-    public static void cmdChipDev(ChatMessage chat) throws SkypeException {
+    public static void cmdChipDev(ReceivedMessage chat) throws Exception {
         String sentence = SENTANCES[ThreadLocalRandom.current().nextInt(SENTANCES.length)];
 
         Resource.sendMessage(chat, sentence);
     }
 
+    @Command(name = "devchip")
+    public static void cmdDevChip(ReceivedMessage chat) throws Exception {
+        String sentence = SENTANCES[ThreadLocalRandom.current().nextInt(SENTANCES.length)];
+
+        List<String> split = Arrays.asList(sentence.split(" "));
+        Collections.shuffle(split);
+        List<String> finalSplit = new ArrayList<>();
+        for (String s : split) {
+            char[] chaz = new char[s.length()];
+            int x = 0;
+            for (char c : s.toCharArray()) {
+                chaz[x] = ThreadLocalRandom.current().nextBoolean() ? Character.toUpperCase(c) : Character.toLowerCase(c);
+                x++;
+            }
+            finalSplit.add(new String(chaz));
+        }
+        String lol = Joiner.on(' ').join(finalSplit);
+
+        Resource.sendMessage(chat, lol);
+    }
 }
