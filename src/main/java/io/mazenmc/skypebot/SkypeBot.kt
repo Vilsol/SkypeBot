@@ -3,6 +3,7 @@ package io.mazenmc.skypebot
 import com.samczsun.skype4j.Skype
 import com.samczsun.skype4j.SkypeBuilder
 import com.samczsun.skype4j.chat.Chat
+import com.samczsun.skype4j.chat.GroupChat
 import com.samczsun.skype4j.exceptions.ConnectionException
 import com.samczsun.skype4j.exceptions.handler.ErrorHandler
 import com.samczsun.skype4j.exceptions.handler.ErrorSource
@@ -28,7 +29,7 @@ public object SkypeBot {
 
     private var username:  String? = null
     private var password:  String? = null
-    private var groupConv: Chat?   = null
+    private var groupConv: GroupChat?   = null
     private var skype:     Skype?  = null
 
     private var listenerMap:  Field        by Delegates.notNull()
@@ -68,9 +69,9 @@ public object SkypeBot {
         scheduler.scheduleAtFixedRate(relogRunnable, 0, 8, TimeUnit.HOURS)
     }
 
-    public fun groupConv(): Chat? {
+    public fun groupConv(): GroupChat? {
         if (groupConv == null) {
-            groupConv = skype?.getOrLoadChat("19:7cb2a86653594e18abb707e03e2d1848@thread.skype")
+            groupConv = skype?.getOrLoadChat("19:7cb2a86653594e18abb707e03e2d1848@thread.skype") as GroupChat
         }
 
         return groupConv

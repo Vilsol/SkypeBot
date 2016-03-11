@@ -1,7 +1,7 @@
 package io.mazenmc.skypebot.engine.bot
 
 public data class CommandInternal(val name: String, val admin: Boolean, val alias: Array<String>,
-                                  val command: Boolean, val exact: Boolean) {
+                                  val command: Boolean, val exact: Boolean, val minArgs: Int = 0) {
     public fun name(): String {
         return name
     }
@@ -28,6 +28,7 @@ public class CommandBuilder(val name: String) {
     var alias: Array<String> = emptyArray()
     var command: Boolean = true
     var exact: Boolean = true
+    var minArgs: Int = 0
 
     public fun admin(admin: Boolean): CommandBuilder {
         this.admin = admin
@@ -49,7 +50,12 @@ public class CommandBuilder(val name: String) {
         return this
     }
 
+    public fun min(minArgs: Int): CommandBuilder {
+        this.minArgs = minArgs
+        return this
+    }
+
     public fun internal(): CommandInternal {
-        return CommandInternal(name, admin, alias, command, exact)
+        return CommandInternal(name, admin, alias, command, exact, minArgs)
     }
 }

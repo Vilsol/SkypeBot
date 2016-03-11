@@ -30,6 +30,12 @@ public class ModuleManager {
             }
         }
 
+        if (Utils.compiledArgs(chat).split(" ").length < data.getCommand().getMinArgs()) {
+            Resource.sendMessage(chat, "Insufficient args provided. Please provide at-least " +
+                    data.getCommand().getMinArgs() + "args");
+            return;
+        }
+
         if (data.getMethod() == null) {
             Resource.sendMessage(chat, data.getResponse().process(chat)); // simple operations
             return;
@@ -133,7 +139,7 @@ public class ModuleManager {
 
             if (command != null) {
                 CommandInternal internal = new CommandInternal(command.name(), command.admin(), command.alias(),
-                        command.command(), command.exact());
+                        command.command(), command.exact(), 0);
                 CommandData data = new CommandData(internal, m);
 
                 System.out.println("registered " + command.name());
