@@ -150,22 +150,30 @@ public class General implements Module {
                 .collect(Collectors.toList());
         Map<Long, List<ChatMessage>> messageMap = new HashMap<>();
 
+        System.out.println("ayy");
+
         msgs.forEach((msg) -> {
             if (!messageMap.containsKey(msg.getSentTime())) {
                 messageMap.put(msg.getSentTime(), new ArrayList<>());
+                System.out.println("lmao");
             }
 
             messageMap.get(msg.getSentTime()).add(msg);
         });
 
+        System.out.println("ping");
+
         ChatMessage msg = messageMap.get(messageMap.keySet().stream().mapToLong((k) -> k).max().getAsLong())
                 .get(0);
+
+        System.out.println("pong");
 
         System.out.println(msg instanceof SentMessage);
 
         if (msg instanceof SentMessage) {
             try {
                 ((SentMessage) msg).delete();
+                System.out.println("well i made it");
             } catch (Exception e) {
                 e.printStackTrace();
             }
