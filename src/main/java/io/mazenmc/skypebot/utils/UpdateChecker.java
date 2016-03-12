@@ -93,8 +93,6 @@ public class UpdateChecker extends Thread {
                 } else {
                     lastSha = sha;
                 }
-
-                System.out.println("checked commit");
             } catch (Exception e) {
                 e.printStackTrace();
             }
