@@ -91,12 +91,14 @@ public class ModuleManager {
             }
         } catch (NoSuchFieldException | InvocationTargetException | IllegalAccessException | NoSuchMethodException e) {
             Resource.sendMessage(chat, "Failed...");
+            e.printStackTrace();
         }
 
         try {
             methodAccessor.invoke(null, a.toArray());
         } catch (Exception e) {
             Resource.sendMessage(chat, "Failed...");
+            e.printStackTrace();
         }
 
     }
