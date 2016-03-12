@@ -55,7 +55,7 @@ public class Wikipedia implements Module{
         String snippet = "Error finding Wikipedia article.";
 
         if (!articleKey.equals("-1")) {
-            snippet = "*" + json.getJSONObject(articleKey).getString("title") + "*\n" + json.getJSONObject(articleKey).getString("extract");
+            snippet = "*" + json.getJSONObject(articleKey).getString("title") + "*\n" + json.getJSONObject(articleKey).getString("extract").split("\n")[0];
         }
 
         return snippet;
