@@ -140,14 +140,26 @@ public class General implements Module {
 
     @Command(name = "git", alias = {"repo", "repository", "source"})
     public static void cmdGit(ReceivedMessage chat) {
-        Resource.sendMessage(chat, "Git Repository: https://github.com/MazenMC/SkypeBot");
+        Resource.sendMessage(chat, "Git Repository: https://github.com/mkotb/SkypeBot");
     }
 
     @Command(name = "deletelast", admin = true)
     public static void del(ReceivedMessage chat) {
-        ChatMessage msg = SkypeBot.getInstance().groupConv().getAllMessages().stream()
-                .filter((m) -> m.getContent().asPlaintext().equals(SkypeBot.getInstance().lastMsg()))
-                .findFirst().get();
+        List<ChatMessage> msgs = SkypeBot.getInstance().groupConv().getAllMessages().stream()
+                .filter((m) -> m.getSender().getUsername().equals(SkypeBot.getInstance().username()))
+                .collect(Collectors.toList());
+        Map<Long, List<ChatMessage>> messageMap = new HashMap<>();
+
+        msgs.forEach((msg) -> {
+            if (!messageMap.containsKey(msg.getSentTime())) {
+                messageMap.put(msg.getSentTime(), new ArrayList<>());
+            }
+
+            messageMap.get(msg.getSentTime()).add(msg);
+        });
+
+        ChatMessage msg = messageMap.get(messageMap.keySet().stream().mapToLong((k) -> k).max().getAsLong())
+                .get(0);
 
         System.out.println(msg instanceof SentMessage);
 

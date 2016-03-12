@@ -318,6 +318,10 @@ public class SkypeBot {
         return lastMsg;
     }
 
+    public String username() {
+        return username;
+    }
+
     public Twitter getTwitter() {
         return twitter;
     }
