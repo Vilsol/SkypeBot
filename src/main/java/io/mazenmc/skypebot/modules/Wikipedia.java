@@ -1,5 +1,7 @@
 package io.mazenmc.skypebot.modules;
 
+import com.mashape.unirest.http.Unirest;
+import com.mashape.unirest.http.exceptions.UnirestException;
 import com.samczsun.skype4j.chat.messages.ReceivedMessage;
 import io.mazenmc.skypebot.engine.bot.Command;
 import io.mazenmc.skypebot.engine.bot.Module;
@@ -36,30 +38,12 @@ public class Wikipedia implements Module{
             return;
         }
 
-        System.out.println("Extract: " + articleSlug.split(" ")[0]);
-
         Resource.sendMessage(chat, getWikipediaSnip(articleSlug.split(" ")[0]));
     }
 
-    public static String getWikipediaSnip(String slug) throws IOException, JSONException{
-        URL obj = new URL("http://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exsentences=10&titles=" + slug + "&redirects=true&continue=&explaintext=");
-        HttpURLConnection con = (HttpURLConnection) obj.openConnection();
-
-        con.setRequestMethod("GET");
-        con.setRequestProperty("User-Agent", "Mozilla/5.0");
-
-        BufferedReader in = new BufferedReader(
-                new InputStreamReader(con.getInputStream()));
-        String inputLine;
-        StringBuilder response = new StringBuilder();
-
-        while ((inputLine = in.readLine()) != null) {
-            response.append(inputLine);
-        }
-        in.close();
-
-        System.out.println("Wikipedia response: " + response.toString());
-        JSONObject json = new JSONObject(response.toString()).getJSONObject("query").getJSONObject("pages");
+    public static String getWikipediaSnip(String slug) throws UnirestException, JSONException {
+        JSONObject json = Unirest.get("http://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exsentences=10&titles=" + slug + "&redirects=true&continue=&explaintext=")
+                .asJson().getBody().getObject().getJSONObject("query").getJSONObject("pages");
 
         String articleKey = "";
         Iterator<String> keys = json.keys();
