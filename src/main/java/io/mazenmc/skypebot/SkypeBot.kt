@@ -11,6 +11,10 @@ import com.samczsun.skype4j.formatting.Message
 import com.samczsun.skype4j.formatting.Text
 import com.samczsun.skype4j.internal.SkypeEventDispatcher
 import io.mazenmc.skypebot.utils.Resource
+import io.mazenmc.skypebot.utils.Utils
+import twitter4j.Twitter
+import twitter4j.TwitterFactory
+import twitter4j.conf.ConfigurationBuilder
 import java.awt.Color
 import java.io.File
 import java.io.FileInputStream
@@ -27,6 +31,7 @@ public object SkypeBot {
     private val relogRunnable: Runnable                 = RelogRunnable()
     private val errorHandler:  ErrorHandler             = BotErrHandler()
 
+    private var twitter: Twitter? = null
     private var username:  String? = null
     private var password:  String? = null
     private var groupConv: GroupChat?   = null
@@ -69,12 +74,28 @@ public object SkypeBot {
         scheduler.scheduleAtFixedRate(relogRunnable, 0, 8, TimeUnit.HOURS)
     }
 
+    public fun loadThirdParty() {
+        var twitterInfo = Utils.readAllLines("twitter_auth")
+        var cb = ConfigurationBuilder()
+
+        cb.setDebugEnabled(true)
+                .setOAuthConsumerKey(twitterInfo.get(0))
+                .setOAuthConsumerSecret(twitterInfo.get(1))
+                .setOAuthAccessToken(twitterInfo.get(2))
+                .setOAuthAccessTokenSecret(twitterInfo.get(3))
+        twitter = TwitterFactory(cb.build()).getInstance()
+    }
+
     public fun groupConv(): GroupChat? {
         if (groupConv == null) {
             groupConv = skype?.getOrLoadChat("19:7cb2a86653594e18abb707e03e2d1848@thread.skype") as GroupChat
         }
 
         return groupConv
+    }
+
+    public fun twitter(): Twitter? {
+        return twitter
     }
 
     public fun getSkype(): Skype? {

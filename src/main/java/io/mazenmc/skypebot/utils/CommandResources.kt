@@ -4,6 +4,7 @@ import com.samczsun.skype4j.chat.messages.ReceivedMessage
 import java.util.function.Predicate
 
 public object CommandResources {
+    public val weatherUrl: String = "http://api.openweathermap.org/data/2.5/weather?units=imperial&q="
     public val ballResponses: Array<String> = arrayOf("It is certain", "It is decidedly so", "Without a doubt",
                                                       "Yes definitely", "You may rely on it", "As I see it, yes",
                                                       "Most likely", "Outlook good", "Yes", "Signs point to yes",
