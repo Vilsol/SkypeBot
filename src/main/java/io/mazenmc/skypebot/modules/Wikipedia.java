@@ -21,7 +21,7 @@ public class Wikipedia implements Module{
     String api = "";
 
     @Command(name = "en.wikipedia.org/wiki/", command = false, exact = false)
-    public static void cmdWikipedia(ReceivedMessage chat) throws IOException, JSONException, Exception{
+    public static void cmdWikipedia(ReceivedMessage chat) throws Exception {
         String wholeMessage = chat.getContent().asPlaintext();
         Matcher idMatcher = Resource.WIKIPEDIA_REGEX.matcher(wholeMessage);
 
@@ -35,6 +35,8 @@ public class Wikipedia implements Module{
             Resource.sendMessage(chat, "Invalid Wikipedia URL!");
             return;
         }
+
+        System.out.println("Extract: " + articleSlug.split(" ")[0]);
 
         Resource.sendMessage(chat, getWikipediaSnip(articleSlug.split(" ")[0]));
     }
@@ -56,6 +58,7 @@ public class Wikipedia implements Module{
         }
         in.close();
 
+        System.out.println("Wikipedia response: " + response.toString());
         JSONObject json = new JSONObject(response.toString()).getJSONObject("query").getJSONObject("pages");
 
         String articleKey = "";
