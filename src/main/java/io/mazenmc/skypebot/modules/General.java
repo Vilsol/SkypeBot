@@ -143,43 +143,6 @@ public class General implements Module {
         Resource.sendMessage(chat, "Git Repository: https://github.com/mkotb/SkypeBot");
     }
 
-    @Command(name = "deletelast", admin = true)
-    public static void del(ReceivedMessage chat) {
-        List<ChatMessage> msgs = SkypeBot.getInstance().groupConv().getAllMessages().stream()
-                .filter((m) -> m.getSender().getUsername().equals(SkypeBot.getInstance().username()))
-                .collect(Collectors.toList());
-        Map<Long, List<ChatMessage>> messageMap = new HashMap<>();
-
-        System.out.println("ayy");
-
-        msgs.forEach((msg) -> {
-            if (!messageMap.containsKey(msg.getSentTime())) {
-                messageMap.put(msg.getSentTime(), new ArrayList<>());
-                System.out.println("lmao");
-            }
-
-            messageMap.get(msg.getSentTime()).add(msg);
-        });
-
-        System.out.println("ping");
-
-        ChatMessage msg = messageMap.get(messageMap.keySet().stream().mapToLong((k) -> k).max().getAsLong())
-                .get(0);
-
-        System.out.println("pong");
-
-        System.out.println(msg instanceof SentMessage);
-
-        if (msg instanceof SentMessage) {
-            try {
-                ((SentMessage) msg).delete();
-                System.out.println("well i made it");
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
     @Command(name = "help", alias = {"commands"})
     public static void cmdHelp(ReceivedMessage chat) {
         String commands = "";
