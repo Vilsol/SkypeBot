@@ -100,7 +100,6 @@ public class ModuleManager {
             Resource.sendMessage(chat, "Failed...");
             e.printStackTrace();
         }
-
     }
 
     public static HashMap<String, CommandData> getCommands() {
