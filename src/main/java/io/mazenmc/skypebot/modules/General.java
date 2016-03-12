@@ -14,7 +14,9 @@ import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
+import com.samczsun.skype4j.chat.messages.ChatMessage;
 import com.samczsun.skype4j.chat.messages.ReceivedMessage;
+import com.samczsun.skype4j.chat.messages.SentMessage;
 import com.samczsun.skype4j.exceptions.ChatNotFoundException;
 import com.samczsun.skype4j.exceptions.ConnectionException;
 import com.samczsun.skype4j.exceptions.NoSuchContactException;
@@ -139,6 +141,23 @@ public class General implements Module {
     @Command(name = "git", alias = {"repo", "repository", "source"})
     public static void cmdGit(ReceivedMessage chat) {
         Resource.sendMessage(chat, "Git Repository: https://github.com/MazenMC/SkypeBot");
+    }
+
+    @Command(name = "deletelast", admin = true)
+    public static void del(ReceivedMessage chat) {
+        ChatMessage msg = SkypeBot.getInstance().groupConv().getAllMessages().stream()
+                .filter((m) -> m.getContent().asPlaintext().equals(SkypeBot.getInstance().lastMsg()))
+                .findFirst().get();
+
+        System.out.println(msg instanceof SentMessage);
+
+        if (msg instanceof SentMessage) {
+            try {
+                ((SentMessage) msg).delete();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @Command(name = "help", alias = {"commands"})

@@ -60,6 +60,7 @@ public class SkypeBot {
     private Field listenerMap;
     private Runnable relogRunnable;
     private ErrorHandler errorHandler;
+    private String lastMsg;
 
     public SkypeBot(String[] args) {
         instance = this;
@@ -285,6 +286,7 @@ public class SkypeBot {
     public void sendMessage(String message) {
         try {
             groupConv().sendMessage(message);
+            lastMsg = message;
         } catch (ConnectionException e) {
             groupConv = null;
             sendMessage(message);
@@ -310,6 +312,10 @@ public class SkypeBot {
         }
 
         return groupConv;
+    }
+
+    public String lastMsg() {
+        return lastMsg;
     }
 
     public Twitter getTwitter() {
