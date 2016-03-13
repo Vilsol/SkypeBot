@@ -71,7 +71,7 @@ public class SkypeBot {
         }
 
         ModuleManager.loadModules("io.mazenmc.skypebot.modules");
-        //System.setProperty("com.samczsun.skype4j.debugExceptions", "true");
+        System.setProperty("com.samczsun.skype4j.debugExceptions", "true");
 
         try {
             loadConfig();
