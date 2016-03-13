@@ -222,6 +222,7 @@ public class SkypeBot {
 
         @EventHandler
         public void onImage(PictureReceivedEvent event) {
+            System.out.println("got the picture");
             File file = new File("lastImage.png");
 
             if (file.exists()) {
@@ -230,9 +231,11 @@ public class SkypeBot {
 
             try {
                 ImageIO.write(event.getSentImage(), "png", file);
+                System.out.println("wrote to file");
                 event.getChat().sendMessage(Message.create().with(Text.rich("Uploading image...").withColor(Color.CYAN)));
 
                 String link = Utils.upload(file);
+                System.out.println("uploaded");
 
                 event.getChat().sendMessage(Message.create().with(Text.rich("Uploaded!").withColor(Color.GREEN)));
                 Resource.sendMessage(event.getSender().getUsername() + " sent an image...");
