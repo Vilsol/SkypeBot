@@ -229,10 +229,6 @@ public class SkypeBot {
             }
 
             try {
-                if (!groupConv().getAllUsers().stream().anyMatch((u) -> u.getUsername().equals(event.getSender().getUsername()))) {
-                    return; // don't let randoms send pics
-                }
-
                 ImageIO.write(event.getSentImage(), "png", file);
                 event.getChat().sendMessage(Message.create().with(Text.rich("Uploading image...").withColor(Color.CYAN)));
 
