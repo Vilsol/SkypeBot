@@ -81,14 +81,15 @@ public class ModuleManager {
             }
         } catch (NoSuchFieldException | InvocationTargetException | IllegalAccessException | NoSuchMethodException e) {
             Resource.sendMessage(chat, "Failed...");
+            e.printStackTrace();
         }
 
         try {
             methodAccessor.invoke(null, a.toArray());
         } catch (Exception e) {
             Resource.sendMessage(chat, "Failed...");
+            e.printStackTrace();
         }
-
     }
 
     public static HashMap<String, CommandData> getCommands() {
@@ -186,14 +187,12 @@ public class ModuleManager {
         }
 
         if (command == null) {
-            System.out.println("Command is null");
             return;
         }
 
         System.out.println("Received chat message: " + command);
 
         if (command.length() < 1) {
-            System.out.println("low command length");
             return;
         }
 
@@ -204,7 +203,6 @@ public class ModuleManager {
         String[] commandSplit = command.split(" ");
 
         if (commandSplit.length == 0) {
-            System.out.println("nothing");
             return;
         }
 

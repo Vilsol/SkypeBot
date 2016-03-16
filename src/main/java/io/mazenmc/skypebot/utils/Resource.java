@@ -19,6 +19,7 @@ public class Resource {
     public static final String KEY_GITHUB = Utils.readFirstLine("key_github");
     public static final String KEY_TRIDENT = Utils.readFirstLine("key_trident");
     public static final String KEY_URBAND = Utils.readFirstLine("key_ud");
+    public static final String BOT_MANAGER = Utils.readFirstLine("owner");
     public static final String REGEX_ALL = "(.+)";
     public static final String REGEX_DOUBLE = "(-?[0-9]+\\.[0-9]+)";
     public static final String REGEX_INT = "(-?[0-9]+)";
@@ -40,6 +41,14 @@ public class Resource {
 
     public static void sendMessage(String message) {
         SkypeBot.INSTANCE$.sendMessage(message);
+    }
+
+    public static void sendManager(String message) {
+        try {
+            SkypeBot.getInstance().getSkype().getContact(BOT_MANAGER).getPrivateConversation()
+                    .sendMessage(message);
+        } catch (Exception ignored) {
+        }
     }
 
     public static void sendMessage(ReceivedMessage chatMessage, String message) {
