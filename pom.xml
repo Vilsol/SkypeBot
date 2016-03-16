@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xmlns="http://maven.apache.org/POM/4.0.0"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>io.mazenmc</groupId>
     <artifactId>skypebot</artifactId>
-    <version>1.0-SNAPSHOT</version>
-    <packaging>jar</packaging>
+    <version>1.0</version>
 
     <repositories>
         <repository>
@@ -23,6 +22,10 @@
                 <updatePolicy>always</updatePolicy>
             </snapshots>
         </repository>
+        <repository>
+            <id>jetbrains-all</id>
+            <url>http://repository.jetbrains.com/all</url>
+        </repository>
     </repositories>
 
     <properties>
@@ -31,6 +34,12 @@
     </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>org.jetbrains.kotlin</groupId>
+            <artifactId>kotlin-stdlib</artifactId>
+            <version>0.12.613</version>
+        </dependency>
+
         <dependency>
             <groupId>com.samczsun</groupId>
             <artifactId>skype4j</artifactId>
@@ -170,7 +179,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>io.mazenmc.skypebot.Main</mainClass>
+                            <mainClass>io.mazenmc.skypebot.StarterPackage</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>

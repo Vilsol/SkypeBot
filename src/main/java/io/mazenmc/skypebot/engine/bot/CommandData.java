@@ -1,6 +1,7 @@
 package io.mazenmc.skypebot.engine.bot;
 
 import com.google.common.base.Joiner;
+import io.mazenmc.skypebot.engine.bot.generic.StringResponse;
 import io.mazenmc.skypebot.utils.Resource;
 
 import java.lang.reflect.Method;
@@ -11,11 +12,12 @@ import java.util.List;
 
 public class CommandData {
 
-    private Command command;
+    private CommandInternal command;
     private Method method;
+    private StringResponse response;
     private LinkedHashMap<String, ParameterData> parameters = new LinkedHashMap<>();
 
-    public CommandData(Command c, Method method) {
+    public CommandData(CommandInternal c, Method method) {
         this.command = c;
         this.method = method;
 
@@ -50,12 +52,21 @@ public class CommandData {
         }
     }
 
-    public Command getCommand() {
+    public CommandData(CommandInternal c, StringResponse response) {
+        this.command = c;
+        this.response = response;
+    }
+
+    public CommandInternal getCommand() {
         return command;
     }
 
     public Method getMethod() {
         return method;
+    }
+
+    public StringResponse getResponse() {
+        return response;
     }
 
     public String getParameterNames() {

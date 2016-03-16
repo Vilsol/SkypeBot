@@ -2,17 +2,14 @@ package io.mazenmc.skypebot.utils;
 
 import com.google.common.base.Joiner;
 import com.mashape.unirest.http.Unirest;
-import com.mashape.unirest.http.exceptions.UnirestException;
 import com.samczsun.skype4j.chat.messages.ReceivedMessage;
 import com.samczsun.skype4j.exceptions.ConnectionException;
 import com.samczsun.skype4j.user.User;
-import io.mazenmc.skypebot.Main;
 import io.mazenmc.skypebot.SkypeBot;
 import io.mazenmc.skypebot.stat.Message;
 import io.mazenmc.skypebot.stat.MessageStatistic;
 import io.mazenmc.skypebot.stat.StatisticsManager;
 import org.apache.commons.codec.digest.DigestUtils;
-import org.json.JSONObject;
 import sun.misc.BASE64Encoder;
 
 import javax.crypto.Mac;
@@ -34,6 +31,10 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 public class Utils {
+    public static String compiledArgs(ReceivedMessage message) {
+        String content = message.getContent().asPlaintext();
+        return content.substring(content.indexOf(content.split(" ")[1]), content.length());
+    }
 
     public static String generateSignature(String key, String payload) {
         SecretKeySpec keySpec = new SecretKeySpec(key.getBytes(), "HmacSHA1");
@@ -52,7 +53,7 @@ public class Utils {
     }
 
     public static String getJarName() {
-        return new File(Main.class.getProtectionDomain().getCodeSource().getLocation().getPath()).getName();
+        return new File(Utils.class.getProtectionDomain().getCodeSource().getLocation().getPath()).getName();
     }
 
     public static String getMD5Hash(String file) {
@@ -214,12 +215,12 @@ public class Utils {
     }
 
     public static void restartBot() {
-        StatisticsManager.instance().saveStatistics();
+        StatisticsManager.INSTANCE$.saveStatistics();
         System.out.println("Restarting...");
 
         try {
             Unirest.shutdown();
-            SkypeBot.getInstance().getSkype().logout();
+            SkypeBot.INSTANCE$.getSkype().logout();
         } catch (IOException | ConnectionException ignored) {
         }
 
@@ -299,13 +300,13 @@ public class Utils {
             output.close();
             con.getResponseCode();
             return con.getURL().toString();
-        } catch (java.io.IOException ignored) {
+        } catch (IOException ignored) {
         }
 
         return null;
     }
 
-    public static String upload(File image) throws Exception {
+    public static String upload(File image) throws Exception { // I'm still surprised this works
         Process process = new ProcessBuilder()
                 .command("/bin/bash", "imgur.sh", image.getAbsolutePath())
                 .redirectErrorStream(true)
@@ -331,14 +332,14 @@ public class Utils {
     }
 
     public static User getUser(String username) {
-        while (SkypeBot.getInstance().groupConv() == null) { // wait for boot up
+        while (SkypeBot.INSTANCE$.groupConv() == null) { // wait for boot up
             try {
                 Thread.sleep(500L); // wait half a second
             } catch (InterruptedException ignored) {
             }
         }
 
-        return SkypeBot.getInstance().groupConv().getUser(username);
+        return SkypeBot.INSTANCE$.groupConv().getUser(username);
     }
 
     public static String getDisplayName(User user) {

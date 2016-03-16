@@ -9,13 +9,12 @@ import net.lingala.zip4j.core.ZipFile;
 import org.json.JSONObject;
 
 import javax.net.ssl.HttpsURLConnection;
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 public class UpdateChecker extends Thread {
 
@@ -50,10 +49,10 @@ public class UpdateChecker extends Thread {
                     HttpsURLConnection c = (HttpsURLConnection) url.openConnection();
                     JSONObject commit = recentCommit.getJSONObject("commit");
 
-                    Resource.sendMessage("Found new commit: " +
+                    Resource.sendManager("Found new commit: " +
                             commit.getJSONObject("author").getString("name") + " - " +
                             commit.getString("message") + " (" + sha + ")");
-                    Resource.sendMessage(recentCommit.getString("html_url"));
+                    Resource.sendManager(recentCommit.getString("html_url"));
 
                     try (InputStream stream = c.getInputStream()) {
                         File f = new File("master.zip");
@@ -74,7 +73,7 @@ public class UpdateChecker extends Thread {
 
                     zip.extractAll(System.getProperty("user.dir"));
 
-                    Resource.sendMessage("Restarting...");
+                    Resource.sendManager("Restarting...");
 
                     try {
                         Thread.sleep(200L);
@@ -88,13 +87,11 @@ public class UpdateChecker extends Thread {
                     } catch (IOException ignored) {
                     }
 
-                    SkypeBot.getInstance().getSkype().logout();
+                    SkypeBot.INSTANCE$.getSkype().logout();
                     System.exit(0);
                 } else {
                     lastSha = sha;
                 }
-
-                System.out.println("checked commit");
             } catch (Exception e) {
                 e.printStackTrace();
             }
