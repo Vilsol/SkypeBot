@@ -7,6 +7,7 @@ import io.mazenmc.skypebot.engine.bot.Command
 import io.mazenmc.skypebot.engine.bot.Module
 import io.mazenmc.skypebot.utils.CommandResources
 import io.mazenmc.skypebot.utils.Resource
+import java.net.URLEncoder
 
 public object ThirdParty : Module {
     Command(name = "twitter\\.com\\/[A-z0-9]+\\/status\\/[0-9]{18}", command = false, exact = false)
@@ -80,5 +81,30 @@ public object ThirdParty : Module {
         }
 
         Resource.sendMessage(chat, "THE FUCKING WEATHER IN ${location.toUpperCase()} IS ${temp} F | ${metric} C")
+    }
+
+    Command(name = "define")
+    fun cmdDefine(chat: ReceivedMessage, word: String) {
+        var json = Unirest.get("http://api.urbandictionary.com/v0/define?term=${URLEncoder.encode(word, "UTF-8")}")
+                .asJson().getBody().getObject()
+        var status = json.getString("result_type")
+
+        if ("no_results".equals(status)) {
+            Resource.sendMessage(chat, "No results found for ${word}")
+            return;
+        }
+
+        var definition = json.getJSONArray("list").getJSONObject(0)
+        var author = definition.getString("author")
+        var ups = definition.getInt("thumbs_up")
+        var downs = definition.getInt("thumbs_down")
+        var def = definition.getString("definition")
+        var example = definition.getString("example")
+        var link = definition.getString("permalink")
+
+        Resource.sendMessage(chat, "Definition for ${word} by ${author}:\n" +
+                "${def}\n${example}\n" +
+                "${ups} Thumbs up, ${downs} Thumbs down")
+        Resource.sendMessage(chat, link)
     }
 }
